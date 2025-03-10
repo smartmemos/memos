@@ -1,0 +1,28 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/go
+    out: ../internal/proto
+    opt:
+      - paths=source_relative
+  - remote: buf.build/grpc/go
+    out: ../internal/proto
+    opt:
+      - paths=source_relative
+  - remote: buf.build/grpc-ecosystem/gateway
+    out: ../internal/proto
+    opt:
+      - paths=source_relative
+  - remote: buf.build/grpc-ecosystem/openapiv2
+    out: ../docs
+    opt: output_format=yaml,allow_merge=true
+  - remote: buf.build/community/stephenh-ts-proto
+    out: ../web/app/types/proto
+    # reference: https://github.com/deeplay-io/nice-grpc/blob/master/packages/nice-grpc-web/README.md#using-ts-proto
+    opt:
+      - env=browser
+      - useOptionals=messages
+      - outputServices=generic-definitions
+      - outputJsonMethods=false
+      - useExactTypes=false
+      - esModuleInterop=true
+      - stringEnums=true

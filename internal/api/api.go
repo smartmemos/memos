@@ -1,0 +1,11 @@
+package api
+
+import (
+	"github.com/samber/do/v2"
+
+	"github.com/smartmemos/memos/internal/api/v1/memo"
+)
+
+func Init(i do.Injector) {
+	memo.New(i)
+}

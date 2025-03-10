@@ -1,0 +1,16 @@
+appname: "memos"
+run_cmd: "./memos"
+cmd_args:
+   - "serve"
+   - "--config=./configs/config.toml"
+watch_exts:
+   - .go
+   - .toml
+   - .env
+vendor_watch: false
+excluded_paths:
+   - web
+build_pkg: "cmd/main.go"
+build_tags: ""
+disable_run: false
+log_level: "debug"

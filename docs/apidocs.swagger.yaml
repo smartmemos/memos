@@ -1,0 +1,94 @@
+swagger: "2.0"
+info:
+  title: api/v1/memo/memo.proto
+  version: version not set
+tags:
+  - name: MemoService
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v1/memos:
+    get:
+      summary: ListMemos lists memos with pagination and filter.
+      operationId: MemoService_ListMemos
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/memoListMemosResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - MemoService
+    post:
+      summary: CreateMemo creates a memo.
+      operationId: MemoService_CreateMemo
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/memoMemo'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+      tags:
+        - MemoService
+  /api/v1/memos/*:
+    get:
+      summary: GetMemo gets a memo.
+      operationId: MemoService_GetMemo
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/memoMemo'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - MemoService
+definitions:
+  memoListMemosResponse:
+    type: object
+  memoMemo:
+    type: object
+    properties:
+      id:
+        type: string
+        format: int64
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
