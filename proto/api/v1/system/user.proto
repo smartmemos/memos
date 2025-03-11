@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package system;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v1/system";
+
+message User {
+  int64 id = 1;
+  google.protobuf.Timestamp created_at = 50;
+  google.protobuf.Timestamp updated_at = 51;
+}
+

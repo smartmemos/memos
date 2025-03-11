@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "api/v1/system/user.proto";
+
+package auth;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v1/auth";
+
+
+message SignInRequest {
+  // The username to sign in with.
+  string username = 1;
+  // The password to sign in with.
+  string password = 2;
+  // Whether the session should never expire.
+  bool never_expire = 3;
+}
+
+message SignUpRequest {
+  // The username to sign up with.
+  string username = 1;
+  // The password to sign up with.
+  string password = 2;
+}
+
+message SignOutRequest {}
+
+message GetAuthStatusRequest {}
+
+message GetAuthStatusResponse {
+  system.User user = 1;
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "api/v1/auth/auth.proto";
+import "api/v1/system/user.proto";
+
+package api.v1;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";
+
+service AuthService {
+  // GetAuthStatus returns the current auth status of the user.
+  rpc GetAuthStatus(auth.GetAuthStatusRequest) returns (system.User) {
+    option (google.api.http) = {post: "/api/v1/auth/status"};
+  }
+  // SignIn signs in the user with the given username and password.
+  rpc SignIn(auth.SignInRequest) returns (system.User) {
+    option (google.api.http) = {post: "/api/v1/auth/signin"};
+  }
+  // SignUp signs up the user with the given username and password.
+  rpc SignUp(auth.SignUpRequest) returns (system.User) {
+    option (google.api.http) = {post: "/api/v1/auth/signup"};
+  }
+  // SignOut signs out the user.
+  rpc SignOut(auth.SignOutRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {post: "/api/v1/auth/signout"};
+  }
+}
