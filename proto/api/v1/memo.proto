@@ -5,28 +5,45 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "api/v1/memo/memo.proto";
+import "model/memo/memo.proto";
 
 package api.v1;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";
 
 service MemoService {
     // CreateMemo creates a memo.
-  rpc CreateMemo(memo.CreateMemoRequest) returns (memo.Memo) {
+  rpc CreateMemo(CreateMemoRequest) returns (memo.Memo) {
     option (google.api.http) = {
       post: "/api/v1/memos"
     };
   }
 
     // ListMemos lists memos with pagination and filter.
-  rpc ListMemos(memo.ListMemosRequest) returns (memo.ListMemosResponse) {
+  rpc ListMemos(ListMemosRequest) returns (ListMemosResponse) {
     option (google.api.http) = {
       get: "/api/v1/memos"
     };
   }
   // GetMemo gets a memo.
-  rpc GetMemo(memo.GetMemoRequest) returns (memo.Memo) {
+  rpc GetMemo(GetMemoRequest) returns (memo.Memo) {
     option (google.api.http) = {get: "/api/v1/memos/*"};
   }
+
+}
+
+
+message CreateMemoRequest {
+  string name = 1;
+}
+
+message ListMemosRequest {
+
+}
+
+message ListMemosResponse {
+
+}
+
+message GetMemoRequest {
 
 }

@@ -16,7 +16,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	"github.com/smartmemos/memos/internal/proto/api/v1/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -38,7 +37,7 @@ var (
 
 func request_AuthService_GetAuthStatus_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.GetAuthStatusRequest
+		protoReq GetAuthStatusRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -48,7 +47,7 @@ func request_AuthService_GetAuthStatus_0(ctx context.Context, marshaler runtime.
 
 func local_request_AuthService_GetAuthStatus_0(ctx context.Context, marshaler runtime.Marshaler, server AuthServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.GetAuthStatusRequest
+		protoReq GetAuthStatusRequest
 		metadata runtime.ServerMetadata
 	)
 	msg, err := server.GetAuthStatus(ctx, &protoReq)
@@ -59,7 +58,7 @@ var filter_AuthService_SignIn_0 = &utilities.DoubleArray{Encoding: map[string]in
 
 func request_AuthService_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignInRequest
+		protoReq SignInRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -75,7 +74,7 @@ func request_AuthService_SignIn_0(ctx context.Context, marshaler runtime.Marshal
 
 func local_request_AuthService_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, server AuthServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignInRequest
+		protoReq SignInRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
@@ -92,7 +91,7 @@ var filter_AuthService_SignUp_0 = &utilities.DoubleArray{Encoding: map[string]in
 
 func request_AuthService_SignUp_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignUpRequest
+		protoReq SignUpRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -108,7 +107,7 @@ func request_AuthService_SignUp_0(ctx context.Context, marshaler runtime.Marshal
 
 func local_request_AuthService_SignUp_0(ctx context.Context, marshaler runtime.Marshaler, server AuthServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignUpRequest
+		protoReq SignUpRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
@@ -123,7 +122,7 @@ func local_request_AuthService_SignUp_0(ctx context.Context, marshaler runtime.M
 
 func request_AuthService_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignOutRequest
+		protoReq SignOutRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -133,7 +132,7 @@ func request_AuthService_SignOut_0(ctx context.Context, marshaler runtime.Marsha
 
 func local_request_AuthService_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, server AuthServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq auth.SignOutRequest
+		protoReq SignOutRequest
 		metadata runtime.ServerMetadata
 	)
 	msg, err := server.SignOut(ctx, &protoReq)
