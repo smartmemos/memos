@@ -23,12 +23,17 @@ type Config struct {
 	Server   serverConfig `envPrefix:"SERVER_"`
 	Logger   loggerConfig `envPrefix:"LOGGER_"`
 	Database db.Config    `envPrefix:"DATABASE_"`
+	JWT      JWT          `envPrefix:"JWT_"`
 }
 
 type loggerConfig struct {
 	Format string
 	Level  string
 	Output string
+}
+
+type JWT struct {
+	Key string
 }
 
 type serverConfig struct {

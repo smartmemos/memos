@@ -17,6 +17,7 @@ type User struct {
 	PasswordHash string
 	AvatarURL    string
 	Description  string
+	Status       RowStatus
 }
 
 func (User) TableName() string {
