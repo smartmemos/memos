@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/caarlos0/env/v8 v8.0.0
-	github.com/golang/mock v1.1.1
+	github.com/golang/mock v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
 	github.com/improbable-eng/grpc-web v0.15.0
