@@ -1,15 +1,23 @@
 package model
 
+import (
+	"time"
+
+	"github.com/smartmemos/memos/internal/pkg/db"
+)
+
+type AccessToken struct {
+	db.Model
+
+	UserId      int64
+	Token       string
+	Description string
+	IssuedAt    time.Time
+	ExpiresAt   time.Time
+}
+
 type SignInRequest struct {
 	Username    string
 	Password    string
 	NeverExpire bool
-}
-
-type AccessToken struct {
-	UserId      int64  `json:"user_id"`
-	Token       string `json:"token"`
-	Description string `json:"description"`
-	IssuedAt    int64  `json:"issued_at"`
-	ExpiresAt   int64  `json:"expires_at"`
 }

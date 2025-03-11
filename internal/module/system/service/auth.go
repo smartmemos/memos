@@ -92,8 +92,8 @@ func (s *Service) GenerateAccessToken(_ context.Context, userID int64, audience,
 	accessToken = &model.AccessToken{
 		UserId:    userID,
 		Token:     tokenStr,
-		ExpiresAt: expirationTime.Unix(),
-		IssuedAt:  issuedAt.Unix(),
+		ExpiresAt: expirationTime,
+		IssuedAt:  issuedAt,
 	}
 	return
 }
