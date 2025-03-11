@@ -1,4 +1,4 @@
-package memo
+package v1
 
 import (
 	"github.com/samber/do/v2"
@@ -7,13 +7,13 @@ import (
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 )
 
-type Service struct {
+type MemoService struct {
 	v1pb.UnimplementedMemoServiceServer
 	memo memo.Service
 }
 
-func New(i do.Injector) (*Service, error) {
-	return &Service{
+func NewMemoService(i do.Injector) (*MemoService, error) {
+	return &MemoService{
 		memo: do.MustInvoke[memo.Service](i),
 	}, nil
 }
