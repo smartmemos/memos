@@ -2,6 +2,7 @@ package dao
 
 import (
 	"github.com/samber/do/v2"
+
 	"github.com/smartmemos/memos/internal/module/memo"
 )
 

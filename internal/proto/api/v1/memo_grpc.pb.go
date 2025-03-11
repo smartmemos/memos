@@ -8,7 +8,7 @@ package v1
 
 import (
 	context "context"
-	memo "github.com/smartmemos/memos/internal/proto/api/v1/memo"
+	memo "github.com/smartmemos/memos/internal/proto/model/memo"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -30,11 +30,11 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MemoServiceClient interface {
 	// CreateMemo creates a memo.
-	CreateMemo(ctx context.Context, in *memo.CreateMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error)
+	CreateMemo(ctx context.Context, in *CreateMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error)
 	// ListMemos lists memos with pagination and filter.
-	ListMemos(ctx context.Context, in *memo.ListMemosRequest, opts ...grpc.CallOption) (*memo.ListMemosResponse, error)
+	ListMemos(ctx context.Context, in *ListMemosRequest, opts ...grpc.CallOption) (*ListMemosResponse, error)
 	// GetMemo gets a memo.
-	GetMemo(ctx context.Context, in *memo.GetMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error)
+	GetMemo(ctx context.Context, in *GetMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error)
 }
 
 type memoServiceClient struct {
@@ -45,7 +45,7 @@ func NewMemoServiceClient(cc grpc.ClientConnInterface) MemoServiceClient {
 	return &memoServiceClient{cc}
 }
 
-func (c *memoServiceClient) CreateMemo(ctx context.Context, in *memo.CreateMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error) {
+func (c *memoServiceClient) CreateMemo(ctx context.Context, in *CreateMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(memo.Memo)
 	err := c.cc.Invoke(ctx, MemoService_CreateMemo_FullMethodName, in, out, cOpts...)
@@ -55,9 +55,9 @@ func (c *memoServiceClient) CreateMemo(ctx context.Context, in *memo.CreateMemoR
 	return out, nil
 }
 
-func (c *memoServiceClient) ListMemos(ctx context.Context, in *memo.ListMemosRequest, opts ...grpc.CallOption) (*memo.ListMemosResponse, error) {
+func (c *memoServiceClient) ListMemos(ctx context.Context, in *ListMemosRequest, opts ...grpc.CallOption) (*ListMemosResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(memo.ListMemosResponse)
+	out := new(ListMemosResponse)
 	err := c.cc.Invoke(ctx, MemoService_ListMemos_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (c *memoServiceClient) ListMemos(ctx context.Context, in *memo.ListMemosReq
 	return out, nil
 }
 
-func (c *memoServiceClient) GetMemo(ctx context.Context, in *memo.GetMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error) {
+func (c *memoServiceClient) GetMemo(ctx context.Context, in *GetMemoRequest, opts ...grpc.CallOption) (*memo.Memo, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(memo.Memo)
 	err := c.cc.Invoke(ctx, MemoService_GetMemo_FullMethodName, in, out, cOpts...)
@@ -80,11 +80,11 @@ func (c *memoServiceClient) GetMemo(ctx context.Context, in *memo.GetMemoRequest
 // for forward compatibility.
 type MemoServiceServer interface {
 	// CreateMemo creates a memo.
-	CreateMemo(context.Context, *memo.CreateMemoRequest) (*memo.Memo, error)
+	CreateMemo(context.Context, *CreateMemoRequest) (*memo.Memo, error)
 	// ListMemos lists memos with pagination and filter.
-	ListMemos(context.Context, *memo.ListMemosRequest) (*memo.ListMemosResponse, error)
+	ListMemos(context.Context, *ListMemosRequest) (*ListMemosResponse, error)
 	// GetMemo gets a memo.
-	GetMemo(context.Context, *memo.GetMemoRequest) (*memo.Memo, error)
+	GetMemo(context.Context, *GetMemoRequest) (*memo.Memo, error)
 	mustEmbedUnimplementedMemoServiceServer()
 }
 
@@ -95,13 +95,13 @@ type MemoServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMemoServiceServer struct{}
 
-func (UnimplementedMemoServiceServer) CreateMemo(context.Context, *memo.CreateMemoRequest) (*memo.Memo, error) {
+func (UnimplementedMemoServiceServer) CreateMemo(context.Context, *CreateMemoRequest) (*memo.Memo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMemo not implemented")
 }
-func (UnimplementedMemoServiceServer) ListMemos(context.Context, *memo.ListMemosRequest) (*memo.ListMemosResponse, error) {
+func (UnimplementedMemoServiceServer) ListMemos(context.Context, *ListMemosRequest) (*ListMemosResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMemos not implemented")
 }
-func (UnimplementedMemoServiceServer) GetMemo(context.Context, *memo.GetMemoRequest) (*memo.Memo, error) {
+func (UnimplementedMemoServiceServer) GetMemo(context.Context, *GetMemoRequest) (*memo.Memo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMemo not implemented")
 }
 func (UnimplementedMemoServiceServer) mustEmbedUnimplementedMemoServiceServer() {}
@@ -126,7 +126,7 @@ func RegisterMemoServiceServer(s grpc.ServiceRegistrar, srv MemoServiceServer) {
 }
 
 func _MemoService_CreateMemo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(memo.CreateMemoRequest)
+	in := new(CreateMemoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -138,13 +138,13 @@ func _MemoService_CreateMemo_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: MemoService_CreateMemo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MemoServiceServer).CreateMemo(ctx, req.(*memo.CreateMemoRequest))
+		return srv.(MemoServiceServer).CreateMemo(ctx, req.(*CreateMemoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _MemoService_ListMemos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(memo.ListMemosRequest)
+	in := new(ListMemosRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -156,13 +156,13 @@ func _MemoService_ListMemos_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: MemoService_ListMemos_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MemoServiceServer).ListMemos(ctx, req.(*memo.ListMemosRequest))
+		return srv.(MemoServiceServer).ListMemos(ctx, req.(*ListMemosRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _MemoService_GetMemo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(memo.GetMemoRequest)
+	in := new(GetMemoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func _MemoService_GetMemo_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: MemoService_GetMemo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MemoServiceServer).GetMemo(ctx, req.(*memo.GetMemoRequest))
+		return srv.(MemoServiceServer).GetMemo(ctx, req.(*GetMemoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

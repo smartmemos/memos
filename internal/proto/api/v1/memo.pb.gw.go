@@ -16,7 +16,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	"github.com/smartmemos/memos/internal/proto/api/v1/memo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -40,7 +39,7 @@ var filter_MemoService_CreateMemo_0 = &utilities.DoubleArray{Encoding: map[strin
 
 func request_MemoService_CreateMemo_0(ctx context.Context, marshaler runtime.Marshaler, client MemoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.CreateMemoRequest
+		protoReq CreateMemoRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -56,7 +55,7 @@ func request_MemoService_CreateMemo_0(ctx context.Context, marshaler runtime.Mar
 
 func local_request_MemoService_CreateMemo_0(ctx context.Context, marshaler runtime.Marshaler, server MemoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.CreateMemoRequest
+		protoReq CreateMemoRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
@@ -71,7 +70,7 @@ func local_request_MemoService_CreateMemo_0(ctx context.Context, marshaler runti
 
 func request_MemoService_ListMemos_0(ctx context.Context, marshaler runtime.Marshaler, client MemoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.ListMemosRequest
+		protoReq ListMemosRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -81,7 +80,7 @@ func request_MemoService_ListMemos_0(ctx context.Context, marshaler runtime.Mars
 
 func local_request_MemoService_ListMemos_0(ctx context.Context, marshaler runtime.Marshaler, server MemoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.ListMemosRequest
+		protoReq ListMemosRequest
 		metadata runtime.ServerMetadata
 	)
 	msg, err := server.ListMemos(ctx, &protoReq)
@@ -90,7 +89,7 @@ func local_request_MemoService_ListMemos_0(ctx context.Context, marshaler runtim
 
 func request_MemoService_GetMemo_0(ctx context.Context, marshaler runtime.Marshaler, client MemoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.GetMemoRequest
+		protoReq GetMemoRequest
 		metadata runtime.ServerMetadata
 	)
 	io.Copy(io.Discard, req.Body)
@@ -100,7 +99,7 @@ func request_MemoService_GetMemo_0(ctx context.Context, marshaler runtime.Marsha
 
 func local_request_MemoService_GetMemo_0(ctx context.Context, marshaler runtime.Marshaler, server MemoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq memo.GetMemoRequest
+		protoReq GetMemoRequest
 		metadata runtime.ServerMetadata
 	)
 	msg, err := server.GetMemo(ctx, &protoReq)

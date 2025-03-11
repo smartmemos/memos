@@ -46,7 +46,7 @@ var (
 			}
 
 			quit := make(chan os.Signal, 1)
-			signal.Notify(quit, os.Interrupt, os.Kill, syscall.SIGTERM)
+			signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 			if err = sv.Start(ctx, container); err != nil {
 				log.Fatalln(err)
 			}
@@ -77,7 +77,6 @@ func main() {
 		config.Init(cfgFile)
 		module.Init(container)
 		api.Init(container)
-
 	})
 
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.memos/config.toml)")

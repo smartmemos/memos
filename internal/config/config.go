@@ -67,7 +67,7 @@ func Init(cfgFile string) {
 		log.Debug(err)
 	}
 	// 读取环境变量
-	if err := env.ParseWithOptions(config, env.Options{Prefix: "CF_", UseFieldNameByDefault: true}); err != nil {
+	if err := env.ParseWithOptions(config, env.Options{Prefix: "MEMOS_", UseFieldNameByDefault: true}); err != nil {
 		log.Fatalf("bind environment err: %v", err)
 	}
 
