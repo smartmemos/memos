@@ -7,5 +7,5 @@ import (
 )
 
 func Init(i do.Injector) {
-	memo.New(i)
+	do.Provide(i, memo.New)
 }
