@@ -12,13 +12,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	memov1 "github.com/smartmemos/memos/internal/api/v1/memo"
-	v1 "github.com/smartmemos/memos/internal/proto/api/v1"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 )
 
 func (s *Server) registerGateway(ctx context.Context, container do.Injector) error {
 	v1pb.RegisterMemoServiceServer(s.grpcServer, do.MustInvoke[*memov1.Service](container))
-	v1.RegisterMemoServiceServer(s.grpcServer, do.MustInvoke[*memov1.Service](container))
 
 	conn, err := grpc.NewClient(s.profile.Addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
