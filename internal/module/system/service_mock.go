@@ -35,17 +35,32 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
-// SignIn mocks base method.
-func (m *MockService) SignIn(ctx context.Context, req *model.SignInRequest) (*model.User, error) {
+// CreateUser mocks base method.
+func (m *MockService) CreateUser(arg0 context.Context, arg1 *model.CreateUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SignIn", ctx, req)
+	ret := m.ctrl.Call(m, "CreateUser", arg0, arg1)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateUser indicates an expected call of CreateUser.
+func (mr *MockServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), arg0, arg1)
+}
+
+// SignIn mocks base method.
+func (m *MockService) SignIn(arg0 context.Context, arg1 *model.SignInRequest) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SignIn", arg0, arg1)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // SignIn indicates an expected call of SignIn.
-func (mr *MockServiceMockRecorder) SignIn(ctx, req interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) SignIn(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignIn", reflect.TypeOf((*MockService)(nil).SignIn), ctx, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignIn", reflect.TypeOf((*MockService)(nil).SignIn), arg0, arg1)
 }

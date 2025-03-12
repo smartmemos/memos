@@ -8,5 +8,6 @@ import (
 )
 
 type Service interface {
-	SignIn(ctx context.Context, req *model.SignInRequest) (*model.User, error)
+	CreateUser(context.Context, *model.CreateUserRequest) (*model.User, error)
+	SignIn(context.Context, *model.SignInRequest) (*model.User, error)
 }

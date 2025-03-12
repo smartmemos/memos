@@ -5,6 +5,7 @@ info:
 tags:
   - name: AuthService
   - name: MemoService
+  - name: SystemService
 consumes:
   - application/json
 produces:
@@ -147,6 +148,50 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - MemoService
+  /api/v1/system/users:
+    post:
+      summary: CreateUser creates a new user.
+      operationId: SystemService_CreateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/systemUser'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+        - name: username
+          in: query
+          required: false
+          type: string
+        - name: email
+          in: query
+          required: false
+          type: string
+        - name: nickname
+          in: query
+          required: false
+          type: string
+        - name: avatarUrl
+          in: query
+          required: false
+          type: string
+        - name: description
+          in: query
+          required: false
+          type: string
+        - name: password
+          in: query
+          required: false
+          type: string
+      tags:
+        - SystemService
 definitions:
   memoMemo:
     type: object
@@ -185,6 +230,12 @@ definitions:
       id:
         type: string
         format: int64
+      username:
+        type: string
+      nickname:
+        type: string
+      email:
+        type: string
       createdAt:
         type: string
         format: date-time

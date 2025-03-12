@@ -1,9 +1,12 @@
 package model
 
-import "time"
+import (
+	"regexp"
+	"time"
+)
 
 const (
-	TableUser = "memos_user"
+	TableUser = "system_user"
 )
 
 // Role is the type of a role.
@@ -43,3 +46,5 @@ const (
 	// AccessTokenCookieName is the cookie name of access token.
 	AccessTokenCookieName = "memos.access-token"
 )
+
+var UsernameReg = regexp.MustCompile("^[a-zA-Z0-9]([a-zA-Z0-9-]{1,30}[a-zA-Z0-9])$")

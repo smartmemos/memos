@@ -44,3 +44,11 @@ func (f FindUserFilter) GetQuery() (query string, args []any) {
 	query = strings.Join(where, " and ")
 	return
 }
+
+type CreateUserRequest struct {
+	Username string
+	Role     Role
+	Email    string
+	Nickname string
+	Password string
+}

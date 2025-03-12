@@ -12,18 +12,30 @@ export const protobufPackage = "system";
 
 export interface User {
   id: number;
+  username: string;
+  nickname: string;
+  email: string;
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
 }
 
 function createBaseUser(): User {
-  return { id: 0, createdAt: undefined, updatedAt: undefined };
+  return { id: 0, username: "", nickname: "", email: "", createdAt: undefined, updatedAt: undefined };
 }
 
 export const User: MessageFns<User> = {
   encode(message: User, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int64(message.id);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.nickname !== "") {
+      writer.uint32(26).string(message.nickname);
+    }
+    if (message.email !== "") {
+      writer.uint32(34).string(message.email);
     }
     if (message.createdAt !== undefined) {
       Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(402).fork()).join();
@@ -47,6 +59,30 @@ export const User: MessageFns<User> = {
           }
 
           message.id = longToNumber(reader.int64());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.nickname = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.email = reader.string();
           continue;
         }
         case 50: {
@@ -80,6 +116,9 @@ export const User: MessageFns<User> = {
   fromPartial(object: DeepPartial<User>): User {
     const message = createBaseUser();
     message.id = object.id ?? 0;
+    message.username = object.username ?? "";
+    message.nickname = object.nickname ?? "";
+    message.email = object.email ?? "";
     message.createdAt = object.createdAt ?? undefined;
     message.updatedAt = object.updatedAt ?? undefined;
     return message;
