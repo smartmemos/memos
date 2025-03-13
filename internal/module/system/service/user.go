@@ -17,6 +17,13 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 		err = errors.Errorf("invalid username: %s", req.Username)
 		return
 	}
+	total, err := s.dao.CountUsers(ctx, &model.FindUserFilter{Username: req.Username})
+	if err != nil {
+		return
+	} else if total > 0 {
+		err = errors.Errorf("username %s already exist", req.Username)
+		return
+	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
