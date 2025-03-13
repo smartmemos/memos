@@ -4,8 +4,9 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"github.com/smartmemos/memos/internal/module/system/model"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/smartmemos/memos/internal/module/system/model"
 )
 
 func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) (user *model.User, err error) {

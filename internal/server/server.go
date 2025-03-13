@@ -31,6 +31,7 @@ func NewServer(profile *Profile) (*Server, error) {
 			grpc.ChainUnaryInterceptor(
 				grpc_recovery.UnaryServerInterceptor(),
 				interceptor.NewLoggerInterceptor().LoggerInterceptor,
+				interceptor.NewGRPCAuthInterceptor(cfg.Key, nil).AuthenticationInterceptor,
 			),
 		),
 	}
