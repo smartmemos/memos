@@ -4,10 +4,9 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"github.com/smartmemos/memos/internal/module/system"
+	"github.com/smartmemos/memos/internal/module/system/model"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	systempb "github.com/smartmemos/memos/internal/proto/model/system"
 )
@@ -23,7 +22,15 @@ func NewAuthService(i do.Injector) (*AuthService, error) {
 	}, nil
 }
 
-func (s *AuthService) SignIn(context.Context, *v1pb.SignInRequest) (*systempb.User, error) {
-	// s.system.SignIn()
-	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp *systempb.User, err error) {
+	user, err := s.system.SignIn(ctx, &model.SignInRequest{
+		Username:    req.Username,
+		Password:    req.Password,
+		NeverExpire: req.NeverExpire,
+	})
+	if err != nil {
+		return
+	}
+	resp = convertUserToProto(user)
+	return resp, nil
 }
