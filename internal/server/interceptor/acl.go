@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/smartmemos/memos/internal/module/system"
+	"github.com/smartmemos/memos/internal/module/system/model"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
@@ -40,20 +41,21 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	}
 	accessToken, err := in.system.Authenticate(ctx, tokenStr)
 	if err != nil {
-		// if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
-		// 	return handler(ctx, request)
-		// }
+		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
+			return handler(ctx, request)
+		}
 		return nil, err
 	}
 	user, err := in.system.GetUserByID(ctx, accessToken.UserId)
 	if err != nil {
 		return nil, err
 	}
-	// if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermdl.RoleHost && user.Role != usermdl.RoleAdmin {
-	// 	return nil, errors.Errorf("user %d is not admin", user.ID)
-	// }
+	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != model.RoleHost && user.Role != model.RoleAdmin {
+		return nil, errors.Errorf("user %d is not admin", user.ID)
+	}
 	logrus.Infof("%v", user)
-	// ctx = api.SetContext(ctx, user.ID, tokenStr)
+	ctx = context.WithValue(ctx, model.UserContextKey, user.ID)
+	ctx = context.WithValue(ctx, model.AccessTokenContextKey, tokenStr)
 	return handler(ctx, request)
 }
 

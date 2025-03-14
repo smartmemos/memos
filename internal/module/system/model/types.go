@@ -9,6 +9,16 @@ const (
 	TableUser = "system_user"
 )
 
+// ContextKey is the key type of context value.
+type ContextKey int
+
+const (
+	// The key name used to store username in the context
+	// user id is extracted from the jwt token subject field.
+	UserContextKey ContextKey = iota
+	AccessTokenContextKey
+)
+
 // Role is the type of a role.
 type Role string
 
