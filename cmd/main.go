@@ -39,7 +39,8 @@ var (
 			serverCfg := config.GetConfig().Server
 			ctx, cancel := context.WithCancel(context.Background())
 			sv, err := server.NewServer(&server.Profile{
-				Addr: fmt.Sprintf("%s:%d", serverCfg.Host, serverCfg.Port),
+				Addr:      fmt.Sprintf("%s:%d", serverCfg.Host, serverCfg.Port),
+				Container: container,
 			})
 			if err != nil {
 				log.Fatalln(err)
@@ -47,7 +48,7 @@ var (
 
 			quit := make(chan os.Signal, 1)
 			signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-			if err = sv.Start(ctx, container); err != nil {
+			if err = sv.Start(ctx); err != nil {
 				log.Fatalln(err)
 			}
 			go func() {

@@ -9,7 +9,6 @@ import (
 
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/labstack/echo"
-	"github.com/samber/do/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
@@ -31,7 +30,7 @@ func NewServer(profile *Profile) (*Server, error) {
 			grpc.ChainUnaryInterceptor(
 				grpc_recovery.UnaryServerInterceptor(),
 				interceptor.NewLoggerInterceptor().LoggerInterceptor,
-				interceptor.NewGRPCAuthInterceptor(cfg.Key, nil).AuthenticationInterceptor,
+				interceptor.NewGRPCAuthInterceptor(profile.Container).AuthenticationInterceptor,
 			),
 		),
 	}
@@ -42,12 +41,12 @@ func NewServer(profile *Profile) (*Server, error) {
 	return s, nil
 }
 
-func (s *Server) Start(ctx context.Context, container do.Injector) error {
+func (s *Server) Start(ctx context.Context) error {
 	listener, err := net.Listen("tcp", s.profile.Addr)
 	if err != nil {
 		return err
 	}
-	if err = s.registerGateway(ctx, container); err != nil {
+	if err = s.registerGateway(ctx, s.profile.Container); err != nil {
 		return err
 	}
 	m := cmux.New(listener)

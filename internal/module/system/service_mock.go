@@ -35,6 +35,21 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// Authenticate mocks base method.
+func (m *MockService) Authenticate(arg0 context.Context, arg1 string) (*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Authenticate", arg0, arg1)
+	ret0, _ := ret[0].(*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Authenticate indicates an expected call of Authenticate.
+func (mr *MockServiceMockRecorder) Authenticate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockService)(nil).Authenticate), arg0, arg1)
+}
+
 // CreateUser mocks base method.
 func (m *MockService) CreateUser(arg0 context.Context, arg1 *model.CreateUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
@@ -48,6 +63,21 @@ func (m *MockService) CreateUser(arg0 context.Context, arg1 *model.CreateUserReq
 func (mr *MockServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), arg0, arg1)
+}
+
+// GetUserByID mocks base method.
+func (m *MockService) GetUserByID(arg0 context.Context, arg1 int64) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserByID", arg0, arg1)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserByID indicates an expected call of GetUserByID.
+func (mr *MockServiceMockRecorder) GetUserByID(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), arg0, arg1)
 }
 
 // SignIn mocks base method.

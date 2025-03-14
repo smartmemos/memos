@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -17,14 +18,12 @@ import (
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
 type GRPCAuthInterceptor struct {
-	secret string
 	system system.Service
 }
 
 // NewGRPCAuthInterceptor returns a new API auth interceptor.
-func NewGRPCAuthInterceptor(secret string, i do.Injector) *GRPCAuthInterceptor {
+func NewGRPCAuthInterceptor(i do.Injector) *GRPCAuthInterceptor {
 	return &GRPCAuthInterceptor{
-		secret: secret,
 		system: do.MustInvoke[system.Service](i),
 	}
 }
@@ -39,21 +38,21 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := authmod.Authenticate(ctx, tokenStr, authmdl.KeyID)
+	accessToken, err := in.system.Authenticate(ctx, tokenStr)
 	if err != nil {
 		// if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 		// 	return handler(ctx, request)
 		// }
 		return nil, err
 	}
-	user, err := usermod.GetUserById(ctx, accessToken.UserId)
+	user, err := in.system.GetUserByID(ctx, accessToken.UserId)
 	if err != nil {
 		return nil, err
 	}
 	// if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermdl.RoleHost && user.Role != usermdl.RoleAdmin {
 	// 	return nil, errors.Errorf("user %d is not admin", user.ID)
 	// }
-
+	logrus.Infof("%v", user)
 	// ctx = api.SetContext(ctx, user.ID, tokenStr)
 	return handler(ctx, request)
 }

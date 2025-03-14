@@ -45,3 +45,8 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 	}
 	return
 }
+
+func (s *Service) GetUserByID(context.Context, int64) (user *model.User, err error) {
+
+	return
+}
