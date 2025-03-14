@@ -10,6 +10,6 @@ import (
 type Service interface {
 	CreateUser(context.Context, *model.CreateUserRequest) (*model.User, error)
 	GetUserByID(context.Context, int64) (*model.User, error)
-	SignIn(context.Context, *model.SignInRequest) (*model.User, error)
+	SignIn(context.Context, *model.SignInRequest) (*model.AccessToken, error)
 	Authenticate(context.Context, string) (*model.AccessToken, error)
 }

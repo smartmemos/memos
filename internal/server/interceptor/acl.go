@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
+	"github.com/smartmemos/memos/internal/api/base"
 	"github.com/smartmemos/memos/internal/module/system"
 	"github.com/smartmemos/memos/internal/module/system/model"
 )
@@ -54,8 +55,9 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 	logrus.Infof("%v", user)
-	ctx = context.WithValue(ctx, model.UserContextKey, user.ID)
-	ctx = context.WithValue(ctx, model.AccessTokenContextKey, tokenStr)
+
+	ctx = context.WithValue(ctx, base.UserContextKey, user.ID)
+	ctx = context.WithValue(ctx, base.AccessTokenContextKey, tokenStr)
 	return handler(ctx, request)
 }
 

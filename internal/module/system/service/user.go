@@ -46,7 +46,6 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 	return
 }
 
-func (s *Service) GetUserByID(context.Context, int64) (user *model.User, err error) {
-
-	return
+func (s *Service) GetUserByID(ctx context.Context, userID int64) (user *model.User, err error) {
+	return s.dao.FindUserByID(ctx, userID)
 }

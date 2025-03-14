@@ -1,34 +1,31 @@
-package model
+package base
 
 import (
-	"regexp"
+	"context"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+// ContextKey is the key type of context value.
+type ContextKey int
 
 const (
-	TableUser = "system_user"
+	// The key name used to store username in the context
+	// user id is extracted from the jwt token subject field.
+	UserContextKey ContextKey = iota
+	AccessTokenContextKey
 )
 
-// Role is the type of a role.
-type Role string
-
-const (
-	// RoleHost is the HOST role.
-	RoleHost Role = "HOST"
-	// RoleAdmin is the ADMIN role.
-	RoleAdmin Role = "ADMIN"
-	// RoleUser is the USER role.
-	RoleUser Role = "USER"
-)
-
-type RowStatus string
-
-const (
-	// Normal is the status for a normal row.
-	Normal RowStatus = "NORMAL"
-	// Archived is the status for an archived row.
-	Archived RowStatus = "ARCHIVED"
-)
+func GetUserID(ctx context.Context) (userId int64, err error) {
+	userId, ok := ctx.Value(UserContextKey).(int64)
+	if !ok {
+		err = status.Errorf(codes.Unauthenticated, "unauthenticated")
+		return
+	}
+	return
+}
 
 const (
 	// issuer is the issuer of the jwt token.
@@ -46,5 +43,3 @@ const (
 	// AccessTokenCookieName is the cookie name of access token.
 	AccessTokenCookieName = "memos.access-token"
 )
-
-var UsernameReg = regexp.MustCompile("^[a-zA-Z0-9]([a-zA-Z0-9-]{1,30}[a-zA-Z0-9])$")

@@ -81,10 +81,10 @@ func (mr *MockServiceMockRecorder) GetUserByID(arg0, arg1 interface{}) *gomock.C
 }
 
 // SignIn mocks base method.
-func (m *MockService) SignIn(arg0 context.Context, arg1 *model.SignInRequest) (*model.User, error) {
+func (m *MockService) SignIn(arg0 context.Context, arg1 *model.SignInRequest) (*model.AccessToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SignIn", arg0, arg1)
-	ret0, _ := ret[0].(*model.User)
+	ret0, _ := ret[0].(*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

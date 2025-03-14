@@ -8,15 +8,14 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/smartmemos/memos/internal/config"
 	"github.com/smartmemos/memos/internal/module/system/model"
 )
 
-func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (user *model.User, err error) {
-	user, err = s.dao.FindUser(ctx, &model.FindUserFilter{Username: req.Username})
+func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *model.AccessToken, err error) {
+	user, err := s.dao.FindUser(ctx, &model.FindUserFilter{Username: req.Username})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
 		return
@@ -35,45 +34,17 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (user *m
 		// Set the expire time to 100 years.
 		expireTime = time.Now().Add(100 * 365 * 24 * time.Hour)
 	}
-	tokenStr, err := s.doSignIn(ctx, user, model.AccessTokenAudienceName, expireTime)
-	if err != nil {
-		err = errors.Errorf("failed to sign in, err: %s", err)
-		return
-	}
-	logrus.Infof("token: %s", tokenStr)
-	// resp = &model.SignInResponse{
-	// 	AccessToken: tokenStr,
-	// 	ExpireTime:  expireTime,
-	// }
+	accessToken, err = s.generateAccessToken(ctx, user.ID, expireTime)
 	return
 }
 
-func (s *Service) doSignIn(ctx context.Context, user *model.User, audience string, expireTime time.Time) (tokenStr string, err error) {
-	accessToken, err := s.GenerateAccessToken(ctx, user.ID, audience, expireTime)
-	if err != nil {
-		err = errors.Errorf("failed to generate tokens, err: %s", err)
-		return
-	}
-	token := &model.AccessToken{
-		Token:       accessToken.Token,
-		Description: "user login",
-	}
-	logrus.Info(token)
-	// if err = s.userService.UpsertAccessToken(ctx, user.ID, token); err != nil {
-	// 	err = errors.Errorf("failed to upsert access token to store, err: %s", err)
-	// 	return
-	// }
-	return accessToken.Token, nil
-}
-
-// GenerateAccessToken generates an access token.
-func (s *Service) GenerateAccessToken(_ context.Context, userID int64, audience string, expirationTime time.Time) (accessToken *model.AccessToken, err error) {
+func (s *Service) generateAccessToken(_ context.Context, userID int64, expirationTime time.Time) (accessToken *model.AccessToken, err error) {
 	cfg := config.GetConfig().JWT
 
 	issuedAt := time.Now()
 	registeredClaims := jwt.RegisteredClaims{
 		Issuer:   model.Issuer,
-		Audience: jwt.ClaimStrings{audience},
+		Audience: jwt.ClaimStrings{model.AccessTokenAudienceName},
 		IssuedAt: jwt.NewNumericDate(issuedAt),
 		Subject:  fmt.Sprint(userID),
 	}
@@ -130,10 +101,10 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 		Token:  tokenStr,
 	}
 	if claims.IssuedAt != nil {
-		// accessToken.IssuedAt = claims.IssuedAt.Unix()
+		accessToken.IssuedAt = claims.IssuedAt.Time
 	}
 	if claims.ExpiresAt != nil {
-		// accessToken.ExpiresAt = claims.ExpiresAt.Unix()
+		accessToken.ExpiresAt = claims.ExpiresAt.Time
 	}
 	return
 }
