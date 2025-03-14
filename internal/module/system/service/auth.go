@@ -31,8 +31,8 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessT
 	}
 	expireTime := time.Now().Add(model.AccessTokenDuration)
 	if req.NeverExpire {
-		// Set the expire time to 100 years.
-		expireTime = time.Now().Add(100 * 365 * 24 * time.Hour)
+		// Set the expire time to 10 years.
+		expireTime = time.Now().Add(10 * 365 * 24 * time.Hour)
 	}
 	accessToken, err = s.generateAccessToken(ctx, user.ID, expireTime)
 	return
