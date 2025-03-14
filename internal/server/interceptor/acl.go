@@ -13,9 +13,9 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/smartmemos/memos/internal/api/base"
 	"github.com/smartmemos/memos/internal/module/system"
 	"github.com/smartmemos/memos/internal/module/system/model"
+	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
@@ -56,8 +56,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	}
 	logrus.Infof("%v", user)
 
-	ctx = context.WithValue(ctx, base.UserContextKey, user.ID)
-	ctx = context.WithValue(ctx, base.AccessTokenContextKey, tokenStr)
+	ctx = grpc_util.SetUserContext(ctx, user.ID)
 	return handler(ctx, request)
 }
 

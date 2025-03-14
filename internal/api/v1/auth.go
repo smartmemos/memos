@@ -7,9 +7,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/smartmemos/memos/internal/api/base"
 	"github.com/smartmemos/memos/internal/module/system"
 	"github.com/smartmemos/memos/internal/module/system/model"
+	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	systempb "github.com/smartmemos/memos/internal/proto/model/system"
 )
@@ -34,7 +34,7 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 	if err != nil {
 		return
 	}
-	if err = base.SetAccessTokenCookie(ctx, accessToken.Token, accessToken.ExpiresAt); err != nil {
+	if err = grpc_util.SetAccessTokenCookie(ctx, accessToken.Token, accessToken.ExpiresAt); err != nil {
 		return
 	}
 	user, err := s.system.GetUserByID(ctx, accessToken.UserId)
@@ -46,13 +46,13 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 }
 
 func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatusRequest) (resp *systempb.User, err error) {
-	userID, err := base.GetUserID(ctx)
+	userID, err := grpc_util.GetUserID(ctx)
 	if err != nil {
 		return
 	}
 	user, err := s.system.GetUserByID(ctx, userID)
 	if err != nil {
-		if err = base.ClearAccessTokenCookie(ctx); err != nil {
+		if err = grpc_util.ClearAccessTokenCookie(ctx); err != nil {
 			err = status.Errorf(codes.Internal, "failed to set grpc header: %v", err)
 		} else {
 			err = status.Errorf(codes.Unauthenticated, "user not found")
