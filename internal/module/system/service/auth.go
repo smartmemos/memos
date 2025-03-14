@@ -35,6 +35,10 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessT
 		expireTime = time.Now().Add(10 * 365 * 24 * time.Hour)
 	}
 	accessToken, err = s.generateAccessToken(ctx, user.ID, expireTime)
+	if err != nil {
+		return
+	}
+	err = s.dao.CreateAccessToken(ctx, accessToken)
 	return
 }
 

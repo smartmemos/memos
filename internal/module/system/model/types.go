@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	TableUser = "system_user"
+	TableUser        = "system_user"
+	TableAccessToken = "system_access_token"
 )
 
 // Role is the type of a role.

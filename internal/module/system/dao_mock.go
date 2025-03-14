@@ -50,6 +50,20 @@ func (mr *MockDAOMockRecorder) CountUsers(ctx, filter interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountUsers", reflect.TypeOf((*MockDAO)(nil).CountUsers), ctx, filter)
 }
 
+// CreateAccessToken mocks base method.
+func (m_2 *MockDAO) CreateAccessToken(ctx context.Context, m *model.AccessToken) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateAccessToken", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateAccessToken indicates an expected call of CreateAccessToken.
+func (mr *MockDAOMockRecorder) CreateAccessToken(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessToken", reflect.TypeOf((*MockDAO)(nil).CreateAccessToken), ctx, m)
+}
+
 // CreateUser mocks base method.
 func (m_2 *MockDAO) CreateUser(ctx context.Context, m *model.User) error {
 	m_2.ctrl.T.Helper()
