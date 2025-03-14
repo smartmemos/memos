@@ -39,12 +39,6 @@ const (
 	// AccessTokenAudienceName is the audience name of the access token.
 	AccessTokenAudienceName = "user.access-token"
 	AccessTokenDuration     = 7 * 24 * time.Hour
-
-	// CookieExpDuration expires slightly earlier than the jwt expiration. Client would be logged out if the user
-	// cookie expires, thus the client would always logout first before attempting to make a request with the expired jwt.
-	CookieExpDuration = AccessTokenDuration - 1*time.Minute
-	// AccessTokenCookieName is the cookie name of access token.
-	AccessTokenCookieName = "memos.access-token"
 )
 
 var UsernameReg = regexp.MustCompile("^[a-zA-Z0-9]([a-zA-Z0-9-]{1,30}[a-zA-Z0-9])$")
