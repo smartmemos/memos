@@ -5,7 +5,11 @@
 package memo
 
 import (
+	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/smartmemos/memos/internal/module/memo/model"
 )
 
 // MockDAO is a mock of DAO interface.
@@ -29,4 +33,107 @@ func NewMockDAO(ctrl *gomock.Controller) *MockDAO {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
+}
+
+// CountMemos mocks base method.
+func (m *MockDAO) CountMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountMemos", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountMemos indicates an expected call of CountMemos.
+func (mr *MockDAOMockRecorder) CountMemos(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountMemos", reflect.TypeOf((*MockDAO)(nil).CountMemos), ctx, filter)
+}
+
+// CreateMemo mocks base method.
+func (m_2 *MockDAO) CreateMemo(ctx context.Context, m *model.Memo) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateMemo", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMemo indicates an expected call of CreateMemo.
+func (mr *MockDAOMockRecorder) CreateMemo(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, m)
+}
+
+// FindMemo mocks base method.
+func (m *MockDAO) FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemo", ctx, filter)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemo indicates an expected call of FindMemo.
+func (mr *MockDAOMockRecorder) FindMemo(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemo", reflect.TypeOf((*MockDAO)(nil).FindMemo), ctx, filter)
+}
+
+// FindMemoByID mocks base method.
+func (m *MockDAO) FindMemoByID(ctx context.Context, id int64) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemoByID", ctx, id)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoByID indicates an expected call of FindMemoByID.
+func (mr *MockDAOMockRecorder) FindMemoByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoByID", reflect.TypeOf((*MockDAO)(nil).FindMemoByID), ctx, id)
+}
+
+// FindMemos mocks base method.
+func (m *MockDAO) FindMemos(ctx context.Context, filter *model.FindMemoFilter) ([]*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemos", ctx, filter)
+	ret0, _ := ret[0].([]*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemos indicates an expected call of FindMemos.
+func (mr *MockDAOMockRecorder) FindMemos(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), ctx, filter)
+}
+
+// UpdateMemo mocks base method.
+func (m_2 *MockDAO) UpdateMemo(ctx context.Context, m *model.Memo, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateMemo", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMemo indicates an expected call of UpdateMemo.
+func (mr *MockDAOMockRecorder) UpdateMemo(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockDAO)(nil).UpdateMemo), ctx, m, update)
+}
+
+// UpdateMemos mocks base method.
+func (m *MockDAO) UpdateMemos(ctx context.Context, filter *model.FindMemoFilter, update map[string]any) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMemos", ctx, filter, update)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMemos indicates an expected call of UpdateMemos.
+func (mr *MockDAOMockRecorder) UpdateMemos(ctx, filter, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemos", reflect.TypeOf((*MockDAO)(nil).UpdateMemos), ctx, filter, update)
 }

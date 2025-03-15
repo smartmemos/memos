@@ -5,7 +5,11 @@
 package memo
 
 import (
+	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/smartmemos/memos/internal/module/memo/model"
 )
 
 // MockService is a mock of Service interface.
@@ -29,4 +33,34 @@ func NewMockService(ctrl *gomock.Controller) *MockService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
+}
+
+// CreateMemo mocks base method.
+func (m *MockService) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMemo indicates an expected call of CreateMemo.
+func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
+}
+
+// UpdateMemo mocks base method.
+func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMemo indicates an expected call of UpdateMemo.
+func (mr *MockServiceMockRecorder) UpdateMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockService)(nil).UpdateMemo), ctx, req)
 }
