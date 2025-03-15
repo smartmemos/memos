@@ -118,3 +118,11 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int64, token str
 		Token:  token,
 	})
 }
+
+func (s *Service) ValidateAccessToken(ctx context.Context, userId int64, token string) (bool, error) {
+	total, err := s.dao.CountAccessTokens(ctx, &model.FindAccessTokenFilter{
+		UserId: userId,
+		Token:  token,
+	})
+	return total > 0, err
+}

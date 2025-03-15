@@ -78,3 +78,18 @@ func (mr *MockServiceMockRecorder) SignIn(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignIn", reflect.TypeOf((*MockService)(nil).SignIn), ctx, req)
 }
+
+// ValidateAccessToken mocks base method.
+func (m *MockService) ValidateAccessToken(ctx context.Context, userId int64, token string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ValidateAccessToken", ctx, userId, token)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ValidateAccessToken indicates an expected call of ValidateAccessToken.
+func (mr *MockServiceMockRecorder) ValidateAccessToken(ctx, userId, token interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateAccessToken", reflect.TypeOf((*MockService)(nil).ValidateAccessToken), ctx, userId, token)
+}

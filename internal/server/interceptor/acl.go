@@ -39,11 +39,11 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if !ok {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to parse metadata from incoming context")
 	}
-	tokenStr, err := getTokenFromMetadata(md)
+	token, err := getTokenFromMetadata(md)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := in.authService.Authenticate(ctx, tokenStr)
+	accessToken, err := in.authService.Authenticate(ctx, token)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
@@ -54,11 +54,19 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
+	ok, err = in.authService.ValidateAccessToken(ctx, accessToken.UserId, token)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return "", status.Errorf(codes.Unauthenticated, "invalid access token")
+	}
+
 	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != model.RoleHost && user.Role != model.RoleAdmin {
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 	logrus.Infof("%v", user)
 
+	ctx = grpc_util.SetAccessTokenContext(ctx, accessToken.Token)
 	ctx = grpc_util.SetUserContext(ctx, user.ID)
 	return handler(ctx, request)
 }

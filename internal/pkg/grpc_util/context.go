@@ -30,8 +30,8 @@ func GetUserID(ctx context.Context) (userId int64, err error) {
 	return
 }
 
-func SetAccessTokenContext(ctx context.Context, userID int64) context.Context {
-	return context.WithValue(ctx, accessTokenContextKey, userID)
+func SetAccessTokenContext(ctx context.Context, token string) context.Context {
+	return context.WithValue(ctx, accessTokenContextKey, token)
 }
 
 func GetAccessToken(ctx context.Context) (token string, err error) {
