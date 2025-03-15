@@ -10,4 +10,5 @@ func Init(i do.Injector) {
 	do.Provide(i, v1.NewAuthService)
 	do.Provide(i, v1.NewMemoService)
 	do.Provide(i, v1.NewUserService)
+	do.Provide(i, v1.NewWorkspaceService)
 }

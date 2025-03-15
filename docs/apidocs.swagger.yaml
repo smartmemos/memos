@@ -6,6 +6,7 @@ tags:
   - name: AuthService
   - name: MemoService
   - name: UserService
+  - name: WorkspaceService
 consumes:
   - application/json
 produces:
@@ -192,6 +193,21 @@ paths:
           type: string
       tags:
         - UserService
+  /api/v1/workspace/profile:
+    get:
+      summary: GetWorkspaceProfile returns the workspace profile.
+      operationId: WorkspaceService_GetWorkspaceProfile
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1WorkspaceProfile'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - WorkspaceService
 definitions:
   memoMemo:
     type: object
@@ -244,3 +260,20 @@ definitions:
         format: date-time
   v1ListMemosResponse:
     type: object
+  v1WorkspaceProfile:
+    type: object
+    properties:
+      owner:
+        type: string
+        title: |-
+          The name of instance owner.
+          Format: users/{user}
+      version:
+        type: string
+        title: version is the current version of instance
+      mode:
+        type: string
+        description: mode is the instance mode (e.g. "prod", "dev" or "demo").
+      instanceUrl:
+        type: string
+        description: instance_url is the URL of the instance.

@@ -9,7 +9,7 @@ import "./css/tailwind.css";
 import "./i18n";
 import router from "./router";
 import { initialUserStore } from "./store/v2/user";
-// import { initialWorkspaceStore } from "./store/v2/workspace";
+import { initialWorkspaceStore } from "./store/v2/workspace";
 import theme from "./theme";
 import "@usememos/mui/dist/index.css";
 import "leaflet/dist/leaflet.css";
@@ -22,7 +22,7 @@ const Main = observer(() => (
 ));
 
 (async () => {
-  // await initialWorkspaceStore();
+  await initialWorkspaceStore();
   await initialUserStore();
 
   const container = document.getElementById("root");

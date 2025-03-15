@@ -19,6 +19,7 @@ func (s *Server) registerGateway(ctx context.Context, container do.Injector) err
 	v1pb.RegisterAuthServiceServer(s.grpcServer, do.MustInvoke[*v1api.AuthService](container))
 	v1pb.RegisterMemoServiceServer(s.grpcServer, do.MustInvoke[*v1api.MemoService](container))
 	v1pb.RegisterUserServiceServer(s.grpcServer, do.MustInvoke[*v1api.UserService](container))
+	v1pb.RegisterWorkspaceServiceServer(s.grpcServer, do.MustInvoke[*v1api.WorkspaceService](container))
 
 	conn, err := grpc.NewClient(s.profile.Addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
