@@ -22,7 +22,7 @@ func SetUserContext(ctx context.Context, userID int64) context.Context {
 }
 
 func GetUserID(ctx context.Context) (userId int64, err error) {
-	userId, ok := ctx.Value(accessTokenContextKey).(int64)
+	userId, ok := ctx.Value(userContextKey).(int64)
 	if !ok {
 		err = status.Errorf(codes.Unauthenticated, "unauthenticated")
 		return
