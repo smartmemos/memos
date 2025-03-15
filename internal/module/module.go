@@ -11,6 +11,5 @@ import (
 func Init(i do.Injector) {
 	authimpl.Init(i)
 	memoimpl.Init(i)
-	// systemimpl.Init(i)
 	userimpl.Init(i)
 }

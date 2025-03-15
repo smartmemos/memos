@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/samber/do/v2"
+
 	"github.com/smartmemos/memos/internal/module/user"
 	"github.com/smartmemos/memos/internal/module/user/model"
 )
