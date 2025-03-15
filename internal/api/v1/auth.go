@@ -12,6 +12,7 @@ import (
 	"github.com/smartmemos/memos/internal/module/auth"
 	"github.com/smartmemos/memos/internal/module/auth/model"
 	"github.com/smartmemos/memos/internal/module/user"
+	usermd "github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	userpb "github.com/smartmemos/memos/internal/proto/model/user"
@@ -43,6 +44,18 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 		return
 	}
 	user, err := s.userService.GetUserByID(ctx, accessToken.UserId)
+	if err != nil {
+		return
+	}
+	resp = convertUserToProto(user)
+	return resp, nil
+}
+
+func (s *AuthService) SignUp(ctx context.Context, req *v1pb.SignUpRequest) (resp *userpb.User, err error) {
+	user, err := s.userService.CreateUser(ctx, &usermd.CreateUserRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
 	if err != nil {
 		return
 	}
