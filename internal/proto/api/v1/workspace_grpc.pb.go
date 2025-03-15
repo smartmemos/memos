@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	workspace "github.com/smartmemos/memos/internal/proto/model/workspace"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,15 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	WorkspaceService_GetWorkspaceProfile_FullMethodName = "/memos.api.v1.WorkspaceService/GetWorkspaceProfile"
+	WorkspaceService_GetProfile_FullMethodName = "/api.v1.WorkspaceService/GetProfile"
 )
 
 // WorkspaceServiceClient is the client API for WorkspaceService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkspaceServiceClient interface {
-	// GetWorkspaceProfile returns the workspace profile.
-	GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*WorkspaceProfile, error)
+	// GetProfile returns the workspace profile.
+	GetProfile(ctx context.Context, in *workspace.GetProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error)
 }
 
 type workspaceServiceClient struct {
@@ -38,10 +39,10 @@ func NewWorkspaceServiceClient(cc grpc.ClientConnInterface) WorkspaceServiceClie
 	return &workspaceServiceClient{cc}
 }
 
-func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*WorkspaceProfile, error) {
+func (c *workspaceServiceClient) GetProfile(ctx context.Context, in *workspace.GetProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WorkspaceProfile)
-	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceProfile_FullMethodName, in, out, cOpts...)
+	out := new(workspace.Profile)
+	err := c.cc.Invoke(ctx, WorkspaceService_GetProfile_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +53,8 @@ func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *Ge
 // All implementations must embed UnimplementedWorkspaceServiceServer
 // for forward compatibility.
 type WorkspaceServiceServer interface {
-	// GetWorkspaceProfile returns the workspace profile.
-	GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*WorkspaceProfile, error)
+	// GetProfile returns the workspace profile.
+	GetProfile(context.Context, *workspace.GetProfileRequest) (*workspace.Profile, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
 }
 
@@ -64,8 +65,8 @@ type WorkspaceServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedWorkspaceServiceServer struct{}
 
-func (UnimplementedWorkspaceServiceServer) GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*WorkspaceProfile, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceProfile not implemented")
+func (UnimplementedWorkspaceServiceServer) GetProfile(context.Context, *workspace.GetProfileRequest) (*workspace.Profile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProfile not implemented")
 }
 func (UnimplementedWorkspaceServiceServer) mustEmbedUnimplementedWorkspaceServiceServer() {}
 func (UnimplementedWorkspaceServiceServer) testEmbeddedByValue()                          {}
@@ -88,20 +89,20 @@ func RegisterWorkspaceServiceServer(s grpc.ServiceRegistrar, srv WorkspaceServic
 	s.RegisterService(&WorkspaceService_ServiceDesc, srv)
 }
 
-func _WorkspaceService_GetWorkspaceProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWorkspaceProfileRequest)
+func _WorkspaceService_GetProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(workspace.GetProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, in)
+		return srv.(WorkspaceServiceServer).GetProfile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WorkspaceService_GetWorkspaceProfile_FullMethodName,
+		FullMethod: WorkspaceService_GetProfile_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, req.(*GetWorkspaceProfileRequest))
+		return srv.(WorkspaceServiceServer).GetProfile(ctx, req.(*workspace.GetProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -110,12 +111,12 @@ func _WorkspaceService_GetWorkspaceProfile_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var WorkspaceService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "memos.api.v1.WorkspaceService",
+	ServiceName: "api.v1.WorkspaceService",
 	HandlerType: (*WorkspaceServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetWorkspaceProfile",
-			Handler:    _WorkspaceService_GetWorkspaceProfile_Handler,
+			MethodName: "GetProfile",
+			Handler:    _WorkspaceService_GetProfile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

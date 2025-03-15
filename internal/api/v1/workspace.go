@@ -7,6 +7,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/module/workspace"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
+	mpb "github.com/smartmemos/memos/internal/proto/model/workspace"
 )
 
 type WorkspaceService struct {
@@ -20,6 +21,6 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 	}, nil
 }
 
-func (s *WorkspaceService) GetWorkspaceProfile(context.Context, *v1pb.GetWorkspaceProfileRequest) (*v1pb.WorkspaceProfile, error) {
+func (s *WorkspaceService) GetProfile(context.Context, *mpb.GetProfileRequest) (*mpb.Profile, error) {
 	return nil, nil
 }

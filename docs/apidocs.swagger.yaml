@@ -195,13 +195,13 @@ paths:
         - UserService
   /api/v1/workspace/profile:
     get:
-      summary: GetWorkspaceProfile returns the workspace profile.
-      operationId: WorkspaceService_GetWorkspaceProfile
+      summary: GetProfile returns the workspace profile.
+      operationId: WorkspaceService_GetProfile
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1WorkspaceProfile'
+            $ref: '#/definitions/workspaceProfile'
         default:
           description: An unexpected error response.
           schema:
@@ -260,7 +260,7 @@ definitions:
         format: date-time
   v1ListMemosResponse:
     type: object
-  v1WorkspaceProfile:
+  workspaceProfile:
     type: object
     properties:
       owner:
