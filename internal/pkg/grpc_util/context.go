@@ -29,3 +29,16 @@ func GetUserID(ctx context.Context) (userId int64, err error) {
 	}
 	return
 }
+
+func SetAccessTokenContext(ctx context.Context, userID int64) context.Context {
+	return context.WithValue(ctx, accessTokenContextKey, userID)
+}
+
+func GetAccessToken(ctx context.Context) (token string, err error) {
+	token, ok := ctx.Value(accessTokenContextKey).(string)
+	if !ok {
+		err = status.Errorf(codes.Unauthenticated, "unauthenticated")
+		return
+	}
+	return
+}

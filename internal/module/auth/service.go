@@ -10,4 +10,5 @@ import (
 type Service interface {
 	SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *model.AccessToken, err error)
 	Authenticate(ctx context.Context, token string) (accessToken *model.AccessToken, err error)
+	DeleteAccessToken(ctx context.Context, userId int64, token string) error
 }

@@ -2,10 +2,12 @@ package v1
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/smartmemos/memos/internal/module/auth"
 	"github.com/smartmemos/memos/internal/module/auth/model"
@@ -46,6 +48,24 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 	}
 	resp = convertUserToProto(user)
 	return resp, nil
+}
+
+func (s *AuthService) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*emptypb.Empty, error) {
+	token, _ := grpc_util.GetAccessToken(ctx)
+	if token != "" {
+		userID, _ := grpc_util.GetUserID(ctx)
+		if userID > 0 {
+			err := s.authService.DeleteAccessToken(ctx, userID, token)
+			if err != nil {
+				slog.Error("failed to delete access token", "error", err)
+			}
+		}
+	}
+
+	if err := grpc_util.ClearAccessTokenCookie(ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
+	}
+	return &emptypb.Empty{}, nil
 }
 
 func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatusRequest) (resp *userpb.User, err error) {

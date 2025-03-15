@@ -9,4 +9,5 @@ import (
 
 type DAO interface {
 	CreateAccessToken(ctx context.Context, m *model.AccessToken) error
+	DeleteAccessToken(ctx context.Context, filter *model.FindAccessTokenFilter) error
 }

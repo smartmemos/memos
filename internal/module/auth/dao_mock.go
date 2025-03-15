@@ -48,3 +48,17 @@ func (mr *MockDAOMockRecorder) CreateAccessToken(ctx, m interface{}) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessToken", reflect.TypeOf((*MockDAO)(nil).CreateAccessToken), ctx, m)
 }
+
+// DeleteAccessToken mocks base method.
+func (m *MockDAO) DeleteAccessToken(ctx context.Context, filter *model.FindAccessTokenFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAccessToken", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAccessToken indicates an expected call of DeleteAccessToken.
+func (mr *MockDAOMockRecorder) DeleteAccessToken(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccessToken", reflect.TypeOf((*MockDAO)(nil).DeleteAccessToken), ctx, filter)
+}

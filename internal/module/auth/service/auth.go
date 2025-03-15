@@ -111,3 +111,10 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 	}
 	return
 }
+
+func (s *Service) DeleteAccessToken(ctx context.Context, userId int64, token string) error {
+	return s.dao.DeleteAccessToken(ctx, &model.FindAccessTokenFilter{
+		UserId: userId,
+		Token:  token,
+	})
+}

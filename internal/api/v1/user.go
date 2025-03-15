@@ -13,13 +13,11 @@ import (
 
 type UserService struct {
 	v1pb.UnimplementedUserServiceServer
-	// system      system.Service
 	userService user.Service
 }
 
 func NewUserService(i do.Injector) (*UserService, error) {
 	return &UserService{
-		// system:      do.MustInvoke[system.Service](i),
 		userService: do.MustInvoke[user.Service](i),
 	}, nil
 }
