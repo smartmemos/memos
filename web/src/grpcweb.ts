@@ -1,6 +1,6 @@
 import { createChannel, createClientFactory, FetchTransport } from "nice-grpc-web";
 import { ActivityServiceDefinition } from "./types/proto/api/v1/activity_service";
-import { AuthServiceDefinition } from "./types/proto/api/v1/auth_service";
+import { AuthServiceDefinition } from "./types/proto2/api/v1/auth";
 import { IdentityProviderServiceDefinition } from "./types/proto/api/v1/idp_service";
 import { InboxServiceDefinition } from "./types/proto/api/v1/inbox_service";
 import { MarkdownServiceDefinition } from "./types/proto/api/v1/markdown_service";
