@@ -7,26 +7,29 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/smartmemos/memos/internal/module/system"
-	"github.com/smartmemos/memos/internal/module/system/model"
+	"github.com/smartmemos/memos/internal/module/auth"
+	"github.com/smartmemos/memos/internal/module/auth/model"
+	"github.com/smartmemos/memos/internal/module/user"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
-	systempb "github.com/smartmemos/memos/internal/proto/model/system"
+	userpb "github.com/smartmemos/memos/internal/proto/model/user"
 )
 
 type AuthService struct {
 	v1pb.UnimplementedAuthServiceServer
-	system system.Service
+	authService auth.Service
+	userService user.Service
 }
 
 func NewAuthService(i do.Injector) (*AuthService, error) {
 	return &AuthService{
-		system: do.MustInvoke[system.Service](i),
+		authService: do.MustInvoke[auth.Service](i),
+		userService: do.MustInvoke[user.Service](i),
 	}, nil
 }
 
-func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp *systempb.User, err error) {
-	accessToken, err := s.system.SignIn(ctx, &model.SignInRequest{
+func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp *userpb.User, err error) {
+	accessToken, err := s.authService.SignIn(ctx, &model.SignInRequest{
 		Username:    req.Username,
 		Password:    req.Password,
 		NeverExpire: req.NeverExpire,
@@ -37,7 +40,7 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 	if err = grpc_util.SetAccessTokenCookie(ctx, accessToken.Token, accessToken.ExpiresAt); err != nil {
 		return
 	}
-	user, err := s.system.GetUserByID(ctx, accessToken.UserId)
+	user, err := s.userService.GetUserByID(ctx, accessToken.UserId)
 	if err != nil {
 		return
 	}
@@ -45,12 +48,12 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 	return resp, nil
 }
 
-func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatusRequest) (resp *systempb.User, err error) {
+func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatusRequest) (resp *userpb.User, err error) {
 	userID, err := grpc_util.GetUserID(ctx)
 	if err != nil {
 		return
 	}
-	user, err := s.system.GetUserByID(ctx, userID)
+	user, err := s.userService.GetUserByID(ctx, userID)
 	if err != nil {
 		if err = grpc_util.ClearAccessTokenCookie(ctx); err != nil {
 			err = status.Errorf(codes.Internal, "failed to set grpc header: %v", err)

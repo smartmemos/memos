@@ -7,7 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Empty } from "../../google/protobuf/empty";
-import { User } from "../../model/system/user";
+import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
 

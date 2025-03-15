@@ -1,11 +1,11 @@
 swagger: "2.0"
 info:
-  title: model/system/user.proto
+  title: model/user/user.proto
   version: version not set
 tags:
   - name: AuthService
   - name: MemoService
-  - name: SystemService
+  - name: UserService
 consumes:
   - application/json
 produces:
@@ -19,7 +19,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/systemUser'
+            $ref: '#/definitions/userUser'
         default:
           description: An unexpected error response.
           schema:
@@ -66,7 +66,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/systemUser'
+            $ref: '#/definitions/userUser'
         default:
           description: An unexpected error response.
           schema:
@@ -92,7 +92,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/systemUser'
+            $ref: '#/definitions/userUser'
         default:
           description: An unexpected error response.
           schema:
@@ -148,15 +148,15 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - MemoService
-  /api/v1/system/users:
+  /api/v1/user/users:
     post:
       summary: CreateUser creates a new user.
-      operationId: SystemService_CreateUser
+      operationId: UserService_CreateUser
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/systemUser'
+            $ref: '#/definitions/userUser'
         default:
           description: An unexpected error response.
           schema:
@@ -191,7 +191,7 @@ paths:
           required: false
           type: string
       tags:
-        - SystemService
+        - UserService
 definitions:
   memoMemo:
     type: object
@@ -224,7 +224,7 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
-  systemUser:
+  userUser:
     type: object
     properties:
       id:

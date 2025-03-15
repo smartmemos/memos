@@ -346,6 +346,13 @@ export interface PythonSettings_ExperimentalFeatures {
    * packages.
    */
   protobufPythonicTypesEnabled: boolean;
+  /**
+   * Disables generation of an unversioned Python package for this client
+   * library. This means that the module names will need to be versioned in
+   * import statements. For example `import google.cloud.library_v2` instead
+   * of `import google.cloud.library`.
+   */
+  unversionedPackageDisabled: boolean;
 }
 
 /** Settings for Node client libraries. */
@@ -416,7 +423,25 @@ export interface RubySettings {
 /** Settings for Go client libraries. */
 export interface GoSettings {
   /** Some settings. */
-  common?: CommonLanguageSettings | undefined;
+  common?:
+    | CommonLanguageSettings
+    | undefined;
+  /**
+   * Map of service names to renamed services. Keys are the package relative
+   * service names and values are the name to be used for the service client
+   * and call options.
+   *
+   * publishing:
+   *   go_settings:
+   *     renamed_services:
+   *       Publisher: TopicAdmin
+   */
+  renamedServices: { [key: string]: string };
+}
+
+export interface GoSettings_RenamedServicesEntry {
+  key: string;
+  value: string;
 }
 
 /** Describes the generator configuration for a method. */
@@ -513,6 +538,15 @@ export interface SelectiveGapicGeneration {
    * on public client surfaces.
    */
   methods: string[];
+  /**
+   * Setting this to true indicates to the client generators that methods
+   * that would be excluded from the generation should instead be generated
+   * in a way that indicates these methods should not be consumed by
+   * end users. How this is expressed is up to individual language
+   * implementations to decide. Some examples may be: added annotations,
+   * obfuscated identifiers, or other language idiomatic patterns.
+   */
+  generateOmittedAsInternal: boolean;
 }
 
 function createBaseCommonLanguageSettings(): CommonLanguageSettings {
@@ -1272,7 +1306,7 @@ export const PythonSettings: MessageFns<PythonSettings> = {
 };
 
 function createBasePythonSettings_ExperimentalFeatures(): PythonSettings_ExperimentalFeatures {
-  return { restAsyncIoEnabled: false, protobufPythonicTypesEnabled: false };
+  return { restAsyncIoEnabled: false, protobufPythonicTypesEnabled: false, unversionedPackageDisabled: false };
 }
 
 export const PythonSettings_ExperimentalFeatures: MessageFns<PythonSettings_ExperimentalFeatures> = {
@@ -1282,6 +1316,9 @@ export const PythonSettings_ExperimentalFeatures: MessageFns<PythonSettings_Expe
     }
     if (message.protobufPythonicTypesEnabled !== false) {
       writer.uint32(16).bool(message.protobufPythonicTypesEnabled);
+    }
+    if (message.unversionedPackageDisabled !== false) {
+      writer.uint32(24).bool(message.unversionedPackageDisabled);
     }
     return writer;
   },
@@ -1309,6 +1346,14 @@ export const PythonSettings_ExperimentalFeatures: MessageFns<PythonSettings_Expe
           message.protobufPythonicTypesEnabled = reader.bool();
           continue;
         }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.unversionedPackageDisabled = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1325,6 +1370,7 @@ export const PythonSettings_ExperimentalFeatures: MessageFns<PythonSettings_Expe
     const message = createBasePythonSettings_ExperimentalFeatures();
     message.restAsyncIoEnabled = object.restAsyncIoEnabled ?? false;
     message.protobufPythonicTypesEnabled = object.protobufPythonicTypesEnabled ?? false;
+    message.unversionedPackageDisabled = object.unversionedPackageDisabled ?? false;
     return message;
   },
 };
@@ -1679,7 +1725,7 @@ export const RubySettings: MessageFns<RubySettings> = {
 };
 
 function createBaseGoSettings(): GoSettings {
-  return { common: undefined };
+  return { common: undefined, renamedServices: {} };
 }
 
 export const GoSettings: MessageFns<GoSettings> = {
@@ -1687,6 +1733,9 @@ export const GoSettings: MessageFns<GoSettings> = {
     if (message.common !== undefined) {
       CommonLanguageSettings.encode(message.common, writer.uint32(10).fork()).join();
     }
+    Object.entries(message.renamedServices).forEach(([key, value]) => {
+      GoSettings_RenamedServicesEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).join();
+    });
     return writer;
   },
 
@@ -1703,6 +1752,17 @@ export const GoSettings: MessageFns<GoSettings> = {
           }
 
           message.common = CommonLanguageSettings.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          const entry2 = GoSettings_RenamedServicesEntry.decode(reader, reader.uint32());
+          if (entry2.value !== undefined) {
+            message.renamedServices[entry2.key] = entry2.value;
+          }
           continue;
         }
       }
@@ -1722,6 +1782,73 @@ export const GoSettings: MessageFns<GoSettings> = {
     message.common = (object.common !== undefined && object.common !== null)
       ? CommonLanguageSettings.fromPartial(object.common)
       : undefined;
+    message.renamedServices = Object.entries(object.renamedServices ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = globalThis.String(value);
+        }
+        return acc;
+      },
+      {},
+    );
+    return message;
+  },
+};
+
+function createBaseGoSettings_RenamedServicesEntry(): GoSettings_RenamedServicesEntry {
+  return { key: "", value: "" };
+}
+
+export const GoSettings_RenamedServicesEntry: MessageFns<GoSettings_RenamedServicesEntry> = {
+  encode(message: GoSettings_RenamedServicesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GoSettings_RenamedServicesEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGoSettings_RenamedServicesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GoSettings_RenamedServicesEntry>): GoSettings_RenamedServicesEntry {
+    return GoSettings_RenamedServicesEntry.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GoSettings_RenamedServicesEntry>): GoSettings_RenamedServicesEntry {
+    const message = createBaseGoSettings_RenamedServicesEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -1887,13 +2014,16 @@ export const MethodSettings_LongRunning: MessageFns<MethodSettings_LongRunning> 
 };
 
 function createBaseSelectiveGapicGeneration(): SelectiveGapicGeneration {
-  return { methods: [] };
+  return { methods: [], generateOmittedAsInternal: false };
 }
 
 export const SelectiveGapicGeneration: MessageFns<SelectiveGapicGeneration> = {
   encode(message: SelectiveGapicGeneration, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.methods) {
       writer.uint32(10).string(v!);
+    }
+    if (message.generateOmittedAsInternal !== false) {
+      writer.uint32(16).bool(message.generateOmittedAsInternal);
     }
     return writer;
   },
@@ -1913,6 +2043,14 @@ export const SelectiveGapicGeneration: MessageFns<SelectiveGapicGeneration> = {
           message.methods.push(reader.string());
           continue;
         }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.generateOmittedAsInternal = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1928,6 +2066,7 @@ export const SelectiveGapicGeneration: MessageFns<SelectiveGapicGeneration> = {
   fromPartial(object: DeepPartial<SelectiveGapicGeneration>): SelectiveGapicGeneration {
     const message = createBaseSelectiveGapicGeneration();
     message.methods = object.methods?.map((e) => e) || [];
+    message.generateOmittedAsInternal = object.generateOmittedAsInternal ?? false;
     return message;
   },
 };

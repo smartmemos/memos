@@ -13,20 +13,23 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/smartmemos/memos/internal/module/system"
-	"github.com/smartmemos/memos/internal/module/system/model"
+	"github.com/smartmemos/memos/internal/module/auth"
+	"github.com/smartmemos/memos/internal/module/user"
+	"github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
 type GRPCAuthInterceptor struct {
-	system system.Service
+	authService auth.Service
+	userService user.Service
 }
 
 // NewGRPCAuthInterceptor returns a new API auth interceptor.
 func NewGRPCAuthInterceptor(i do.Injector) *GRPCAuthInterceptor {
 	return &GRPCAuthInterceptor{
-		system: do.MustInvoke[system.Service](i),
+		authService: do.MustInvoke[auth.Service](i),
+		userService: do.MustInvoke[user.Service](i),
 	}
 }
 
@@ -40,14 +43,14 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := in.system.Authenticate(ctx, tokenStr)
+	accessToken, err := in.authService.Authenticate(ctx, tokenStr)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
 		}
 		return nil, err
 	}
-	user, err := in.system.GetUserByID(ctx, accessToken.UserId)
+	user, err := in.userService.GetUserByID(ctx, accessToken.UserId)
 	if err != nil {
 		return nil, err
 	}

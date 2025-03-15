@@ -18,7 +18,7 @@ import (
 func (s *Server) registerGateway(ctx context.Context, container do.Injector) error {
 	v1pb.RegisterAuthServiceServer(s.grpcServer, do.MustInvoke[*v1api.AuthService](container))
 	v1pb.RegisterMemoServiceServer(s.grpcServer, do.MustInvoke[*v1api.MemoService](container))
-	v1pb.RegisterSystemServiceServer(s.grpcServer, do.MustInvoke[*v1api.SystemService](container))
+	v1pb.RegisterUserServiceServer(s.grpcServer, do.MustInvoke[*v1api.UserService](container))
 
 	conn, err := grpc.NewClient(s.profile.Addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -34,7 +34,7 @@ func (s *Server) registerGateway(ctx context.Context, container do.Injector) err
 	if err = v1pb.RegisterMemoServiceHandler(ctx, mux, conn); err != nil {
 		return err
 	}
-	if err = v1pb.RegisterSystemServiceHandler(ctx, mux, conn); err != nil {
+	if err = v1pb.RegisterUserServiceHandler(ctx, mux, conn); err != nil {
 		return err
 	}
 
