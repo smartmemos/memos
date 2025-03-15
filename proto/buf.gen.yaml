@@ -16,7 +16,7 @@ plugins:
     out: ../docs
     opt: output_format=yaml,allow_merge=true
   - remote: buf.build/community/stephenh-ts-proto
-    out: ../web/src/types/proto
+    out: ../web/src/types/proto2
     # reference: https://github.com/deeplay-io/nice-grpc/blob/master/packages/nice-grpc-web/README.md#using-ts-proto
     opt:
       - env=browser
