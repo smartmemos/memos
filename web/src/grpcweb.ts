@@ -4,7 +4,7 @@ import { AuthServiceDefinition } from "./types/proto2/api/v1/auth";
 import { IdentityProviderServiceDefinition } from "./types/proto/api/v1/idp_service";
 import { InboxServiceDefinition } from "./types/proto/api/v1/inbox_service";
 import { MarkdownServiceDefinition } from "./types/proto/api/v1/markdown_service";
-import { MemoServiceDefinition } from "./types/proto/api/v1/memo_service";
+import { MemoServiceDefinition } from "./types/proto2/api/v1/memo";
 import { ResourceServiceDefinition } from "./types/proto/api/v1/resource_service";
 import { UserServiceDefinition } from "./types/proto2/api/v1/user";
 import { WebhookServiceDefinition } from "./types/proto/api/v1/webhook_service";
