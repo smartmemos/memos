@@ -270,6 +270,67 @@ paths:
             title: setting is the setting to update.
       tags:
         - WorkspaceService
+  /api/v1/{name}/setting:
+    get:
+      summary: GetUserSetting gets the setting of a user.
+      operationId: UserService_GetUserSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/userSetting'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+      tags:
+        - UserService
+  /api/v1/{setting.name}:
+    patch:
+      summary: UpdateUserSetting updates the setting of a user.
+      operationId: UserService_UpdateUserSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/userSetting'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: setting.name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+/setting
+        - name: setting
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              locale:
+                type: string
+                description: The preferred locale of the user.
+              appearance:
+                type: string
+                description: The preferred appearance of the user.
+              memoVisibility:
+                type: string
+                description: The default visibility of the memo.
+            required:
+              - setting
+      tags:
+        - UserService
 definitions:
   StorageSettingS3Config:
     type: object
@@ -330,6 +391,21 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  userSetting:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of the user.
+      locale:
+        type: string
+        description: The preferred locale of the user.
+      appearance:
+        type: string
+        description: The preferred appearance of the user.
+      memoVisibility:
+        type: string
+        description: The default visibility of the memo.
   userUser:
     type: object
     properties:

@@ -10,5 +10,4 @@ import (
 type Service interface {
 	CreateUser(context.Context, *model.CreateUserRequest) (*model.User, error)
 	GetUserByID(context.Context, int64) (*model.User, error)
-	GetUserByUsername(context.Context, string) (*model.User, error)
 }

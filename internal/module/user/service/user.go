@@ -49,7 +49,3 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 func (s *Service) GetUserByID(ctx context.Context, userID int64) (user *model.User, err error) {
 	return s.dao.FindUserByID(ctx, userID)
 }
-
-func (s *Service) GetUserByUsername(ctx context.Context, username string) (user *model.User, err error) {
-	return s.dao.FindUser(ctx, &model.FindUserFilter{Username: username})
-}

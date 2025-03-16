@@ -64,18 +64,3 @@ func (mr *MockServiceMockRecorder) GetUserByID(arg0, arg1 interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), arg0, arg1)
 }
-
-// GetUserByUsername mocks base method.
-func (m *MockService) GetUserByUsername(arg0 context.Context, arg1 string) (*model.User, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserByUsername", arg0, arg1)
-	ret0, _ := ret[0].(*model.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetUserByUsername indicates an expected call of GetUserByUsername.
-func (mr *MockServiceMockRecorder) GetUserByUsername(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockService)(nil).GetUserByUsername), arg0, arg1)
-}
