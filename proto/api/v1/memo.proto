@@ -41,7 +41,11 @@ message ListMemosRequest {
 }
 
 message ListMemosResponse {
+  repeated memo.Memo memos = 1;
 
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
 }
 
 message GetMemoRequest {

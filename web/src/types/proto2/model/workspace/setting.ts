@@ -9,6 +9,61 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "workspace";
 
+export enum SettingKey {
+  WORKSPACE_SETTING_KEY_UNSPECIFIED = "WORKSPACE_SETTING_KEY_UNSPECIFIED",
+  /** BASIC - BASIC is the key for basic settings. */
+  BASIC = "BASIC",
+  /** GENERAL - GENERAL is the key for general settings. */
+  GENERAL = "GENERAL",
+  /** STORAGE - STORAGE is the key for storage settings. */
+  STORAGE = "STORAGE",
+  /** MEMO_RELATED - MEMO_RELATED is the key for memo related settings. */
+  MEMO_RELATED = "MEMO_RELATED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function settingKeyFromJSON(object: any): SettingKey {
+  switch (object) {
+    case 0:
+    case "WORKSPACE_SETTING_KEY_UNSPECIFIED":
+      return SettingKey.WORKSPACE_SETTING_KEY_UNSPECIFIED;
+    case 1:
+    case "BASIC":
+      return SettingKey.BASIC;
+    case 2:
+    case "GENERAL":
+      return SettingKey.GENERAL;
+    case 3:
+    case "STORAGE":
+      return SettingKey.STORAGE;
+    case 4:
+    case "MEMO_RELATED":
+      return SettingKey.MEMO_RELATED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SettingKey.UNRECOGNIZED;
+  }
+}
+
+export function settingKeyToNumber(object: SettingKey): number {
+  switch (object) {
+    case SettingKey.WORKSPACE_SETTING_KEY_UNSPECIFIED:
+      return 0;
+    case SettingKey.BASIC:
+      return 1;
+    case SettingKey.GENERAL:
+      return 2;
+    case SettingKey.STORAGE:
+      return 3;
+    case SettingKey.MEMO_RELATED:
+      return 4;
+    case SettingKey.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Setting {
   /**
    * name is the name of the setting.

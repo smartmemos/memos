@@ -22,6 +22,65 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SettingKey int32
+
+const (
+	SettingKey_WORKSPACE_SETTING_KEY_UNSPECIFIED SettingKey = 0
+	// BASIC is the key for basic settings.
+	SettingKey_BASIC SettingKey = 1
+	// GENERAL is the key for general settings.
+	SettingKey_GENERAL SettingKey = 2
+	// STORAGE is the key for storage settings.
+	SettingKey_STORAGE SettingKey = 3
+	// MEMO_RELATED is the key for memo related settings.
+	SettingKey_MEMO_RELATED SettingKey = 4
+)
+
+// Enum value maps for SettingKey.
+var (
+	SettingKey_name = map[int32]string{
+		0: "WORKSPACE_SETTING_KEY_UNSPECIFIED",
+		1: "BASIC",
+		2: "GENERAL",
+		3: "STORAGE",
+		4: "MEMO_RELATED",
+	}
+	SettingKey_value = map[string]int32{
+		"WORKSPACE_SETTING_KEY_UNSPECIFIED": 0,
+		"BASIC":                             1,
+		"GENERAL":                           2,
+		"STORAGE":                           3,
+		"MEMO_RELATED":                      4,
+	}
+)
+
+func (x SettingKey) Enum() *SettingKey {
+	p := new(SettingKey)
+	*p = x
+	return p
+}
+
+func (x SettingKey) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SettingKey) Descriptor() protoreflect.EnumDescriptor {
+	return file_model_workspace_setting_proto_enumTypes[0].Descriptor()
+}
+
+func (SettingKey) Type() protoreflect.EnumType {
+	return &file_model_workspace_setting_proto_enumTypes[0]
+}
+
+func (x SettingKey) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SettingKey.Descriptor instead.
+func (SettingKey) EnumDescriptor() ([]byte, []int) {
+	return file_model_workspace_setting_proto_rawDescGZIP(), []int{0}
+}
+
 type StorageSetting_StorageType int32
 
 const (
@@ -61,11 +120,11 @@ func (x StorageSetting_StorageType) String() string {
 }
 
 func (StorageSetting_StorageType) Descriptor() protoreflect.EnumDescriptor {
-	return file_model_workspace_setting_proto_enumTypes[0].Descriptor()
+	return file_model_workspace_setting_proto_enumTypes[1].Descriptor()
 }
 
 func (StorageSetting_StorageType) Type() protoreflect.EnumType {
-	return &file_model_workspace_setting_proto_enumTypes[0]
+	return &file_model_workspace_setting_proto_enumTypes[1]
 }
 
 func (x StorageSetting_StorageType) Number() protoreflect.EnumNumber {
@@ -795,11 +854,18 @@ var file_model_workspace_setting_proto_rawDesc = string([]byte{
 	0x6c, 0x75, 0x72, 0x4e, 0x73, 0x66, 0x77, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1b,
 	0x0a, 0x09, 0x6e, 0x73, 0x66, 0x77, 0x5f, 0x74, 0x61, 0x67, 0x73, 0x18, 0x0d, 0x20, 0x03, 0x28,
 	0x09, 0x52, 0x08, 0x6e, 0x73, 0x66, 0x77, 0x54, 0x61, 0x67, 0x73, 0x4a, 0x04, 0x08, 0x04, 0x10,
-	0x05, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x73, 0x6d, 0x61, 0x72, 0x74, 0x6d, 0x65, 0x6d, 0x6f, 0x73, 0x2f, 0x6d, 0x65, 0x6d, 0x6f, 0x73,
-	0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
-	0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2f, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x05, 0x2a, 0x6a, 0x0a, 0x0a, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x4b, 0x65, 0x79, 0x12,
+	0x25, 0x0a, 0x21, 0x57, 0x4f, 0x52, 0x4b, 0x53, 0x50, 0x41, 0x43, 0x45, 0x5f, 0x53, 0x45, 0x54,
+	0x54, 0x49, 0x4e, 0x47, 0x5f, 0x4b, 0x45, 0x59, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49,
+	0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x09, 0x0a, 0x05, 0x42, 0x41, 0x53, 0x49, 0x43, 0x10,
+	0x01, 0x12, 0x0b, 0x0a, 0x07, 0x47, 0x45, 0x4e, 0x45, 0x52, 0x41, 0x4c, 0x10, 0x02, 0x12, 0x0b,
+	0x0a, 0x07, 0x53, 0x54, 0x4f, 0x52, 0x41, 0x47, 0x45, 0x10, 0x03, 0x12, 0x10, 0x0a, 0x0c, 0x4d,
+	0x45, 0x4d, 0x4f, 0x5f, 0x52, 0x45, 0x4c, 0x41, 0x54, 0x45, 0x44, 0x10, 0x04, 0x42, 0x3c, 0x5a,
+	0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6d, 0x61, 0x72,
+	0x74, 0x6d, 0x65, 0x6d, 0x6f, 0x73, 0x2f, 0x6d, 0x65, 0x6d, 0x6f, 0x73, 0x2f, 0x69, 0x6e, 0x74,
+	0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6d, 0x6f, 0x64, 0x65,
+	0x6c, 0x2f, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 })
 
 var (
@@ -814,24 +880,25 @@ func file_model_workspace_setting_proto_rawDescGZIP() []byte {
 	return file_model_workspace_setting_proto_rawDescData
 }
 
-var file_model_workspace_setting_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_model_workspace_setting_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_model_workspace_setting_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_model_workspace_setting_proto_goTypes = []any{
-	(StorageSetting_StorageType)(0), // 0: workspace.StorageSetting.StorageType
-	(*Setting)(nil),                 // 1: workspace.Setting
-	(*GeneralSetting)(nil),          // 2: workspace.GeneralSetting
-	(*CustomProfile)(nil),           // 3: workspace.CustomProfile
-	(*StorageSetting)(nil),          // 4: workspace.StorageSetting
-	(*MemoRelatedSetting)(nil),      // 5: workspace.MemoRelatedSetting
-	(*StorageSetting_S3Config)(nil), // 6: workspace.StorageSetting.S3Config
+	(SettingKey)(0),                 // 0: workspace.SettingKey
+	(StorageSetting_StorageType)(0), // 1: workspace.StorageSetting.StorageType
+	(*Setting)(nil),                 // 2: workspace.Setting
+	(*GeneralSetting)(nil),          // 3: workspace.GeneralSetting
+	(*CustomProfile)(nil),           // 4: workspace.CustomProfile
+	(*StorageSetting)(nil),          // 5: workspace.StorageSetting
+	(*MemoRelatedSetting)(nil),      // 6: workspace.MemoRelatedSetting
+	(*StorageSetting_S3Config)(nil), // 7: workspace.StorageSetting.S3Config
 }
 var file_model_workspace_setting_proto_depIdxs = []int32{
-	2, // 0: workspace.Setting.general_setting:type_name -> workspace.GeneralSetting
-	4, // 1: workspace.Setting.storage_setting:type_name -> workspace.StorageSetting
-	5, // 2: workspace.Setting.memo_related_setting:type_name -> workspace.MemoRelatedSetting
-	3, // 3: workspace.GeneralSetting.custom_profile:type_name -> workspace.CustomProfile
-	0, // 4: workspace.StorageSetting.storage_type:type_name -> workspace.StorageSetting.StorageType
-	6, // 5: workspace.StorageSetting.s3_config:type_name -> workspace.StorageSetting.S3Config
+	3, // 0: workspace.Setting.general_setting:type_name -> workspace.GeneralSetting
+	5, // 1: workspace.Setting.storage_setting:type_name -> workspace.StorageSetting
+	6, // 2: workspace.Setting.memo_related_setting:type_name -> workspace.MemoRelatedSetting
+	4, // 3: workspace.GeneralSetting.custom_profile:type_name -> workspace.CustomProfile
+	1, // 4: workspace.StorageSetting.storage_type:type_name -> workspace.StorageSetting.StorageType
+	7, // 5: workspace.StorageSetting.s3_config:type_name -> workspace.StorageSetting.S3Config
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name
@@ -854,7 +921,7 @@ func file_model_workspace_setting_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_workspace_setting_proto_rawDesc), len(file_model_workspace_setting_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,

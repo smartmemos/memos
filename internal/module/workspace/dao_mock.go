@@ -5,7 +5,11 @@
 package workspace
 
 import (
+	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/smartmemos/memos/internal/module/workspace/model"
 )
 
 // MockDAO is a mock of DAO interface.
@@ -29,4 +33,92 @@ func NewMockDAO(ctrl *gomock.Controller) *MockDAO {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
+}
+
+// CountSettings mocks base method.
+func (m *MockDAO) CountSettings(ctx context.Context, filter *model.FindSettingFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountSettings", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountSettings indicates an expected call of CountSettings.
+func (mr *MockDAOMockRecorder) CountSettings(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountSettings", reflect.TypeOf((*MockDAO)(nil).CountSettings), ctx, filter)
+}
+
+// CreateSetting mocks base method.
+func (m_2 *MockDAO) CreateSetting(ctx context.Context, m *model.Setting) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateSetting", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateSetting indicates an expected call of CreateSetting.
+func (mr *MockDAOMockRecorder) CreateSetting(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSetting", reflect.TypeOf((*MockDAO)(nil).CreateSetting), ctx, m)
+}
+
+// FindSetting mocks base method.
+func (m *MockDAO) FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSetting", ctx, filter)
+	ret0, _ := ret[0].(*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSetting indicates an expected call of FindSetting.
+func (mr *MockDAOMockRecorder) FindSetting(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSetting", reflect.TypeOf((*MockDAO)(nil).FindSetting), ctx, filter)
+}
+
+// FindSettings mocks base method.
+func (m *MockDAO) FindSettings(ctx context.Context, filter *model.FindSettingFilter) ([]*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSettings", ctx, filter)
+	ret0, _ := ret[0].([]*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSettings indicates an expected call of FindSettings.
+func (mr *MockDAOMockRecorder) FindSettings(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSettings", reflect.TypeOf((*MockDAO)(nil).FindSettings), ctx, filter)
+}
+
+// UpdateSetting mocks base method.
+func (m_2 *MockDAO) UpdateSetting(ctx context.Context, m *model.Setting, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateSetting", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSetting indicates an expected call of UpdateSetting.
+func (mr *MockDAOMockRecorder) UpdateSetting(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSetting", reflect.TypeOf((*MockDAO)(nil).UpdateSetting), ctx, m, update)
+}
+
+// UpdateSettings mocks base method.
+func (m *MockDAO) UpdateSettings(ctx context.Context, filter *model.FindSettingFilter, update map[string]any) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateSettings", ctx, filter, update)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateSettings indicates an expected call of UpdateSettings.
+func (mr *MockDAOMockRecorder) UpdateSettings(ctx, filter, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSettings", reflect.TypeOf((*MockDAO)(nil).UpdateSettings), ctx, filter, update)
 }

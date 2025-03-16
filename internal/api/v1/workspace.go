@@ -42,11 +42,21 @@ func convertProfileToProto(profile *model.Profile) *mpb.Profile {
 }
 
 func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.GetWorkspaceSettingRequest) (resp *mpb.Setting, err error) {
-	setting, err := s.workspaceService.GetSetting(ctx, &model.GetSettingRequest{})
+	name, err := ExtractWorkspaceSettingKeyFromName(req.Name)
+	if err != nil {
+		return
+	}
+	setting, err := s.workspaceService.GetSetting(ctx, &model.GetSettingRequest{
+		Name: name,
+	})
 	if err != nil {
 		return
 	}
 	logrus.Info(setting)
+	return
+}
+
+func convertWorkspaceSetting(setting *model.Setting) (ret *mpb.Setting) {
 	return
 }
 

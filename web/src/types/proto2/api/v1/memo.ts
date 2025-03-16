@@ -18,6 +18,12 @@ export interface ListMemosRequest {
 }
 
 export interface ListMemosResponse {
+  memos: Memo[];
+  /**
+   * A token, which can be sent as `page_token` to retrieve the next page.
+   * If this field is omitted, there are no subsequent pages.
+   */
+  nextPageToken: string;
 }
 
 export interface GetMemoRequest {
@@ -104,11 +110,17 @@ export const ListMemosRequest: MessageFns<ListMemosRequest> = {
 };
 
 function createBaseListMemosResponse(): ListMemosResponse {
-  return {};
+  return { memos: [], nextPageToken: "" };
 }
 
 export const ListMemosResponse: MessageFns<ListMemosResponse> = {
-  encode(_: ListMemosResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(message: ListMemosResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.memos) {
+      Memo.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
     return writer;
   },
 
@@ -119,6 +131,22 @@ export const ListMemosResponse: MessageFns<ListMemosResponse> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.memos.push(Memo.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.nextPageToken = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -131,8 +159,10 @@ export const ListMemosResponse: MessageFns<ListMemosResponse> = {
   create(base?: DeepPartial<ListMemosResponse>): ListMemosResponse {
     return ListMemosResponse.fromPartial(base ?? {});
   },
-  fromPartial(_: DeepPartial<ListMemosResponse>): ListMemosResponse {
+  fromPartial(object: DeepPartial<ListMemosResponse>): ListMemosResponse {
     const message = createBaseListMemosResponse();
+    message.memos = object.memos?.map((e) => Memo.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
     return message;
   },
 };

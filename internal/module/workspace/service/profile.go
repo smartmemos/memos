@@ -8,7 +8,11 @@ import (
 )
 
 func (s *Service) GetProfile(ctx context.Context, _ *model.GetProfileRequest) (profile *model.Profile, err error) {
-	profile = &model.Profile{}
+	profile = &model.Profile{
+		Mode:        "prod",
+		Version:     "1.0",
+		InstanceUrl: "http://localhost:8888",
+	}
 	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{
 		Role: usermd.RoleHost,
 	})

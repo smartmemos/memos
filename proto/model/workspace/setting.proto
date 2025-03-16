@@ -6,6 +6,18 @@ package workspace;
 option go_package = "github.com/smartmemos/memos/internal/proto/model/workspace";
 
 
+enum SettingKey {
+  WORKSPACE_SETTING_KEY_UNSPECIFIED = 0;
+  // BASIC is the key for basic settings.
+  BASIC = 1;
+  // GENERAL is the key for general settings.
+  GENERAL = 2;
+  // STORAGE is the key for storage settings.
+  STORAGE = 3;
+  // MEMO_RELATED is the key for memo related settings.
+  MEMO_RELATED = 4;
+}
+
 message Setting {
   // name is the name of the setting.
   // Format: settings/{setting}
