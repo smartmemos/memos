@@ -9,14 +9,14 @@ import (
 )
 
 type Service struct {
-	dao         auth.DAO
-	userService user.Service
+	dao     auth.DAO
+	userDao user.DAO
 }
 
 func New(i do.Injector) (auth.Service, error) {
 	return &Service{
-		dao:         do.MustInvoke[auth.DAO](i),
-		userService: do.MustInvoke[user.Service](i),
+		dao:     do.MustInvoke[auth.DAO](i),
+		userDao: do.MustInvoke[user.DAO](i),
 	}, nil
 }
 

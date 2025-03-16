@@ -16,7 +16,7 @@ import (
 )
 
 func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *model.AccessToken, err error) {
-	user, err := s.userService.GetUserByUsername(ctx, req.Username)
+	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{Username: req.Username})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
 		return
