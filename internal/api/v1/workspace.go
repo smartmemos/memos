@@ -22,7 +22,7 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 	}, nil
 }
 
-func (s *WorkspaceService) GetProfile(ctx context.Context, req *mpb.GetProfileRequest) (resp *mpb.Profile, err error) {
+func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *v1pb.GetWorkspaceProfileRequest) (resp *mpb.Profile, err error) {
 	profile, err := s.workspaceService.GetProfile(ctx, &model.GetProfileRequest{})
 	if err != nil {
 		return

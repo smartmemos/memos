@@ -196,7 +196,7 @@ paths:
   /api/v1/workspace/profile:
     get:
       summary: GetProfile returns the workspace profile.
-      operationId: WorkspaceService_GetProfile
+      operationId: WorkspaceService_GetWorkspaceProfile
       responses:
         "200":
           description: A successful response.
@@ -208,7 +208,97 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - WorkspaceService
+  /api/v1/workspace/{name}:
+    get:
+      summary: GetWorkspaceSetting returns the setting by name.
+      operationId: WorkspaceService_GetWorkspaceSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/workspaceSetting'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          description: |-
+            The resource name of the workspace setting.
+            Format: settings/{setting}
+          in: path
+          required: true
+          type: string
+          pattern: settings/[^/]+
+      tags:
+        - WorkspaceService
+  /api/v1/workspace/{setting.name}:
+    patch:
+      summary: SetWorkspaceSetting updates the setting.
+      operationId: WorkspaceService_SetWorkspaceSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/workspaceSetting'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: setting.name
+          description: |-
+            name is the name of the setting.
+            Format: settings/{setting}
+          in: path
+          required: true
+          type: string
+          pattern: settings/[^/]+
+        - name: setting
+          description: setting is the setting to update.
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              generalSetting:
+                $ref: '#/definitions/workspaceGeneralSetting'
+              storageSetting:
+                $ref: '#/definitions/workspaceStorageSetting'
+              memoRelatedSetting:
+                $ref: '#/definitions/workspaceMemoRelatedSetting'
+            title: setting is the setting to update.
+      tags:
+        - WorkspaceService
 definitions:
+  StorageSettingS3Config:
+    type: object
+    properties:
+      accessKeyId:
+        type: string
+      accessKeySecret:
+        type: string
+      endpoint:
+        type: string
+      region:
+        type: string
+      bucket:
+        type: string
+      usePathStyle:
+        type: boolean
+    title: 'Reference: https://developers.cloudflare.com/r2/examples/aws/aws-sdk-go/'
+  StorageSettingStorageType:
+    type: string
+    enum:
+      - STORAGE_TYPE_UNSPECIFIED
+      - DATABASE
+      - LOCAL
+      - S3
+    default: STORAGE_TYPE_UNSPECIFIED
+    description: |2-
+       - DATABASE: DATABASE is the database storage type.
+       - LOCAL: LOCAL is the local storage type.
+       - S3: S3 is the S3 storage type.
   memoMemo:
     type: object
     properties:
@@ -260,6 +350,91 @@ definitions:
         format: date-time
   v1ListMemosResponse:
     type: object
+  workspaceCustomProfile:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      logoUrl:
+        type: string
+      locale:
+        type: string
+      appearance:
+        type: string
+  workspaceGeneralSetting:
+    type: object
+    properties:
+      disallowUserRegistration:
+        type: boolean
+        description: disallow_user_registration disallows user registration.
+      disallowPasswordAuth:
+        type: boolean
+        description: disallow_password_auth disallows password authentication.
+      additionalScript:
+        type: string
+        description: additional_script is the additional script.
+      additionalStyle:
+        type: string
+        description: additional_style is the additional style.
+      customProfile:
+        $ref: '#/definitions/workspaceCustomProfile'
+        description: custom_profile is the custom profile.
+      weekStartDayOffset:
+        type: integer
+        format: int32
+        description: |-
+          week_start_day_offset is the week start day offset from Sunday.
+          0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday, 4: Thursday, 5: Friday, 6: Saturday
+          Default is Sunday.
+      disallowChangeUsername:
+        type: boolean
+        description: disallow_change_username disallows changing username.
+      disallowChangeNickname:
+        type: boolean
+        description: disallow_change_nickname disallows changing nickname.
+  workspaceMemoRelatedSetting:
+    type: object
+    properties:
+      disallowPublicVisibility:
+        type: boolean
+        description: disallow_public_visibility disallows set memo as public visibility.
+      displayWithUpdateTime:
+        type: boolean
+        description: display_with_update_time orders and displays memo with update time.
+      contentLengthLimit:
+        type: integer
+        format: int32
+        description: content_length_limit is the limit of content length. Unit is byte.
+      enableDoubleClickEdit:
+        type: boolean
+        description: enable_double_click_edit enables editing on double click.
+      enableLinkPreview:
+        type: boolean
+        description: enable_link_preview enables links preview.
+      enableComment:
+        type: boolean
+        description: enable_comment enables comment.
+      enableLocation:
+        type: boolean
+        description: enable_location enables setting location for memo.
+      reactions:
+        type: array
+        items:
+          type: string
+        description: reactions is the list of reactions.
+      disableMarkdownShortcuts:
+        type: boolean
+        description: disable_markdown_shortcuts disallow the registration of markdown shortcuts.
+      enableBlurNsfwContent:
+        type: boolean
+        description: enable_blur_nsfw_content enables blurring of content marked as not safe for work (NSFW).
+      nsfwTags:
+        type: array
+        items:
+          type: string
+        description: nsfw_tags is the list of tags that mark content as NSFW for blurring.
   workspaceProfile:
     type: object
     properties:
@@ -277,3 +452,35 @@ definitions:
       instanceUrl:
         type: string
         description: instance_url is the URL of the instance.
+  workspaceSetting:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          name is the name of the setting.
+          Format: settings/{setting}
+      generalSetting:
+        $ref: '#/definitions/workspaceGeneralSetting'
+      storageSetting:
+        $ref: '#/definitions/workspaceStorageSetting'
+      memoRelatedSetting:
+        $ref: '#/definitions/workspaceMemoRelatedSetting'
+  workspaceStorageSetting:
+    type: object
+    properties:
+      storageType:
+        $ref: '#/definitions/StorageSettingStorageType'
+        description: storage_type is the storage type.
+      filepathTemplate:
+        type: string
+        title: |-
+          The template of file path.
+          e.g. assets/{timestamp}_{filename}
+      uploadSizeLimitMb:
+        type: string
+        format: int64
+        description: The max upload size in megabytes.
+      s3Config:
+        $ref: '#/definitions/StorageSettingS3Config'
+        description: The S3 config.

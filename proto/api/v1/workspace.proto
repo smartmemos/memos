@@ -3,13 +3,45 @@ syntax = "proto3";
 package api.v1;
 
 import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/workspace/setting.proto";
 import "model/workspace/profile.proto";
 
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";
 
 service WorkspaceService {
   // GetProfile returns the workspace profile.
-  rpc GetProfile(workspace.GetProfileRequest) returns (workspace.Profile) {
+  rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (workspace.Profile) {
     option (google.api.http) = {get: "/api/v1/workspace/profile"};
   }
+
+  // GetWorkspaceSetting returns the setting by name.
+  rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (workspace.Setting) {
+    option (google.api.http) = {get: "/api/v1/workspace/{name=settings/*}"};
+    option (google.api.method_signature) = "name";
+  }
+  // SetWorkspaceSetting updates the setting.
+  rpc SetWorkspaceSetting(SetWorkspaceSettingRequest) returns (workspace.Setting) {
+    option (google.api.http) = {
+      patch: "/api/v1/workspace/{setting.name=settings/*}"
+      body: "setting"
+    };
+    option (google.api.method_signature) = "setting";
+  }
+}
+
+message GetWorkspaceProfileRequest {}
+
+message GetWorkspaceSettingRequest {
+  // The resource name of the workspace setting.
+  // Format: settings/{setting}
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message SetWorkspaceSettingRequest {
+  // setting is the setting to update.
+  workspace.Setting setting = 1;
 }

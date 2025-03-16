@@ -20,7 +20,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	WorkspaceService_GetProfile_FullMethodName = "/api.v1.WorkspaceService/GetProfile"
+	WorkspaceService_GetWorkspaceProfile_FullMethodName = "/api.v1.WorkspaceService/GetWorkspaceProfile"
+	WorkspaceService_GetWorkspaceSetting_FullMethodName = "/api.v1.WorkspaceService/GetWorkspaceSetting"
+	WorkspaceService_SetWorkspaceSetting_FullMethodName = "/api.v1.WorkspaceService/SetWorkspaceSetting"
 )
 
 // WorkspaceServiceClient is the client API for WorkspaceService service.
@@ -28,7 +30,11 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkspaceServiceClient interface {
 	// GetProfile returns the workspace profile.
-	GetProfile(ctx context.Context, in *workspace.GetProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error)
+	GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error)
+	// GetWorkspaceSetting returns the setting by name.
+	GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error)
+	// SetWorkspaceSetting updates the setting.
+	SetWorkspaceSetting(ctx context.Context, in *SetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error)
 }
 
 type workspaceServiceClient struct {
@@ -39,10 +45,30 @@ func NewWorkspaceServiceClient(cc grpc.ClientConnInterface) WorkspaceServiceClie
 	return &workspaceServiceClient{cc}
 }
 
-func (c *workspaceServiceClient) GetProfile(ctx context.Context, in *workspace.GetProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error) {
+func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*workspace.Profile, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(workspace.Profile)
-	err := c.cc.Invoke(ctx, WorkspaceService_GetProfile_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceProfile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(workspace.Setting)
+	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceSetting_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workspaceServiceClient) SetWorkspaceSetting(ctx context.Context, in *SetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(workspace.Setting)
+	err := c.cc.Invoke(ctx, WorkspaceService_SetWorkspaceSetting_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +80,11 @@ func (c *workspaceServiceClient) GetProfile(ctx context.Context, in *workspace.G
 // for forward compatibility.
 type WorkspaceServiceServer interface {
 	// GetProfile returns the workspace profile.
-	GetProfile(context.Context, *workspace.GetProfileRequest) (*workspace.Profile, error)
+	GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*workspace.Profile, error)
+	// GetWorkspaceSetting returns the setting by name.
+	GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*workspace.Setting, error)
+	// SetWorkspaceSetting updates the setting.
+	SetWorkspaceSetting(context.Context, *SetWorkspaceSettingRequest) (*workspace.Setting, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
 }
 
@@ -65,8 +95,14 @@ type WorkspaceServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedWorkspaceServiceServer struct{}
 
-func (UnimplementedWorkspaceServiceServer) GetProfile(context.Context, *workspace.GetProfileRequest) (*workspace.Profile, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProfile not implemented")
+func (UnimplementedWorkspaceServiceServer) GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*workspace.Profile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceProfile not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*workspace.Setting, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceSetting not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) SetWorkspaceSetting(context.Context, *SetWorkspaceSettingRequest) (*workspace.Setting, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetWorkspaceSetting not implemented")
 }
 func (UnimplementedWorkspaceServiceServer) mustEmbedUnimplementedWorkspaceServiceServer() {}
 func (UnimplementedWorkspaceServiceServer) testEmbeddedByValue()                          {}
@@ -89,20 +125,56 @@ func RegisterWorkspaceServiceServer(s grpc.ServiceRegistrar, srv WorkspaceServic
 	s.RegisterService(&WorkspaceService_ServiceDesc, srv)
 }
 
-func _WorkspaceService_GetProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(workspace.GetProfileRequest)
+func _WorkspaceService_GetWorkspaceProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkspaceProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WorkspaceServiceServer).GetProfile(ctx, in)
+		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WorkspaceService_GetProfile_FullMethodName,
+		FullMethod: WorkspaceService_GetWorkspaceProfile_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorkspaceServiceServer).GetProfile(ctx, req.(*workspace.GetProfileRequest))
+		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, req.(*GetWorkspaceProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkspaceService_GetWorkspaceSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkspaceSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).GetWorkspaceSetting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_GetWorkspaceSetting_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).GetWorkspaceSetting(ctx, req.(*GetWorkspaceSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkspaceService_SetWorkspaceSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetWorkspaceSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).SetWorkspaceSetting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_SetWorkspaceSetting_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).SetWorkspaceSetting(ctx, req.(*SetWorkspaceSettingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -115,8 +187,16 @@ var WorkspaceService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*WorkspaceServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetProfile",
-			Handler:    _WorkspaceService_GetProfile_Handler,
+			MethodName: "GetWorkspaceProfile",
+			Handler:    _WorkspaceService_GetWorkspaceProfile_Handler,
+		},
+		{
+			MethodName: "GetWorkspaceSetting",
+			Handler:    _WorkspaceService_GetWorkspaceSetting_Handler,
+		},
+		{
+			MethodName: "SetWorkspaceSetting",
+			Handler:    _WorkspaceService_SetWorkspaceSetting_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

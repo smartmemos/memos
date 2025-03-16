@@ -5,9 +5,155 @@
 // source: api/v1/workspace.proto
 
 /* eslint-disable */
-import { GetProfileRequest, Profile } from "../../model/workspace/profile";
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Profile } from "../../model/workspace/profile";
+import { Setting } from "../../model/workspace/setting";
 
 export const protobufPackage = "api.v1";
+
+export interface GetWorkspaceProfileRequest {
+}
+
+export interface GetWorkspaceSettingRequest {
+  /**
+   * The resource name of the workspace setting.
+   * Format: settings/{setting}
+   */
+  name: string;
+}
+
+export interface SetWorkspaceSettingRequest {
+  /** setting is the setting to update. */
+  setting?: Setting | undefined;
+}
+
+function createBaseGetWorkspaceProfileRequest(): GetWorkspaceProfileRequest {
+  return {};
+}
+
+export const GetWorkspaceProfileRequest: MessageFns<GetWorkspaceProfileRequest> = {
+  encode(_: GetWorkspaceProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetWorkspaceProfileRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetWorkspaceProfileRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetWorkspaceProfileRequest>): GetWorkspaceProfileRequest {
+    return GetWorkspaceProfileRequest.fromPartial(base ?? {});
+  },
+  fromPartial(_: DeepPartial<GetWorkspaceProfileRequest>): GetWorkspaceProfileRequest {
+    const message = createBaseGetWorkspaceProfileRequest();
+    return message;
+  },
+};
+
+function createBaseGetWorkspaceSettingRequest(): GetWorkspaceSettingRequest {
+  return { name: "" };
+}
+
+export const GetWorkspaceSettingRequest: MessageFns<GetWorkspaceSettingRequest> = {
+  encode(message: GetWorkspaceSettingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetWorkspaceSettingRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetWorkspaceSettingRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetWorkspaceSettingRequest>): GetWorkspaceSettingRequest {
+    return GetWorkspaceSettingRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetWorkspaceSettingRequest>): GetWorkspaceSettingRequest {
+    const message = createBaseGetWorkspaceSettingRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseSetWorkspaceSettingRequest(): SetWorkspaceSettingRequest {
+  return { setting: undefined };
+}
+
+export const SetWorkspaceSettingRequest: MessageFns<SetWorkspaceSettingRequest> = {
+  encode(message: SetWorkspaceSettingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.setting !== undefined) {
+      Setting.encode(message.setting, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetWorkspaceSettingRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetWorkspaceSettingRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.setting = Setting.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<SetWorkspaceSettingRequest>): SetWorkspaceSettingRequest {
+    return SetWorkspaceSettingRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SetWorkspaceSettingRequest>): SetWorkspaceSettingRequest {
+    const message = createBaseSetWorkspaceSettingRequest();
+    message.setting = (object.setting !== undefined && object.setting !== null)
+      ? Setting.fromPartial(object.setting)
+      : undefined;
+    return message;
+  },
+};
 
 export type WorkspaceServiceDefinition = typeof WorkspaceServiceDefinition;
 export const WorkspaceServiceDefinition = {
@@ -15,9 +161,9 @@ export const WorkspaceServiceDefinition = {
   fullName: "api.v1.WorkspaceService",
   methods: {
     /** GetProfile returns the workspace profile. */
-    getProfile: {
-      name: "GetProfile",
-      requestType: GetProfileRequest,
+    getWorkspaceProfile: {
+      name: "GetWorkspaceProfile",
+      requestType: GetWorkspaceProfileRequest,
       requestStream: false,
       responseType: Profile,
       responseStream: false,
@@ -58,5 +204,147 @@ export const WorkspaceServiceDefinition = {
         },
       },
     },
+    /** GetWorkspaceSetting returns the setting by name. */
+    getWorkspaceSetting: {
+      name: "GetWorkspaceSetting",
+      requestType: GetWorkspaceSettingRequest,
+      requestStream: false,
+      responseType: Setting,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              37,
+              18,
+              35,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              119,
+              111,
+              114,
+              107,
+              115,
+              112,
+              97,
+              99,
+              101,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              115,
+              101,
+              116,
+              116,
+              105,
+              110,
+              103,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** SetWorkspaceSetting updates the setting. */
+    setWorkspaceSetting: {
+      name: "SetWorkspaceSetting",
+      requestType: SetWorkspaceSettingRequest,
+      requestStream: false,
+      responseType: Setting,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([7, 115, 101, 116, 116, 105, 110, 103])],
+          578365826: [
+            new Uint8Array([
+              54,
+              58,
+              7,
+              115,
+              101,
+              116,
+              116,
+              105,
+              110,
+              103,
+              50,
+              43,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              119,
+              111,
+              114,
+              107,
+              115,
+              112,
+              97,
+              99,
+              101,
+              47,
+              123,
+              115,
+              101,
+              116,
+              116,
+              105,
+              110,
+              103,
+              46,
+              110,
+              97,
+              109,
+              101,
+              61,
+              115,
+              101,
+              116,
+              116,
+              105,
+              110,
+              103,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
   },
 } as const;
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
+
+export interface MessageFns<T> {
+  encode(message: T, writer?: BinaryWriter): BinaryWriter;
+  decode(input: BinaryReader | Uint8Array, length?: number): T;
+  create(base?: DeepPartial<T>): T;
+  fromPartial(object: DeepPartial<T>): T;
+}

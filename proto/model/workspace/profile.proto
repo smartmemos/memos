@@ -16,6 +16,3 @@ message Profile {
   // instance_url is the URL of the instance.
   string instance_url = 6;
 }
-
-message GetProfileRequest {
-}

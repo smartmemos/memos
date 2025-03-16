@@ -23,9 +23,6 @@ export interface Profile {
   instanceUrl: string;
 }
 
-export interface GetProfileRequest {
-}
-
 function createBaseProfile(): Profile {
   return { owner: "", version: "", mode: "", instanceUrl: "" };
 }
@@ -104,40 +101,6 @@ export const Profile: MessageFns<Profile> = {
     message.version = object.version ?? "";
     message.mode = object.mode ?? "";
     message.instanceUrl = object.instanceUrl ?? "";
-    return message;
-  },
-};
-
-function createBaseGetProfileRequest(): GetProfileRequest {
-  return {};
-}
-
-export const GetProfileRequest: MessageFns<GetProfileRequest> = {
-  encode(_: GetProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetProfileRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  create(base?: DeepPartial<GetProfileRequest>): GetProfileRequest {
-    return GetProfileRequest.fromPartial(base ?? {});
-  },
-  fromPartial(_: DeepPartial<GetProfileRequest>): GetProfileRequest {
-    const message = createBaseGetProfileRequest();
     return message;
   },
 };
