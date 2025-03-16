@@ -1,5 +1,5 @@
 package model
 
 const (
-	TableProfile = "workspace_profile"
+	TableSetting = "workspace_setting"
 )

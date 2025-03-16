@@ -50,14 +50,14 @@ const workspaceStore = (() => {
   const state = new LocalState();
 
   const fetchWorkspaceSetting = async (settingKey: WorkspaceSettingKey) => {
-    const setting = await workspaceSettingServiceClient.getWorkspaceSetting({ name: `${workspaceSettingNamePrefix}${settingKey}` });
+    const setting = await workspaceServiceClient.getWorkspaceSetting({ name: `${workspaceSettingNamePrefix}${settingKey}` });
     state.setPartial({
       settings: uniqBy([setting, ...state.settings], "name"),
     });
   };
 
   const upsertWorkspaceSetting = async (setting: WorkspaceSetting) => {
-    await workspaceSettingServiceClient.setWorkspaceSetting({ setting });
+    await workspaceServiceClient.setWorkspaceSetting({ setting });
     state.setPartial({
       settings: uniqBy([setting, ...state.settings], "name"),
     });
@@ -78,7 +78,7 @@ const workspaceStore = (() => {
 })();
 
 export const initialWorkspaceStore = async () => {
-  const workspaceProfile = await workspaceServiceClient.getProfile({});
+  const workspaceProfile = await workspaceServiceClient.getWorkspaceProfile({});
   // Prepare workspace settings.
   for (const key of [WorkspaceSettingKey.GENERAL, WorkspaceSettingKey.MEMO_RELATED]) {
     await workspaceStore.fetchWorkspaceSetting(key);

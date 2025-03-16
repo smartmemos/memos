@@ -49,3 +49,18 @@ func (mr *MockServiceMockRecorder) GetProfile(ctx, req interface{}) *gomock.Call
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProfile", reflect.TypeOf((*MockService)(nil).GetProfile), ctx, req)
 }
+
+// GetSetting mocks base method.
+func (m *MockService) GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSetting", ctx, req)
+	ret0, _ := ret[0].(*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSetting indicates an expected call of GetSetting.
+func (mr *MockServiceMockRecorder) GetSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSetting", reflect.TypeOf((*MockService)(nil).GetSetting), ctx, req)
+}

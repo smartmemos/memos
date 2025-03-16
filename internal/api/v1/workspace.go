@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
+	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/module/workspace"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
@@ -37,4 +38,13 @@ func convertProfileToProto(profile *model.Profile) *mpb.Profile {
 		Mode:        profile.Mode,
 		InstanceUrl: profile.InstanceUrl,
 	}
+}
+
+func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.GetWorkspaceSettingRequest) (resp *mpb.Setting, err error) {
+	setting, err := s.workspaceService.GetSetting(ctx, &model.GetSettingRequest{})
+	if err != nil {
+		return
+	}
+	logrus.Info(setting)
+	return
 }
