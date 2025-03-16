@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
+	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/module/user"
 	"github.com/smartmemos/memos/internal/module/user/model"
@@ -31,6 +32,15 @@ func (s *UserService) CreateUser(ctx context.Context, req *v1pb.CreateUserReques
 		return
 	}
 	return convertUserToProto(user), nil
+}
+
+func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSettingRequest) (resp *userpb.Setting, err error) {
+	setting, err := s.userService.GetSetting(ctx, &model.GetSettingRequest{})
+	if err != nil {
+		return
+	}
+	logrus.Info(setting)
+	return
 }
 
 func convertUserToProto(user *model.User) *userpb.User {

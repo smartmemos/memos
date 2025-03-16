@@ -50,6 +50,21 @@ func (mr *MockServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), arg0, arg1)
 }
 
+// GetSetting mocks base method.
+func (m *MockService) GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSetting", ctx, req)
+	ret0, _ := ret[0].(*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSetting indicates an expected call of GetSetting.
+func (mr *MockServiceMockRecorder) GetSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSetting", reflect.TypeOf((*MockService)(nil).GetSetting), ctx, req)
+}
+
 // GetUserByID mocks base method.
 func (m *MockService) GetUserByID(arg0 context.Context, arg1 int64) (*model.User, error) {
 	m.ctrl.T.Helper()

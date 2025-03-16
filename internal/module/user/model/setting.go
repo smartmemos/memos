@@ -13,3 +13,6 @@ type Setting struct {
 func (Setting) TableName() string {
 	return TableUserSetting
 }
+
+type GetSettingRequest struct {
+}

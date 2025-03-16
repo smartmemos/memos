@@ -6,7 +6,7 @@ import { InboxServiceDefinition } from "./types/proto/api/v1/inbox_service";
 import { MarkdownServiceDefinition } from "./types/proto/api/v1/markdown_service";
 import { MemoServiceDefinition } from "./types/proto/api/v1/memo_service";
 import { ResourceServiceDefinition } from "./types/proto/api/v1/resource_service";
-import { UserServiceDefinition } from "./types/proto/api/v1/user_service";
+import { UserServiceDefinition } from "./types/proto2/api/v1/user";
 import { WebhookServiceDefinition } from "./types/proto/api/v1/webhook_service";
 import { WorkspaceServiceDefinition } from "./types/proto2/api/v1/workspace";
 import { WorkspaceSettingServiceDefinition } from "./types/proto/api/v1/workspace_setting_service";
