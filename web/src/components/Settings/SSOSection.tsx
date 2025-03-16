@@ -4,7 +4,7 @@ import { MoreVerticalIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { identityProviderServiceClient } from "@/grpcweb";
+import { workspaceServiceClient } from "@/grpcweb";
 import { IdentityProvider } from "@/types/proto/api/v1/idp_service";
 import { useTranslate } from "@/utils/i18n";
 import showCreateIdentityProviderDialog from "../CreateIdentityProviderDialog";
@@ -19,7 +19,7 @@ const SSOSection = () => {
   }, []);
 
   const fetchIdentityProviderList = async () => {
-    const { identityProviders } = await identityProviderServiceClient.listIdentityProviders({});
+    const { identityProviders } = await workspaceServiceClient.listIdentityProviders({});
     setIdentityProviderList(identityProviders);
   };
 
@@ -27,7 +27,7 @@ const SSOSection = () => {
     const confirmed = window.confirm(t("setting.sso-section.confirm-delete", { name: identityProvider.title }));
     if (confirmed) {
       try {
-        await identityProviderServiceClient.deleteIdentityProvider({ name: identityProvider.name });
+        await workspaceServiceClient.deleteIdentityProvider({ name: identityProvider.name });
       } catch (error: any) {
         console.error(error);
         toast.error(error.details);

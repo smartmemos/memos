@@ -100,6 +100,21 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - AuthService
+  /api/v1/identityProviders:
+    get:
+      summary: ListIdentityProviders lists identity providers.
+      operationId: WorkspaceService_ListIdentityProviders
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListIdentityProvidersResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - WorkspaceService
   /api/v1/memos:
     get:
       summary: ListMemos lists memos with pagination and filter.
@@ -270,6 +285,28 @@ paths:
             title: setting is the setting to update.
       tags:
         - WorkspaceService
+  /api/v1/{name}:
+    get:
+      summary: GetIdentityProvider gets an identity provider.
+      operationId: WorkspaceService_GetIdentityProvider
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/workspaceIdentityProvider'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          description: The name of the identityProvider to get.
+          in: path
+          required: true
+          type: string
+          pattern: identityProviders/[^/]+
+      tags:
+        - WorkspaceService
   /api/v1/{name}/setting:
     get:
       summary: GetUserSetting gets the setting of a user.
@@ -424,6 +461,14 @@ definitions:
       updatedAt:
         type: string
         format: date-time
+  v1ListIdentityProvidersResponse:
+    type: object
+    properties:
+      identityProviders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/workspaceIdentityProvider'
   v1ListMemosResponse:
     type: object
   workspaceCustomProfile:
@@ -438,6 +483,15 @@ definitions:
       locale:
         type: string
       appearance:
+        type: string
+  workspaceFieldMapping:
+    type: object
+    properties:
+      identifier:
+        type: string
+      displayName:
+        type: string
+      email:
         type: string
   workspaceGeneralSetting:
     type: object
@@ -470,6 +524,33 @@ definitions:
       disallowChangeNickname:
         type: boolean
         description: disallow_change_nickname disallows changing nickname.
+  workspaceIdentityProvider:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |-
+          The name of the identityProvider.
+          Format: identityProviders/{id}, id is the system generated auto-incremented id.
+      type:
+        $ref: '#/definitions/workspaceIdentityProviderType'
+      title:
+        type: string
+      identifierFilter:
+        type: string
+      config:
+        $ref: '#/definitions/workspaceIdentityProviderConfig'
+  workspaceIdentityProviderConfig:
+    type: object
+    properties:
+      oauth2Config:
+        $ref: '#/definitions/workspaceOAuth2Config'
+  workspaceIdentityProviderType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - OAUTH2
+    default: TYPE_UNSPECIFIED
   workspaceMemoRelatedSetting:
     type: object
     properties:
@@ -511,6 +592,25 @@ definitions:
         items:
           type: string
         description: nsfw_tags is the list of tags that mark content as NSFW for blurring.
+  workspaceOAuth2Config:
+    type: object
+    properties:
+      clientId:
+        type: string
+      clientSecret:
+        type: string
+      authUrl:
+        type: string
+      tokenUrl:
+        type: string
+      userInfoUrl:
+        type: string
+      scopes:
+        type: array
+        items:
+          type: string
+      fieldMapping:
+        $ref: '#/definitions/workspaceFieldMapping'
   workspaceProfile:
     type: object
     properties:

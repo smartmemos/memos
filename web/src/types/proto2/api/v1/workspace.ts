@@ -6,10 +6,23 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { IdentityProvider } from "../../model/workspace/identity_provider";
 import { Profile } from "../../model/workspace/profile";
 import { Setting } from "../../model/workspace/setting";
 
 export const protobufPackage = "api.v1";
+
+export interface ListIdentityProvidersRequest {
+}
+
+export interface ListIdentityProvidersResponse {
+  identityProviders: IdentityProvider[];
+}
+
+export interface GetIdentityProviderRequest {
+  /** The name of the identityProvider to get. */
+  name: string;
+}
 
 export interface GetWorkspaceProfileRequest {
 }
@@ -26,6 +39,132 @@ export interface SetWorkspaceSettingRequest {
   /** setting is the setting to update. */
   setting?: Setting | undefined;
 }
+
+function createBaseListIdentityProvidersRequest(): ListIdentityProvidersRequest {
+  return {};
+}
+
+export const ListIdentityProvidersRequest: MessageFns<ListIdentityProvidersRequest> = {
+  encode(_: ListIdentityProvidersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListIdentityProvidersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIdentityProvidersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListIdentityProvidersRequest>): ListIdentityProvidersRequest {
+    return ListIdentityProvidersRequest.fromPartial(base ?? {});
+  },
+  fromPartial(_: DeepPartial<ListIdentityProvidersRequest>): ListIdentityProvidersRequest {
+    const message = createBaseListIdentityProvidersRequest();
+    return message;
+  },
+};
+
+function createBaseListIdentityProvidersResponse(): ListIdentityProvidersResponse {
+  return { identityProviders: [] };
+}
+
+export const ListIdentityProvidersResponse: MessageFns<ListIdentityProvidersResponse> = {
+  encode(message: ListIdentityProvidersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.identityProviders) {
+      IdentityProvider.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListIdentityProvidersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIdentityProvidersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.identityProviders.push(IdentityProvider.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListIdentityProvidersResponse>): ListIdentityProvidersResponse {
+    return ListIdentityProvidersResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListIdentityProvidersResponse>): ListIdentityProvidersResponse {
+    const message = createBaseListIdentityProvidersResponse();
+    message.identityProviders = object.identityProviders?.map((e) => IdentityProvider.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetIdentityProviderRequest(): GetIdentityProviderRequest {
+  return { name: "" };
+}
+
+export const GetIdentityProviderRequest: MessageFns<GetIdentityProviderRequest> = {
+  encode(message: GetIdentityProviderRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetIdentityProviderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetIdentityProviderRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetIdentityProviderRequest>): GetIdentityProviderRequest {
+    return GetIdentityProviderRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetIdentityProviderRequest>): GetIdentityProviderRequest {
+    const message = createBaseGetIdentityProviderRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
 
 function createBaseGetWorkspaceProfileRequest(): GetWorkspaceProfileRequest {
   return {};
@@ -322,6 +461,104 @@ export const WorkspaceServiceDefinition = {
               105,
               110,
               103,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** ListIdentityProviders lists identity providers. */
+    listIdentityProviders: {
+      name: "ListIdentityProviders",
+      requestType: ListIdentityProvidersRequest,
+      requestStream: false,
+      responseType: ListIdentityProvidersResponse,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          578365826: [
+            new Uint8Array([
+              27,
+              18,
+              25,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              105,
+              100,
+              101,
+              110,
+              116,
+              105,
+              116,
+              121,
+              80,
+              114,
+              111,
+              118,
+              105,
+              100,
+              101,
+              114,
+              115,
+            ]),
+          ],
+        },
+      },
+    },
+    /** GetIdentityProvider gets an identity provider. */
+    getIdentityProvider: {
+      name: "GetIdentityProvider",
+      requestType: GetIdentityProviderRequest,
+      requestStream: false,
+      responseType: IdentityProvider,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              36,
+              18,
+              34,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              105,
+              100,
+              101,
+              110,
+              116,
+              105,
+              116,
+              121,
+              80,
+              114,
+              111,
+              118,
+              105,
+              100,
+              101,
+              114,
               115,
               47,
               42,

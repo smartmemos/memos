@@ -8,6 +8,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/module/workspace"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
+	v1 "github.com/smartmemos/memos/internal/proto/api/v1"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	mpb "github.com/smartmemos/memos/internal/proto/model/workspace"
 )
@@ -46,5 +47,9 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.Ge
 		return
 	}
 	logrus.Info(setting)
+	return
+}
+
+func (s *WorkspaceService) ListIdentityProviders(context.Context, *v1.ListIdentityProvidersRequest) (resp *v1.ListIdentityProvidersResponse, err error) {
 	return
 }

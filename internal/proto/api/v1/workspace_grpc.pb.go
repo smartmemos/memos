@@ -20,9 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	WorkspaceService_GetWorkspaceProfile_FullMethodName = "/api.v1.WorkspaceService/GetWorkspaceProfile"
-	WorkspaceService_GetWorkspaceSetting_FullMethodName = "/api.v1.WorkspaceService/GetWorkspaceSetting"
-	WorkspaceService_SetWorkspaceSetting_FullMethodName = "/api.v1.WorkspaceService/SetWorkspaceSetting"
+	WorkspaceService_GetWorkspaceProfile_FullMethodName   = "/api.v1.WorkspaceService/GetWorkspaceProfile"
+	WorkspaceService_GetWorkspaceSetting_FullMethodName   = "/api.v1.WorkspaceService/GetWorkspaceSetting"
+	WorkspaceService_SetWorkspaceSetting_FullMethodName   = "/api.v1.WorkspaceService/SetWorkspaceSetting"
+	WorkspaceService_ListIdentityProviders_FullMethodName = "/api.v1.WorkspaceService/ListIdentityProviders"
+	WorkspaceService_GetIdentityProvider_FullMethodName   = "/api.v1.WorkspaceService/GetIdentityProvider"
 )
 
 // WorkspaceServiceClient is the client API for WorkspaceService service.
@@ -35,6 +37,10 @@ type WorkspaceServiceClient interface {
 	GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error)
 	// SetWorkspaceSetting updates the setting.
 	SetWorkspaceSetting(ctx context.Context, in *SetWorkspaceSettingRequest, opts ...grpc.CallOption) (*workspace.Setting, error)
+	// ListIdentityProviders lists identity providers.
+	ListIdentityProviders(ctx context.Context, in *ListIdentityProvidersRequest, opts ...grpc.CallOption) (*ListIdentityProvidersResponse, error)
+	// GetIdentityProvider gets an identity provider.
+	GetIdentityProvider(ctx context.Context, in *GetIdentityProviderRequest, opts ...grpc.CallOption) (*workspace.IdentityProvider, error)
 }
 
 type workspaceServiceClient struct {
@@ -75,6 +81,26 @@ func (c *workspaceServiceClient) SetWorkspaceSetting(ctx context.Context, in *Se
 	return out, nil
 }
 
+func (c *workspaceServiceClient) ListIdentityProviders(ctx context.Context, in *ListIdentityProvidersRequest, opts ...grpc.CallOption) (*ListIdentityProvidersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListIdentityProvidersResponse)
+	err := c.cc.Invoke(ctx, WorkspaceService_ListIdentityProviders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workspaceServiceClient) GetIdentityProvider(ctx context.Context, in *GetIdentityProviderRequest, opts ...grpc.CallOption) (*workspace.IdentityProvider, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(workspace.IdentityProvider)
+	err := c.cc.Invoke(ctx, WorkspaceService_GetIdentityProvider_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WorkspaceServiceServer is the server API for WorkspaceService service.
 // All implementations must embed UnimplementedWorkspaceServiceServer
 // for forward compatibility.
@@ -85,6 +111,10 @@ type WorkspaceServiceServer interface {
 	GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*workspace.Setting, error)
 	// SetWorkspaceSetting updates the setting.
 	SetWorkspaceSetting(context.Context, *SetWorkspaceSettingRequest) (*workspace.Setting, error)
+	// ListIdentityProviders lists identity providers.
+	ListIdentityProviders(context.Context, *ListIdentityProvidersRequest) (*ListIdentityProvidersResponse, error)
+	// GetIdentityProvider gets an identity provider.
+	GetIdentityProvider(context.Context, *GetIdentityProviderRequest) (*workspace.IdentityProvider, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
 }
 
@@ -103,6 +133,12 @@ func (UnimplementedWorkspaceServiceServer) GetWorkspaceSetting(context.Context, 
 }
 func (UnimplementedWorkspaceServiceServer) SetWorkspaceSetting(context.Context, *SetWorkspaceSettingRequest) (*workspace.Setting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetWorkspaceSetting not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) ListIdentityProviders(context.Context, *ListIdentityProvidersRequest) (*ListIdentityProvidersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListIdentityProviders not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) GetIdentityProvider(context.Context, *GetIdentityProviderRequest) (*workspace.IdentityProvider, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIdentityProvider not implemented")
 }
 func (UnimplementedWorkspaceServiceServer) mustEmbedUnimplementedWorkspaceServiceServer() {}
 func (UnimplementedWorkspaceServiceServer) testEmbeddedByValue()                          {}
@@ -179,6 +215,42 @@ func _WorkspaceService_SetWorkspaceSetting_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WorkspaceService_ListIdentityProviders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListIdentityProvidersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).ListIdentityProviders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_ListIdentityProviders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).ListIdentityProviders(ctx, req.(*ListIdentityProvidersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkspaceService_GetIdentityProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIdentityProviderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).GetIdentityProvider(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_GetIdentityProvider_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).GetIdentityProvider(ctx, req.(*GetIdentityProviderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WorkspaceService_ServiceDesc is the grpc.ServiceDesc for WorkspaceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -197,6 +269,14 @@ var WorkspaceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetWorkspaceSetting",
 			Handler:    _WorkspaceService_SetWorkspaceSetting_Handler,
+		},
+		{
+			MethodName: "ListIdentityProviders",
+			Handler:    _WorkspaceService_ListIdentityProviders_Handler,
+		},
+		{
+			MethodName: "GetIdentityProvider",
+			Handler:    _WorkspaceService_GetIdentityProvider_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -5,7 +5,7 @@ import { ExternalLinkIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { identityProviderServiceClient } from "@/grpcweb";
+import { workspaceServiceClient } from "@/grpcweb";
 import { workspaceSettingNamePrefix } from "@/store/v1";
 import { workspaceStore } from "@/store/v2";
 import { IdentityProvider } from "@/types/proto/api/v1/idp_service";
@@ -58,7 +58,7 @@ const WorkspaceSection = () => {
   }, []);
 
   const fetchIdentityProviderList = async () => {
-    const { identityProviders } = await identityProviderServiceClient.listIdentityProviders({});
+    const { identityProviders } = await workspaceServiceClient.listIdentityProviders({});
     setIdentityProviderList(identityProviders);
   };
 

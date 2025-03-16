@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import AuthFooter from "@/components/AuthFooter";
 import PasswordSignInForm from "@/components/PasswordSignInForm";
-import { identityProviderServiceClient } from "@/grpcweb";
+import { workspaceServiceClient } from "@/grpcweb";
 import { absolutifyLink } from "@/helpers/utils";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Routes } from "@/router";
@@ -30,7 +30,7 @@ const SignIn = () => {
   // Prepare identity provider list.
   useEffect(() => {
     const fetchIdentityProviderList = async () => {
-      const { identityProviders } = await identityProviderServiceClient.listIdentityProviders({});
+      const { identityProviders } = await workspaceServiceClient.listIdentityProviders({});
       setIdentityProviderList(identityProviders);
     };
     fetchIdentityProviderList();
@@ -45,11 +45,10 @@ const SignIn = () => {
         toast.error("Identity provider configuration is invalid.");
         return;
       }
-      const authUrl = `${oauth2Config.authUrl}?client_id=${
-        oauth2Config.clientId
-      }&redirect_uri=${redirectUri}&state=${stateQueryParameter}&response_type=code&scope=${encodeURIComponent(
-        oauth2Config.scopes.join(" "),
-      )}`;
+      const authUrl = `${oauth2Config.authUrl}?client_id=${oauth2Config.clientId
+        }&redirect_uri=${redirectUri}&state=${stateQueryParameter}&response_type=code&scope=${encodeURIComponent(
+          oauth2Config.scopes.join(" "),
+        )}`;
       window.location.href = authUrl;
     }
   };
