@@ -2,11 +2,12 @@ package interceptor
 
 var authenticationAllowlistMethods = map[string]bool{
 	// "/api.v1.AuthService/GetAuthStatus": true,
-	"/api.v1.AuthService/SignIn":                   true,
-	"/api.v1.WorkspaceService/GetWorkspaceProfile": true,
-	"/api.v1.WorkspaceService/GetWorkspaceSetting": true,
-	"/api.v1.AuthService/SignOut":                  true,
-	"/api.v1.AuthService/SignUp":                   true,
+	"/api.v1.AuthService/SignIn":                     true,
+	"/api.v1.WorkspaceService/GetWorkspaceProfile":   true,
+	"/api.v1.WorkspaceService/GetWorkspaceSetting":   true,
+	"/api.v1.WorkspaceService/ListIdentityProviders": true,
+	"/api.v1.AuthService/SignOut":                    true,
+	"/api.v1.AuthService/SignUp":                     true,
 }
 
 // isUnauthorizeAllowedMethod returns whether the method is exempted from authentication.

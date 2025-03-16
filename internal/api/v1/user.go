@@ -43,6 +43,15 @@ func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSetti
 	return
 }
 
+func (s *UserService) ListAllUserStats(context.Context, *v1pb.ListAllUserStatsRequest) (resp *v1pb.ListAllUserStatsResponse, err error) {
+	return
+}
+
+// GetUserStats returns the stats of a user.
+func (s *UserService) GetUserStats(context.Context, *v1pb.GetUserStatsRequest) (resp *userpb.Stats, err error) {
+	return
+}
+
 func convertUserToProto(user *model.User) *userpb.User {
 	return &userpb.User{
 		Id:       user.ID,

@@ -208,6 +208,21 @@ paths:
           type: string
       tags:
         - UserService
+  /api/v1/users/-/stats:
+    post:
+      summary: ListAllUserStats returns all user stats.
+      operationId: UserService_ListAllUserStats
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListAllUserStatsResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - UserService
   /api/v1/workspace/profile:
     get:
       summary: GetProfile returns the workspace profile.
@@ -329,6 +344,28 @@ paths:
           pattern: users/[^/]+
       tags:
         - UserService
+  /api/v1/{name}/stats:
+    get:
+      summary: GetUserStats returns the stats of a user.
+      operationId: UserService_GetUserStats
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/userStats'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+      tags:
+        - UserService
   /api/v1/{setting.name}:
     patch:
       summary: UpdateUserSetting updates the setting of a user.
@@ -369,6 +406,21 @@ paths:
       tags:
         - UserService
 definitions:
+  StatsMemoTypeStats:
+    type: object
+    properties:
+      linkCount:
+        type: integer
+        format: int32
+      codeCount:
+        type: integer
+        format: int32
+      todoCount:
+        type: integer
+        format: int32
+      undoCount:
+        type: integer
+        format: int32
   StorageSettingS3Config:
     type: object
     properties:
@@ -443,6 +495,39 @@ definitions:
       memoVisibility:
         type: string
         description: The default visibility of the memo.
+  userStats:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of the user.
+      memoDisplayTimestamps:
+        type: array
+        items:
+          type: string
+          format: date-time
+        description: |-
+          The timestamps when the memos were displayed.
+          We should return raw data to the client, and let the client format the data with the user's timezone.
+      memoTypeStats:
+        $ref: '#/definitions/StatsMemoTypeStats'
+        description: The stats of memo types.
+      tagCount:
+        type: object
+        additionalProperties:
+          type: integer
+          format: int32
+        title: |-
+          The count of tags.
+          Format: "tag1": 1, "tag2": 2
+      pinnedMemos:
+        type: array
+        items:
+          type: string
+        description: The pinned memos of the user.
+      totalMemoCount:
+        type: integer
+        format: int32
   userUser:
     type: object
     properties:
@@ -461,6 +546,14 @@ definitions:
       updatedAt:
         type: string
         format: date-time
+  v1ListAllUserStatsResponse:
+    type: object
+    properties:
+      userStats:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/userStats'
   v1ListIdentityProvidersResponse:
     type: object
     properties:

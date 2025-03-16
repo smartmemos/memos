@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/field_mask.proto";
 import "model/user/user.proto";
 import "model/user/setting.proto";
+import "model/user/stats.proto";
 
 package api.v1;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";
@@ -37,6 +38,28 @@ service UserService {
     option (google.api.method_signature) = "setting,update_mask";
   }
 
+
+  // ListAllUserStats returns all user stats.
+  rpc ListAllUserStats(ListAllUserStatsRequest) returns (ListAllUserStatsResponse) {
+    option (google.api.http) = {post: "/api/v1/users/-/stats"};
+  }
+  // GetUserStats returns the stats of a user.
+  rpc GetUserStats(GetUserStatsRequest) returns (user.Stats) {
+    option (google.api.http) = {get: "/api/v1/{name=users/*}/stats"};
+    option (google.api.method_signature) = "name";
+  }
+
+}
+
+message ListAllUserStatsRequest {}
+
+message ListAllUserStatsResponse {
+  repeated user.Stats user_stats = 1;
+}
+
+message GetUserStatsRequest {
+  // The name of the user.
+  string name = 1;
 }
 
 message CreateUserRequest {

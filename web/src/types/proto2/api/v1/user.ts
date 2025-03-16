@@ -8,9 +8,22 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { FieldMask } from "../../google/protobuf/field_mask";
 import { Setting } from "../../model/user/setting";
+import { Stats } from "../../model/user/stats";
 import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
+
+export interface ListAllUserStatsRequest {
+}
+
+export interface ListAllUserStatsResponse {
+  userStats: Stats[];
+}
+
+export interface GetUserStatsRequest {
+  /** The name of the user. */
+  name: string;
+}
 
 export interface CreateUserRequest {
   name: string;
@@ -31,6 +44,132 @@ export interface UpdateUserSettingRequest {
   setting?: Setting | undefined;
   updateMask?: string[] | undefined;
 }
+
+function createBaseListAllUserStatsRequest(): ListAllUserStatsRequest {
+  return {};
+}
+
+export const ListAllUserStatsRequest: MessageFns<ListAllUserStatsRequest> = {
+  encode(_: ListAllUserStatsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListAllUserStatsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListAllUserStatsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListAllUserStatsRequest>): ListAllUserStatsRequest {
+    return ListAllUserStatsRequest.fromPartial(base ?? {});
+  },
+  fromPartial(_: DeepPartial<ListAllUserStatsRequest>): ListAllUserStatsRequest {
+    const message = createBaseListAllUserStatsRequest();
+    return message;
+  },
+};
+
+function createBaseListAllUserStatsResponse(): ListAllUserStatsResponse {
+  return { userStats: [] };
+}
+
+export const ListAllUserStatsResponse: MessageFns<ListAllUserStatsResponse> = {
+  encode(message: ListAllUserStatsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.userStats) {
+      Stats.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListAllUserStatsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListAllUserStatsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userStats.push(Stats.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListAllUserStatsResponse>): ListAllUserStatsResponse {
+    return ListAllUserStatsResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListAllUserStatsResponse>): ListAllUserStatsResponse {
+    const message = createBaseListAllUserStatsResponse();
+    message.userStats = object.userStats?.map((e) => Stats.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetUserStatsRequest(): GetUserStatsRequest {
+  return { name: "" };
+}
+
+export const GetUserStatsRequest: MessageFns<GetUserStatsRequest> = {
+  encode(message: GetUserStatsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetUserStatsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUserStatsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetUserStatsRequest>): GetUserStatsRequest {
+    return GetUserStatsRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetUserStatsRequest>): GetUserStatsRequest {
+    const message = createBaseGetUserStatsRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
 
 function createBaseCreateUserRequest(): CreateUserRequest {
   return { name: "", username: "", email: "", nickname: "", avatarUrl: "", description: "", password: "" };
@@ -460,6 +599,94 @@ export const UserServiceDefinition = {
               110,
               103,
               125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** ListAllUserStats returns all user stats. */
+    listAllUserStats: {
+      name: "ListAllUserStats",
+      requestType: ListAllUserStatsRequest,
+      requestStream: false,
+      responseType: ListAllUserStatsResponse,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          578365826: [
+            new Uint8Array([
+              23,
+              34,
+              21,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              45,
+              47,
+              115,
+              116,
+              97,
+              116,
+              115,
+            ]),
+          ],
+        },
+      },
+    },
+    /** GetUserStats returns the stats of a user. */
+    getUserStats: {
+      name: "GetUserStats",
+      requestType: GetUserStatsRequest,
+      requestStream: false,
+      responseType: Stats,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              30,
+              18,
+              28,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              42,
+              125,
+              47,
+              115,
+              116,
+              97,
+              116,
+              115,
             ]),
           ],
         },

@@ -23,6 +23,8 @@ const (
 	UserService_CreateUser_FullMethodName        = "/api.v1.UserService/CreateUser"
 	UserService_GetUserSetting_FullMethodName    = "/api.v1.UserService/GetUserSetting"
 	UserService_UpdateUserSetting_FullMethodName = "/api.v1.UserService/UpdateUserSetting"
+	UserService_ListAllUserStats_FullMethodName  = "/api.v1.UserService/ListAllUserStats"
+	UserService_GetUserStats_FullMethodName      = "/api.v1.UserService/GetUserStats"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -35,6 +37,10 @@ type UserServiceClient interface {
 	GetUserSetting(ctx context.Context, in *GetUserSettingRequest, opts ...grpc.CallOption) (*user.Setting, error)
 	// UpdateUserSetting updates the setting of a user.
 	UpdateUserSetting(ctx context.Context, in *UpdateUserSettingRequest, opts ...grpc.CallOption) (*user.Setting, error)
+	// ListAllUserStats returns all user stats.
+	ListAllUserStats(ctx context.Context, in *ListAllUserStatsRequest, opts ...grpc.CallOption) (*ListAllUserStatsResponse, error)
+	// GetUserStats returns the stats of a user.
+	GetUserStats(ctx context.Context, in *GetUserStatsRequest, opts ...grpc.CallOption) (*user.Stats, error)
 }
 
 type userServiceClient struct {
@@ -75,6 +81,26 @@ func (c *userServiceClient) UpdateUserSetting(ctx context.Context, in *UpdateUse
 	return out, nil
 }
 
+func (c *userServiceClient) ListAllUserStats(ctx context.Context, in *ListAllUserStatsRequest, opts ...grpc.CallOption) (*ListAllUserStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAllUserStatsResponse)
+	err := c.cc.Invoke(ctx, UserService_ListAllUserStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserStats(ctx context.Context, in *GetUserStatsRequest, opts ...grpc.CallOption) (*user.Stats, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(user.Stats)
+	err := c.cc.Invoke(ctx, UserService_GetUserStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -85,6 +111,10 @@ type UserServiceServer interface {
 	GetUserSetting(context.Context, *GetUserSettingRequest) (*user.Setting, error)
 	// UpdateUserSetting updates the setting of a user.
 	UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*user.Setting, error)
+	// ListAllUserStats returns all user stats.
+	ListAllUserStats(context.Context, *ListAllUserStatsRequest) (*ListAllUserStatsResponse, error)
+	// GetUserStats returns the stats of a user.
+	GetUserStats(context.Context, *GetUserStatsRequest) (*user.Stats, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -103,6 +133,12 @@ func (UnimplementedUserServiceServer) GetUserSetting(context.Context, *GetUserSe
 }
 func (UnimplementedUserServiceServer) UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*user.Setting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserSetting not implemented")
+}
+func (UnimplementedUserServiceServer) ListAllUserStats(context.Context, *ListAllUserStatsRequest) (*ListAllUserStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAllUserStats not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserStats(context.Context, *GetUserStatsRequest) (*user.Stats, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserStats not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -179,6 +215,42 @@ func _UserService_UpdateUserSetting_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ListAllUserStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllUserStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListAllUserStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_ListAllUserStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListAllUserStats(ctx, req.(*ListAllUserStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetUserStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserStats(ctx, req.(*GetUserStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -197,6 +269,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUserSetting",
 			Handler:    _UserService_UpdateUserSetting_Handler,
+		},
+		{
+			MethodName: "ListAllUserStats",
+			Handler:    _UserService_ListAllUserStats_Handler,
+		},
+		{
+			MethodName: "GetUserStats",
+			Handler:    _UserService_GetUserStats_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
