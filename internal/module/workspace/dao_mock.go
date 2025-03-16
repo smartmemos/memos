@@ -5,11 +5,7 @@
 package workspace
 
 import (
-	context "context"
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
-	model "github.com/smartmemos/memos/internal/module/workspace/model"
 )
 
 // MockDAO is a mock of DAO interface.
@@ -33,107 +29,4 @@ func NewMockDAO(ctrl *gomock.Controller) *MockDAO {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
-}
-
-// CountProfiles mocks base method.
-func (m *MockDAO) CountProfiles(ctx context.Context, filter *model.FindProfileFilter) (int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CountProfiles", ctx, filter)
-	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CountProfiles indicates an expected call of CountProfiles.
-func (mr *MockDAOMockRecorder) CountProfiles(ctx, filter interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountProfiles", reflect.TypeOf((*MockDAO)(nil).CountProfiles), ctx, filter)
-}
-
-// CreateProfile mocks base method.
-func (m_2 *MockDAO) CreateProfile(ctx context.Context, m *model.Profile) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "CreateProfile", ctx, m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateProfile indicates an expected call of CreateProfile.
-func (mr *MockDAOMockRecorder) CreateProfile(ctx, m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProfile", reflect.TypeOf((*MockDAO)(nil).CreateProfile), ctx, m)
-}
-
-// FindProfile mocks base method.
-func (m *MockDAO) FindProfile(ctx context.Context, filter *model.FindProfileFilter) (*model.Profile, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindProfile", ctx, filter)
-	ret0, _ := ret[0].(*model.Profile)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindProfile indicates an expected call of FindProfile.
-func (mr *MockDAOMockRecorder) FindProfile(ctx, filter interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindProfile", reflect.TypeOf((*MockDAO)(nil).FindProfile), ctx, filter)
-}
-
-// FindProfileByID mocks base method.
-func (m *MockDAO) FindProfileByID(ctx context.Context, id int64) (*model.Profile, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindProfileByID", ctx, id)
-	ret0, _ := ret[0].(*model.Profile)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindProfileByID indicates an expected call of FindProfileByID.
-func (mr *MockDAOMockRecorder) FindProfileByID(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindProfileByID", reflect.TypeOf((*MockDAO)(nil).FindProfileByID), ctx, id)
-}
-
-// FindProfiles mocks base method.
-func (m *MockDAO) FindProfiles(ctx context.Context, filter *model.FindProfileFilter) ([]*model.Profile, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindProfiles", ctx, filter)
-	ret0, _ := ret[0].([]*model.Profile)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindProfiles indicates an expected call of FindProfiles.
-func (mr *MockDAOMockRecorder) FindProfiles(ctx, filter interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindProfiles", reflect.TypeOf((*MockDAO)(nil).FindProfiles), ctx, filter)
-}
-
-// UpdateProfile mocks base method.
-func (m_2 *MockDAO) UpdateProfile(ctx context.Context, m *model.Profile, update map[string]any) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "UpdateProfile", ctx, m, update)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateProfile indicates an expected call of UpdateProfile.
-func (mr *MockDAOMockRecorder) UpdateProfile(ctx, m, update interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProfile", reflect.TypeOf((*MockDAO)(nil).UpdateProfile), ctx, m, update)
-}
-
-// UpdateProfiles mocks base method.
-func (m *MockDAO) UpdateProfiles(ctx context.Context, filter *model.FindProfileFilter, update map[string]any) (int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateProfiles", ctx, filter, update)
-	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateProfiles indicates an expected call of UpdateProfiles.
-func (mr *MockDAOMockRecorder) UpdateProfiles(ctx, filter, update interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProfiles", reflect.TypeOf((*MockDAO)(nil).UpdateProfiles), ctx, filter, update)
 }

@@ -29,6 +29,7 @@ type FindUserFilter struct {
 
 	ID       int64
 	Username string
+	Role     Role
 }
 
 func (f FindUserFilter) GetQuery() (query string, args []any) {
@@ -36,6 +37,10 @@ func (f FindUserFilter) GetQuery() (query string, args []any) {
 	if f.ID > 0 {
 		where = append(where, "id=?")
 		args = append(args, f.ID)
+	}
+	if f.Role != "" {
+		where = append(where, "role=?")
+		args = append(args, f.Role)
 	}
 	if f.Username != "" {
 		where = append(where, "username=?")

@@ -78,7 +78,7 @@ const workspaceStore = (() => {
 })();
 
 export const initialWorkspaceStore = async () => {
-  const workspaceProfile = await workspaceServiceClient.getWorkspaceProfile({});
+  const workspaceProfile = await workspaceServiceClient.getProfile({});
   // Prepare workspace settings.
   for (const key of [WorkspaceSettingKey.GENERAL, WorkspaceSettingKey.MEMO_RELATED]) {
     await workspaceStore.fetchWorkspaceSetting(key);

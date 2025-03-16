@@ -6,6 +6,7 @@ import (
 	"github.com/samber/do/v2"
 
 	"github.com/smartmemos/memos/internal/module/workspace"
+	"github.com/smartmemos/memos/internal/module/workspace/model"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	mpb "github.com/smartmemos/memos/internal/proto/model/workspace"
 )
@@ -21,6 +22,19 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 	}, nil
 }
 
-func (s *WorkspaceService) GetProfile(context.Context, *mpb.GetProfileRequest) (*mpb.Profile, error) {
-	return nil, nil
+func (s *WorkspaceService) GetProfile(ctx context.Context, req *mpb.GetProfileRequest) (resp *mpb.Profile, err error) {
+	profile, err := s.workspaceService.GetProfile(ctx, &model.GetProfileRequest{})
+	if err != nil {
+		return
+	}
+	return convertProfileToProto(profile), nil
+}
+
+func convertProfileToProto(profile *model.Profile) *mpb.Profile {
+	return &mpb.Profile{
+		Owner:       profile.Owner,
+		Version:     profile.Version,
+		Mode:        profile.Mode,
+		InstanceUrl: profile.InstanceUrl,
+	}
 }
