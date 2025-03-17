@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  title: model/user/user.proto
+  title: model/common/common.proto
   version: version not set
 tags:
   - name: AuthService
@@ -449,6 +449,14 @@ definitions:
        - DATABASE: DATABASE is the database storage type.
        - LOCAL: LOCAL is the local storage type.
        - S3: S3 is the S3 storage type.
+  UserRole:
+    type: string
+    enum:
+      - ROLE_UNSPECIFIED
+      - HOST
+      - ADMIN
+      - USER
+    default: ROLE_UNSPECIFIED
   memoMemo:
     type: object
     properties:
@@ -495,6 +503,13 @@ definitions:
       memoVisibility:
         type: string
         description: The default visibility of the memo.
+  userState:
+    type: string
+    enum:
+      - STATE_UNSPECIFIED
+      - NORMAL
+      - ARCHIVED
+    default: STATE_UNSPECIFIED
   userStats:
     type: object
     properties:
@@ -536,16 +551,28 @@ definitions:
         format: int64
       username:
         type: string
+      role:
+        $ref: '#/definitions/UserRole'
       nickname:
         type: string
       email:
         type: string
-      createdAt:
+      avatarUrl:
+        type: string
+      description:
+        type: string
+      password:
+        type: string
+      state:
+        $ref: '#/definitions/userState'
+      createAt:
         type: string
         format: date-time
-      updatedAt:
+        readOnly: true
+      updateAt:
         type: string
         format: date-time
+        readOnly: true
   v1ListAllUserStatsResponse:
     type: object
     properties:

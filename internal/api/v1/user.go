@@ -5,6 +5,7 @@ import (
 
 	"github.com/samber/do/v2"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/module/user"
 	"github.com/smartmemos/memos/internal/module/user/model"
@@ -54,9 +55,14 @@ func (s *UserService) GetUserStats(context.Context, *v1pb.GetUserStatsRequest) (
 
 func convertUserToProto(user *model.User) *userpb.User {
 	return &userpb.User{
-		Id:       user.ID,
-		Username: user.Username,
-		Nickname: user.Nickname,
-		Email:    user.Email,
+		Id:          user.ID,
+		Username:    user.Username,
+		Nickname:    user.Nickname,
+		Email:       user.Email,
+		AvatarUrl:   user.AvatarURL,
+		Description: user.Description,
+		CreateAt:    timestamppb.New(user.CreatedAt),
+		UpdateAt:    timestamppb.New(user.UpdatedAt),
+		// Role:     user.Role,
 	}
 }

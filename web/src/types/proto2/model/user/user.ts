@@ -10,17 +10,163 @@ import { Timestamp } from "../../google/protobuf/timestamp";
 
 export const protobufPackage = "user";
 
+export enum State {
+  STATE_UNSPECIFIED = "STATE_UNSPECIFIED",
+  NORMAL = "NORMAL",
+  ARCHIVED = "ARCHIVED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function stateFromJSON(object: any): State {
+  switch (object) {
+    case 0:
+    case "STATE_UNSPECIFIED":
+      return State.STATE_UNSPECIFIED;
+    case 1:
+    case "NORMAL":
+      return State.NORMAL;
+    case 2:
+    case "ARCHIVED":
+      return State.ARCHIVED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return State.UNRECOGNIZED;
+  }
+}
+
+export function stateToNumber(object: State): number {
+  switch (object) {
+    case State.STATE_UNSPECIFIED:
+      return 0;
+    case State.NORMAL:
+      return 1;
+    case State.ARCHIVED:
+      return 2;
+    case State.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum Direction {
+  DIRECTION_UNSPECIFIED = "DIRECTION_UNSPECIFIED",
+  ASC = "ASC",
+  DESC = "DESC",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function directionFromJSON(object: any): Direction {
+  switch (object) {
+    case 0:
+    case "DIRECTION_UNSPECIFIED":
+      return Direction.DIRECTION_UNSPECIFIED;
+    case 1:
+    case "ASC":
+      return Direction.ASC;
+    case 2:
+    case "DESC":
+      return Direction.DESC;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Direction.UNRECOGNIZED;
+  }
+}
+
+export function directionToNumber(object: Direction): number {
+  switch (object) {
+    case Direction.DIRECTION_UNSPECIFIED:
+      return 0;
+    case Direction.ASC:
+      return 1;
+    case Direction.DESC:
+      return 2;
+    case Direction.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface User {
   id: number;
   username: string;
+  role: User_Role;
   nickname: string;
   email: string;
-  createdAt?: Date | undefined;
-  updatedAt?: Date | undefined;
+  avatarUrl: string;
+  description: string;
+  password: string;
+  state: State;
+  createAt?: Date | undefined;
+  updateAt?: Date | undefined;
+}
+
+export enum User_Role {
+  ROLE_UNSPECIFIED = "ROLE_UNSPECIFIED",
+  HOST = "HOST",
+  ADMIN = "ADMIN",
+  USER = "USER",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function user_RoleFromJSON(object: any): User_Role {
+  switch (object) {
+    case 0:
+    case "ROLE_UNSPECIFIED":
+      return User_Role.ROLE_UNSPECIFIED;
+    case 1:
+    case "HOST":
+      return User_Role.HOST;
+    case 2:
+    case "ADMIN":
+      return User_Role.ADMIN;
+    case 3:
+    case "USER":
+      return User_Role.USER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return User_Role.UNRECOGNIZED;
+  }
+}
+
+export function user_RoleToNumber(object: User_Role): number {
+  switch (object) {
+    case User_Role.ROLE_UNSPECIFIED:
+      return 0;
+    case User_Role.HOST:
+      return 1;
+    case User_Role.ADMIN:
+      return 2;
+    case User_Role.USER:
+      return 3;
+    case User_Role.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+/** Used internally for obfuscating the page token. */
+export interface PageToken {
+  limit: number;
+  offset: number;
 }
 
 function createBaseUser(): User {
-  return { id: 0, username: "", nickname: "", email: "", createdAt: undefined, updatedAt: undefined };
+  return {
+    id: 0,
+    username: "",
+    role: User_Role.ROLE_UNSPECIFIED,
+    nickname: "",
+    email: "",
+    avatarUrl: "",
+    description: "",
+    password: "",
+    state: State.STATE_UNSPECIFIED,
+    createAt: undefined,
+    updateAt: undefined,
+  };
 }
 
 export const User: MessageFns<User> = {
@@ -31,17 +177,32 @@ export const User: MessageFns<User> = {
     if (message.username !== "") {
       writer.uint32(18).string(message.username);
     }
+    if (message.role !== User_Role.ROLE_UNSPECIFIED) {
+      writer.uint32(24).int32(user_RoleToNumber(message.role));
+    }
     if (message.nickname !== "") {
-      writer.uint32(26).string(message.nickname);
+      writer.uint32(34).string(message.nickname);
     }
     if (message.email !== "") {
-      writer.uint32(34).string(message.email);
+      writer.uint32(42).string(message.email);
     }
-    if (message.createdAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(402).fork()).join();
+    if (message.avatarUrl !== "") {
+      writer.uint32(50).string(message.avatarUrl);
     }
-    if (message.updatedAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(410).fork()).join();
+    if (message.description !== "") {
+      writer.uint32(58).string(message.description);
+    }
+    if (message.password !== "") {
+      writer.uint32(66).string(message.password);
+    }
+    if (message.state !== State.STATE_UNSPECIFIED) {
+      writer.uint32(72).int32(stateToNumber(message.state));
+    }
+    if (message.createAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.createAt), writer.uint32(82).fork()).join();
+    }
+    if (message.updateAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.updateAt), writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -70,11 +231,11 @@ export const User: MessageFns<User> = {
           continue;
         }
         case 3: {
-          if (tag !== 26) {
+          if (tag !== 24) {
             break;
           }
 
-          message.nickname = reader.string();
+          message.role = user_RoleFromJSON(reader.int32());
           continue;
         }
         case 4: {
@@ -82,23 +243,63 @@ export const User: MessageFns<User> = {
             break;
           }
 
+          message.nickname = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
           message.email = reader.string();
           continue;
         }
-        case 50: {
-          if (tag !== 402) {
+        case 6: {
+          if (tag !== 50) {
             break;
           }
 
-          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.avatarUrl = reader.string();
           continue;
         }
-        case 51: {
-          if (tag !== 410) {
+        case 7: {
+          if (tag !== 58) {
             break;
           }
 
-          message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.description = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 72) {
+            break;
+          }
+
+          message.state = stateFromJSON(reader.int32());
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.createAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.updateAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -117,10 +318,73 @@ export const User: MessageFns<User> = {
     const message = createBaseUser();
     message.id = object.id ?? 0;
     message.username = object.username ?? "";
+    message.role = object.role ?? User_Role.ROLE_UNSPECIFIED;
     message.nickname = object.nickname ?? "";
     message.email = object.email ?? "";
-    message.createdAt = object.createdAt ?? undefined;
-    message.updatedAt = object.updatedAt ?? undefined;
+    message.avatarUrl = object.avatarUrl ?? "";
+    message.description = object.description ?? "";
+    message.password = object.password ?? "";
+    message.state = object.state ?? State.STATE_UNSPECIFIED;
+    message.createAt = object.createAt ?? undefined;
+    message.updateAt = object.updateAt ?? undefined;
+    return message;
+  },
+};
+
+function createBasePageToken(): PageToken {
+  return { limit: 0, offset: 0 };
+}
+
+export const PageToken: MessageFns<PageToken> = {
+  encode(message: PageToken, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.limit !== 0) {
+      writer.uint32(8).int32(message.limit);
+    }
+    if (message.offset !== 0) {
+      writer.uint32(16).int32(message.offset);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PageToken {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePageToken();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.offset = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<PageToken>): PageToken {
+    return PageToken.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PageToken>): PageToken {
+    const message = createBasePageToken();
+    message.limit = object.limit ?? 0;
+    message.offset = object.offset ?? 0;
     return message;
   },
 };
