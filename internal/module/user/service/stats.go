@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
-	"github.com/usememos/memos/store"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -35,7 +35,7 @@ func (s *Service) ListAllUserStats(ctx context.Context, req *model.ListAllUserSt
 		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 	if userID == 0 {
-		memoFilter.VisibilityList = []store.Visibility{memomodel.Public}
+		memoFilter.VisibilityList = []memomodel.Visibility{memomodel.Public}
 	} else {
 		if memoFilter.CreatorID == 0 {
 			// internalFilter := fmt.Sprintf(`creator_id == %d || visibility in ["PUBLIC", "Protected"]`, currentUser.ID)
@@ -46,11 +46,16 @@ func (s *Service) ListAllUserStats(ctx context.Context, req *model.ListAllUserSt
 			// 	memoFind.Filter = &internalFilter
 			// }
 		} else if memoFilter.CreatorID != userID {
-			memoFilter.VisibilityList = []store.Visibility{store.Public, memomodel.Protected}
+			memoFilter.VisibilityList = []memomodel.Visibility{memomodel.Public, memomodel.Protected}
 		}
 	}
 
-	s.memoDao.FindMemos(ctx, memoFilter)
-
+	memos, err := s.memoDao.FindMemos(ctx, memoFilter)
+	if err != nil {
+		return
+	}
+	for _, memo := range memos {
+		logrus.Info(memo)
+	}
 	return
 }

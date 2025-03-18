@@ -44,7 +44,8 @@ func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSetti
 	return
 }
 
-func (s *UserService) ListAllUserStats(context.Context, *v1pb.ListAllUserStatsRequest) (resp *v1pb.ListAllUserStatsResponse, err error) {
+func (s *UserService) ListAllUserStats(ctx context.Context, req *v1pb.ListAllUserStatsRequest) (resp *v1pb.ListAllUserStatsResponse, err error) {
+	s.userService.ListAllUserStats(ctx, &model.ListAllUserStatsRequest{})
 	return
 }
 

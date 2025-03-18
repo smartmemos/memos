@@ -79,3 +79,18 @@ func (mr *MockServiceMockRecorder) GetUserByID(arg0, arg1 interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), arg0, arg1)
 }
+
+// ListAllUserStats mocks base method.
+func (m *MockService) ListAllUserStats(ctx context.Context, req *model.ListAllUserStatsRequest) (*model.Stats, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListAllUserStats", ctx, req)
+	ret0, _ := ret[0].(*model.Stats)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAllUserStats indicates an expected call of ListAllUserStats.
+func (mr *MockServiceMockRecorder) ListAllUserStats(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAllUserStats", reflect.TypeOf((*MockService)(nil).ListAllUserStats), ctx, req)
+}
