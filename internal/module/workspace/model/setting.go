@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/smartmemos/memos/internal/pkg/db"
@@ -10,12 +11,16 @@ type Setting struct {
 	db.Model
 
 	Name        string
-	Value       string
+	Value       SettingValue `gorm:"serializer:json"`
 	Description string
 }
 
 func (Setting) TableName() string {
 	return TableSetting
+}
+
+type SettingValue struct {
+	json.RawMessage
 }
 
 type FindSettingFilter struct {
@@ -38,12 +43,14 @@ type BasicSetting struct {
 }
 
 type GeneralSetting struct {
-	// additional_script is the additional script.
-	AdditionalScript string `json:"additional_script"`
-	// additional_style is the additional style.
-	AdditionalStyle string `json:"additional_style"`
-	// custom_profile is the custom profile.
-	CustomProfile *CustomProfile `json:"custom_profile"`
+	DisallowUserRegistration bool           `json:"disallow_user_registration"`
+	DisallowPasswordAuth     bool           `json:"disallow_password_auth"`
+	AdditionalScript         string         `json:"additional_script"`
+	AdditionalStyle          string         `json:"additional_style"`
+	CustomProfile            *CustomProfile `json:"custom_profile"`
+	WeekStartDayOffset       int32          `json:"week_start_day_offset"`
+	DisallowChangeUsername   bool           `json:"disallow_change_username"`
+	DisallowChangeNickname   bool           `json:"disallow_change_nickname"`
 }
 
 type CustomProfile struct {

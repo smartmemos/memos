@@ -2,16 +2,12 @@ package v1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/samber/do/v2"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/sirupsen/logrus"
 
-	usermd "github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/module/workspace"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
-	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 	v1 "github.com/smartmemos/memos/internal/proto/api/v1"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	mpb "github.com/smartmemos/memos/internal/proto/model/workspace"
@@ -50,51 +46,64 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.Ge
 	if err != nil {
 		return
 	}
-	setting, err := s.workspaceService.GetSetting(ctx, &model.GetSettingRequest{
-		Name: name,
-	})
-	if err != nil {
+	key := model.SettingKey(name)
+	switch key {
+	case model.SettingKeyGeneral:
+		var value model.GeneralSetting
+		if err = s.workspaceService.GetSetting(ctx, key, &value); err != nil {
+			return
+		}
+		resp = &mpb.Setting{
+			Name: req.Name,
+			Value: &mpb.Setting_GeneralSetting{
+				GeneralSetting: convertWorkspaceGeneralSetting(&value),
+			},
+		}
+	default:
 		return
 	}
-	if setting == nil {
-		return nil, status.Errorf(codes.NotFound, "workspace setting not found")
-	}
-	// For storage setting, only host can get it.
-	if setting.Key == mpb.SettingKey_STORAGE {
-		user, err := grpc_util.GetUserID(ctx)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
-		}
-		if user == nil || user.Role != usermd.RoleHost {
-			return nil, status.Errorf(codes.PermissionDenied, "permission denied")
-		}
-	}
 
-	return convertWorkspaceSettingFromStore(workspaceSetting), nil
+	logrus.Info(name)
+	return
+	// if setting == nil {
+	// 	return nil, status.Errorf(codes.NotFound, "workspace setting not found")
+	// }
+	// // For storage setting, only host can get it.
+	// if setting.Key == mpb.SettingKey_STORAGE {
+	// 	user, err := grpc_util.GetUserID(ctx)
+	// 	if err != nil {
+	// 		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	// 	}
+	// 	if user == nil || user.Role != usermd.RoleHost {
+	// 		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
+	// 	}
+	// }
+
+	// return convertWorkspaceSettingFromStore(workspaceSetting), nil
 }
 
-func convertWorkspaceSettingFromStore(setting *model.Setting) *mpb.Setting {
-	workspaceSetting := &mpb.Setting{
-		Name: fmt.Sprintf("%s%s", WorkspaceSettingNamePrefix, setting.Key.String()),
-	}
-	switch setting.Value.(type) {
-	case *mpb.Setting_GeneralSetting:
-		workspaceSetting.Value = &mpb.Setting_GeneralSetting{
-			GeneralSetting: convertWorkspaceGeneralSettingFromStore(setting.GetGeneralSetting()),
-		}
-	case *mpb.Setting_StorageSetting:
-		workspaceSetting.Value = &mpb.Setting_StorageSetting{
-			StorageSetting: convertWorkspaceStorageSettingFromStore(setting.GetStorageSetting()),
-		}
-	case *mpb.Setting_MemoRelatedSetting:
-		workspaceSetting.Value = &mpb.Setting_MemoRelatedSetting{
-			MemoRelatedSetting: convertWorkspaceMemoRelatedSettingFromStore(setting.GetMemoRelatedSetting()),
-		}
-	}
-	return workspaceSetting
-}
+// func convertWorkspaceSettingFromStore(setting *model.Setting) *mpb.Setting {
+// 	workspaceSetting := &mpb.Setting{
+// 		Name: fmt.Sprintf("%s%s", WorkspaceSettingNamePrefix, setting.Key.String()),
+// 	}
+// 	switch setting.Value.(type) {
+// 	case *mpb.Setting_GeneralSetting:
+// 		workspaceSetting.Value = &mpb.Setting_GeneralSetting{
+// 			GeneralSetting: convertWorkspaceGeneralSettingFromStore(setting.GetGeneralSetting()),
+// 		}
+// 	case *mpb.Setting_StorageSetting:
+// 		workspaceSetting.Value = &mpb.Setting_StorageSetting{
+// 			StorageSetting: convertWorkspaceStorageSettingFromStore(setting.GetStorageSetting()),
+// 		}
+// 	case *mpb.Setting_MemoRelatedSetting:
+// 		workspaceSetting.Value = &mpb.Setting_MemoRelatedSetting{
+// 			MemoRelatedSetting: convertWorkspaceMemoRelatedSettingFromStore(setting.GetMemoRelatedSetting()),
+// 		}
+// 	}
+// 	return workspaceSetting
+// }
 
-func convertWorkspaceGeneralSettingFromStore(setting *model.GeneralSetting) *mpb.GeneralSetting {
+func convertWorkspaceGeneralSetting(setting *model.GeneralSetting) *mpb.GeneralSetting {
 	if setting == nil {
 		return nil
 	}
@@ -119,46 +128,46 @@ func convertWorkspaceGeneralSettingFromStore(setting *model.GeneralSetting) *mpb
 	return generalSetting
 }
 
-func convertWorkspaceStorageSettingFromStore(settingpb *model.StorageSetting) *mpb.StorageSetting {
-	if settingpb == nil {
-		return nil
-	}
-	setting := &mpb.StorageSetting{
-		StorageType:       mpb.StorageSetting_StorageType(settingpb.StorageType),
-		FilepathTemplate:  settingpb.FilepathTemplate,
-		UploadSizeLimitMb: settingpb.UploadSizeLimitMb,
-	}
-	if settingpb.S3Config != nil {
-		setting.S3Config = &mpb.StorageSetting_S3Config{
-			AccessKeyId:     settingpb.S3Config.AccessKeyId,
-			AccessKeySecret: settingpb.S3Config.AccessKeySecret,
-			Endpoint:        settingpb.S3Config.Endpoint,
-			Region:          settingpb.S3Config.Region,
-			Bucket:          settingpb.S3Config.Bucket,
-			UsePathStyle:    settingpb.S3Config.UsePathStyle,
-		}
-	}
-	return setting
-}
+// func convertWorkspaceStorageSettingFromStore(settingpb *model.StorageSetting) *mpb.StorageSetting {
+// 	if settingpb == nil {
+// 		return nil
+// 	}
+// 	setting := &mpb.StorageSetting{
+// 		StorageType:       mpb.StorageSetting_StorageType(settingpb.StorageType),
+// 		FilepathTemplate:  settingpb.FilepathTemplate,
+// 		UploadSizeLimitMb: settingpb.UploadSizeLimitMb,
+// 	}
+// 	if settingpb.S3Config != nil {
+// 		setting.S3Config = &mpb.StorageSetting_S3Config{
+// 			AccessKeyId:     settingpb.S3Config.AccessKeyId,
+// 			AccessKeySecret: settingpb.S3Config.AccessKeySecret,
+// 			Endpoint:        settingpb.S3Config.Endpoint,
+// 			Region:          settingpb.S3Config.Region,
+// 			Bucket:          settingpb.S3Config.Bucket,
+// 			UsePathStyle:    settingpb.S3Config.UsePathStyle,
+// 		}
+// 	}
+// 	return setting
+// }
 
-func convertWorkspaceMemoRelatedSettingFromStore(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
-	if setting == nil {
-		return nil
-	}
-	return &mpb.MemoRelatedSetting{
-		DisallowPublicVisibility: setting.DisallowPublicVisibility,
-		DisplayWithUpdateTime:    setting.DisplayWithUpdateTime,
-		ContentLengthLimit:       setting.ContentLengthLimit,
-		EnableDoubleClickEdit:    setting.EnableDoubleClickEdit,
-		EnableLinkPreview:        setting.EnableLinkPreview,
-		EnableComment:            setting.EnableComment,
-		EnableLocation:           setting.EnableLocation,
-		Reactions:                setting.Reactions,
-		DisableMarkdownShortcuts: setting.DisableMarkdownShortcuts,
-		EnableBlurNsfwContent:    setting.EnableBlurNsfwContent,
-		NsfwTags:                 setting.NsfwTags,
-	}
-}
+// func convertWorkspaceMemoRelatedSettingFromStore(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
+// 	if setting == nil {
+// 		return nil
+// 	}
+// 	return &mpb.MemoRelatedSetting{
+// 		DisallowPublicVisibility: setting.DisallowPublicVisibility,
+// 		DisplayWithUpdateTime:    setting.DisplayWithUpdateTime,
+// 		ContentLengthLimit:       setting.ContentLengthLimit,
+// 		EnableDoubleClickEdit:    setting.EnableDoubleClickEdit,
+// 		EnableLinkPreview:        setting.EnableLinkPreview,
+// 		EnableComment:            setting.EnableComment,
+// 		EnableLocation:           setting.EnableLocation,
+// 		Reactions:                setting.Reactions,
+// 		DisableMarkdownShortcuts: setting.DisableMarkdownShortcuts,
+// 		EnableBlurNsfwContent:    setting.EnableBlurNsfwContent,
+// 		NsfwTags:                 setting.NsfwTags,
+// 	}
+// }
 
 func convertWorkspaceSetting(setting *model.Setting) (ret *mpb.Setting) {
 	return

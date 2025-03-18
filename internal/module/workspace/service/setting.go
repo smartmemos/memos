@@ -4,24 +4,20 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+
 	"github.com/smartmemos/memos/internal/module/workspace/model"
 )
 
 func (s *Service) GetSetting(ctx context.Context, key model.SettingKey, value any) (err error) {
-	switch key {
-	case model.SettingKeyBasic:
-	case model.SettingKeyGeneral:
-	case model.SettingKeyMemoRelated:
-	case model.SettingKeyStorage:
-	default:
-		errors.Errorf("unknown type: %s", key)
-		return
-	}
 	setting, err := s.dao.FindSetting(ctx, &model.FindSettingFilter{Name: string(key)})
 	if err != nil {
 		return
 	}
-	err = json.Unmarshal([]byte(setting.Value), value)
+	if err = json.Unmarshal(setting.Value.RawMessage, value); err != nil {
+		data, _ := setting.Value.MarshalJSON()
+		logrus.WithContext(ctx).Errorf("解析json失败, data: %s", err, string(data))
+		return
+	}
 	return
 }
