@@ -119,7 +119,7 @@ func convertWorkspaceGeneralSettingFromStore(setting *model.GeneralSetting) *mpb
 	return generalSetting
 }
 
-func convertWorkspaceStorageSettingFromStore(settingpb *model.WorkspaceStorageSetting) *mpb.StorageSetting {
+func convertWorkspaceStorageSettingFromStore(settingpb *model.StorageSetting) *mpb.StorageSetting {
 	if settingpb == nil {
 		return nil
 	}
@@ -141,7 +141,7 @@ func convertWorkspaceStorageSettingFromStore(settingpb *model.WorkspaceStorageSe
 	return setting
 }
 
-func convertWorkspaceMemoRelatedSettingFromStore(setting *model.WorkspaceMemoRelatedSetting) *mpb.MemoRelatedSetting {
+func convertWorkspaceMemoRelatedSettingFromStore(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
 	if setting == nil {
 		return nil
 	}

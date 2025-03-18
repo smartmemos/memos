@@ -9,5 +9,5 @@ import (
 
 type Service interface {
 	GetProfile(ctx context.Context, req *model.GetProfileRequest) (*model.Profile, error)
-	GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error)
+	GetSetting(ctx context.Context, key model.SettingKey, value any) error
 }
