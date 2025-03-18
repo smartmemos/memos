@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
-	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/module/workspace"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
@@ -59,11 +58,20 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.Ge
 				GeneralSetting: convertWorkspaceGeneralSetting(&value),
 			},
 		}
+	case model.SettingKeyMemoRelated:
+		var value model.MemoRelatedSetting
+		if err = s.workspaceService.GetSetting(ctx, key, &value); err != nil {
+			return
+		}
+		resp = &mpb.Setting{
+			Name: req.Name,
+			Value: &mpb.Setting_MemoRelatedSetting{
+				MemoRelatedSetting: convertWorkspaceMemoRelatedSetting(&value),
+			},
+		}
 	default:
 		return
 	}
-
-	logrus.Info(name)
 	return
 	// if setting == nil {
 	// 	return nil, status.Errorf(codes.NotFound, "workspace setting not found")
@@ -150,24 +158,24 @@ func convertWorkspaceGeneralSetting(setting *model.GeneralSetting) *mpb.GeneralS
 // 	return setting
 // }
 
-// func convertWorkspaceMemoRelatedSettingFromStore(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
-// 	if setting == nil {
-// 		return nil
-// 	}
-// 	return &mpb.MemoRelatedSetting{
-// 		DisallowPublicVisibility: setting.DisallowPublicVisibility,
-// 		DisplayWithUpdateTime:    setting.DisplayWithUpdateTime,
-// 		ContentLengthLimit:       setting.ContentLengthLimit,
-// 		EnableDoubleClickEdit:    setting.EnableDoubleClickEdit,
-// 		EnableLinkPreview:        setting.EnableLinkPreview,
-// 		EnableComment:            setting.EnableComment,
-// 		EnableLocation:           setting.EnableLocation,
-// 		Reactions:                setting.Reactions,
-// 		DisableMarkdownShortcuts: setting.DisableMarkdownShortcuts,
-// 		EnableBlurNsfwContent:    setting.EnableBlurNsfwContent,
-// 		NsfwTags:                 setting.NsfwTags,
-// 	}
-// }
+func convertWorkspaceMemoRelatedSetting(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
+	if setting == nil {
+		return nil
+	}
+	return &mpb.MemoRelatedSetting{
+		DisallowPublicVisibility: setting.DisallowPublicVisibility,
+		DisplayWithUpdateTime:    setting.DisplayWithUpdateTime,
+		ContentLengthLimit:       setting.ContentLengthLimit,
+		EnableDoubleClickEdit:    setting.EnableDoubleClickEdit,
+		EnableLinkPreview:        setting.EnableLinkPreview,
+		EnableComment:            setting.EnableComment,
+		EnableLocation:           setting.EnableLocation,
+		Reactions:                setting.Reactions,
+		DisableMarkdownShortcuts: setting.DisableMarkdownShortcuts,
+		EnableBlurNsfwContent:    setting.EnableBlurNsfwContent,
+		NsfwTags:                 setting.NsfwTags,
+	}
+}
 
 func convertWorkspaceSetting(setting *model.Setting) (ret *mpb.Setting) {
 	return

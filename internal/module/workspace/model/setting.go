@@ -77,12 +77,17 @@ type StorageS3Config struct {
 }
 
 type MemoRelatedSetting struct {
-	DisallowPublicVisibility bool  `json:"disallow_public_visibility"`
-	DisplayWithUpdateTime    bool  `json:"display_with_update_time"`
-	ContentLengthLimit       int32 `json:"content_length_limit"`
-	EnableAutoCompact        bool  `json:"enable_auto_compact"`
-	EnableDoubleClickEdit    bool  `json:"enable_double_click_edit"`
-	EnableLinkPreview        bool  `json:"enable_link_preview"`
+	DisallowPublicVisibility bool     `json:"disallow_public_visibility"`
+	DisplayWithUpdateTime    bool     `json:"display_with_update_time"`
+	ContentLengthLimit       int32    `json:"content_length_limit"`
+	EnableDoubleClickEdit    bool     `json:"enable_double_click_edit"`
+	EnableLinkPreview        bool     `json:"enable_link_preview"`
+	EnableComment            bool     `json:"enable_comment"`
+	EnableLocation           bool     `json:"enable_location"`
+	Reactions                []string `json:"reactions"`
+	DisableMarkdownShortcuts bool     `json:"disable_markdown_shortcuts"`
+	EnableBlurNsfwContent    bool     `json:"enable_blur_nsfw_content"`
+	NsfwTags                 []string `json:"nsfw_tags"`
 }
 
 type GetSettingRequest struct {
