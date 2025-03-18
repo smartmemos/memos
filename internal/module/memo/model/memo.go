@@ -23,8 +23,14 @@ func (Memo) TableName() string {
 type FindMemoFilter struct {
 	db.BaseFilter
 
-	ID  int64
-	Pid int64
+	ID              int64
+	Pid             int64
+	CreatorID       int64
+	ExcludeComments bool
+	ExcludeContent  bool
+	Status          string
+
+	VisibilityList []Visibility
 }
 
 func (f FindMemoFilter) GetQuery() (query string, args []any) {

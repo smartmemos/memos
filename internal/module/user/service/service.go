@@ -3,12 +3,16 @@ package service
 import (
 	"github.com/samber/do/v2"
 
+	"github.com/smartmemos/memos/internal/module/memo"
 	"github.com/smartmemos/memos/internal/module/user"
 	"github.com/smartmemos/memos/internal/module/user/dao"
+	"github.com/smartmemos/memos/internal/module/workspace"
 )
 
 type Service struct {
-	dao user.DAO
+	dao     user.DAO
+	memoDao memo.DAO
+	wsDao   workspace.DAO
 }
 
 func New(i do.Injector) (user.Service, error) {
