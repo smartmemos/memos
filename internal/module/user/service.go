@@ -10,6 +10,6 @@ import (
 type Service interface {
 	CreateUser(context.Context, *model.CreateUserRequest) (*model.User, error)
 	GetUserByID(context.Context, int64) (*model.User, error)
-	GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error)
+	// GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error)
 	ListAllUserStats(ctx context.Context, req *model.ListAllUserStatsRequest) (stats *model.Stats, err error)
 }

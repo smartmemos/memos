@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/module/user"
@@ -36,11 +35,16 @@ func (s *UserService) CreateUser(ctx context.Context, req *v1pb.CreateUserReques
 }
 
 func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSettingRequest) (resp *userpb.Setting, err error) {
-	setting, err := s.userService.GetSetting(ctx, &model.GetSettingRequest{})
-	if err != nil {
-		return
+	// setting, err := s.userService.GetSetting(ctx, &model.GetSettingRequest{})
+	// if err != nil {
+	// 	return
+	// }
+	// logrus.Info(setting)
+	resp = &userpb.Setting{
+		Locale:         "en",
+		Appearance:     "system",
+		MemoVisibility: "PRIVATE",
 	}
-	logrus.Info(setting)
 	return
 }
 

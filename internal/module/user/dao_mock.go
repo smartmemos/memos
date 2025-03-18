@@ -64,6 +64,36 @@ func (mr *MockDAOMockRecorder) CreateUser(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockDAO)(nil).CreateUser), ctx, m)
 }
 
+// FindSetting mocks base method.
+func (m *MockDAO) FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSetting", ctx, filter)
+	ret0, _ := ret[0].(*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSetting indicates an expected call of FindSetting.
+func (mr *MockDAOMockRecorder) FindSetting(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSetting", reflect.TypeOf((*MockDAO)(nil).FindSetting), ctx, filter)
+}
+
+// FindSettings mocks base method.
+func (m *MockDAO) FindSettings(ctx context.Context, filter *model.FindSettingFilter) ([]*model.Setting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSettings", ctx, filter)
+	ret0, _ := ret[0].([]*model.Setting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSettings indicates an expected call of FindSettings.
+func (mr *MockDAOMockRecorder) FindSettings(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSettings", reflect.TypeOf((*MockDAO)(nil).FindSettings), ctx, filter)
+}
+
 // FindUser mocks base method.
 func (m *MockDAO) FindUser(ctx context.Context, filter *model.FindUserFilter) (*model.User, error) {
 	m.ctrl.T.Helper()

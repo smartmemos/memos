@@ -15,4 +15,7 @@ type DAO interface {
 	FindUsers(ctx context.Context, filter *model.FindUserFilter) ([]*model.User, error)
 	FindUserByID(ctx context.Context, id int64) (*model.User, error)
 	FindUser(ctx context.Context, filter *model.FindUserFilter) (*model.User, error)
+
+	FindSettings(ctx context.Context, filter *model.FindSettingFilter) ([]*model.Setting, error)
+	FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error)
 }
