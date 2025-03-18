@@ -49,7 +49,19 @@ func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSetti
 }
 
 func (s *UserService) ListAllUserStats(ctx context.Context, req *v1pb.ListAllUserStatsRequest) (resp *v1pb.ListAllUserStatsResponse, err error) {
-	s.userService.ListAllUserStats(ctx, &model.ListAllUserStatsRequest{})
+	// s.userService.ListAllUserStats(ctx, &model.ListAllUserStatsRequest{})
+	resp = &v1pb.ListAllUserStatsResponse{
+		UserStats: []*userpb.Stats{
+			{
+				Name:                  "",
+				PinnedMemos:           []string{},
+				TagCount:              map[string]int32{},
+				MemoDisplayTimestamps: []*timestamppb.Timestamp{},
+				MemoTypeStats:         &userpb.Stats_MemoTypeStats{},
+				TotalMemoCount:        1,
+			},
+		},
+	}
 	return
 }
 
