@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -25,6 +26,9 @@ const (
 	WorkspaceService_SetWorkspaceSetting_FullMethodName   = "/api.v1.WorkspaceService/SetWorkspaceSetting"
 	WorkspaceService_ListIdentityProviders_FullMethodName = "/api.v1.WorkspaceService/ListIdentityProviders"
 	WorkspaceService_GetIdentityProvider_FullMethodName   = "/api.v1.WorkspaceService/GetIdentityProvider"
+	WorkspaceService_ListInboxes_FullMethodName           = "/api.v1.WorkspaceService/ListInboxes"
+	WorkspaceService_UpdateInbox_FullMethodName           = "/api.v1.WorkspaceService/UpdateInbox"
+	WorkspaceService_DeleteInbox_FullMethodName           = "/api.v1.WorkspaceService/DeleteInbox"
 )
 
 // WorkspaceServiceClient is the client API for WorkspaceService service.
@@ -41,6 +45,12 @@ type WorkspaceServiceClient interface {
 	ListIdentityProviders(ctx context.Context, in *ListIdentityProvidersRequest, opts ...grpc.CallOption) (*ListIdentityProvidersResponse, error)
 	// GetIdentityProvider gets an identity provider.
 	GetIdentityProvider(ctx context.Context, in *GetIdentityProviderRequest, opts ...grpc.CallOption) (*workspace.IdentityProvider, error)
+	// ListInboxes lists inboxes for a user.
+	ListInboxes(ctx context.Context, in *ListInboxesRequest, opts ...grpc.CallOption) (*ListInboxesResponse, error)
+	// UpdateInbox updates an inbox.
+	UpdateInbox(ctx context.Context, in *UpdateInboxRequest, opts ...grpc.CallOption) (*workspace.Inbox, error)
+	// DeleteInbox deletes an inbox.
+	DeleteInbox(ctx context.Context, in *DeleteInboxRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type workspaceServiceClient struct {
@@ -101,6 +111,36 @@ func (c *workspaceServiceClient) GetIdentityProvider(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *workspaceServiceClient) ListInboxes(ctx context.Context, in *ListInboxesRequest, opts ...grpc.CallOption) (*ListInboxesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListInboxesResponse)
+	err := c.cc.Invoke(ctx, WorkspaceService_ListInboxes_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workspaceServiceClient) UpdateInbox(ctx context.Context, in *UpdateInboxRequest, opts ...grpc.CallOption) (*workspace.Inbox, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(workspace.Inbox)
+	err := c.cc.Invoke(ctx, WorkspaceService_UpdateInbox_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workspaceServiceClient) DeleteInbox(ctx context.Context, in *DeleteInboxRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, WorkspaceService_DeleteInbox_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WorkspaceServiceServer is the server API for WorkspaceService service.
 // All implementations must embed UnimplementedWorkspaceServiceServer
 // for forward compatibility.
@@ -115,6 +155,12 @@ type WorkspaceServiceServer interface {
 	ListIdentityProviders(context.Context, *ListIdentityProvidersRequest) (*ListIdentityProvidersResponse, error)
 	// GetIdentityProvider gets an identity provider.
 	GetIdentityProvider(context.Context, *GetIdentityProviderRequest) (*workspace.IdentityProvider, error)
+	// ListInboxes lists inboxes for a user.
+	ListInboxes(context.Context, *ListInboxesRequest) (*ListInboxesResponse, error)
+	// UpdateInbox updates an inbox.
+	UpdateInbox(context.Context, *UpdateInboxRequest) (*workspace.Inbox, error)
+	// DeleteInbox deletes an inbox.
+	DeleteInbox(context.Context, *DeleteInboxRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
 }
 
@@ -139,6 +185,15 @@ func (UnimplementedWorkspaceServiceServer) ListIdentityProviders(context.Context
 }
 func (UnimplementedWorkspaceServiceServer) GetIdentityProvider(context.Context, *GetIdentityProviderRequest) (*workspace.IdentityProvider, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIdentityProvider not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) ListInboxes(context.Context, *ListInboxesRequest) (*ListInboxesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInboxes not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) UpdateInbox(context.Context, *UpdateInboxRequest) (*workspace.Inbox, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInbox not implemented")
+}
+func (UnimplementedWorkspaceServiceServer) DeleteInbox(context.Context, *DeleteInboxRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteInbox not implemented")
 }
 func (UnimplementedWorkspaceServiceServer) mustEmbedUnimplementedWorkspaceServiceServer() {}
 func (UnimplementedWorkspaceServiceServer) testEmbeddedByValue()                          {}
@@ -251,6 +306,60 @@ func _WorkspaceService_GetIdentityProvider_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WorkspaceService_ListInboxes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInboxesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).ListInboxes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_ListInboxes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).ListInboxes(ctx, req.(*ListInboxesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkspaceService_UpdateInbox_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInboxRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).UpdateInbox(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_UpdateInbox_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).UpdateInbox(ctx, req.(*UpdateInboxRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkspaceService_DeleteInbox_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInboxRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).DeleteInbox(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_DeleteInbox_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).DeleteInbox(ctx, req.(*DeleteInboxRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WorkspaceService_ServiceDesc is the grpc.ServiceDesc for WorkspaceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -277,6 +386,18 @@ var WorkspaceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetIdentityProvider",
 			Handler:    _WorkspaceService_GetIdentityProvider_Handler,
+		},
+		{
+			MethodName: "ListInboxes",
+			Handler:    _WorkspaceService_ListInboxes_Handler,
+		},
+		{
+			MethodName: "UpdateInbox",
+			Handler:    _WorkspaceService_UpdateInbox_Handler,
+		},
+		{
+			MethodName: "DeleteInbox",
+			Handler:    _WorkspaceService_DeleteInbox_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

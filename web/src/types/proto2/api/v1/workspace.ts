@@ -6,7 +6,10 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "../../google/protobuf/empty";
+import { FieldMask } from "../../google/protobuf/field_mask";
 import { IdentityProvider } from "../../model/workspace/identity_provider";
+import { Inbox } from "../../model/workspace/inbox";
 import { Profile } from "../../model/workspace/profile";
 import { Setting } from "../../model/workspace/setting";
 
@@ -38,6 +41,34 @@ export interface GetWorkspaceSettingRequest {
 export interface SetWorkspaceSettingRequest {
   /** setting is the setting to update. */
   setting?: Setting | undefined;
+}
+
+export interface ListInboxesRequest {
+  /** Format: users/{user} */
+  user: string;
+  /** The maximum number of inbox to return. */
+  pageSize: number;
+  /** Provide this to retrieve the subsequent page. */
+  pageToken: string;
+}
+
+export interface ListInboxesResponse {
+  inboxes: Inbox[];
+  /**
+   * A token, which can be sent as `page_token` to retrieve the next page.
+   * If this field is omitted, there are no subsequent pages.
+   */
+  nextPageToken: string;
+}
+
+export interface UpdateInboxRequest {
+  inbox?: Inbox | undefined;
+  updateMask?: string[] | undefined;
+}
+
+export interface DeleteInboxRequest {
+  /** The name of the inbox to delete. */
+  name: string;
 }
 
 function createBaseListIdentityProvidersRequest(): ListIdentityProvidersRequest {
@@ -290,6 +321,238 @@ export const SetWorkspaceSettingRequest: MessageFns<SetWorkspaceSettingRequest> 
     message.setting = (object.setting !== undefined && object.setting !== null)
       ? Setting.fromPartial(object.setting)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseListInboxesRequest(): ListInboxesRequest {
+  return { user: "", pageSize: 0, pageToken: "" };
+}
+
+export const ListInboxesRequest: MessageFns<ListInboxesRequest> = {
+  encode(message: ListInboxesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.user !== "") {
+      writer.uint32(10).string(message.user);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListInboxesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListInboxesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.user = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.pageToken = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListInboxesRequest>): ListInboxesRequest {
+    return ListInboxesRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListInboxesRequest>): ListInboxesRequest {
+    const message = createBaseListInboxesRequest();
+    message.user = object.user ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+function createBaseListInboxesResponse(): ListInboxesResponse {
+  return { inboxes: [], nextPageToken: "" };
+}
+
+export const ListInboxesResponse: MessageFns<ListInboxesResponse> = {
+  encode(message: ListInboxesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.inboxes) {
+      Inbox.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListInboxesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListInboxesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.inboxes.push(Inbox.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.nextPageToken = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListInboxesResponse>): ListInboxesResponse {
+    return ListInboxesResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListInboxesResponse>): ListInboxesResponse {
+    const message = createBaseListInboxesResponse();
+    message.inboxes = object.inboxes?.map((e) => Inbox.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateInboxRequest(): UpdateInboxRequest {
+  return { inbox: undefined, updateMask: undefined };
+}
+
+export const UpdateInboxRequest: MessageFns<UpdateInboxRequest> = {
+  encode(message: UpdateInboxRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.inbox !== undefined) {
+      Inbox.encode(message.inbox, writer.uint32(10).fork()).join();
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(FieldMask.wrap(message.updateMask), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateInboxRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateInboxRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.inbox = Inbox.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.updateMask = FieldMask.unwrap(FieldMask.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<UpdateInboxRequest>): UpdateInboxRequest {
+    return UpdateInboxRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UpdateInboxRequest>): UpdateInboxRequest {
+    const message = createBaseUpdateInboxRequest();
+    message.inbox = (object.inbox !== undefined && object.inbox !== null) ? Inbox.fromPartial(object.inbox) : undefined;
+    message.updateMask = object.updateMask ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteInboxRequest(): DeleteInboxRequest {
+  return { name: "" };
+}
+
+export const DeleteInboxRequest: MessageFns<DeleteInboxRequest> = {
+  encode(message: DeleteInboxRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteInboxRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteInboxRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<DeleteInboxRequest>): DeleteInboxRequest {
+    return DeleteInboxRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DeleteInboxRequest>): DeleteInboxRequest {
+    const message = createBaseDeleteInboxRequest();
+    message.name = object.name ?? "";
     return message;
   },
 };
@@ -559,6 +822,122 @@ export const WorkspaceServiceDefinition = {
               100,
               101,
               114,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** ListInboxes lists inboxes for a user. */
+    listInboxes: {
+      name: "ListInboxes",
+      requestType: ListInboxesRequest,
+      requestStream: false,
+      responseType: ListInboxesResponse,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          578365826: [
+            new Uint8Array([17, 18, 15, 47, 97, 112, 105, 47, 118, 49, 47, 105, 110, 98, 111, 120, 101, 115]),
+          ],
+        },
+      },
+    },
+    /** UpdateInbox updates an inbox. */
+    updateInbox: {
+      name: "UpdateInbox",
+      requestType: UpdateInboxRequest,
+      requestStream: false,
+      responseType: Inbox,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([17, 105, 110, 98, 111, 120, 44, 117, 112, 100, 97, 116, 101, 95, 109, 97, 115, 107])],
+          578365826: [
+            new Uint8Array([
+              39,
+              58,
+              5,
+              105,
+              110,
+              98,
+              111,
+              120,
+              50,
+              30,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              105,
+              110,
+              98,
+              111,
+              120,
+              46,
+              110,
+              97,
+              109,
+              101,
+              61,
+              105,
+              110,
+              98,
+              111,
+              120,
+              101,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** DeleteInbox deletes an inbox. */
+    deleteInbox: {
+      name: "DeleteInbox",
+      requestType: DeleteInboxRequest,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              26,
+              42,
+              24,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              105,
+              110,
+              98,
+              111,
+              120,
+              101,
               115,
               47,
               42,

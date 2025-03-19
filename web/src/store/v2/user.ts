@@ -1,7 +1,7 @@
 import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
-import { authServiceClient, inboxServiceClient, userServiceClient } from "@/grpcweb";
-import { Inbox } from "@/types/proto/api/v1/inbox_service";
+import { authServiceClient, workspaceServiceClient, userServiceClient } from "@/grpcweb";
+import { Inbox } from "@/types/proto2/model/workspace/inbox";
 import { Shortcut, User, UserSetting, UserStats } from "@/types/proto/api/v1/user_service";
 import workspaceStore from "./workspace";
 
@@ -144,14 +144,14 @@ const userStore = (() => {
   };
 
   const fetchInboxes = async () => {
-    const { inboxes } = await inboxServiceClient.listInboxes({});
+    const { inboxes } = await workspaceServiceClient.listInboxes({});
     state.setPartial({
       inboxes,
     });
   };
 
   const updateInbox = async (inbox: Partial<Inbox>, updateMask: string[]) => {
-    const updatedInbox = await inboxServiceClient.updateInbox({
+    const updatedInbox = await workspaceServiceClient.updateInbox({
       inbox,
       updateMask,
     });

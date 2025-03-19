@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/samber/do/v2"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/smartmemos/memos/internal/module/workspace"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
-	v1 "github.com/smartmemos/memos/internal/proto/api/v1"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
 	mpb "github.com/smartmemos/memos/internal/proto/model/workspace"
 )
@@ -73,43 +73,7 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.Ge
 		return
 	}
 	return
-	// if setting == nil {
-	// 	return nil, status.Errorf(codes.NotFound, "workspace setting not found")
-	// }
-	// // For storage setting, only host can get it.
-	// if setting.Key == mpb.SettingKey_STORAGE {
-	// 	user, err := grpc_util.GetUserID(ctx)
-	// 	if err != nil {
-	// 		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
-	// 	}
-	// 	if user == nil || user.Role != usermd.RoleHost {
-	// 		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
-	// 	}
-	// }
-
-	// return convertWorkspaceSettingFromStore(workspaceSetting), nil
 }
-
-// func convertWorkspaceSettingFromStore(setting *model.Setting) *mpb.Setting {
-// 	workspaceSetting := &mpb.Setting{
-// 		Name: fmt.Sprintf("%s%s", WorkspaceSettingNamePrefix, setting.Key.String()),
-// 	}
-// 	switch setting.Value.(type) {
-// 	case *mpb.Setting_GeneralSetting:
-// 		workspaceSetting.Value = &mpb.Setting_GeneralSetting{
-// 			GeneralSetting: convertWorkspaceGeneralSettingFromStore(setting.GetGeneralSetting()),
-// 		}
-// 	case *mpb.Setting_StorageSetting:
-// 		workspaceSetting.Value = &mpb.Setting_StorageSetting{
-// 			StorageSetting: convertWorkspaceStorageSettingFromStore(setting.GetStorageSetting()),
-// 		}
-// 	case *mpb.Setting_MemoRelatedSetting:
-// 		workspaceSetting.Value = &mpb.Setting_MemoRelatedSetting{
-// 			MemoRelatedSetting: convertWorkspaceMemoRelatedSettingFromStore(setting.GetMemoRelatedSetting()),
-// 		}
-// 	}
-// 	return workspaceSetting
-// }
 
 func convertWorkspaceGeneralSetting(setting *model.GeneralSetting) *mpb.GeneralSetting {
 	if setting == nil {
@@ -136,28 +100,6 @@ func convertWorkspaceGeneralSetting(setting *model.GeneralSetting) *mpb.GeneralS
 	return generalSetting
 }
 
-// func convertWorkspaceStorageSettingFromStore(settingpb *model.StorageSetting) *mpb.StorageSetting {
-// 	if settingpb == nil {
-// 		return nil
-// 	}
-// 	setting := &mpb.StorageSetting{
-// 		StorageType:       mpb.StorageSetting_StorageType(settingpb.StorageType),
-// 		FilepathTemplate:  settingpb.FilepathTemplate,
-// 		UploadSizeLimitMb: settingpb.UploadSizeLimitMb,
-// 	}
-// 	if settingpb.S3Config != nil {
-// 		setting.S3Config = &mpb.StorageSetting_S3Config{
-// 			AccessKeyId:     settingpb.S3Config.AccessKeyId,
-// 			AccessKeySecret: settingpb.S3Config.AccessKeySecret,
-// 			Endpoint:        settingpb.S3Config.Endpoint,
-// 			Region:          settingpb.S3Config.Region,
-// 			Bucket:          settingpb.S3Config.Bucket,
-// 			UsePathStyle:    settingpb.S3Config.UsePathStyle,
-// 		}
-// 	}
-// 	return setting
-// }
-
 func convertWorkspaceMemoRelatedSetting(setting *model.MemoRelatedSetting) *mpb.MemoRelatedSetting {
 	if setting == nil {
 		return nil
@@ -181,6 +123,18 @@ func convertWorkspaceSetting(setting *model.Setting) (ret *mpb.Setting) {
 	return
 }
 
-func (s *WorkspaceService) ListIdentityProviders(context.Context, *v1.ListIdentityProvidersRequest) (resp *v1.ListIdentityProvidersResponse, err error) {
+func (s *WorkspaceService) ListIdentityProviders(context.Context, *v1pb.ListIdentityProvidersRequest) (resp *v1pb.ListIdentityProvidersResponse, err error) {
+	return
+}
+
+func (s *WorkspaceService) ListInboxes(context.Context, *v1pb.ListInboxesRequest) (resp *v1pb.ListInboxesResponse, err error) {
+	return
+}
+
+func (s *WorkspaceService) UpdateInbox(context.Context, *v1pb.UpdateInboxRequest) (resp *mpb.Inbox, err error) {
+	return
+}
+
+func (s *WorkspaceService) DeleteInbox(context.Context, *v1pb.DeleteInboxRequest) (_ *emptypb.Empty, err error) {
 	return
 }

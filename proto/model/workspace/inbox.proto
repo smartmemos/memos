@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package workspace;
+option go_package = "github.com/smartmemos/memos/internal/proto/model/workspace";
+
+message Inbox {
+  // The name of the inbox.
+  // Format: inboxes/{id}, id is the system generated auto-incremented id.
+  string name = 1;
+  // Format: users/{user}
+  string sender = 2;
+  // Format: users/{user}
+  string receiver = 3;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    UNREAD = 1;
+    ARCHIVED = 2;
+  }
+  Status status = 4;
+
+  google.protobuf.Timestamp create_time = 5;
+
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    MEMO_COMMENT = 1;
+    VERSION_UPDATE = 2;
+  }
+  Type type = 6;
+
+  optional int32 activity_id = 7;
+}
