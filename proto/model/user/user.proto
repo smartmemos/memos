@@ -9,7 +9,8 @@ option go_package = "github.com/smartmemos/memos/internal/proto/model/user";
 
 message User {
   int64 id = 1;
-  string username = 2;
+  string name =2;
+  string username = 3;
 
   enum Role {
     ROLE_UNSPECIFIED = 0;
@@ -17,23 +18,23 @@ message User {
     ADMIN = 2;
     USER = 3;
   }
-  Role role = 3;
+  Role role = 4;
 
-  string nickname = 4;
+  string nickname = 5;
 
-  string email = 5;
+  string email = 6;
 
-  string avatar_url = 6;
+  string avatar_url = 7;
 
-  string description = 7;
+  string description = 8;
 
-  string password = 8 [(google.api.field_behavior) = INPUT_ONLY];
+  string password = 9 [(google.api.field_behavior) = INPUT_ONLY];
 
-  State state = 9;
+  State state = 10;
 
-  google.protobuf.Timestamp create_at = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_at = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  google.protobuf.Timestamp update_at = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_at = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 enum State {

@@ -53,8 +53,6 @@ const userStore = (() => {
     const user = await userServiceClient.getUser({
       name: name,
     });
-    console.log("---------------------><----------------------");
-    console.log(user);
     state.setPartial({
       userMapByName: {
         ...userMap,

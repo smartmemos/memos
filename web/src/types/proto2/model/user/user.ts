@@ -90,6 +90,7 @@ export function directionToNumber(object: Direction): number {
 
 export interface User {
   id: number;
+  name: string;
   username: string;
   role: User_Role;
   nickname: string;
@@ -156,6 +157,7 @@ export interface PageToken {
 function createBaseUser(): User {
   return {
     id: 0,
+    name: "",
     username: "",
     role: User_Role.ROLE_UNSPECIFIED,
     nickname: "",
@@ -174,35 +176,38 @@ export const User: MessageFns<User> = {
     if (message.id !== 0) {
       writer.uint32(8).int64(message.id);
     }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
     if (message.username !== "") {
-      writer.uint32(18).string(message.username);
+      writer.uint32(26).string(message.username);
     }
     if (message.role !== User_Role.ROLE_UNSPECIFIED) {
-      writer.uint32(24).int32(user_RoleToNumber(message.role));
+      writer.uint32(32).int32(user_RoleToNumber(message.role));
     }
     if (message.nickname !== "") {
-      writer.uint32(34).string(message.nickname);
+      writer.uint32(42).string(message.nickname);
     }
     if (message.email !== "") {
-      writer.uint32(42).string(message.email);
+      writer.uint32(50).string(message.email);
     }
     if (message.avatarUrl !== "") {
-      writer.uint32(50).string(message.avatarUrl);
+      writer.uint32(58).string(message.avatarUrl);
     }
     if (message.description !== "") {
-      writer.uint32(58).string(message.description);
+      writer.uint32(66).string(message.description);
     }
     if (message.password !== "") {
-      writer.uint32(66).string(message.password);
+      writer.uint32(74).string(message.password);
     }
     if (message.state !== State.STATE_UNSPECIFIED) {
-      writer.uint32(72).int32(stateToNumber(message.state));
+      writer.uint32(80).int32(stateToNumber(message.state));
     }
     if (message.createAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.createAt), writer.uint32(82).fork()).join();
+      Timestamp.encode(toTimestamp(message.createAt), writer.uint32(90).fork()).join();
     }
     if (message.updateAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.updateAt), writer.uint32(90).fork()).join();
+      Timestamp.encode(toTimestamp(message.updateAt), writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -227,23 +232,23 @@ export const User: MessageFns<User> = {
             break;
           }
 
-          message.username = reader.string();
+          message.name = reader.string();
           continue;
         }
         case 3: {
-          if (tag !== 24) {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
             break;
           }
 
           message.role = user_RoleFromJSON(reader.int32());
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.nickname = reader.string();
           continue;
         }
         case 5: {
@@ -251,7 +256,7 @@ export const User: MessageFns<User> = {
             break;
           }
 
-          message.email = reader.string();
+          message.nickname = reader.string();
           continue;
         }
         case 6: {
@@ -259,7 +264,7 @@ export const User: MessageFns<User> = {
             break;
           }
 
-          message.avatarUrl = reader.string();
+          message.email = reader.string();
           continue;
         }
         case 7: {
@@ -267,7 +272,7 @@ export const User: MessageFns<User> = {
             break;
           }
 
-          message.description = reader.string();
+          message.avatarUrl = reader.string();
           continue;
         }
         case 8: {
@@ -275,27 +280,35 @@ export const User: MessageFns<User> = {
             break;
           }
 
-          message.password = reader.string();
+          message.description = reader.string();
           continue;
         }
         case 9: {
-          if (tag !== 72) {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
             break;
           }
 
           message.state = stateFromJSON(reader.int32());
           continue;
         }
-        case 10: {
-          if (tag !== 82) {
+        case 11: {
+          if (tag !== 90) {
             break;
           }
 
           message.createAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         }
-        case 11: {
-          if (tag !== 90) {
+        case 12: {
+          if (tag !== 98) {
             break;
           }
 
@@ -317,6 +330,7 @@ export const User: MessageFns<User> = {
   fromPartial(object: DeepPartial<User>): User {
     const message = createBaseUser();
     message.id = object.id ?? 0;
+    message.name = object.name ?? "";
     message.username = object.username ?? "";
     message.role = object.role ?? User_Role.ROLE_UNSPECIFIED;
     message.nickname = object.nickname ?? "";

@@ -73,6 +73,7 @@ func (s *UserService) GetUserStats(context.Context, *v1pb.GetUserStatsRequest) (
 func convertUserToProto(user *model.User) *userpb.User {
 	return &userpb.User{
 		Id:          user.ID,
+		Name:        user.Username,
 		Username:    user.Username,
 		Nickname:    user.Nickname,
 		Email:       user.Email,

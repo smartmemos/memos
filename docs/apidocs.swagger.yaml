@@ -549,6 +549,8 @@ definitions:
       id:
         type: string
         format: int64
+      name:
+        type: string
       username:
         type: string
       role:
