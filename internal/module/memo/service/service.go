@@ -4,11 +4,13 @@ import (
 	"github.com/samber/do/v2"
 	"github.com/smartmemos/memos/internal/module/memo"
 	"github.com/smartmemos/memos/internal/module/memo/dao"
+	"github.com/smartmemos/memos/internal/module/workspace"
 )
 
 // Service struct
 type Service struct {
-	dao memo.DAO
+	dao   memo.DAO
+	wsDao workspace.DAO
 }
 
 // New 实例化

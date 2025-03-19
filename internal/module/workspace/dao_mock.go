@@ -64,6 +64,21 @@ func (mr *MockDAOMockRecorder) CreateSetting(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSetting", reflect.TypeOf((*MockDAO)(nil).CreateSetting), ctx, m)
 }
 
+// FindMemoRelatedSetting mocks base method.
+func (m *MockDAO) FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemoRelatedSetting", ctx)
+	ret0, _ := ret[0].(*model.MemoRelatedSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoRelatedSetting indicates an expected call of FindMemoRelatedSetting.
+func (mr *MockDAOMockRecorder) FindMemoRelatedSetting(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelatedSetting", reflect.TypeOf((*MockDAO)(nil).FindMemoRelatedSetting), ctx)
+}
+
 // FindSetting mocks base method.
 func (m *MockDAO) FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error) {
 	m.ctrl.T.Helper()

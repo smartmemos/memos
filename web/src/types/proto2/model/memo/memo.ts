@@ -7,29 +7,238 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../../google/protobuf/timestamp";
+import { State, stateFromJSON, stateToNumber } from "../common/common";
+import { Reaction } from "./reaction";
+import { Resource } from "./resource";
 
 export const protobufPackage = "memo";
 
+export enum Visibility {
+  VISIBILITY_UNSPECIFIED = "VISIBILITY_UNSPECIFIED",
+  PRIVATE = "PRIVATE",
+  PROTECTED = "PROTECTED",
+  PUBLIC = "PUBLIC",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function visibilityFromJSON(object: any): Visibility {
+  switch (object) {
+    case 0:
+    case "VISIBILITY_UNSPECIFIED":
+      return Visibility.VISIBILITY_UNSPECIFIED;
+    case 1:
+    case "PRIVATE":
+      return Visibility.PRIVATE;
+    case 2:
+    case "PROTECTED":
+      return Visibility.PROTECTED;
+    case 3:
+    case "PUBLIC":
+      return Visibility.PUBLIC;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Visibility.UNRECOGNIZED;
+  }
+}
+
+export function visibilityToNumber(object: Visibility): number {
+  switch (object) {
+    case Visibility.VISIBILITY_UNSPECIFIED:
+      return 0;
+    case Visibility.PRIVATE:
+      return 1;
+    case Visibility.PROTECTED:
+      return 2;
+    case Visibility.PUBLIC:
+      return 3;
+    case Visibility.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Memo {
-  id: number;
-  createdAt?: Date | undefined;
-  updatedAt?: Date | undefined;
+  /**
+   * The name of the memo.
+   * Format: memos/{memo}, memo is the user defined id or uuid.
+   */
+  name: string;
+  state: State;
+  /**
+   * The name of the creator.
+   * Format: users/{user}
+   */
+  creator: string;
+  createTime?: Date | undefined;
+  updateTime?: Date | undefined;
+  displayTime?: Date | undefined;
+  content: string;
+  visibility: Visibility;
+  tags: string[];
+  pinned: boolean;
+  resources: Resource[];
+  relations: MemoRelation[];
+  reactions: Reaction[];
+  property?:
+    | Memo_Property
+    | undefined;
+  /**
+   * The name of the parent memo.
+   * Format: memos/{id}
+   */
+  parent?:
+    | string
+    | undefined;
+  /** The snippet of the memo content. Plain text only. */
+  snippet: string;
+  /** The location of the memo. */
+  location?: Location | undefined;
+}
+
+export interface Memo_Property {
+  hasLink: boolean;
+  hasTaskList: boolean;
+  hasCode: boolean;
+  hasIncompleteTasks: boolean;
+}
+
+export interface Location {
+  placeholder: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface MemoRelation {
+  memo?: MemoRelation_Memo | undefined;
+  relatedMemo?: MemoRelation_Memo | undefined;
+  type: MemoRelation_Type;
+}
+
+export enum MemoRelation_Type {
+  TYPE_UNSPECIFIED = "TYPE_UNSPECIFIED",
+  REFERENCE = "REFERENCE",
+  COMMENT = "COMMENT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function memoRelation_TypeFromJSON(object: any): MemoRelation_Type {
+  switch (object) {
+    case 0:
+    case "TYPE_UNSPECIFIED":
+      return MemoRelation_Type.TYPE_UNSPECIFIED;
+    case 1:
+    case "REFERENCE":
+      return MemoRelation_Type.REFERENCE;
+    case 2:
+    case "COMMENT":
+      return MemoRelation_Type.COMMENT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MemoRelation_Type.UNRECOGNIZED;
+  }
+}
+
+export function memoRelation_TypeToNumber(object: MemoRelation_Type): number {
+  switch (object) {
+    case MemoRelation_Type.TYPE_UNSPECIFIED:
+      return 0;
+    case MemoRelation_Type.REFERENCE:
+      return 1;
+    case MemoRelation_Type.COMMENT:
+      return 2;
+    case MemoRelation_Type.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export interface MemoRelation_Memo {
+  /**
+   * The name of the memo.
+   * Format: memos/{id}
+   */
+  name: string;
+  uid: string;
+  /** The snippet of the memo content. Plain text only. */
+  snippet: string;
 }
 
 function createBaseMemo(): Memo {
-  return { id: 0, createdAt: undefined, updatedAt: undefined };
+  return {
+    name: "",
+    state: State.STATE_UNSPECIFIED,
+    creator: "",
+    createTime: undefined,
+    updateTime: undefined,
+    displayTime: undefined,
+    content: "",
+    visibility: Visibility.VISIBILITY_UNSPECIFIED,
+    tags: [],
+    pinned: false,
+    resources: [],
+    relations: [],
+    reactions: [],
+    property: undefined,
+    parent: undefined,
+    snippet: "",
+    location: undefined,
+  };
 }
 
 export const Memo: MessageFns<Memo> = {
   encode(message: Memo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== 0) {
-      writer.uint32(8).int64(message.id);
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
     }
-    if (message.createdAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(402).fork()).join();
+    if (message.state !== State.STATE_UNSPECIFIED) {
+      writer.uint32(24).int32(stateToNumber(message.state));
     }
-    if (message.updatedAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(410).fork()).join();
+    if (message.creator !== "") {
+      writer.uint32(34).string(message.creator);
+    }
+    if (message.createTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(42).fork()).join();
+    }
+    if (message.updateTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.updateTime), writer.uint32(50).fork()).join();
+    }
+    if (message.displayTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.displayTime), writer.uint32(58).fork()).join();
+    }
+    if (message.content !== "") {
+      writer.uint32(66).string(message.content);
+    }
+    if (message.visibility !== Visibility.VISIBILITY_UNSPECIFIED) {
+      writer.uint32(80).int32(visibilityToNumber(message.visibility));
+    }
+    for (const v of message.tags) {
+      writer.uint32(90).string(v!);
+    }
+    if (message.pinned !== false) {
+      writer.uint32(96).bool(message.pinned);
+    }
+    for (const v of message.resources) {
+      Resource.encode(v!, writer.uint32(114).fork()).join();
+    }
+    for (const v of message.relations) {
+      MemoRelation.encode(v!, writer.uint32(122).fork()).join();
+    }
+    for (const v of message.reactions) {
+      Reaction.encode(v!, writer.uint32(130).fork()).join();
+    }
+    if (message.property !== undefined) {
+      Memo_Property.encode(message.property, writer.uint32(138).fork()).join();
+    }
+    if (message.parent !== undefined) {
+      writer.uint32(146).string(message.parent);
+    }
+    if (message.snippet !== "") {
+      writer.uint32(154).string(message.snippet);
+    }
+    if (message.location !== undefined) {
+      Location.encode(message.location, writer.uint32(162).fork()).join();
     }
     return writer;
   },
@@ -42,27 +251,139 @@ export const Memo: MessageFns<Memo> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 8) {
+          if (tag !== 10) {
             break;
           }
 
-          message.id = longToNumber(reader.int64());
+          message.name = reader.string();
           continue;
         }
-        case 50: {
-          if (tag !== 402) {
+        case 3: {
+          if (tag !== 24) {
             break;
           }
 
-          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.state = stateFromJSON(reader.int32());
           continue;
         }
-        case 51: {
-          if (tag !== 410) {
+        case 4: {
+          if (tag !== 34) {
             break;
           }
 
-          message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.creator = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.updateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.displayTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.content = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.visibility = visibilityFromJSON(reader.int32());
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.tags.push(reader.string());
+          continue;
+        }
+        case 12: {
+          if (tag !== 96) {
+            break;
+          }
+
+          message.pinned = reader.bool();
+          continue;
+        }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.resources.push(Resource.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.relations.push(MemoRelation.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 16: {
+          if (tag !== 130) {
+            break;
+          }
+
+          message.reactions.push(Reaction.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 17: {
+          if (tag !== 138) {
+            break;
+          }
+
+          message.property = Memo_Property.decode(reader, reader.uint32());
+          continue;
+        }
+        case 18: {
+          if (tag !== 146) {
+            break;
+          }
+
+          message.parent = reader.string();
+          continue;
+        }
+        case 19: {
+          if (tag !== 154) {
+            break;
+          }
+
+          message.snippet = reader.string();
+          continue;
+        }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.location = Location.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -79,9 +400,323 @@ export const Memo: MessageFns<Memo> = {
   },
   fromPartial(object: DeepPartial<Memo>): Memo {
     const message = createBaseMemo();
-    message.id = object.id ?? 0;
-    message.createdAt = object.createdAt ?? undefined;
-    message.updatedAt = object.updatedAt ?? undefined;
+    message.name = object.name ?? "";
+    message.state = object.state ?? State.STATE_UNSPECIFIED;
+    message.creator = object.creator ?? "";
+    message.createTime = object.createTime ?? undefined;
+    message.updateTime = object.updateTime ?? undefined;
+    message.displayTime = object.displayTime ?? undefined;
+    message.content = object.content ?? "";
+    message.visibility = object.visibility ?? Visibility.VISIBILITY_UNSPECIFIED;
+    message.tags = object.tags?.map((e) => e) || [];
+    message.pinned = object.pinned ?? false;
+    message.resources = object.resources?.map((e) => Resource.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => MemoRelation.fromPartial(e)) || [];
+    message.reactions = object.reactions?.map((e) => Reaction.fromPartial(e)) || [];
+    message.property = (object.property !== undefined && object.property !== null)
+      ? Memo_Property.fromPartial(object.property)
+      : undefined;
+    message.parent = object.parent ?? undefined;
+    message.snippet = object.snippet ?? "";
+    message.location = (object.location !== undefined && object.location !== null)
+      ? Location.fromPartial(object.location)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMemo_Property(): Memo_Property {
+  return { hasLink: false, hasTaskList: false, hasCode: false, hasIncompleteTasks: false };
+}
+
+export const Memo_Property: MessageFns<Memo_Property> = {
+  encode(message: Memo_Property, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.hasLink !== false) {
+      writer.uint32(8).bool(message.hasLink);
+    }
+    if (message.hasTaskList !== false) {
+      writer.uint32(16).bool(message.hasTaskList);
+    }
+    if (message.hasCode !== false) {
+      writer.uint32(24).bool(message.hasCode);
+    }
+    if (message.hasIncompleteTasks !== false) {
+      writer.uint32(32).bool(message.hasIncompleteTasks);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Memo_Property {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMemo_Property();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.hasLink = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.hasTaskList = reader.bool();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.hasCode = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.hasIncompleteTasks = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<Memo_Property>): Memo_Property {
+    return Memo_Property.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Memo_Property>): Memo_Property {
+    const message = createBaseMemo_Property();
+    message.hasLink = object.hasLink ?? false;
+    message.hasTaskList = object.hasTaskList ?? false;
+    message.hasCode = object.hasCode ?? false;
+    message.hasIncompleteTasks = object.hasIncompleteTasks ?? false;
+    return message;
+  },
+};
+
+function createBaseLocation(): Location {
+  return { placeholder: "", latitude: 0, longitude: 0 };
+}
+
+export const Location: MessageFns<Location> = {
+  encode(message: Location, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.placeholder !== "") {
+      writer.uint32(10).string(message.placeholder);
+    }
+    if (message.latitude !== 0) {
+      writer.uint32(17).double(message.latitude);
+    }
+    if (message.longitude !== 0) {
+      writer.uint32(25).double(message.longitude);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Location {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLocation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.placeholder = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 17) {
+            break;
+          }
+
+          message.latitude = reader.double();
+          continue;
+        }
+        case 3: {
+          if (tag !== 25) {
+            break;
+          }
+
+          message.longitude = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<Location>): Location {
+    return Location.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Location>): Location {
+    const message = createBaseLocation();
+    message.placeholder = object.placeholder ?? "";
+    message.latitude = object.latitude ?? 0;
+    message.longitude = object.longitude ?? 0;
+    return message;
+  },
+};
+
+function createBaseMemoRelation(): MemoRelation {
+  return { memo: undefined, relatedMemo: undefined, type: MemoRelation_Type.TYPE_UNSPECIFIED };
+}
+
+export const MemoRelation: MessageFns<MemoRelation> = {
+  encode(message: MemoRelation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.memo !== undefined) {
+      MemoRelation_Memo.encode(message.memo, writer.uint32(10).fork()).join();
+    }
+    if (message.relatedMemo !== undefined) {
+      MemoRelation_Memo.encode(message.relatedMemo, writer.uint32(18).fork()).join();
+    }
+    if (message.type !== MemoRelation_Type.TYPE_UNSPECIFIED) {
+      writer.uint32(24).int32(memoRelation_TypeToNumber(message.type));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MemoRelation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMemoRelation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.memo = MemoRelation_Memo.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.relatedMemo = MemoRelation_Memo.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.type = memoRelation_TypeFromJSON(reader.int32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<MemoRelation>): MemoRelation {
+    return MemoRelation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<MemoRelation>): MemoRelation {
+    const message = createBaseMemoRelation();
+    message.memo = (object.memo !== undefined && object.memo !== null)
+      ? MemoRelation_Memo.fromPartial(object.memo)
+      : undefined;
+    message.relatedMemo = (object.relatedMemo !== undefined && object.relatedMemo !== null)
+      ? MemoRelation_Memo.fromPartial(object.relatedMemo)
+      : undefined;
+    message.type = object.type ?? MemoRelation_Type.TYPE_UNSPECIFIED;
+    return message;
+  },
+};
+
+function createBaseMemoRelation_Memo(): MemoRelation_Memo {
+  return { name: "", uid: "", snippet: "" };
+}
+
+export const MemoRelation_Memo: MessageFns<MemoRelation_Memo> = {
+  encode(message: MemoRelation_Memo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.uid !== "") {
+      writer.uint32(18).string(message.uid);
+    }
+    if (message.snippet !== "") {
+      writer.uint32(26).string(message.snippet);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MemoRelation_Memo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMemoRelation_Memo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.snippet = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<MemoRelation_Memo>): MemoRelation_Memo {
+    return MemoRelation_Memo.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<MemoRelation_Memo>): MemoRelation_Memo {
+    const message = createBaseMemoRelation_Memo();
+    message.name = object.name ?? "";
+    message.uid = object.uid ?? "";
+    message.snippet = object.snippet ?? "";
     return message;
   },
 };
@@ -104,17 +739,6 @@ function fromTimestamp(t: Timestamp): Date {
   let millis = (t.seconds || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
   return new globalThis.Date(millis);
-}
-
-function longToNumber(int64: { toString(): string }): number {
-  const num = globalThis.Number(int64.toString());
-  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  }
-  return num;
 }
 
 export interface MessageFns<T> {

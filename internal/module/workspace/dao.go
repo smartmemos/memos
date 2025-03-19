@@ -14,4 +14,5 @@ type DAO interface {
 	CountSettings(ctx context.Context, filter *model.FindSettingFilter) (int64, error)
 	FindSettings(ctx context.Context, filter *model.FindSettingFilter) ([]*model.Setting, error)
 	FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error)
+	FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error)
 }

@@ -506,6 +506,17 @@ paths:
       tags:
         - UserService
 definitions:
+  MemoProperty:
+    type: object
+    properties:
+      hasLink:
+        type: boolean
+      hasTaskList:
+        type: boolean
+      hasCode:
+        type: boolean
+      hasIncompleteTasks:
+        type: boolean
   StatsMemoTypeStats:
     type: object
     properties:
@@ -557,6 +568,13 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
+  commonState:
+    type: string
+    enum:
+      - STATE_UNSPECIFIED
+      - NORMAL
+      - ARCHIVED
+    default: STATE_UNSPECIFIED
   googlerpcStatus:
     type: object
     properties:
@@ -570,18 +588,169 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  memoLocation:
+    type: object
+    properties:
+      placeholder:
+        type: string
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
   memoMemo:
     type: object
     properties:
+      name:
+        type: string
+        description: |-
+          The name of the memo.
+          Format: memos/{memo}, memo is the user defined id or uuid.
+        readOnly: true
+      state:
+        $ref: '#/definitions/commonState'
+      creator:
+        type: string
+        title: |-
+          The name of the creator.
+          Format: users/{user}
+      createTime:
+        type: string
+        format: date-time
+      updateTime:
+        type: string
+        format: date-time
+      displayTime:
+        type: string
+        format: date-time
+      content:
+        type: string
+      visibility:
+        $ref: '#/definitions/memoVisibility'
+      tags:
+        type: array
+        items:
+          type: string
+        readOnly: true
+      pinned:
+        type: boolean
+      resources:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/memoResource'
+      relations:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/memoMemoRelation'
+      reactions:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/memoReaction'
+        readOnly: true
+      property:
+        $ref: '#/definitions/MemoProperty'
+        readOnly: true
+      parent:
+        type: string
+        title: |-
+          The name of the parent memo.
+          Format: memos/{id}
+        readOnly: true
+      snippet:
+        type: string
+        description: The snippet of the memo content. Plain text only.
+        readOnly: true
+      location:
+        $ref: '#/definitions/memoLocation'
+        description: The location of the memo.
+  memoMemoRelation:
+    type: object
+    properties:
+      memo:
+        $ref: '#/definitions/memoMemoRelationMemo'
+      relatedMemo:
+        $ref: '#/definitions/memoMemoRelationMemo'
+      type:
+        $ref: '#/definitions/memoMemoRelationType'
+  memoMemoRelationMemo:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The name of the memo.
+          Format: memos/{id}
+      uid:
+        type: string
+      snippet:
+        type: string
+        description: The snippet of the memo content. Plain text only.
+        readOnly: true
+  memoMemoRelationType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - REFERENCE
+      - COMMENT
+    default: TYPE_UNSPECIFIED
+  memoReaction:
+    type: object
+    properties:
       id:
+        type: integer
+        format: int32
+      creator:
+        type: string
+        title: |-
+          The name of the creator.
+          Format: users/{user}
+      contentId:
+        type: string
+        description: |-
+          The content identifier.
+          For memo, it should be the `Memo.name`.
+      reactionType:
+        type: string
+  memoResource:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |-
+          The name of the resource.
+          Format: resources/{resource}, resource is the user defined if or uuid.
+        readOnly: true
+      createTime:
+        type: string
+        format: date-time
+        readOnly: true
+      filename:
+        type: string
+      content:
+        type: string
+        format: byte
+      externalLink:
+        type: string
+      type:
+        type: string
+      size:
         type: string
         format: int64
-      createdAt:
+      memo:
         type: string
-        format: date-time
-      updatedAt:
-        type: string
-        format: date-time
+        description: The related memo. Refer to `Memo.name`.
+  memoVisibility:
+    type: string
+    enum:
+      - VISIBILITY_UNSPECIFIED
+      - PRIVATE
+      - PROTECTED
+      - PUBLIC
+    default: VISIBILITY_UNSPECIFIED
   protobufAny:
     type: object
     properties:

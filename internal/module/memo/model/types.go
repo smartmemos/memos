@@ -1,7 +1,8 @@
 package model
 
 const (
-	TableMemo = "memo"
+	TableMemo     = "memo"
+	TableResource = "resource"
 )
 
 // Visibility is the type of a visibility.

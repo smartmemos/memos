@@ -47,7 +47,30 @@ func (f FindMemoFilter) GetQuery() (query string, args []any) {
 	return
 }
 
+type MemoPayload struct {
+	Property *MemoPayloadProperty `json:"property"`
+	Location *MemoPayloadLocation `json:"location"`
+	Tags     []string             `json:"tags"`
+}
+
+type MemoPayloadLocation struct {
+	Placeholder string  `json:"placeholder"`
+	Latitude    float64 `json:"latitude"`
+	Longitude   float64 `json:"longitude"`
+}
+
+type MemoPayloadProperty struct {
+	HasLink            bool     `json:"has_link"`
+	HasTaskList        bool     `json:"has_task_list"`
+	HasCode            bool     `json:"has_code"`
+	HasIncompleteTasks bool     `json:"has_incomplete_tasks"`
+	References         []string `json:"references"`
+}
+
 type CreateMemoRequest struct {
+	Content    string
+	Visibility Visibility
+	// Resource
 }
 
 type UpdateMemoRequest struct {

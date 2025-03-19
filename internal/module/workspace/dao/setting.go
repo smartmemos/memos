@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/smartmemos/memos/internal/module/workspace/model"
 	"github.com/smartmemos/memos/internal/pkg/db"
@@ -34,5 +35,18 @@ func (d *Dao) FindSetting(ctx context.Context, f *model.FindSettingFilter) (*mod
 		return nil, err
 	} else {
 		return &m, nil
+	}
+}
+
+func (d *Dao) FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error) {
+	setting, err := d.FindSetting(ctx, &model.FindSettingFilter{Name: string(model.SettingKeyMemoRelated)})
+	if err != nil {
+		return nil, err
+	}
+	var v model.MemoRelatedSetting
+	if err = json.Unmarshal(setting.Value.RawMessage, &v); err != nil {
+		return nil, err
+	} else {
+		return &v, nil
 	}
 }

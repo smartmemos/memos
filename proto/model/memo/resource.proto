@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+
+package memo;
+option go_package = "github.com/smartmemos/memos/internal/proto/model/memo";
+
+message Resource {
+  reserved 2;
+
+  // The name of the resource.
+  // Format: resources/{resource}, resource is the user defined if or uuid.
+  string name = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IDENTIFIER
+  ];
+
+  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  string filename = 4;
+
+  bytes content = 5 [(google.api.field_behavior) = INPUT_ONLY];
+
+  string external_link = 6;
+
+  string type = 7;
+
+  int64 size = 8;
+
+  // The related memo. Refer to `Memo.name`.
+  optional string memo = 9;
+}
