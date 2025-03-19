@@ -80,6 +80,7 @@ func convertUserToProto(user *model.User) *userpb.User {
 		Description: user.Description,
 		CreateAt:    timestamppb.New(user.CreatedAt),
 		UpdateAt:    timestamppb.New(user.UpdatedAt),
-		// Role:     user.Role,
+		Role:        userpb.User_Role(userpb.User_Role_value[string(user.Role)]),
+		State:       userpb.State(userpb.State_value[string(user.Status)]),
 	}
 }
