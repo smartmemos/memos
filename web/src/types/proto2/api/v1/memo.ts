@@ -11,7 +11,8 @@ import { Memo } from "../../model/memo/memo";
 export const protobufPackage = "api.v1";
 
 export interface CreateMemoRequest {
-  name: string;
+  /** The memo to create. */
+  memo?: Memo | undefined;
 }
 
 export interface ListMemosRequest {
@@ -30,13 +31,13 @@ export interface GetMemoRequest {
 }
 
 function createBaseCreateMemoRequest(): CreateMemoRequest {
-  return { name: "" };
+  return { memo: undefined };
 }
 
 export const CreateMemoRequest: MessageFns<CreateMemoRequest> = {
   encode(message: CreateMemoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+    if (message.memo !== undefined) {
+      Memo.encode(message.memo, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -53,7 +54,7 @@ export const CreateMemoRequest: MessageFns<CreateMemoRequest> = {
             break;
           }
 
-          message.name = reader.string();
+          message.memo = Memo.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -70,7 +71,7 @@ export const CreateMemoRequest: MessageFns<CreateMemoRequest> = {
   },
   fromPartial(object: DeepPartial<CreateMemoRequest>): CreateMemoRequest {
     const message = createBaseCreateMemoRequest();
-    message.name = object.name ?? "";
+    message.memo = (object.memo !== undefined && object.memo !== null) ? Memo.fromPartial(object.memo) : undefined;
     return message;
   },
 };

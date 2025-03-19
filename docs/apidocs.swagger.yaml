@@ -175,10 +175,111 @@ paths:
           schema:
             $ref: '#/definitions/googlerpcStatus'
       parameters:
-        - name: name
+        - name: memo.name
+          description: |-
+            The name of the memo.
+            Format: memos/{memo}, memo is the user defined id or uuid.
           in: query
           required: false
           type: string
+        - name: memo.state
+          in: query
+          required: false
+          type: string
+          enum:
+            - STATE_UNSPECIFIED
+            - NORMAL
+            - ARCHIVED
+          default: STATE_UNSPECIFIED
+        - name: memo.creator
+          description: |-
+            The name of the creator.
+            Format: users/{user}
+          in: query
+          required: false
+          type: string
+        - name: memo.createTime
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: memo.updateTime
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: memo.displayTime
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: memo.content
+          in: query
+          required: false
+          type: string
+        - name: memo.visibility
+          in: query
+          required: false
+          type: string
+          enum:
+            - VISIBILITY_UNSPECIFIED
+            - PRIVATE
+            - PROTECTED
+            - PUBLIC
+          default: VISIBILITY_UNSPECIFIED
+        - name: memo.tags
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: memo.pinned
+          in: query
+          required: false
+          type: boolean
+        - name: memo.property.hasLink
+          in: query
+          required: false
+          type: boolean
+        - name: memo.property.hasTaskList
+          in: query
+          required: false
+          type: boolean
+        - name: memo.property.hasCode
+          in: query
+          required: false
+          type: boolean
+        - name: memo.property.hasIncompleteTasks
+          in: query
+          required: false
+          type: boolean
+        - name: memo.parent
+          description: |-
+            The name of the parent memo.
+            Format: memos/{id}
+          in: query
+          required: false
+          type: string
+        - name: memo.snippet
+          description: The snippet of the memo content. Plain text only.
+          in: query
+          required: false
+          type: string
+        - name: memo.location.placeholder
+          in: query
+          required: false
+          type: string
+        - name: memo.location.latitude
+          in: query
+          required: false
+          type: number
+          format: double
+        - name: memo.location.longitude
+          in: query
+          required: false
+          type: number
+          format: double
       tags:
         - MemoService
   /api/v1/memos/*:

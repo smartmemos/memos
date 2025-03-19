@@ -16,7 +16,8 @@ type Service struct {
 // New 实例化
 func New(i do.Injector) (memo.Service, error) {
 	return &Service{
-		dao: do.MustInvoke[memo.DAO](i),
+		dao:   do.MustInvoke[memo.DAO](i),
+		wsDao: do.MustInvoke[workspace.DAO](i),
 	}, nil
 }
 

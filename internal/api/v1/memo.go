@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/samber/do/v2"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -16,21 +15,24 @@ import (
 
 type MemoService struct {
 	v1pb.UnimplementedMemoServiceServer
-	memo memo.Service
+	memoService memo.Service
 }
 
 func NewMemoService(i do.Injector) (*MemoService, error) {
 	return &MemoService{
-		memo: do.MustInvoke[memo.Service](i),
+		memoService: do.MustInvoke[memo.Service](i),
 	}, nil
 }
 
 func (s *MemoService) CreateMemo(ctx context.Context, req *v1pb.CreateMemoRequest) (resp *memopb.Memo, err error) {
-	memo, err := s.memo.CreateMemo(ctx, &model.CreateMemoRequest{})
+	memo, err := s.memoService.CreateMemo(ctx, &model.CreateMemoRequest{
+		Content:    req.Memo.Content,
+		Visibility: convertFromProtoVisibility(req.Memo.Visibility),
+	})
 	if err != nil {
 		return
 	}
-
+	resp = convertMemoToProto(memo)
 	return
 }
 
@@ -39,14 +41,22 @@ func convertMemoToProto(memo *model.Memo) *memopb.Memo {
 		Name: fmt.Sprintf("%d", memo.ID),
 		// State:       convertStateFromStore(memo.RowStatus),
 		// Creator:     fmt.Sprintf("%s%d", UserNamePrefix, memo.CreatorID),
-		CreateTime:  timestamppb.New(time.Unix(memo.CreatedTs, 0)),
-		UpdateTime:  timestamppb.New(time.Unix(memo.UpdatedTs, 0)),
-		DisplayTime: timestamppb.New(time.Unix(displayTs, 0)),
-		Content:     memo.Content,
-		Visibility:  convertVisibilityFromStore(memo.Visibility),
-		Pinned:      memo.Pinned,
+		CreateTime: timestamppb.New(memo.CreatedAt),
+		UpdateTime: timestamppb.New(memo.UpdatedAt),
+		// DisplayTime: timestamppb.New(time.Unix(displayTs, 0)),
+		Content:    memo.Content,
+		Visibility: convertVisibilityToProto(memo.Visibility),
+		// Pinned:     memo.Pinned,
 	}
 	return resp
+}
+
+func convertFromProtoVisibility(v memopb.Visibility) model.Visibility {
+	return model.Visibility(memopb.Visibility_name[int32(v)])
+}
+
+func convertVisibilityToProto(v model.Visibility) memopb.Visibility {
+	return memopb.Visibility(memopb.Visibility_value[string(v)])
 }
 
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (resp *v1pb.ListMemosResponse, err error) {

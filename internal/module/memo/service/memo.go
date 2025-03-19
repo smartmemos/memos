@@ -32,6 +32,7 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 	memo = &model.Memo{
 		Content:    req.Content,
 		Visibility: req.Visibility,
+		Status:     "normal",
 	}
 	if err = s.dao.CreateMemo(ctx, memo); err != nil {
 		return

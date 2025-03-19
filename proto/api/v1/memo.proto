@@ -33,7 +33,8 @@ service MemoService {
 
 
 message CreateMemoRequest {
-  string name = 1;
+    // The memo to create.
+  memo.Memo memo = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ListMemosRequest {
