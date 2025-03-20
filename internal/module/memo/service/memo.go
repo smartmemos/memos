@@ -33,6 +33,7 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 		Content:    req.Content,
 		Visibility: req.Visibility,
 		Status:     "normal",
+		Pinned:     true,
 	}
 	if err = s.dao.CreateMemo(ctx, memo); err != nil {
 		return

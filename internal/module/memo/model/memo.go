@@ -9,11 +9,11 @@ import (
 type Memo struct {
 	db.Model
 
-	UID     string
-	Content string
-	Payload MemoPayload `gorm:"serializer:json"`
-	Tags    []string    `gorm:"serializer:json"`
-	// Pinned     bool
+	UID        string
+	Content    string
+	Payload    MemoPayload `gorm:"serializer:json"`
+	Tags       []string    `gorm:"serializer:json"`
+	Pinned     bool
 	Visibility Visibility
 	Status     string
 }
