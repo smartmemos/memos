@@ -119,7 +119,6 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 }
 
 func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.Memo) (*memopb.Memo, error) {
-
 	err = s.workspaceService.GetSetting(ctx, "")
 	if err != nil {
 		return

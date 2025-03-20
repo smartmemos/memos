@@ -51,10 +51,10 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 }
 
 // GetMemos mocks base method.
-func (m *MockService) GetMemos(ctx context.Context, req *model.GetMemosRequest) ([]*model.Memo, error) {
+func (m *MockService) GetMemos(ctx context.Context, req *model.GetMemosRequest) ([]*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMemos", ctx, req)
-	ret0, _ := ret[0].([]*model.Memo)
+	ret0, _ := ret[0].([]*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

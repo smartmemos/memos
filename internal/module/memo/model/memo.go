@@ -10,6 +10,7 @@ type Memo struct {
 	db.Model
 
 	UID        string
+	ParentID   int64
 	CreatorID  int64
 	Content    string
 	Payload    MemoPayload `gorm:"serializer:json"`
@@ -28,6 +29,7 @@ type FindMemoFilter struct {
 
 	ID              int64
 	Pid             int64
+	ParentIDs       []int64
 	CreatorID       int64
 	ExcludeComments bool
 	ExcludeContent  bool
@@ -46,8 +48,16 @@ func (f FindMemoFilter) GetQuery() (query string, args []any) {
 		where = append(where, "pid=?")
 		args = append(args, f.Pid)
 	}
+	if len(f.ParentIDs) > 0 {
+		where = append(where, "parent_ids in(?)")
+		args = append(args, f.ParentIDs)
+	}
 	query = strings.Join(where, " and ")
 	return
+}
+
+type MemoInfo struct {
+	*Memo
 }
 
 type MemoPayload struct {

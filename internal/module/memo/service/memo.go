@@ -5,9 +5,11 @@ import (
 	"slices"
 
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"github.com/usememos/gomark/ast"
 	"github.com/usememos/gomark/parser"
 	"github.com/usememos/gomark/parser/tokenizer"
+	"github.com/yearnfar/gokit/arrutil"
 
 	"github.com/smartmemos/memos/internal/module/memo/model"
 )
@@ -131,7 +133,33 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 	return
 }
 
-func (s *Service) GetMemos(ctx context.Context, req *model.GetMemosRequest) (list []*model.Memo, err error) {
+func (s *Service) GetMemos(ctx context.Context, req *model.GetMemosRequest) (list []*model.MemoInfo, err error) {
+	memos, err := s.dao.FindMemos(ctx, &model.FindMemoFilter{})
+	if err != nil {
+		return
+	}
+	var pids []int64
+	for _, memo := range memos {
+		pids = append(pids, memo.ParentID)
+	}
 
+	parentList, err := s.dao.FindMemos(ctx, &model.FindMemoFilter{ParentIDs: pids})
+	if err != nil {
+		return
+	}
+	memosMap := arrutil.ColumnMap(parentList, func(item *model.Memo) (int64, *model.Memo) {
+		return item.ID, item
+	})
+
+	for _, memo := range memos {
+		if memo.ParentID > 0 {
+			parentMemo := memosMap[memo.ID]
+			logrus.Info(parentMemo)
+		}
+		item := &model.MemoInfo{
+			Memo: memo,
+		}
+		list = append(list, item)
+	}
 	return
 }
