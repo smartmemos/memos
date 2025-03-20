@@ -6,6 +6,14 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import {
+  Direction,
+  directionFromJSON,
+  directionToNumber,
+  State,
+  stateFromJSON,
+  stateToNumber,
+} from "../../model/common/common";
 import { Memo } from "../../model/memo/memo";
 
 export const protobufPackage = "api.v1";
@@ -16,6 +24,43 @@ export interface CreateMemoRequest {
 }
 
 export interface ListMemosRequest {
+  /**
+   * The parent is the owner of the memos.
+   * If not specified or `users/-`, it will list all memos.
+   */
+  parent: string;
+  /** The maximum number of memos to return. */
+  pageSize: number;
+  /**
+   * A page token, received from a previous `ListMemos` call.
+   * Provide this to retrieve the subsequent page.
+   */
+  pageToken: string;
+  /**
+   * The state of the memos to list.
+   * Default to `NORMAL`. Set to `ARCHIVED` to list archived memos.
+   */
+  state: State;
+  /**
+   * What field to sort the results by.
+   * Default to display_time.
+   */
+  sort: string;
+  /**
+   * The direction to sort the results by.
+   * Default to DESC.
+   */
+  direction: Direction;
+  /**
+   * Filter is a CEL expression to filter memos.
+   * Refer to `Shortcut.filter`.
+   */
+  filter: string;
+  /**
+   * [Deprecated] Old filter contains some specific conditions to filter memos.
+   * Format: "creator == 'users/{user}' && visibilities == ['PUBLIC', 'PROTECTED']"
+   */
+  oldFilter: string;
 }
 
 export interface ListMemosResponse {
@@ -77,11 +122,44 @@ export const CreateMemoRequest: MessageFns<CreateMemoRequest> = {
 };
 
 function createBaseListMemosRequest(): ListMemosRequest {
-  return {};
+  return {
+    parent: "",
+    pageSize: 0,
+    pageToken: "",
+    state: State.STATE_UNSPECIFIED,
+    sort: "",
+    direction: Direction.DIRECTION_UNSPECIFIED,
+    filter: "",
+    oldFilter: "",
+  };
 }
 
 export const ListMemosRequest: MessageFns<ListMemosRequest> = {
-  encode(_: ListMemosRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(message: ListMemosRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.parent !== "") {
+      writer.uint32(10).string(message.parent);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    if (message.state !== State.STATE_UNSPECIFIED) {
+      writer.uint32(32).int32(stateToNumber(message.state));
+    }
+    if (message.sort !== "") {
+      writer.uint32(42).string(message.sort);
+    }
+    if (message.direction !== Direction.DIRECTION_UNSPECIFIED) {
+      writer.uint32(48).int32(directionToNumber(message.direction));
+    }
+    if (message.filter !== "") {
+      writer.uint32(58).string(message.filter);
+    }
+    if (message.oldFilter !== "") {
+      writer.uint32(66).string(message.oldFilter);
+    }
     return writer;
   },
 
@@ -92,6 +170,70 @@ export const ListMemosRequest: MessageFns<ListMemosRequest> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.parent = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.pageToken = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.state = stateFromJSON(reader.int32());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.sort = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.direction = directionFromJSON(reader.int32());
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.filter = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.oldFilter = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -104,8 +246,16 @@ export const ListMemosRequest: MessageFns<ListMemosRequest> = {
   create(base?: DeepPartial<ListMemosRequest>): ListMemosRequest {
     return ListMemosRequest.fromPartial(base ?? {});
   },
-  fromPartial(_: DeepPartial<ListMemosRequest>): ListMemosRequest {
+  fromPartial(object: DeepPartial<ListMemosRequest>): ListMemosRequest {
     const message = createBaseListMemosRequest();
+    message.parent = object.parent ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    message.state = object.state ?? State.STATE_UNSPECIFIED;
+    message.sort = object.sort ?? "";
+    message.direction = object.direction ?? Direction.DIRECTION_UNSPECIFIED;
+    message.filter = object.filter ?? "";
+    message.oldFilter = object.oldFilter ?? "";
     return message;
   },
 };

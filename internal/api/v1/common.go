@@ -1,11 +1,15 @@
 package v1
 
 import (
+	"encoding/base64"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
+	"google.golang.org/protobuf/proto"
+
+	commonpb "github.com/smartmemos/memos/internal/proto/model/common"
 )
 
 const (
@@ -16,6 +20,11 @@ const (
 	InboxNamePrefix            = "inboxes/"
 	IdentityProviderNamePrefix = "identityProviders/"
 	ActivityNamePrefix         = "activities/"
+)
+
+const (
+	// DefaultPageSize is the default page size for requests.
+	DefaultPageSize = 10
 )
 
 // GetNameParentTokens returns the tokens from a resource name.
@@ -115,4 +124,30 @@ func ExtractActivityIDFromName(name string) (int32, error) {
 		return 0, errors.Errorf("invalid activity ID %q", tokens[0])
 	}
 	return int32(id), nil
+}
+
+func getPageToken(pageSize int, page int) (string, error) {
+	return marshalPageToken(&commonpb.PageToken{
+		Limit:  int32(pageSize),
+		Offset: int32((page - 1) * pageSize),
+	})
+}
+
+func marshalPageToken(pageToken *commonpb.PageToken) (string, error) {
+	b, err := proto.Marshal(pageToken)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to marshal page token")
+	}
+	return base64.StdEncoding.EncodeToString(b), nil
+}
+
+func unmarshalPageToken(s string, pageToken *commonpb.PageToken) error {
+	b, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		return errors.Wrapf(err, "failed to decode page token")
+	}
+	if err := proto.Unmarshal(b, pageToken); err != nil {
+		return errors.Wrapf(err, "failed to unmarshal page token")
+	}
+	return nil
 }

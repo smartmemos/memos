@@ -10,6 +10,7 @@ type Memo struct {
 	db.Model
 
 	UID        string
+	CreatorID  int64
 	Content    string
 	Payload    MemoPayload `gorm:"serializer:json"`
 	Tags       []string    `gorm:"serializer:json"`
@@ -76,4 +77,12 @@ type CreateMemoRequest struct {
 }
 
 type UpdateMemoRequest struct {
+}
+
+type ListMemosRequest struct {
+}
+
+type GetMemosRequest struct {
+	Page     int
+	PageSize int
 }

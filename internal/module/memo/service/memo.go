@@ -125,3 +125,13 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 
 	return
 }
+
+func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {
+
+	return
+}
+
+func (s *Service) GetMemos(ctx context.Context, req *model.GetMemosRequest) (list []*model.Memo, err error) {
+
+	return
+}

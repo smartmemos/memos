@@ -50,6 +50,21 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
 }
 
+// GetMemos mocks base method.
+func (m *MockService) GetMemos(ctx context.Context, req *model.GetMemosRequest) ([]*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMemos", ctx, req)
+	ret0, _ := ret[0].([]*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMemos indicates an expected call of GetMemos.
+func (mr *MockServiceMockRecorder) GetMemos(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemos", reflect.TypeOf((*MockService)(nil).GetMemos), ctx, req)
+}
+
 // UpdateMemo mocks base method.
 func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
 	m.ctrl.T.Helper()
