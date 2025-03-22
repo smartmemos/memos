@@ -5,11 +5,11 @@ import (
 	"slices"
 
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
 	"github.com/usememos/gomark/ast"
 	"github.com/usememos/gomark/parser"
 	"github.com/usememos/gomark/parser/tokenizer"
-	"github.com/yearnfar/gokit/arrutil"
 
 	"github.com/smartmemos/memos/internal/module/memo/model"
 )
@@ -147,10 +147,9 @@ func (s *Service) GetMemos(ctx context.Context, req *model.GetMemosRequest) (lis
 	if err != nil {
 		return
 	}
-	memosMap := arrutil.ColumnMap(parentList, func(item *model.Memo) (int64, *model.Memo) {
-		return item.ID, item
+	memosMap := lo.GroupBy(parentList, func(item *model.Memo) int64 {
+		return item.ID
 	})
-
 	for _, memo := range memos {
 		if memo.ParentID > 0 {
 			parentMemo := memosMap[memo.ID]

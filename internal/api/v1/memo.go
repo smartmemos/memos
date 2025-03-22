@@ -9,7 +9,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
 	"github.com/usememos/gomark/parser/tokenizer"
-	"github.com/usememos/memos/store"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -125,7 +124,7 @@ func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.Memo) 
 	}
 
 	displayTs := memo.CreatedTs
-	workspaceMemoRelatedSetting, err := s.Store.GetWorkspaceMemoRelatedSetting(ctx)
+	// workspaceMemoRelatedSetting, err := s.Store.GetWorkspaceMemoRelatedSetting(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get workspace memo related setting")
 	}
@@ -151,10 +150,10 @@ func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.Memo) 
 		memoMessage.Location = convertLocationFromStore(memo.Payload.Location)
 	}
 	if memo.ParentID != nil {
-		parent, err := s.Store.GetMemo(ctx, &store.FindMemo{
-			ID:             memo.ParentID,
-			ExcludeContent: true,
-		})
+		// parent, err := s.Store.GetMemo(ctx, &store.FindMemo{
+		// 	ID:             memo.ParentID,
+		// 	ExcludeContent: true,
+		// })
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to get parent memo")
 		}
