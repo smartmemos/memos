@@ -128,32 +128,29 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 	return
 }
 
-func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {
-
-	return
-}
-
-func (s *Service) GetMemos(ctx context.Context, req *model.GetMemosRequest) (list []*model.MemoInfo, err error) {
+func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
 	memos, err := s.dao.FindMemos(ctx, &model.FindMemoFilter{})
 	if err != nil {
 		return
 	}
 	var pids []int64
 	for _, memo := range memos {
-		pids = append(pids, memo.ParentID)
-	}
-
-	parentList, err := s.dao.FindMemos(ctx, &model.FindMemoFilter{ParentIDs: pids})
-	if err != nil {
-		return
-	}
-	memosMap := lo.GroupBy(parentList, func(item *model.Memo) int64 {
-		return item.ID
-	})
-	for _, memo := range memos {
 		if memo.ParentID > 0 {
-			parentMemo := memosMap[memo.ID]
-			logrus.Info(parentMemo)
+			pids = append(pids, memo.ParentID)
+		}
+	}
+	var memosMap map[int64]*model.Memo
+	if len(pids) > 0 {
+		var parentList []*model.Memo
+		parentList, err = s.dao.FindMemos(ctx, &model.FindMemoFilter{ParentIDs: pids})
+		if err != nil {
+			return
+		}
+		memosMap = lo.Associate(parentList, func(item *model.Memo) (int64, *model.Memo) { return item.ID, item })
+	}
+	for _, memo := range memos {
+		if v, ok := memosMap[memo.ID]; ok {
+			logrus.Info(v)
 		}
 		item := &model.MemoInfo{
 			Memo: memo,

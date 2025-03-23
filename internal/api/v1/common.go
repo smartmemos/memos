@@ -9,6 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 
+	"github.com/smartmemos/memos/internal/proto/model/common"
 	commonpb "github.com/smartmemos/memos/internal/proto/model/common"
 )
 
@@ -131,6 +132,19 @@ func getPageToken(pageSize int, page int) (string, error) {
 		Limit:  int32(pageSize),
 		Offset: int32((page - 1) * pageSize),
 	})
+}
+
+func parsePageToken(token string) (page int, size int, err error) {
+	var pageToken common.PageToken
+	if err = unmarshalPageToken(token, &pageToken); err != nil {
+		return
+	}
+	size = int(pageToken.Limit)
+	page = int(pageToken.Offset)/int(pageToken.Limit) + 1
+	if size <= 0 {
+		size = DefaultPageSize
+	}
+	return
 }
 
 func marshalPageToken(pageToken *commonpb.PageToken) (string, error) {

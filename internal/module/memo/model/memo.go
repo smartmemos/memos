@@ -90,6 +90,8 @@ type UpdateMemoRequest struct {
 }
 
 type ListMemosRequest struct {
+	Page     int
+	PageSize int
 }
 
 type GetMemosRequest struct {

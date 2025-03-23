@@ -10,5 +10,5 @@ import (
 type Service interface {
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
 	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error)
-	GetMemos(ctx context.Context, req *model.GetMemosRequest) ([]*model.MemoInfo, error)
+	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.MemoInfo, error)
 }
