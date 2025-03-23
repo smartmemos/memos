@@ -123,7 +123,6 @@ func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.MemoIn
 		Content:     memo.Content,
 		Visibility:  convertVisibilityToProto(memo.Visibility),
 		Pinned:      memo.Pinned,
-		Node:        []xxx,
 	}
 	return
 }
