@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { State, stateFromJSON, stateToNumber } from "../common/common";
+import { Node } from "../markdown/markdown";
 import { Reaction } from "./reaction";
 import { Resource } from "./resource";
 
@@ -74,6 +75,7 @@ export interface Memo {
   updateTime?: Date | undefined;
   displayTime?: Date | undefined;
   content: string;
+  nodes: Node[];
   visibility: Visibility;
   tags: string[];
   pinned: boolean;
@@ -174,6 +176,7 @@ function createBaseMemo(): Memo {
     updateTime: undefined,
     displayTime: undefined,
     content: "",
+    nodes: [],
     visibility: Visibility.VISIBILITY_UNSPECIFIED,
     tags: [],
     pinned: false,
@@ -209,6 +212,9 @@ export const Memo: MessageFns<Memo> = {
     }
     if (message.content !== "") {
       writer.uint32(66).string(message.content);
+    }
+    for (const v of message.nodes) {
+      Node.encode(v!, writer.uint32(74).fork()).join();
     }
     if (message.visibility !== Visibility.VISIBILITY_UNSPECIFIED) {
       writer.uint32(80).int32(visibilityToNumber(message.visibility));
@@ -304,6 +310,14 @@ export const Memo: MessageFns<Memo> = {
           }
 
           message.content = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.nodes.push(Node.decode(reader, reader.uint32()));
           continue;
         }
         case 10: {
@@ -407,6 +421,7 @@ export const Memo: MessageFns<Memo> = {
     message.updateTime = object.updateTime ?? undefined;
     message.displayTime = object.displayTime ?? undefined;
     message.content = object.content ?? "";
+    message.nodes = object.nodes?.map((e) => Node.fromPartial(e)) || [];
     message.visibility = object.visibility ?? Visibility.VISIBILITY_UNSPECIFIED;
     message.tags = object.tags?.map((e) => e) || [];
     message.pinned = object.pinned ?? false;

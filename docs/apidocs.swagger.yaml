@@ -4,6 +4,7 @@ info:
   version: version not set
 tags:
   - name: AuthService
+  - name: MarkdownService
   - name: MemoService
   - name: UserService
   - name: WorkspaceService
@@ -147,6 +148,89 @@ paths:
           type: string
       tags:
         - WorkspaceService
+  /api/v1/markdown/link:metadata:
+    get:
+      summary: GetLinkMetadata returns metadata for a given link.
+      operationId: MarkdownService_GetLinkMetadata
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/markdownLinkMetadata'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: link
+          in: query
+          required: false
+          type: string
+      tags:
+        - MarkdownService
+  /api/v1/markdown/node:restore:
+    post:
+      summary: RestoreMarkdownNodes restores the given nodes to markdown content.
+      operationId: MarkdownService_RestoreMarkdownNodes
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1RestoreMarkdownNodesResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1RestoreMarkdownNodesRequest'
+      tags:
+        - MarkdownService
+  /api/v1/markdown/node:stringify:
+    post:
+      summary: StringifyMarkdownNodes stringify the given nodes to plain text content.
+      operationId: MarkdownService_StringifyMarkdownNodes
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1StringifyMarkdownNodesResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1StringifyMarkdownNodesRequest'
+      tags:
+        - MarkdownService
+  /api/v1/markdown:parse:
+    post:
+      summary: ParseMarkdown parses the given markdown content and returns a list of nodes.
+      operationId: MarkdownService_ParseMarkdown
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ParseMarkdownResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1ParseMarkdownRequest'
+      tags:
+        - MarkdownService
   /api/v1/memos:
     get:
       summary: ListMemos lists memos with pagination and filter.
@@ -673,6 +757,14 @@ paths:
       tags:
         - UserService
 definitions:
+  ListNodeKind:
+    type: string
+    enum:
+      - KIND_UNSPECIFIED
+      - ORDERED
+      - UNORDERED
+      - DESCRIPTION
+    default: KIND_UNSPECIFIED
   MemoProperty:
     type: object
     properties:
@@ -727,6 +819,14 @@ definitions:
        - DATABASE: DATABASE is the database storage type.
        - LOCAL: LOCAL is the local storage type.
        - S3: S3 is the S3 storage type.
+  TableNodeRow:
+    type: object
+    properties:
+      cells:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
   UserRole:
     type: string
     enum:
@@ -762,6 +862,361 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  markdownAutoLinkNode:
+    type: object
+    properties:
+      url:
+        type: string
+      isRawText:
+        type: boolean
+  markdownBlockquoteNode:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownBoldItalicNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      content:
+        type: string
+  markdownBoldNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownCodeBlockNode:
+    type: object
+    properties:
+      language:
+        type: string
+      content:
+        type: string
+  markdownCodeNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownEmbeddedContentNode:
+    type: object
+    properties:
+      resourceName:
+        type: string
+      params:
+        type: string
+  markdownEscapingCharacterNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+  markdownHTMLElementNode:
+    type: object
+    properties:
+      tagName:
+        type: string
+      attributes:
+        type: object
+        additionalProperties:
+          type: string
+  markdownHeadingNode:
+    type: object
+    properties:
+      level:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownHighlightNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownHorizontalRuleNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+  markdownImageNode:
+    type: object
+    properties:
+      altText:
+        type: string
+      url:
+        type: string
+  markdownItalicNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      content:
+        type: string
+  markdownLineBreakNode:
+    type: object
+  markdownLinkMetadata:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      image:
+        type: string
+  markdownLinkNode:
+    type: object
+    properties:
+      content:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+      url:
+        type: string
+  markdownListNode:
+    type: object
+    properties:
+      kind:
+        $ref: '#/definitions/ListNodeKind'
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownMathBlockNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownMathNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownNode:
+    type: object
+    properties:
+      type:
+        $ref: '#/definitions/markdownNodeType'
+      lineBreakNode:
+        $ref: '#/definitions/markdownLineBreakNode'
+        description: Block nodes.
+      paragraphNode:
+        $ref: '#/definitions/markdownParagraphNode'
+      codeBlockNode:
+        $ref: '#/definitions/markdownCodeBlockNode'
+      headingNode:
+        $ref: '#/definitions/markdownHeadingNode'
+      horizontalRuleNode:
+        $ref: '#/definitions/markdownHorizontalRuleNode'
+      blockquoteNode:
+        $ref: '#/definitions/markdownBlockquoteNode'
+      listNode:
+        $ref: '#/definitions/markdownListNode'
+      orderedListItemNode:
+        $ref: '#/definitions/markdownOrderedListItemNode'
+      unorderedListItemNode:
+        $ref: '#/definitions/markdownUnorderedListItemNode'
+      taskListItemNode:
+        $ref: '#/definitions/markdownTaskListItemNode'
+      mathBlockNode:
+        $ref: '#/definitions/markdownMathBlockNode'
+      tableNode:
+        $ref: '#/definitions/markdownTableNode'
+      embeddedContentNode:
+        $ref: '#/definitions/markdownEmbeddedContentNode'
+      textNode:
+        $ref: '#/definitions/markdownTextNode'
+        description: Inline nodes.
+      boldNode:
+        $ref: '#/definitions/markdownBoldNode'
+      italicNode:
+        $ref: '#/definitions/markdownItalicNode'
+      boldItalicNode:
+        $ref: '#/definitions/markdownBoldItalicNode'
+      codeNode:
+        $ref: '#/definitions/markdownCodeNode'
+      imageNode:
+        $ref: '#/definitions/markdownImageNode'
+      linkNode:
+        $ref: '#/definitions/markdownLinkNode'
+      autoLinkNode:
+        $ref: '#/definitions/markdownAutoLinkNode'
+      tagNode:
+        $ref: '#/definitions/markdownTagNode'
+      strikethroughNode:
+        $ref: '#/definitions/markdownStrikethroughNode'
+      escapingCharacterNode:
+        $ref: '#/definitions/markdownEscapingCharacterNode'
+      mathNode:
+        $ref: '#/definitions/markdownMathNode'
+      highlightNode:
+        $ref: '#/definitions/markdownHighlightNode'
+      subscriptNode:
+        $ref: '#/definitions/markdownSubscriptNode'
+      superscriptNode:
+        $ref: '#/definitions/markdownSuperscriptNode'
+      referencedContentNode:
+        $ref: '#/definitions/markdownReferencedContentNode'
+      spoilerNode:
+        $ref: '#/definitions/markdownSpoilerNode'
+      htmlElementNode:
+        $ref: '#/definitions/markdownHTMLElementNode'
+  markdownNodeType:
+    type: string
+    enum:
+      - NODE_UNSPECIFIED
+      - LINE_BREAK
+      - PARAGRAPH
+      - CODE_BLOCK
+      - HEADING
+      - HORIZONTAL_RULE
+      - BLOCKQUOTE
+      - LIST
+      - ORDERED_LIST_ITEM
+      - UNORDERED_LIST_ITEM
+      - TASK_LIST_ITEM
+      - MATH_BLOCK
+      - TABLE
+      - EMBEDDED_CONTENT
+      - TEXT
+      - BOLD
+      - ITALIC
+      - BOLD_ITALIC
+      - CODE
+      - IMAGE
+      - LINK
+      - AUTO_LINK
+      - TAG
+      - STRIKETHROUGH
+      - ESCAPING_CHARACTER
+      - MATH
+      - HIGHLIGHT
+      - SUBSCRIPT
+      - SUPERSCRIPT
+      - REFERENCED_CONTENT
+      - SPOILER
+      - HTML_ELEMENT
+    default: NODE_UNSPECIFIED
+    description: |2-
+       - LINE_BREAK: Block nodes.
+       - TEXT: Inline nodes.
+  markdownOrderedListItemNode:
+    type: object
+    properties:
+      number:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownParagraphNode:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownReferencedContentNode:
+    type: object
+    properties:
+      resourceName:
+        type: string
+      params:
+        type: string
+  markdownSpoilerNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownStrikethroughNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownSubscriptNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownSuperscriptNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownTableNode:
+    type: object
+    properties:
+      header:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+      delimiter:
+        type: array
+        items:
+          type: string
+      rows:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/TableNodeRow'
+  markdownTagNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownTaskListItemNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      complete:
+        type: boolean
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  markdownTextNode:
+    type: object
+    properties:
+      content:
+        type: string
+  markdownUnorderedListItemNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
   memoLocation:
     type: object
     properties:
@@ -800,6 +1255,12 @@ definitions:
         format: date-time
       content:
         type: string
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+        readOnly: true
       visibility:
         $ref: '#/definitions/memoVisibility'
       tags:
@@ -1060,6 +1521,45 @@ definitions:
         description: |-
           A token, which can be sent as `page_token` to retrieve the next page.
           If this field is omitted, there are no subsequent pages.
+  v1ParseMarkdownRequest:
+    type: object
+    properties:
+      markdown:
+        type: string
+  v1ParseMarkdownResponse:
+    type: object
+    properties:
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  v1RestoreMarkdownNodesRequest:
+    type: object
+    properties:
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  v1RestoreMarkdownNodesResponse:
+    type: object
+    properties:
+      markdown:
+        type: string
+  v1StringifyMarkdownNodesRequest:
+    type: object
+    properties:
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/markdownNode'
+  v1StringifyMarkdownNodesResponse:
+    type: object
+    properties:
+      plainText:
+        type: string
   workspaceCustomProfile:
     type: object
     properties:

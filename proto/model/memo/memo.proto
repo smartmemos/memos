@@ -5,6 +5,7 @@ import "google/api/field_behavior.proto";
 import "model/common/common.proto";
 import "model/memo/resource.proto";
 import "model/memo/reaction.proto";
+import "model/markdown/markdown.proto";
 
 package memo;
 option go_package = "github.com/smartmemos/memos/internal/proto/model/memo";
@@ -33,7 +34,7 @@ message Memo {
 
   string content = 8;
 
-  // repeated Node nodes = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
+  repeated markdown.Node nodes = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   Visibility visibility = 10;
 
