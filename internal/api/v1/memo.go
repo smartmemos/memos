@@ -37,9 +37,26 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 }
 
 func (s *MemoService) CreateMemo(ctx context.Context, req *v1pb.CreateMemoRequest) (resp *memopb.Memo, err error) {
+	var relations []model.MemoRelation
+	for _, item := range req.Memo.Relations {
+		relations = append(relations, model.MemoRelation{
+			Type: model.RelationType(memopb.MemoRelation_Type_name[int32(item.Type)]),
+			Memo: model.RelationMemo{
+				Uid:     item.Memo.Uid,
+				Name:    item.Memo.Name,
+				Snippet: item.Memo.Snippet,
+			},
+			RelatedMemo: model.RelationMemo{
+				Uid:     item.RelatedMemo.Uid,
+				Name:    item.RelatedMemo.Name,
+				Snippet: item.RelatedMemo.Snippet,
+			},
+		})
+	}
 	memo, err := s.memoService.CreateMemo(ctx, &model.CreateMemoRequest{
 		Content:    req.Memo.Content,
 		Visibility: convertFromProtoVisibility(req.Memo.Visibility),
+		Relations:  relations,
 	})
 	if err != nil {
 		return

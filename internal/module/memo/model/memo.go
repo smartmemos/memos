@@ -84,7 +84,19 @@ type MemoPayloadProperty struct {
 type CreateMemoRequest struct {
 	Content    string
 	Visibility Visibility
-	// Resource
+	Relations  []MemoRelation
+}
+
+type MemoRelation struct {
+	Type        RelationType `json:"type"`
+	Memo        RelationMemo `json:"memo"`
+	RelatedMemo RelationMemo `json:"related_memo"`
+}
+
+type RelationMemo struct {
+	Name    string `json:"name"`
+	Uid     string `json:"uid"`
+	Snippet string `json:"snippet"`
 }
 
 type UpdateMemoRequest struct {

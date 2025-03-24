@@ -32,10 +32,12 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 		return
 	}
 	memo = &model.Memo{
-		Content:    req.Content,
-		Visibility: req.Visibility,
-		Status:     "normal",
-		Pinned:     true,
+		Content:      req.Content,
+		Visibility:   req.Visibility,
+		ParentID:     0,
+		RelationType: "",
+		Status:       "normal",
+		Pinned:       true,
 	}
 	if err = s.dao.CreateMemo(ctx, memo); err != nil {
 		return
