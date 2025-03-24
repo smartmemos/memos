@@ -141,9 +141,6 @@ func parsePageToken(token string) (page int, size int, err error) {
 	}
 	size = int(pageToken.Limit)
 	page = int(pageToken.Offset)/int(pageToken.Limit) + 1
-	if size <= 0 {
-		size = DefaultPageSize
-	}
 	return
 }
 

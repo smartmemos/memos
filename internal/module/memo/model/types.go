@@ -3,6 +3,7 @@ package model
 const (
 	TableMemo     = "memo"
 	TableResource = "resource"
+	TableReaction = "reaction"
 )
 
 // Visibility is the type of a visibility.
@@ -28,3 +29,18 @@ func (v Visibility) String() string {
 	}
 	return "PRIVATE"
 }
+
+type RelationType string
+
+const (
+	RelationReference RelationType = "REFERENCE"
+	RelationComment   RelationType = "COMMENT"
+)
+
+type ResStorageType string
+
+const (
+	ResStorageTypeLocal         ResStorageType = "LOCAL"
+	ResourceStorageTypeS3       ResStorageType = "S3"
+	ResourceStorageTypeExternal ResStorageType = "EXTERNAL"
+)

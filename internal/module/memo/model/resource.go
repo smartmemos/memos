@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/smartmemos/memos/internal/module/workspace/model"
 	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
@@ -15,7 +14,7 @@ type Resource struct {
 	Blob        []byte
 	Type        string
 	Size        int64
-	StorageType model.StorageType
+	StorageType ResStorageType
 	Reference   string
 	Payload     *MemoPayload `gorm:"serializer:json"`
 }

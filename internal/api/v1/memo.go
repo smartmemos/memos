@@ -74,9 +74,9 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		}
 	} else {
 		pageSize = int(req.PageSize)
-		if pageSize <= 0 {
-			pageSize = DefaultPageSize
-		}
+	}
+	if pageSize <= 0 {
+		pageSize = DefaultPageSize
 	}
 	memos, err := s.memoService.ListMemos(ctx, &model.ListMemosRequest{
 		PageSize: pageSize + 1,

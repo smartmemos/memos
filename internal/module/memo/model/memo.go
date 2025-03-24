@@ -9,15 +9,16 @@ import (
 type Memo struct {
 	db.Model
 
-	UID        string
-	ParentID   int64
-	CreatorID  int64
-	Content    string
-	Payload    MemoPayload `gorm:"serializer:json"`
-	Tags       []string    `gorm:"serializer:json"`
-	Pinned     bool
-	Visibility Visibility
-	Status     string
+	UID          string
+	ParentID     int64
+	RelationType RelationType
+	CreatorID    int64
+	Content      string
+	Payload      MemoPayload `gorm:"serializer:json"`
+	Tags         []string    `gorm:"serializer:json"`
+	Pinned       bool
+	Visibility   Visibility
+	Status       string
 }
 
 func (Memo) TableName() string {
