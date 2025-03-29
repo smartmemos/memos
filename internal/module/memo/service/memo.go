@@ -13,6 +13,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/module/memo/model"
 	usermd "github.com/smartmemos/memos/internal/module/user/model"
+	wsmd "github.com/smartmemos/memos/internal/module/workspace/model"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
@@ -127,8 +128,69 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 	}
 }
 
-func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
+func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memoInfo *model.MemoInfo, err error) {
+	userId, err := grpc_util.GetUserID(ctx)
+	if err != nil {
+		return
+	}
+	user, err := s.userDao.FindUserByID(ctx, userId)
+	if err != nil {
+		return
+	}
+	memo, err := s.dao.FindMemoByID(ctx, req.ID)
+	if err != nil {
+		return
+	}
+	// Only the creator or admin can update the memo.
+	if memo.CreatorID != user.ID && !s.isSuperUser(user) {
+		err = errors.New("permission denied")
+		return
+	}
 
+	update := make(map[string]any)
+	if lo.Contains(req.Paths, "content") {
+		var setting *wsmd.MemoRelatedSetting
+		setting, err = s.wsDao.FindMemoRelatedSetting(ctx)
+		if err != nil {
+			return
+		}
+		if contentLimit := int(setting.ContentLengthLimit); len(req.Content) > contentLimit {
+			err = errors.Errorf("content too long (max %d characters)", contentLimit)
+			return
+		}
+		_, err = s.getMemoPayload(req.Content)
+		if err != nil {
+			return
+		}
+	}
+
+	if lo.Contains(req.Paths, "visibility") {
+	}
+	if lo.Contains(req.Paths, "pinned") {
+		update["pinned"] = req.Pinned
+	}
+	if lo.Contains(req.Paths, "state") {
+	}
+	if lo.Contains(req.Paths, "create_time") {
+	}
+	if lo.Contains(req.Paths, "update_time") {
+	}
+	if lo.Contains(req.Paths, "display_time") {
+	}
+	if lo.Contains(req.Paths, "location") {
+	}
+	if lo.Contains(req.Paths, "resources") {
+	}
+	if lo.Contains(req.Paths, "relations") {
+	}
+
+	err = s.dao.UpdateMemo(ctx, memo, update)
+	if err != nil {
+		return
+	}
+	memoInfo = &model.MemoInfo{
+		Memo: memo,
+	}
 	return
 }
 

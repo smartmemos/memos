@@ -9,7 +9,7 @@ import (
 
 type Service interface {
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
-	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error)
+	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.MemoInfo, error)
 	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.MemoInfo, error)
 	DeleteMemo(ctx context.Context, id int64) error
 }

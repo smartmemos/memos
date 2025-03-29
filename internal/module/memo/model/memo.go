@@ -100,6 +100,10 @@ type RelationMemo struct {
 }
 
 type UpdateMemoRequest struct {
+	Paths   []string
+	ID      int64
+	Content string
+	Pinned  bool
 }
 
 type ListMemosRequest struct {

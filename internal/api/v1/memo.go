@@ -288,6 +288,24 @@ func getMemoContentSnippet(content string) (string, error) {
 	return plainText, nil
 }
 
+func (s *MemoService) UpdateMemo(ctx context.Context, req *v1pb.UpdateMemoRequest) (resp *memopb.Memo, err error) {
+	idStr, _ := ExtractMemoUIDFromName(req.Memo.Name)
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return
+	}
+	xReq := &model.UpdateMemoRequest{
+		Paths:  req.UpdateMask.Paths,
+		ID:     id,
+		Pinned: req.Memo.Pinned,
+	}
+	memo, err := s.memoService.UpdateMemo(ctx, xReq)
+	if err != nil {
+		return
+	}
+	return s.convertMemoToProto(ctx, memo)
+}
+
 func (s *MemoService) DeleteMemo(ctx context.Context, req *v1pb.DeleteMemoRequest) (resp *emptypb.Empty, err error) {
 	idStr, _ := ExtractMemoUIDFromName(req.Name)
 	id, err := strconv.ParseInt(idStr, 10, 64)

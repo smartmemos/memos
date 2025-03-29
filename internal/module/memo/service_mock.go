@@ -80,10 +80,10 @@ func (mr *MockServiceMockRecorder) ListMemos(ctx, req interface{}) *gomock.Call 
 }
 
 // UpdateMemo mocks base method.
-func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateMemo", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
