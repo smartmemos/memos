@@ -15,4 +15,5 @@ type DAO interface {
 	FindMemos(ctx context.Context, filter *model.FindMemoFilter) ([]*model.Memo, error)
 	FindMemoByID(ctx context.Context, id int64) (*model.Memo, error)
 	FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error)
+	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error)
 }

@@ -12,6 +12,8 @@ import (
 	"github.com/usememos/gomark/parser/tokenizer"
 
 	"github.com/smartmemos/memos/internal/module/memo/model"
+	usermd "github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
 func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (memo *model.Memo, err error) {
@@ -128,6 +130,35 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
 
 	return
+}
+
+func (s *Service) DeleteMemo(ctx context.Context, id int64) (err error) {
+	userId, err := grpc_util.GetUserID(ctx)
+	if err != nil {
+		return
+	}
+	user, err := s.userDao.FindUserByID(ctx, userId)
+	if err != nil {
+		return
+	}
+	memo, err := s.dao.FindMemoByID(ctx, id)
+	if err != nil {
+		return
+	}
+	// Only the creator or admin can update the memo.
+	if memo.CreatorID != userId && !s.isSuperUser(user) {
+		err = errors.New("permission denied")
+		return
+	}
+	_, err = s.dao.DeleteMemos(ctx, &model.FindMemoFilter{ID: id})
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (s *Service) isSuperUser(user *usermd.User) bool {
+	return user.Role == usermd.RoleAdmin || user.Role == usermd.RoleHost
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {

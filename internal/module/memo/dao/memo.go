@@ -45,3 +45,7 @@ func (d *Dao) FindMemoByID(ctx context.Context, id int64) (m *model.Memo, err er
 	}
 	return d.FindMemo(ctx, &model.FindMemoFilter{ID: id})
 }
+
+func (d *Dao) DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) (rowsAffected int64, err error) {
+	return db.Delete(ctx, model.Memo{}, filter)
+}

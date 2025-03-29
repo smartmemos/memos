@@ -629,6 +629,132 @@ paths:
                 format: int32
       tags:
         - WorkspaceService
+  /api/v1/{memo.name}:
+    patch:
+      summary: UpdateMemo updates a memo.
+      operationId: MemoService_UpdateMemo
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/memoMemo'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: memo.name
+          description: |-
+            The name of the memo.
+            Format: memos/{memo}, memo is the user defined id or uuid.
+          in: path
+          required: true
+          type: string
+          pattern: memos/[^/]+
+        - name: memo
+          description: |-
+            The memo to update.
+            The `name` field is required.
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              state:
+                $ref: '#/definitions/commonState'
+              creator:
+                type: string
+                title: |-
+                  The name of the creator.
+                  Format: users/{user}
+              createTime:
+                type: string
+                format: date-time
+              updateTime:
+                type: string
+                format: date-time
+              displayTime:
+                type: string
+                format: date-time
+              content:
+                type: string
+              nodes:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/markdownNode'
+                readOnly: true
+              visibility:
+                $ref: '#/definitions/memoVisibility'
+              tags:
+                type: array
+                items:
+                  type: string
+                readOnly: true
+              pinned:
+                type: boolean
+              resources:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/memoResource'
+              relations:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/memoMemoRelation'
+              reactions:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/memoReaction'
+                readOnly: true
+              property:
+                $ref: '#/definitions/MemoProperty'
+                readOnly: true
+              parent:
+                type: string
+                title: |-
+                  The name of the parent memo.
+                  Format: memos/{id}
+                readOnly: true
+              snippet:
+                type: string
+                description: The snippet of the memo content. Plain text only.
+                readOnly: true
+              location:
+                $ref: '#/definitions/memoLocation'
+                description: The location of the memo.
+            title: |-
+              The memo to update.
+              The `name` field is required.
+            required:
+              - memo
+      tags:
+        - MemoService
+  /api/v1/{name_1}:
+    delete:
+      summary: DeleteInbox deletes an inbox.
+      operationId: WorkspaceService_DeleteInbox
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            type: object
+            properties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: name_1
+          description: The name of the inbox to delete.
+          in: path
+          required: true
+          type: string
+          pattern: inboxes/[^/]+
+      tags:
+        - WorkspaceService
   /api/v1/{name}:
     get:
       summary: GetIdentityProvider gets an identity provider.
@@ -652,8 +778,8 @@ paths:
       tags:
         - WorkspaceService
     delete:
-      summary: DeleteInbox deletes an inbox.
-      operationId: WorkspaceService_DeleteInbox
+      summary: DeleteMemo deletes a memo.
+      operationId: MemoService_DeleteMemo
       responses:
         "200":
           description: A successful response.
@@ -666,13 +792,13 @@ paths:
             $ref: '#/definitions/googlerpcStatus'
       parameters:
         - name: name
-          description: The name of the inbox to delete.
+          description: The name of the memo.
           in: path
           required: true
           type: string
-          pattern: inboxes/[^/]+
+          pattern: memos/[^/]+
       tags:
-        - WorkspaceService
+        - MemoService
   /api/v1/{name}/setting:
     get:
       summary: GetUserSetting gets the setting of a user.

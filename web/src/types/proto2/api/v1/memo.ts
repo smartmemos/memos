@@ -6,6 +6,8 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "../../google/protobuf/empty";
+import { FieldMask } from "../../google/protobuf/field_mask";
 import {
   Direction,
   directionFromJSON,
@@ -17,6 +19,20 @@ import {
 import { Memo } from "../../model/memo/memo";
 
 export const protobufPackage = "api.v1";
+
+export interface UpdateMemoRequest {
+  /**
+   * The memo to update.
+   * The `name` field is required.
+   */
+  memo?: Memo | undefined;
+  updateMask?: string[] | undefined;
+}
+
+export interface DeleteMemoRequest {
+  /** The name of the memo. */
+  name: string;
+}
 
 export interface CreateMemoRequest {
   /** The memo to create. */
@@ -74,6 +90,110 @@ export interface ListMemosResponse {
 
 export interface GetMemoRequest {
 }
+
+function createBaseUpdateMemoRequest(): UpdateMemoRequest {
+  return { memo: undefined, updateMask: undefined };
+}
+
+export const UpdateMemoRequest: MessageFns<UpdateMemoRequest> = {
+  encode(message: UpdateMemoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.memo !== undefined) {
+      Memo.encode(message.memo, writer.uint32(10).fork()).join();
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(FieldMask.wrap(message.updateMask), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateMemoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateMemoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.memo = Memo.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.updateMask = FieldMask.unwrap(FieldMask.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<UpdateMemoRequest>): UpdateMemoRequest {
+    return UpdateMemoRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UpdateMemoRequest>): UpdateMemoRequest {
+    const message = createBaseUpdateMemoRequest();
+    message.memo = (object.memo !== undefined && object.memo !== null) ? Memo.fromPartial(object.memo) : undefined;
+    message.updateMask = object.updateMask ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteMemoRequest(): DeleteMemoRequest {
+  return { name: "" };
+}
+
+export const DeleteMemoRequest: MessageFns<DeleteMemoRequest> = {
+  encode(message: DeleteMemoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteMemoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteMemoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<DeleteMemoRequest>): DeleteMemoRequest {
+    return DeleteMemoRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DeleteMemoRequest>): DeleteMemoRequest {
+    const message = createBaseDeleteMemoRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
 
 function createBaseCreateMemoRequest(): CreateMemoRequest {
   return { memo: undefined };
@@ -393,6 +513,101 @@ export const MemoServiceDefinition = {
       options: {
         _unknownFields: {
           578365826: [new Uint8Array([17, 18, 15, 47, 97, 112, 105, 47, 118, 49, 47, 109, 101, 109, 111, 115, 47, 42])],
+        },
+      },
+    },
+    /** UpdateMemo updates a memo. */
+    updateMemo: {
+      name: "UpdateMemo",
+      requestType: UpdateMemoRequest,
+      requestStream: false,
+      responseType: Memo,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([16, 109, 101, 109, 111, 44, 117, 112, 100, 97, 116, 101, 95, 109, 97, 115, 107])],
+          578365826: [
+            new Uint8Array([
+              35,
+              58,
+              4,
+              109,
+              101,
+              109,
+              111,
+              50,
+              27,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              109,
+              101,
+              109,
+              111,
+              46,
+              110,
+              97,
+              109,
+              101,
+              61,
+              109,
+              101,
+              109,
+              111,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** DeleteMemo deletes a memo. */
+    deleteMemo: {
+      name: "DeleteMemo",
+      requestType: DeleteMemoRequest,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              24,
+              42,
+              22,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              109,
+              101,
+              109,
+              111,
+              115,
+              47,
+              42,
+              125,
+            ]),
+          ],
         },
       },
     },

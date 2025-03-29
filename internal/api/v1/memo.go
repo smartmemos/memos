@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
@@ -13,6 +14,7 @@ import (
 	"github.com/usememos/gomark/renderer"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/module/memo"
@@ -284,4 +286,14 @@ func getMemoContentSnippet(content string) (string, error) {
 		return lo.Substring(plainText, 0, 64) + "...", nil
 	}
 	return plainText, nil
+}
+
+func (s *MemoService) DeleteMemo(ctx context.Context, req *v1pb.DeleteMemoRequest) (resp *emptypb.Empty, err error) {
+	idStr, _ := ExtractMemoUIDFromName(req.Name)
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return
+	}
+	err = s.memoService.DeleteMemo(ctx, id)
+	return
 }

@@ -5,6 +5,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 import "model/memo/memo.proto";
 import "model/common/common.proto";
 
@@ -30,8 +31,35 @@ service MemoService {
     option (google.api.http) = {get: "/api/v1/memos/*"};
   }
 
+  // UpdateMemo updates a memo.
+  rpc UpdateMemo(UpdateMemoRequest) returns (memo.Memo) {
+    option (google.api.http) = {
+      patch: "/api/v1/{memo.name=memos/*}"
+      body: "memo"
+    };
+    option (google.api.method_signature) = "memo,update_mask";
+  }
+
+  // DeleteMemo deletes a memo.
+  rpc DeleteMemo(DeleteMemoRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/api/v1/{name=memos/*}"};
+    option (google.api.method_signature) = "name";
+  }  
+
 }
 
+message UpdateMemoRequest {
+  // The memo to update.
+  // The `name` field is required.
+  memo.Memo memo = 1 [(google.api.field_behavior) = REQUIRED];
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteMemoRequest {
+  // The name of the memo.
+  string name = 1;
+}
 
 message CreateMemoRequest {
     // The memo to create.
