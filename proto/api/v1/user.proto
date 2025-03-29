@@ -9,6 +9,8 @@ import "google/protobuf/field_mask.proto";
 import "model/user/user.proto";
 import "model/user/setting.proto";
 import "model/user/stats.proto";
+import "model/user/access_token.proto";
+
 
 package api.v1;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";
@@ -49,6 +51,23 @@ service UserService {
     option (google.api.method_signature) = "name";
   }
 
+  // CreateUserAccessToken creates a new access token for a user.
+  rpc CreateAccessToken(CreateAccessTokenRequest) returns (user.AccessToken) {
+    option (google.api.http) = {
+      post: "/api/v1/{name=users/*}/access_tokens"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+}
+
+message CreateAccessTokenRequest {
+  // The name of the user.
+  string name = 1;
+
+  string description = 2;
+
+  optional google.protobuf.Timestamp expires_at = 3;
 }
 
 message ListAllUserStatsRequest {}

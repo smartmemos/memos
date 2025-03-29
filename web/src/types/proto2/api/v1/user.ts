@@ -7,11 +7,20 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { FieldMask } from "../../google/protobuf/field_mask";
+import { Timestamp } from "../../google/protobuf/timestamp";
+import { AccessToken } from "../../model/user/access_token";
 import { Setting } from "../../model/user/setting";
 import { Stats } from "../../model/user/stats";
 import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
+
+export interface CreateAccessTokenRequest {
+  /** The name of the user. */
+  name: string;
+  description: string;
+  expiresAt?: Date | undefined;
+}
 
 export interface ListAllUserStatsRequest {
 }
@@ -44,6 +53,76 @@ export interface UpdateUserSettingRequest {
   setting?: Setting | undefined;
   updateMask?: string[] | undefined;
 }
+
+function createBaseCreateAccessTokenRequest(): CreateAccessTokenRequest {
+  return { name: "", description: "", expiresAt: undefined };
+}
+
+export const CreateAccessTokenRequest: MessageFns<CreateAccessTokenRequest> = {
+  encode(message: CreateAccessTokenRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.expiresAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAccessTokenRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAccessTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expiresAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<CreateAccessTokenRequest>): CreateAccessTokenRequest {
+    return CreateAccessTokenRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<CreateAccessTokenRequest>): CreateAccessTokenRequest {
+    const message = createBaseCreateAccessTokenRequest();
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.expiresAt = object.expiresAt ?? undefined;
+    return message;
+  },
+};
 
 function createBaseListAllUserStatsRequest(): ListAllUserStatsRequest {
   return {};
@@ -692,6 +771,65 @@ export const UserServiceDefinition = {
         },
       },
     },
+    /** CreateUserAccessToken creates a new access token for a user. */
+    createAccessToken: {
+      name: "CreateAccessToken",
+      requestType: CreateAccessTokenRequest,
+      requestStream: false,
+      responseType: AccessToken,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              41,
+              58,
+              1,
+              42,
+              34,
+              36,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              42,
+              125,
+              47,
+              97,
+              99,
+              99,
+              101,
+              115,
+              115,
+              95,
+              116,
+              111,
+              107,
+              101,
+              110,
+              115,
+            ]),
+          ],
+        },
+      },
+    },
   },
 } as const;
 
@@ -702,6 +840,18 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
 
 export interface MessageFns<T> {
   encode(message: T, writer?: BinaryWriter): BinaryWriter;

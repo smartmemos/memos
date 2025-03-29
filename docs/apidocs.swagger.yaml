@@ -799,6 +799,33 @@ paths:
           pattern: memos/[^/]+
       tags:
         - MemoService
+  /api/v1/{name}/access_tokens:
+    post:
+      summary: CreateUserAccessToken creates a new access token for a user.
+      operationId: UserService_CreateAccessToken
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/userAccessToken'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserServiceCreateAccessTokenBody'
+      tags:
+        - UserService
   /api/v1/{name}/setting:
     get:
       summary: GetUserSetting gets the setting of a user.
@@ -961,6 +988,14 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
+  UserServiceCreateAccessTokenBody:
+    type: object
+    properties:
+      description:
+        type: string
+      expiresAt:
+        type: string
+        format: date-time
   commonDirection:
     type: string
     enum:
@@ -1518,6 +1553,19 @@ definitions:
       '@type':
         type: string
     additionalProperties: {}
+  userAccessToken:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      description:
+        type: string
+      issuedAt:
+        type: string
+        format: date-time
+      expiresAt:
+        type: string
+        format: date-time
   userSetting:
     type: object
     properties:

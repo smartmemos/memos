@@ -85,3 +85,7 @@ func convertUserToProto(user *model.User) *userpb.User {
 		State:       userpb.State(userpb.State_value[string(user.Status)]),
 	}
 }
+
+func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAccessTokenRequest) {
+
+}

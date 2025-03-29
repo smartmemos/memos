@@ -25,6 +25,7 @@ const (
 	UserService_UpdateUserSetting_FullMethodName = "/api.v1.UserService/UpdateUserSetting"
 	UserService_ListAllUserStats_FullMethodName  = "/api.v1.UserService/ListAllUserStats"
 	UserService_GetUserStats_FullMethodName      = "/api.v1.UserService/GetUserStats"
+	UserService_CreateAccessToken_FullMethodName = "/api.v1.UserService/CreateAccessToken"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -41,6 +42,8 @@ type UserServiceClient interface {
 	ListAllUserStats(ctx context.Context, in *ListAllUserStatsRequest, opts ...grpc.CallOption) (*ListAllUserStatsResponse, error)
 	// GetUserStats returns the stats of a user.
 	GetUserStats(ctx context.Context, in *GetUserStatsRequest, opts ...grpc.CallOption) (*user.Stats, error)
+	// CreateUserAccessToken creates a new access token for a user.
+	CreateAccessToken(ctx context.Context, in *CreateAccessTokenRequest, opts ...grpc.CallOption) (*user.AccessToken, error)
 }
 
 type userServiceClient struct {
@@ -101,6 +104,16 @@ func (c *userServiceClient) GetUserStats(ctx context.Context, in *GetUserStatsRe
 	return out, nil
 }
 
+func (c *userServiceClient) CreateAccessToken(ctx context.Context, in *CreateAccessTokenRequest, opts ...grpc.CallOption) (*user.AccessToken, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(user.AccessToken)
+	err := c.cc.Invoke(ctx, UserService_CreateAccessToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -115,6 +128,8 @@ type UserServiceServer interface {
 	ListAllUserStats(context.Context, *ListAllUserStatsRequest) (*ListAllUserStatsResponse, error)
 	// GetUserStats returns the stats of a user.
 	GetUserStats(context.Context, *GetUserStatsRequest) (*user.Stats, error)
+	// CreateUserAccessToken creates a new access token for a user.
+	CreateAccessToken(context.Context, *CreateAccessTokenRequest) (*user.AccessToken, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -139,6 +154,9 @@ func (UnimplementedUserServiceServer) ListAllUserStats(context.Context, *ListAll
 }
 func (UnimplementedUserServiceServer) GetUserStats(context.Context, *GetUserStatsRequest) (*user.Stats, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserStats not implemented")
+}
+func (UnimplementedUserServiceServer) CreateAccessToken(context.Context, *CreateAccessTokenRequest) (*user.AccessToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAccessToken not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -251,6 +269,24 @@ func _UserService_GetUserStats_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_CreateAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAccessTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreateAccessToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_CreateAccessToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreateAccessToken(ctx, req.(*CreateAccessTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -277,6 +313,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserStats",
 			Handler:    _UserService_GetUserStats_Handler,
+		},
+		{
+			MethodName: "CreateAccessToken",
+			Handler:    _UserService_CreateAccessToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
