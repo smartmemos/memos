@@ -11,7 +11,7 @@ import showCreateAccessTokenDialog from "../CreateAccessTokenDialog";
 import LearnMore from "../LearnMore";
 
 const listAccessTokens = async (name: string) => {
-  const { accessTokens } = await userServiceClient.listUserAccessTokens({ name });
+  const { accessTokens } = await userServiceClient.listAccessTokens({ name });
   return accessTokens.sort((a, b) => (b.issuedAt?.getTime() ?? 0) - (a.issuedAt?.getTime() ?? 0));
 };
 

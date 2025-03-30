@@ -112,3 +112,7 @@ func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAcc
 	}
 	return
 }
+
+func (s *UserService) ListAccessTokens(ctx context.Context, req *v1pb.ListAccessTokensRequest) (resp *v1pb.ListAccessTokensResponse, err error) {
+	return
+}

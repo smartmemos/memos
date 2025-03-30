@@ -15,6 +15,15 @@ import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
 
+export interface ListAccessTokensRequest {
+  /** The name of the user. */
+  name: string;
+}
+
+export interface ListAccessTokensResponse {
+  accessTokens: AccessToken[];
+}
+
 export interface CreateAccessTokenRequest {
   /** The name of the user. */
   name: string;
@@ -53,6 +62,98 @@ export interface UpdateUserSettingRequest {
   setting?: Setting | undefined;
   updateMask?: string[] | undefined;
 }
+
+function createBaseListAccessTokensRequest(): ListAccessTokensRequest {
+  return { name: "" };
+}
+
+export const ListAccessTokensRequest: MessageFns<ListAccessTokensRequest> = {
+  encode(message: ListAccessTokensRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListAccessTokensRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListAccessTokensRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListAccessTokensRequest>): ListAccessTokensRequest {
+    return ListAccessTokensRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListAccessTokensRequest>): ListAccessTokensRequest {
+    const message = createBaseListAccessTokensRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseListAccessTokensResponse(): ListAccessTokensResponse {
+  return { accessTokens: [] };
+}
+
+export const ListAccessTokensResponse: MessageFns<ListAccessTokensResponse> = {
+  encode(message: ListAccessTokensResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.accessTokens) {
+      AccessToken.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListAccessTokensResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListAccessTokensResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accessTokens.push(AccessToken.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<ListAccessTokensResponse>): ListAccessTokensResponse {
+    return ListAccessTokensResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ListAccessTokensResponse>): ListAccessTokensResponse {
+    const message = createBaseListAccessTokensResponse();
+    message.accessTokens = object.accessTokens?.map((e) => AccessToken.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseCreateAccessTokenRequest(): CreateAccessTokenRequest {
   return { name: "", description: "", expiresAt: undefined };
@@ -788,6 +889,62 @@ export const UserServiceDefinition = {
               1,
               42,
               34,
+              36,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              42,
+              125,
+              47,
+              97,
+              99,
+              99,
+              101,
+              115,
+              115,
+              95,
+              116,
+              111,
+              107,
+              101,
+              110,
+              115,
+            ]),
+          ],
+        },
+      },
+    },
+    /** ListAccessTokens returns a list of access tokens for a user. */
+    listAccessTokens: {
+      name: "ListAccessTokens",
+      requestType: ListAccessTokensRequest,
+      requestStream: false,
+      responseType: ListAccessTokensResponse,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([4, 110, 97, 109, 101])],
+          578365826: [
+            new Uint8Array([
+              38,
+              18,
               36,
               47,
               97,

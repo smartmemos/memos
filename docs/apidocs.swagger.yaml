@@ -800,6 +800,27 @@ paths:
       tags:
         - MemoService
   /api/v1/{name}/access_tokens:
+    get:
+      summary: ListAccessTokens returns a list of access tokens for a user.
+      operationId: UserService_ListAccessTokens
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListAccessTokensResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+      tags:
+        - UserService
     post:
       summary: CreateUserAccessToken creates a new access token for a user.
       operationId: UserService_CreateAccessToken
@@ -1653,6 +1674,14 @@ definitions:
         type: string
         format: date-time
         readOnly: true
+  v1ListAccessTokensResponse:
+    type: object
+    properties:
+      accessTokens:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/userAccessToken'
   v1ListAllUserStatsResponse:
     type: object
     properties:
