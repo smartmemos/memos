@@ -6,6 +6,7 @@ import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "model/user/user.proto";
+import "model/user/access_token.proto";
 
 package api.v1;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v1";

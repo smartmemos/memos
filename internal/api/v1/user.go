@@ -86,6 +86,7 @@ func convertUserToProto(user *model.User) *userpb.User {
 	}
 }
 
-func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAccessTokenRequest) {
+func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAccessTokenRequest) (resp *userpb.AccessToken, err error) {
 
+	return
 }
