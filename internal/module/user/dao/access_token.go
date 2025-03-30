@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 
-	"github.com/smartmemos/memos/internal/module/auth/model"
+	"github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/pkg/db"
 )
 

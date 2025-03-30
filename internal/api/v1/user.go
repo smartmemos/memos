@@ -2,8 +2,12 @@ package v1
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/samber/do/v2"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/module/user"
@@ -73,7 +77,7 @@ func (s *UserService) GetUserStats(context.Context, *v1pb.GetUserStatsRequest) (
 func convertUserToProto(user *model.User) *userpb.User {
 	return &userpb.User{
 		Id:          user.ID,
-		Name:        user.Username,
+		Name:        fmt.Sprintf("users/%d", user.ID),
 		Username:    user.Username,
 		Nickname:    user.Nickname,
 		Email:       user.Email,
@@ -87,6 +91,24 @@ func convertUserToProto(user *model.User) *userpb.User {
 }
 
 func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAccessTokenRequest) (resp *userpb.AccessToken, err error) {
-
+	userID, err := ExtractUserIDFromName(req.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
+	}
+	token, err := s.userService.CreateAccessToken(ctx, &model.CreateAccessTokenRequest{
+		UserId:      int64(userID),
+		Description: req.Description,
+		IssuedAt:    time.Now(),
+		ExpiresAt:   req.ExpiresAt.AsTime(),
+	})
+	if err != nil {
+		return
+	}
+	resp = &userpb.AccessToken{
+		AccessToken: token.Token,
+		Description: token.Description,
+		IssuedAt:    timestamppb.New(token.IssuedAt),
+		ExpiresAt:   timestamppb.New(token.ExpiresAt),
+	}
 	return
 }

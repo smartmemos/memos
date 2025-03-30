@@ -35,6 +35,21 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
 }
 
+// CountAccessTokens mocks base method.
+func (m *MockDAO) CountAccessTokens(ctx context.Context, filter *model.FindAccessTokenFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountAccessTokens", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountAccessTokens indicates an expected call of CountAccessTokens.
+func (mr *MockDAOMockRecorder) CountAccessTokens(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountAccessTokens", reflect.TypeOf((*MockDAO)(nil).CountAccessTokens), ctx, filter)
+}
+
 // CountUsers mocks base method.
 func (m *MockDAO) CountUsers(ctx context.Context, filter *model.FindUserFilter) (int64, error) {
 	m.ctrl.T.Helper()
@@ -50,6 +65,20 @@ func (mr *MockDAOMockRecorder) CountUsers(ctx, filter interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountUsers", reflect.TypeOf((*MockDAO)(nil).CountUsers), ctx, filter)
 }
 
+// CreateAccessToken mocks base method.
+func (m_2 *MockDAO) CreateAccessToken(ctx context.Context, m *model.AccessToken) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateAccessToken", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateAccessToken indicates an expected call of CreateAccessToken.
+func (mr *MockDAOMockRecorder) CreateAccessToken(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessToken", reflect.TypeOf((*MockDAO)(nil).CreateAccessToken), ctx, m)
+}
+
 // CreateUser mocks base method.
 func (m_2 *MockDAO) CreateUser(ctx context.Context, m *model.User) error {
 	m_2.ctrl.T.Helper()
@@ -62,6 +91,35 @@ func (m_2 *MockDAO) CreateUser(ctx context.Context, m *model.User) error {
 func (mr *MockDAOMockRecorder) CreateUser(ctx, m interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockDAO)(nil).CreateUser), ctx, m)
+}
+
+// DeleteAccessToken mocks base method.
+func (m *MockDAO) DeleteAccessToken(ctx context.Context, filter *model.FindAccessTokenFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAccessToken", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAccessToken indicates an expected call of DeleteAccessToken.
+func (mr *MockDAOMockRecorder) DeleteAccessToken(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccessToken", reflect.TypeOf((*MockDAO)(nil).DeleteAccessToken), ctx, filter)
+}
+
+// FindAccessToken mocks base method.
+func (m *MockDAO) FindAccessToken(ctx context.Context, filter *model.FindAccessTokenFilter) (*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindAccessToken", ctx, filter)
+	ret0, _ := ret[0].(*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindAccessToken indicates an expected call of FindAccessToken.
+func (mr *MockDAOMockRecorder) FindAccessToken(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAccessToken", reflect.TypeOf((*MockDAO)(nil).FindAccessToken), ctx, filter)
 }
 
 // FindSetting mocks base method.

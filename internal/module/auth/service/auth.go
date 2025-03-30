@@ -15,7 +15,7 @@ import (
 	usermd "github.com/smartmemos/memos/internal/module/user/model"
 )
 
-func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *model.AccessToken, err error) {
+func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *usermd.AccessToken, err error) {
 	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{Username: req.Username})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
@@ -36,22 +36,22 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessT
 		expireTime = time.Now().Add(10 * 365 * 24 * time.Hour)
 	}
 	issuedAt := time.Now()
-	token, err := s.generateAccessToken(ctx, user.ID, issuedAt, expireTime)
+	token, err := s.GenerateAccessToken(ctx, user.ID, issuedAt, expireTime)
 	if err != nil {
 		return
 	}
-	accessToken = &model.AccessToken{
+	accessToken = &usermd.AccessToken{
 		UserId:      user.ID,
 		Token:       token,
 		Description: "login",
 		IssuedAt:    issuedAt,
 		ExpiresAt:   expireTime,
 	}
-	err = s.dao.CreateAccessToken(ctx, accessToken)
+	err = s.userDao.CreateAccessToken(ctx, accessToken)
 	return
 }
 
-func (s *Service) generateAccessToken(_ context.Context, userID int64, issuedAt, expirationTime time.Time) (tokenStr string, err error) {
+func (s *Service) GenerateAccessToken(_ context.Context, userID int64, issuedAt, expirationTime time.Time) (tokenStr string, err error) {
 	cfg := config.GetConfig().JWT
 
 	registeredClaims := jwt.RegisteredClaims{
@@ -73,7 +73,7 @@ func (s *Service) generateAccessToken(_ context.Context, userID int64, issuedAt,
 	return
 }
 
-func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessToken *model.AccessToken, err error) {
+func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessToken *usermd.AccessToken, err error) {
 	if tokenStr == "" {
 		err = errors.New("access token not found")
 		return
@@ -99,7 +99,7 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 	if err != nil {
 		return
 	}
-	accessToken = &model.AccessToken{
+	accessToken = &usermd.AccessToken{
 		UserId: userId,
 		Token:  tokenStr,
 	}
@@ -113,14 +113,14 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 }
 
 func (s *Service) DeleteAccessToken(ctx context.Context, userId int64, token string) error {
-	return s.dao.DeleteAccessToken(ctx, &model.FindAccessTokenFilter{
+	return s.userDao.DeleteAccessToken(ctx, &usermd.FindAccessTokenFilter{
 		UserId: userId,
 		Token:  token,
 	})
 }
 
 func (s *Service) ValidateAccessToken(ctx context.Context, userId int64, token string) (bool, error) {
-	total, err := s.dao.CountAccessTokens(ctx, &model.FindAccessTokenFilter{
+	total, err := s.userDao.CountAccessTokens(ctx, &usermd.FindAccessTokenFilter{
 		UserId: userId,
 		Token:  token,
 	})

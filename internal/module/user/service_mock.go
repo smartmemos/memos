@@ -35,6 +35,21 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateAccessToken mocks base method.
+func (m *MockService) CreateAccessToken(ctx context.Context, req *model.CreateAccessTokenRequest) (*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAccessToken", ctx, req)
+	ret0, _ := ret[0].(*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAccessToken indicates an expected call of CreateAccessToken.
+func (mr *MockServiceMockRecorder) CreateAccessToken(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessToken", reflect.TypeOf((*MockService)(nil).CreateAccessToken), ctx, req)
+}
+
 // CreateUser mocks base method.
 func (m *MockService) CreateUser(arg0 context.Context, arg1 *model.CreateUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()

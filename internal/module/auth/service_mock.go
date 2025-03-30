@@ -7,9 +7,11 @@ package auth
 import (
 	context "context"
 	reflect "reflect"
+	time "time"
 
 	gomock "github.com/golang/mock/gomock"
 	model "github.com/smartmemos/memos/internal/module/auth/model"
+	model0 "github.com/smartmemos/memos/internal/module/user/model"
 )
 
 // MockService is a mock of Service interface.
@@ -36,10 +38,10 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Authenticate mocks base method.
-func (m *MockService) Authenticate(ctx context.Context, token string) (*model.AccessToken, error) {
+func (m *MockService) Authenticate(ctx context.Context, token string) (*model0.AccessToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Authenticate", ctx, token)
-	ret0, _ := ret[0].(*model.AccessToken)
+	ret0, _ := ret[0].(*model0.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,11 +66,26 @@ func (mr *MockServiceMockRecorder) DeleteAccessToken(ctx, userId, token interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccessToken", reflect.TypeOf((*MockService)(nil).DeleteAccessToken), ctx, userId, token)
 }
 
+// GenerateAccessToken mocks base method.
+func (m *MockService) GenerateAccessToken(arg0 context.Context, userID int64, issuedAt, expirationTime time.Time) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenerateAccessToken", arg0, userID, issuedAt, expirationTime)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GenerateAccessToken indicates an expected call of GenerateAccessToken.
+func (mr *MockServiceMockRecorder) GenerateAccessToken(arg0, userID, issuedAt, expirationTime interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), arg0, userID, issuedAt, expirationTime)
+}
+
 // SignIn mocks base method.
-func (m *MockService) SignIn(ctx context.Context, req *model.SignInRequest) (*model.AccessToken, error) {
+func (m *MockService) SignIn(ctx context.Context, req *model.SignInRequest) (*model0.AccessToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SignIn", ctx, req)
-	ret0, _ := ret[0].(*model.AccessToken)
+	ret0, _ := ret[0].(*model0.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
