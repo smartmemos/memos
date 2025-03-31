@@ -114,5 +114,22 @@ func (s *UserService) CreateAccessToken(ctx context.Context, req *v1pb.CreateAcc
 }
 
 func (s *UserService) ListAccessTokens(ctx context.Context, req *v1pb.ListAccessTokensRequest) (resp *v1pb.ListAccessTokensResponse, err error) {
+	tokens, err := s.userService.ListAccessTokens(ctx, &model.ListAccessTokensRequest{})
+	if err != nil {
+		return
+	}
+	var list []*userpb.AccessToken
+	for _, token := range tokens {
+		item := &userpb.AccessToken{
+			AccessToken: token.Token,
+			Description: token.Description,
+			IssuedAt:    timestamppb.New(token.IssuedAt),
+			ExpiresAt:   timestamppb.New(token.ExpiresAt),
+		}
+		list = append(list, item)
+	}
+	resp = &v1pb.ListAccessTokensResponse{
+		AccessTokens: list,
+	}
 	return
 }

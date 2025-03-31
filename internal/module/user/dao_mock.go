@@ -122,6 +122,21 @@ func (mr *MockDAOMockRecorder) FindAccessToken(ctx, filter interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAccessToken", reflect.TypeOf((*MockDAO)(nil).FindAccessToken), ctx, filter)
 }
 
+// FindAccessTokens mocks base method.
+func (m *MockDAO) FindAccessTokens(ctx context.Context, filter *model.FindAccessTokenFilter) ([]*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindAccessTokens", ctx, filter)
+	ret0, _ := ret[0].([]*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindAccessTokens indicates an expected call of FindAccessTokens.
+func (mr *MockDAOMockRecorder) FindAccessTokens(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAccessTokens", reflect.TypeOf((*MockDAO)(nil).FindAccessTokens), ctx, filter)
+}
+
 // FindSetting mocks base method.
 func (m *MockDAO) FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error) {
 	m.ctrl.T.Helper()

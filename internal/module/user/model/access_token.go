@@ -48,3 +48,6 @@ type CreateAccessTokenRequest struct {
 	IssuedAt    time.Time
 	ExpiresAt   time.Time
 }
+
+type ListAccessTokensRequest struct {
+}

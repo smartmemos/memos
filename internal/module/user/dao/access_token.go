@@ -25,6 +25,11 @@ func (d *Dao) FindAccessToken(ctx context.Context, filter *model.FindAccessToken
 	}
 }
 
+func (d *Dao) FindAccessTokens(ctx context.Context, f *model.FindAccessTokenFilter) (ms []*model.AccessToken, err error) {
+	err = db.Find(ctx, f, &ms)
+	return
+}
+
 func (d *Dao) CountAccessTokens(ctx context.Context, filter *model.FindAccessTokenFilter) (total int64, err error) {
 	return db.Count(ctx, &model.AccessToken{}, filter)
 }

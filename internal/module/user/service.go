@@ -13,4 +13,5 @@ type Service interface {
 	// GetSetting(ctx context.Context, req *model.GetSettingRequest) (*model.Setting, error)
 	ListAllUserStats(ctx context.Context, req *model.ListAllUserStatsRequest) (stats *model.Stats, err error)
 	CreateAccessToken(ctx context.Context, req *model.CreateAccessTokenRequest) (*model.AccessToken, error)
+	ListAccessTokens(ctx context.Context, req *model.ListAccessTokensRequest) ([]*model.AccessToken, error)
 }
