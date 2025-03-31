@@ -847,6 +847,34 @@ paths:
             $ref: '#/definitions/UserServiceCreateAccessTokenBody'
       tags:
         - UserService
+  /api/v1/{name}/access_tokens/{accessToken}:
+    delete:
+      summary: DeleteAccessToken deletes an access token for a user.
+      operationId: UserService_DeleteAccessToken
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            type: object
+            properties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: name
+          description: The name of the user.
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+        - name: accessToken
+          description: access_token is the access token to delete.
+          in: path
+          required: true
+          type: string
+      tags:
+        - UserService
   /api/v1/{name}/setting:
     get:
       summary: GetUserSetting gets the setting of a user.

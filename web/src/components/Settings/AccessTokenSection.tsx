@@ -40,7 +40,7 @@ const AccessTokenSection = () => {
     const formatedAccessToken = getFormatedAccessToken(accessToken);
     const confirmed = window.confirm(t("setting.access-token-section.access-token-deletion", { accessToken: formatedAccessToken }));
     if (confirmed) {
-      await userServiceClient.deleteUserAccessToken({ name: currentUser.name, accessToken: accessToken });
+      await userServiceClient.deleteAccessToken({ name: currentUser.name, accessToken: accessToken });
       setUserAccessTokens(userAccessTokens.filter((token) => token.accessToken !== accessToken));
     }
   };

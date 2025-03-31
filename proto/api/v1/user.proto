@@ -60,11 +60,24 @@ service UserService {
     option (google.api.method_signature) = "name";
   }
 
+  // DeleteAccessToken deletes an access token for a user.
+  rpc DeleteAccessToken(DeleteAccessTokenRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/api/v1/{name=users/*}/access_tokens/{access_token}"};
+    option (google.api.method_signature) = "name,access_token";
+  }
+
   // ListAccessTokens returns a list of access tokens for a user.
   rpc ListAccessTokens(ListAccessTokensRequest) returns (ListAccessTokensResponse) {
     option (google.api.http) = {get: "/api/v1/{name=users/*}/access_tokens"};
     option (google.api.method_signature) = "name";
   }
+}
+
+message DeleteAccessTokenRequest {
+  // The name of the user.
+  string name = 1;
+  // access_token is the access token to delete.
+  string access_token = 2;
 }
 
 message ListAccessTokensRequest {

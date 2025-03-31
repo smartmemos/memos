@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "../../google/protobuf/empty";
 import { FieldMask } from "../../google/protobuf/field_mask";
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { AccessToken } from "../../model/user/access_token";
@@ -14,6 +15,13 @@ import { Stats } from "../../model/user/stats";
 import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
+
+export interface DeleteAccessTokenRequest {
+  /** The name of the user. */
+  name: string;
+  /** access_token is the access token to delete. */
+  accessToken: string;
+}
 
 export interface ListAccessTokensRequest {
   /** The name of the user. */
@@ -62,6 +70,64 @@ export interface UpdateUserSettingRequest {
   setting?: Setting | undefined;
   updateMask?: string[] | undefined;
 }
+
+function createBaseDeleteAccessTokenRequest(): DeleteAccessTokenRequest {
+  return { name: "", accessToken: "" };
+}
+
+export const DeleteAccessTokenRequest: MessageFns<DeleteAccessTokenRequest> = {
+  encode(message: DeleteAccessTokenRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.accessToken !== "") {
+      writer.uint32(18).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteAccessTokenRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteAccessTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.accessToken = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<DeleteAccessTokenRequest>): DeleteAccessTokenRequest {
+    return DeleteAccessTokenRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DeleteAccessTokenRequest>): DeleteAccessTokenRequest {
+    const message = createBaseDeleteAccessTokenRequest();
+    message.name = object.name ?? "";
+    message.accessToken = object.accessToken ?? "";
+    return message;
+  },
+};
 
 function createBaseListAccessTokensRequest(): ListAccessTokensRequest {
   return { name: "" };
@@ -926,6 +992,77 @@ export const UserServiceDefinition = {
               101,
               110,
               115,
+            ]),
+          ],
+        },
+      },
+    },
+    /** DeleteAccessToken deletes an access token for a user. */
+    deleteAccessToken: {
+      name: "DeleteAccessToken",
+      requestType: DeleteAccessTokenRequest,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([17, 110, 97, 109, 101, 44, 97, 99, 99, 101, 115, 115, 95, 116, 111, 107, 101, 110])],
+          578365826: [
+            new Uint8Array([
+              53,
+              42,
+              51,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              110,
+              97,
+              109,
+              101,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              42,
+              125,
+              47,
+              97,
+              99,
+              99,
+              101,
+              115,
+              115,
+              95,
+              116,
+              111,
+              107,
+              101,
+              110,
+              115,
+              47,
+              123,
+              97,
+              99,
+              99,
+              101,
+              115,
+              115,
+              95,
+              116,
+              111,
+              107,
+              101,
+              110,
+              125,
             ]),
           ],
         },

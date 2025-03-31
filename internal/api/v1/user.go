@@ -8,6 +8,7 @@ import (
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/module/user"
@@ -131,5 +132,17 @@ func (s *UserService) ListAccessTokens(ctx context.Context, req *v1pb.ListAccess
 	resp = &v1pb.ListAccessTokensResponse{
 		AccessTokens: list,
 	}
+	return
+}
+
+func (s *UserService) DeleteAccessToken(ctx context.Context, req *v1pb.DeleteAccessTokenRequest) (_ *emptypb.Empty, err error) {
+	userID, err := ExtractUserIDFromName(req.Name)
+	if err != nil {
+		return
+	}
+	err = s.userService.DeleteAccessToken(ctx, &model.DeleteAccessTokenRequest{
+		UserID:      int64(userID),
+		AccessToken: req.AccessToken,
+	})
 	return
 }

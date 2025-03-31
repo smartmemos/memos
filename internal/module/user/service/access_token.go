@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
+	"errors"
 	"slices"
 	"time"
 
 	"github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
 func (s *Service) CreateAccessToken(ctx context.Context, req *model.CreateAccessTokenRequest) (token *model.AccessToken, err error) {
@@ -44,5 +46,21 @@ func (s *Service) ListAccessTokens(ctx context.Context, req *model.ListAccessTok
 	slices.SortFunc(list, func(i, j *model.AccessToken) int {
 		return int(i.IssuedAt.Sub(j.IssuedAt))
 	})
+	return
+}
+
+func (s *Service) DeleteAccessToken(ctx context.Context, req *model.DeleteAccessTokenRequest) (err error) {
+	userID, err := grpc_util.GetUserID(ctx)
+	if err != nil {
+		return
+	}
+	if req.UserID != userID {
+		err = errors.New("permission denied")
+		return
+	}
+	filter := &model.FindAccessTokenFilter{
+		Token: req.AccessToken,
+	}
+	err = s.dao.DeleteAccessToken(ctx, filter)
 	return
 }

@@ -65,6 +65,20 @@ func (mr *MockServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), arg0, arg1)
 }
 
+// DeleteAccessToken mocks base method.
+func (m *MockService) DeleteAccessToken(ctx context.Context, req *model.DeleteAccessTokenRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAccessToken", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAccessToken indicates an expected call of DeleteAccessToken.
+func (mr *MockServiceMockRecorder) DeleteAccessToken(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccessToken", reflect.TypeOf((*MockService)(nil).DeleteAccessToken), ctx, req)
+}
+
 // GetUserByID mocks base method.
 func (m *MockService) GetUserByID(arg0 context.Context, arg1 int64) (*model.User, error) {
 	m.ctrl.T.Helper()

@@ -51,3 +51,8 @@ type CreateAccessTokenRequest struct {
 
 type ListAccessTokensRequest struct {
 }
+
+type DeleteAccessTokenRequest struct {
+	UserID      int64
+	AccessToken string
+}
