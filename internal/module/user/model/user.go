@@ -57,3 +57,16 @@ type CreateUserRequest struct {
 	Nickname string
 	Password string
 }
+
+type UpdateUserRequest struct {
+	UpdateMask  []string
+	ID          int64
+	Username    string
+	Role        Role
+	Email       string
+	Nickname    string
+	Password    string
+	AvatarURL   string
+	Description string
+	Status      RowStatus
+}

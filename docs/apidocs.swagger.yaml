@@ -958,6 +958,62 @@ paths:
               - setting
       tags:
         - UserService
+  /api/v1/{user.name}:
+    patch:
+      summary: UpdateUser updates a user.
+      operationId: UserService_UpdateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/userUser'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/googlerpcStatus'
+      parameters:
+        - name: user.name
+          in: path
+          required: true
+          type: string
+          pattern: users/[^/]+
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: int64
+              username:
+                type: string
+              role:
+                $ref: '#/definitions/UserRole'
+              nickname:
+                type: string
+              email:
+                type: string
+              avatarUrl:
+                type: string
+              description:
+                type: string
+              password:
+                type: string
+              state:
+                $ref: '#/definitions/userState'
+              createAt:
+                type: string
+                format: date-time
+                readOnly: true
+              updateAt:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+              - user
+      tags:
+        - UserService
 definitions:
   ListNodeKind:
     type: string

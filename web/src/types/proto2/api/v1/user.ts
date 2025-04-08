@@ -16,6 +16,11 @@ import { User } from "../../model/user/user";
 
 export const protobufPackage = "api.v1";
 
+export interface UpdateUserRequest {
+  user?: User | undefined;
+  updateMask?: string[] | undefined;
+}
+
 export interface DeleteAccessTokenRequest {
   /** The name of the user. */
   name: string;
@@ -70,6 +75,64 @@ export interface UpdateUserSettingRequest {
   setting?: Setting | undefined;
   updateMask?: string[] | undefined;
 }
+
+function createBaseUpdateUserRequest(): UpdateUserRequest {
+  return { user: undefined, updateMask: undefined };
+}
+
+export const UpdateUserRequest: MessageFns<UpdateUserRequest> = {
+  encode(message: UpdateUserRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).join();
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(FieldMask.wrap(message.updateMask), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateUserRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateUserRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.user = User.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.updateMask = FieldMask.unwrap(FieldMask.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<UpdateUserRequest>): UpdateUserRequest {
+    return UpdateUserRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UpdateUserRequest>): UpdateUserRequest {
+    const message = createBaseUpdateUserRequest();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    message.updateMask = object.updateMask ?? undefined;
+    return message;
+  },
+};
 
 function createBaseDeleteAccessTokenRequest(): DeleteAccessTokenRequest {
   return { name: "", accessToken: "" };
@@ -844,6 +907,59 @@ export const UserServiceDefinition = {
               105,
               110,
               103,
+              125,
+            ]),
+          ],
+        },
+      },
+    },
+    /** UpdateUser updates a user. */
+    updateUser: {
+      name: "UpdateUser",
+      requestType: UpdateUserRequest,
+      requestStream: false,
+      responseType: User,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          8410: [new Uint8Array([16, 117, 115, 101, 114, 44, 117, 112, 100, 97, 116, 101, 95, 109, 97, 115, 107])],
+          578365826: [
+            new Uint8Array([
+              35,
+              58,
+              4,
+              117,
+              115,
+              101,
+              114,
+              50,
+              27,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              123,
+              117,
+              115,
+              101,
+              114,
+              46,
+              110,
+              97,
+              109,
+              101,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              47,
+              42,
               125,
             ]),
           ],

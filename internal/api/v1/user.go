@@ -38,6 +38,13 @@ func (s *UserService) CreateUser(ctx context.Context, req *v1pb.CreateUserReques
 	}
 	return convertUserToProto(user), nil
 }
+func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserRequest) (resp *userpb.User, err error) {
+	user, err := s.userService.UpdateUser(ctx, &model.UpdateUserRequest{})
+	if err != nil {
+		return
+	}
+	return convertUserToProto(user), nil
+}
 
 func (s *UserService) GetUserSetting(ctx context.Context, req *v1pb.GetUserSettingRequest) (resp *userpb.Setting, err error) {
 	// setting, err := s.userService.GetSetting(ctx, &model.GetSettingRequest{})

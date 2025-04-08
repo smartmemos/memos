@@ -40,6 +40,14 @@ service UserService {
     option (google.api.method_signature) = "setting,update_mask";
   }
 
+  // UpdateUser updates a user.
+  rpc UpdateUser(UpdateUserRequest) returns (user.User) {
+    option (google.api.http) = {
+      patch: "/api/v1/{user.name=users/*}"
+      body: "user"
+    };
+    option (google.api.method_signature) = "user,update_mask";
+  }
 
   // ListAllUserStats returns all user stats.
   rpc ListAllUserStats(ListAllUserStatsRequest) returns (ListAllUserStatsResponse) {
@@ -71,6 +79,12 @@ service UserService {
     option (google.api.http) = {get: "/api/v1/{name=users/*}/access_tokens"};
     option (google.api.method_signature) = "name";
   }
+}
+
+message UpdateUserRequest {
+  user.User user = 1 [(google.api.field_behavior) = REQUIRED];
+
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message DeleteAccessTokenRequest {
