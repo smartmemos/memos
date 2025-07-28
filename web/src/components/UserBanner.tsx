@@ -1,6 +1,6 @@
 import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import { ArchiveIcon, LogOutIcon, User2Icon, SquareUserIcon } from "lucide-react";
-import { authServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { Routes } from "@/router";

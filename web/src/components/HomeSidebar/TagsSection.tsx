@@ -3,7 +3,7 @@ import { Edit3Icon, HashIcon, MoreVerticalIcon, TagsIcon, TrashIcon } from "luci
 import { observer } from "mobx-react-lite";
 import toast from "react-hot-toast";
 import useLocalStorage from "react-use/lib/useLocalStorage";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import { useMemoFilterStore } from "@/store/v1";
 import { userStore } from "@/store/v2";
 import { cn } from "@/utils";

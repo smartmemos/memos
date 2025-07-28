@@ -6,7 +6,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import useDebounce from "react-use/lib/useDebounce";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import { DEFAULT_LIST_MEMOS_PAGE_SIZE } from "@/helpers/consts";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { extractMemoIdFromName } from "@/store/v1";

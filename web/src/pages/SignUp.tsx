@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import AuthFooter from "@/components/AuthFooter";
-import { authServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpc";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { workspaceStore } from "@/store/v2";

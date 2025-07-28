@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import AuthFooter from "@/components/AuthFooter";
 import PasswordSignInForm from "@/components/PasswordSignInForm";
-import { workspaceServiceClient } from "@/grpcweb";
+import { workspaceServiceClient } from "@/grpc";
 import { absolutifyLink } from "@/helpers/utils";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Routes } from "@/router";

@@ -1,7 +1,7 @@
 import { uniqueId } from "lodash-es";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import { CreateMemoRequest, ListMemosRequest, Memo } from "@/types/proto/api/v1/memo_service";
 
 interface State {

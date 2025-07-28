@@ -3,7 +3,7 @@ import { Button, Input } from "@usememos/mui";
 import { XIcon } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import useLoading from "@/hooks/useLoading";
 import { useTranslate } from "@/utils/i18n";
 import { generateDialog } from "./Dialog";

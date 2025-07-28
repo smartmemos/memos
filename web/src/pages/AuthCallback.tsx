@@ -3,7 +3,7 @@ import { LoaderIcon } from "lucide-react";
 import { ClientError } from "nice-grpc-web";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { authServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpc";
 import { absolutifyLink } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { initialUserStore } from "@/store/v2/user";

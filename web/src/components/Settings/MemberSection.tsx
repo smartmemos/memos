@@ -4,7 +4,7 @@ import { sortBy } from "lodash-es";
 import { MoreVerticalIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { userServiceClient } from "@/grpcweb";
+import { userServiceClient } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { userStore } from "@/store/v2";
 import { State } from "@/types/proto/api/v1/common";

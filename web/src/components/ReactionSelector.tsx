@@ -2,7 +2,7 @@ import { Dropdown, Menu, MenuButton } from "@mui/joy";
 import { SmilePlusIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import useClickAway from "react-use/lib/useClickAway";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useMemoStore } from "@/store/v1";
 import { workspaceStore } from "@/store/v2";

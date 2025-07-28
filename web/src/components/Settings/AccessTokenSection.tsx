@@ -3,7 +3,7 @@ import copy from "copy-to-clipboard";
 import { ClipboardIcon, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { userServiceClient } from "@/grpcweb";
+import { userServiceClient } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { UserAccessToken } from "@/types/proto/api/v1/user_service";
 import { useTranslate } from "@/utils/i18n";

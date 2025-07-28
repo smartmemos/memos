@@ -1,6 +1,6 @@
 import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
-import { authServiceClient, workspaceServiceClient, userServiceClient } from "@/grpcweb";
+import { authServiceClient, workspaceServiceClient, userServiceClient } from "@/grpc";
 import { Inbox } from "@/types/proto2/model/workspace/inbox";
 import { Shortcut, User, UserSetting, UserStats } from "@/types/proto/api/v1/user_service";
 import workspaceStore from "./workspace";

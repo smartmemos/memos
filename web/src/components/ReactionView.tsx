@@ -1,5 +1,5 @@
 import { Tooltip } from "@mui/joy";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useMemoStore } from "@/store/v1";
 import { State } from "@/types/proto/api/v1/common";

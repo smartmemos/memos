@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { ClientError } from "nice-grpc-web";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { authServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpc";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { workspaceStore } from "@/store/v2";

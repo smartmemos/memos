@@ -1,7 +1,7 @@
 import { Dropdown, Menu, MenuButton, MenuItem, Tooltip } from "@mui/joy";
 import { Edit3Icon, MoreVerticalIcon, TrashIcon, PlusIcon } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import { userServiceClient } from "@/grpcweb";
+import { userServiceClient } from "@/grpc";
 import useAsyncEffect from "@/hooks/useAsyncEffect";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useMemoFilterStore } from "@/store/v1";
