@@ -7,7 +7,8 @@ import { WorkspaceService } from './types/proto2/api/v1/workspace_pb';
 import { MemoService } from './types/proto2/api/v1/memo_pb';
 import { UserService } from './types/proto2/api/v1/user_pb';
 
-const grpcServiceUrl = import.meta.env.VITE_PUBLIC_GRPC_SERVICE_URL || '/grpc';
+// const grpcServiceUrl = import.meta.env.VITE_PUBLIC_GRPC_SERVICE_URL || '/grpc';
+const grpcServiceUrl = 'http://localhost:8888';
 
 const logInterceptor: Interceptor = next => async req => {
   console.log('request message: ', req.message);

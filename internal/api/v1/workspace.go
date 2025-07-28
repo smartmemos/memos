@@ -134,10 +134,10 @@ func (s *WorkspaceService) ListInboxes(ctx context.Context, req *connect.Request
 	return
 }
 
-func (s *WorkspaceService) UpdateInbox(context.Context, *v1pb.UpdateInboxRequest) (resp *mpb.Inbox, err error) {
-	return
+func (s *WorkspaceService) UpdateInbox(ctx context.Context, req *connect.Request[v1pb.UpdateInboxRequest]) (resp *connect.Response[mpb.Inbox], err error) {
+	return connect.NewResponse(&mpb.Inbox{}), nil
 }
 
-func (s *WorkspaceService) DeleteInbox(context.Context, *v1pb.DeleteInboxRequest) (_ *emptypb.Empty, err error) {
-	return
+func (s *WorkspaceService) DeleteInbox(ctx context.Context, req *connect.Request[v1pb.DeleteInboxRequest]) (resp *connect.Response[emptypb.Empty], err error) {
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }

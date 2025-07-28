@@ -31,6 +31,10 @@ func registerHandlers(container do.Injector) http.Handler {
 		path, userHandler := v1pb.NewUserServiceHandler(do.MustInvoke[*apiv1.UserService](container), options...)
 		mux.Handle(path, wrapHandler(userHandler))
 	}
+	{
+		path, workspaceHandler := v1pb.NewWorkspaceServiceHandler(do.MustInvoke[*apiv1.WorkspaceService](container), options...)
+		mux.Handle(path, wrapHandler(workspaceHandler))
+	}
 
 	handler := wrapHandler(mux, middleware.CORS, middleware.NewAuth(container).Auth)
 	return handler
