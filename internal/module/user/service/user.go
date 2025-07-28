@@ -73,22 +73,23 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 		err = errors.New("update mask is empty")
 		return
 	}
-	setting, err := s.wsDao.FindMemoRelatedSetting(ctx)
+	setting, err := s.wsDao.FindGeneralSetting(ctx)
 	if err != nil {
 		return
 	}
 	update := make(map[string]any)
 	if lo.Contains(req.UpdateMask, "username") {
-		if workspaceGeneralSetting.DisallowChangeUsername {
-			return nil, status.Errorf(codes.PermissionDenied, "permission denied: disallow change username")
+		if setting.DisallowChangeUsername {
+			err = errors.New("permission denied: disallow change username")
+			return
 		}
 
 		if !model.UsernameReg.MatchString(strings.ToLower(req.Username)) {
 			err = errors.Errorf("invalid username: %s", req.Username)
 			return
 		}
-		if !util.UIDMatcher.MatchString(strings.ToLower(request.User.Username)) {
-			return nil, status.Errorf(codes.InvalidArgument, "invalid username: %s", request.User.Username)
+		if !util.UIDMatcher.MatchString(strings.ToLower(req.Username)) {
+			err = "invalid username: %s", request.User.Username)
 		}
 		update.Username = &request.User.Username
 	}

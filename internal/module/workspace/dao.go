@@ -15,4 +15,5 @@ type DAO interface {
 	FindSettings(ctx context.Context, filter *model.FindSettingFilter) ([]*model.Setting, error)
 	FindSetting(ctx context.Context, filter *model.FindSettingFilter) (*model.Setting, error)
 	FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error)
+	FindGeneralSetting(ctx context.Context) (*model.GeneralSetting, error)
 }

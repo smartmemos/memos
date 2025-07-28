@@ -64,6 +64,21 @@ func (mr *MockDAOMockRecorder) CreateSetting(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSetting", reflect.TypeOf((*MockDAO)(nil).CreateSetting), ctx, m)
 }
 
+// FindGeneralSetting mocks base method.
+func (m *MockDAO) FindGeneralSetting(ctx context.Context) (*model.GeneralSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindGeneralSetting", ctx)
+	ret0, _ := ret[0].(*model.GeneralSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindGeneralSetting indicates an expected call of FindGeneralSetting.
+func (mr *MockDAOMockRecorder) FindGeneralSetting(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindGeneralSetting", reflect.TypeOf((*MockDAO)(nil).FindGeneralSetting), ctx)
+}
+
 // FindMemoRelatedSetting mocks base method.
 func (m *MockDAO) FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error) {
 	m.ctrl.T.Helper()

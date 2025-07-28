@@ -50,3 +50,16 @@ func (d *Dao) FindMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSet
 		return &v, nil
 	}
 }
+
+func (d *Dao) FindGeneralSetting(ctx context.Context) (*model.GeneralSetting, error) {
+	setting, err := d.FindSetting(ctx, &model.FindSettingFilter{Name: string(model.SettingKeyGeneral)})
+	if err != nil {
+		return nil, err
+	}
+	var v model.GeneralSetting
+	if err = json.Unmarshal(setting.Value.RawMessage, &v); err != nil {
+		return nil, err
+	} else {
+		return &v, nil
+	}
+}
