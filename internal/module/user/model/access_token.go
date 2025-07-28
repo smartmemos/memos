@@ -1,7 +1,6 @@
 package model
 
 import (
-	"strings"
 	"time"
 
 	"github.com/smartmemos/memos/internal/pkg/db"
@@ -23,22 +22,8 @@ func (AccessToken) TableName() string {
 type FindAccessTokenFilter struct {
 	db.BaseFilter
 
-	UserId int64
-	Token  string
-}
-
-func (f FindAccessTokenFilter) GetQuery() (query string, args []any) {
-	var where []string
-	if f.UserId > 0 {
-		where = append(where, "user_id=?")
-		args = append(args, f.UserId)
-	}
-	if f.Token != "" {
-		where = append(where, "token=?")
-		args = append(args, f.Token)
-	}
-	query = strings.Join(where, " and ")
-	return
+	UserId db.F[int64]
+	Token  db.F[string]
 }
 
 type CreateAccessTokenRequest struct {

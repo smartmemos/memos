@@ -9,6 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
@@ -21,7 +22,7 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 		err = errors.Errorf("invalid username: %s", req.Username)
 		return
 	}
-	total, err := s.dao.CountUsers(ctx, &model.FindUserFilter{Username: req.Username})
+	total, err := s.dao.CountUsers(ctx, &model.FindUserFilter{Username: db.Eq(req.Username)})
 	if err != nil {
 		return
 	} else if total > 0 {

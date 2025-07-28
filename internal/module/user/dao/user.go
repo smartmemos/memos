@@ -43,5 +43,5 @@ func (d *Dao) FindUserByID(ctx context.Context, id int64) (m *model.User, err er
 		err = errors.New("id必须大于0")
 		return
 	}
-	return d.FindUser(ctx, &model.FindUserFilter{ID: id})
+	return d.FindUser(ctx, &model.FindUserFilter{ID: db.Eq(id)})
 }

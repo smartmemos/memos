@@ -13,10 +13,11 @@ import (
 	"github.com/smartmemos/memos/internal/config"
 	"github.com/smartmemos/memos/internal/module/auth/model"
 	usermd "github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
 func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (accessToken *usermd.AccessToken, err error) {
-	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{Username: req.Username})
+	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{Username: db.Eq(req.Username)})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
 		return
@@ -114,15 +115,15 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 
 func (s *Service) DeleteAccessToken(ctx context.Context, userId int64, token string) error {
 	return s.userDao.DeleteAccessToken(ctx, &usermd.FindAccessTokenFilter{
-		UserId: userId,
-		Token:  token,
+		UserId: db.Eq(userId),
+		Token:  db.Eq(token),
 	})
 }
 
 func (s *Service) ValidateAccessToken(ctx context.Context, userId int64, token string) (bool, error) {
 	total, err := s.userDao.CountAccessTokens(ctx, &usermd.FindAccessTokenFilter{
-		UserId: userId,
-		Token:  token,
+		UserId: db.Eq(userId),
+		Token:  db.Eq(token),
 	})
 	return total > 0, err
 }

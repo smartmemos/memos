@@ -5,6 +5,7 @@ import (
 
 	usermd "github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/module/workspace/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
 func (s *Service) GetProfile(ctx context.Context, _ *model.GetProfileRequest) (profile *model.Profile, err error) {
@@ -14,7 +15,7 @@ func (s *Service) GetProfile(ctx context.Context, _ *model.GetProfileRequest) (p
 		InstanceUrl: "http://localhost:8888",
 	}
 	user, err := s.userDao.FindUser(ctx, &usermd.FindUserFilter{
-		Role: usermd.RoleHost,
+		Role: db.Eq(usermd.RoleHost),
 	})
 	if err != nil {
 		return

@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
@@ -16,7 +17,7 @@ func (s *Service) GetSettings(ctx context.Context, req *model.GetSettingRequest)
 		err = errors.Errorf("failed to get current user: %v", err)
 		return
 	}
-	settings, err := s.dao.FindSettings(ctx, &model.FindSettingFilter{UserID: userID})
+	settings, err := s.dao.FindSettings(ctx, &model.FindSettingFilter{UserID: db.Eq(userID)})
 	if err != nil {
 		return
 	}

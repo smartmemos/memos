@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/smartmemos/memos/internal/module/user/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
 )
 
@@ -27,8 +28,7 @@ func (s *Service) CreateAccessToken(ctx context.Context, req *model.CreateAccess
 }
 
 func (s *Service) ListAccessTokens(ctx context.Context, req *model.ListAccessTokensRequest) (list []*model.AccessToken, err error) {
-	filter := &model.FindAccessTokenFilter{}
-	tokens, err := s.dao.FindAccessTokens(ctx, filter)
+	tokens, err := s.dao.FindAccessTokens(ctx, &model.FindAccessTokenFilter{})
 	if err != nil {
 		return
 	}
@@ -58,9 +58,7 @@ func (s *Service) DeleteAccessToken(ctx context.Context, req *model.DeleteAccess
 		err = errors.New("permission denied")
 		return
 	}
-	filter := &model.FindAccessTokenFilter{
-		Token: req.AccessToken,
-	}
-	err = s.dao.DeleteAccessToken(ctx, filter)
-	return
+	return s.dao.DeleteAccessToken(ctx, &model.FindAccessTokenFilter{
+		Token: db.Eq(req.AccessToken),
+	})
 }

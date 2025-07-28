@@ -1,8 +1,6 @@
 package model
 
 import (
-	"strings"
-
 	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
@@ -27,27 +25,9 @@ func (User) TableName() string {
 type FindUserFilter struct {
 	db.BaseFilter
 
-	ID       int64
-	Username string
-	Role     Role
-}
-
-func (f FindUserFilter) GetQuery() (query string, args []any) {
-	var where []string
-	if f.ID > 0 {
-		where = append(where, "id=?")
-		args = append(args, f.ID)
-	}
-	if f.Role != "" {
-		where = append(where, "role=?")
-		args = append(args, f.Role)
-	}
-	if f.Username != "" {
-		where = append(where, "username=?")
-		args = append(args, f.Username)
-	}
-	query = strings.Join(where, " and ")
-	return
+	ID       db.F[int64]
+	Username db.F[string]
+	Role     db.F[Role]
 }
 
 type CreateUserRequest struct {
