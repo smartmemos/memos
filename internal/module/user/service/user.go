@@ -7,8 +7,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/samber/lo"
 	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"github.com/smartmemos/memos/internal/module/user/model"
 	"github.com/smartmemos/memos/internal/pkg/grpc_util"
@@ -88,10 +86,7 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 			err = errors.Errorf("invalid username: %s", req.Username)
 			return
 		}
-		if !util.UIDMatcher.MatchString(strings.ToLower(req.Username)) {
-			err = "invalid username: %s", request.User.Username)
-		}
-		update.Username = &request.User.Username
+		update["username"] = req.Username
 	}
 
 	user, err = s.dao.FindUserByID(ctx, req.ID)
