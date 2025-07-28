@@ -68,9 +68,20 @@ func HasNextPage(total int64, page int64, pageSize int64) bool {
 	return total > (page-1)*pageSize
 }
 
+// HasRecrods 当前页码是否有记录
+func HasRecrods(total int64, page int64, pageSize int64) bool {
+	if total == 0 {
+		return false
+	} else if pageSize > 0 && page > 0 {
+		return total > (page-1)*pageSize
+	} else {
+		return true
+	}
+}
+
 // Updates 更新数据
 func Updates(ctx context.Context, m schema.Tabler, f Filter, v any) (int64, error) {
-	query, args := f.GetQuery()
+	query, args := BuildQuery(f)
 	if query == "" {
 		return 0, errors.New("更新条件不能为空")
 	}
@@ -85,7 +96,7 @@ func Update(ctx context.Context, m schema.Tabler, v any) error {
 
 // Delete 删除记录
 func Delete(ctx context.Context, m schema.Tabler, f Filter) (int64, error) {
-	query, args := f.GetQuery()
+	query, args := BuildQuery(f)
 	if query == "" {
 		return 0, errors.New("删除条件不能为空")
 	}
@@ -95,14 +106,14 @@ func Delete(ctx context.Context, m schema.Tabler, f Filter) (int64, error) {
 
 // Count 计数
 func Count(ctx context.Context, v schema.Tabler, f Filter) (total int64, err error) {
-	query, args := f.GetQuery()
+	query, args := BuildQuery(f)
 	err = GetDB(ctx).Where(query, args...).Model(v).Count(&total).Error
 	return
 }
 
 // FindOne 只查一条记录
 func FindOne(ctx context.Context, f Filter, v any) error {
-	query, args := f.GetQuery()
+	query, args := BuildQuery(f)
 	err := GetDB(ctx).
 		Where(query, args...).
 		Order(f.GetOrder()).
@@ -112,7 +123,7 @@ func FindOne(ctx context.Context, f Filter, v any) error {
 
 // Find 查多条记录
 func Find(ctx context.Context, f Filter, v any) error {
-	query, args := f.GetQuery()
+	query, args := BuildQuery(f)
 	err := GetDB(ctx).
 		Where(query, args...).
 		Offset(int((f.GetPage() - 1) * f.GetPageSize())).
@@ -120,4 +131,12 @@ func Find(ctx context.Context, f Filter, v any) error {
 		Order(f.GetOrder()).
 		Find(v).Error
 	return err
+}
+
+func IsRecordNotFound(err error) bool {
+	return err == gorm.ErrRecordNotFound
+}
+
+func IsDbError(err error) bool {
+	return err != nil && err != gorm.ErrRecordNotFound
 }
