@@ -3,7 +3,10 @@ package v1
 import (
 	"context"
 
+	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/smartmemos/memos/internal/module/workspace"
@@ -13,7 +16,7 @@ import (
 )
 
 type WorkspaceService struct {
-	v1pb.UnimplementedWorkspaceServiceServer
+	v1pb.UnimplementedWorkspaceServiceHandler
 	workspaceService workspace.Service
 }
 
@@ -23,12 +26,12 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 	}, nil
 }
 
-func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *v1pb.GetWorkspaceProfileRequest) (resp *mpb.Profile, err error) {
+func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *connect.Request[v1pb.GetWorkspaceProfileRequest]) (resp *connect.Response[mpb.Profile], err error) {
 	profile, err := s.workspaceService.GetProfile(ctx, &model.GetProfileRequest{})
 	if err != nil {
 		return
 	}
-	return convertProfileToProto(profile), nil
+	return connect.NewResponse(convertProfileToProto(profile)), nil
 }
 
 func convertProfileToProto(profile *model.Profile) *mpb.Profile {
@@ -40,8 +43,8 @@ func convertProfileToProto(profile *model.Profile) *mpb.Profile {
 	}
 }
 
-func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.GetWorkspaceSettingRequest) (resp *mpb.Setting, err error) {
-	name, err := ExtractWorkspaceSettingKeyFromName(req.Name)
+func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *connect.Request[v1pb.GetWorkspaceSettingRequest]) (resp *connect.Response[mpb.Setting], err error) {
+	name, err := ExtractWorkspaceSettingKeyFromName(req.Msg.Name)
 	if err != nil {
 		return
 	}
@@ -52,27 +55,27 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *v1pb.Ge
 		if err = s.workspaceService.GetSetting(ctx, key, &value); err != nil {
 			return
 		}
-		resp = &mpb.Setting{
-			Name: req.Name,
+		return connect.NewResponse(&mpb.Setting{
+			Name: req.Msg.Name,
 			Value: &mpb.Setting_GeneralSetting{
 				GeneralSetting: convertWorkspaceGeneralSetting(&value),
 			},
-		}
+		}), nil
 	case model.SettingKeyMemoRelated:
 		var value model.MemoRelatedSetting
 		if err = s.workspaceService.GetSetting(ctx, key, &value); err != nil {
 			return
 		}
-		resp = &mpb.Setting{
-			Name: req.Name,
+		return connect.NewResponse(&mpb.Setting{
+			Name: req.Msg.Name,
 			Value: &mpb.Setting_MemoRelatedSetting{
 				MemoRelatedSetting: convertWorkspaceMemoRelatedSetting(&value),
 			},
-		}
+		}), nil
 	default:
+		err = status.Errorf(codes.InvalidArgument, "invalid workspace setting key: %s", name)
 		return
 	}
-	return
 }
 
 func convertWorkspaceGeneralSetting(setting *model.GeneralSetting) *mpb.GeneralSetting {
@@ -123,11 +126,11 @@ func convertWorkspaceSetting(setting *model.Setting) (ret *mpb.Setting) {
 	return
 }
 
-func (s *WorkspaceService) ListIdentityProviders(context.Context, *v1pb.ListIdentityProvidersRequest) (resp *v1pb.ListIdentityProvidersResponse, err error) {
-	return
+func (s *WorkspaceService) ListIdentityProviders(ctx context.Context, req *connect.Request[v1pb.ListIdentityProvidersRequest]) (resp *connect.Response[v1pb.ListIdentityProvidersResponse], err error) {
+	return connect.NewResponse(&v1pb.ListIdentityProvidersResponse{}), nil
 }
 
-func (s *WorkspaceService) ListInboxes(context.Context, *v1pb.ListInboxesRequest) (resp *v1pb.ListInboxesResponse, err error) {
+func (s *WorkspaceService) ListInboxes(ctx context.Context, req *connect.Request[v1pb.ListInboxesRequest]) (resp *connect.Response[v1pb.ListInboxesResponse], err error) {
 	return
 }
 

@@ -1,4 +1,4 @@
-package interceptor
+package middleware
 
 var authenticationAllowlistMethods = map[string]bool{
 	// "/api.v1.AuthService/GetAuthStatus": true,

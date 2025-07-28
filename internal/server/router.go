@@ -1,53 +1,45 @@
 package server
 
 import (
-	"context"
+	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 
-	v1api "github.com/smartmemos/memos/internal/api/v1"
+	apiv1 "github.com/smartmemos/memos/internal/api/v1"
 	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
+	"github.com/smartmemos/memos/internal/server/interceptor"
+	"github.com/smartmemos/memos/internal/server/middleware"
 )
 
-func (s *Server) registerGateway(ctx context.Context, container do.Injector) error {
-	v1pb.RegisterAuthServiceServer(s.grpcServer, do.MustInvoke[*v1api.AuthService](container))
-	v1pb.RegisterMemoServiceServer(s.grpcServer, do.MustInvoke[*v1api.MemoService](container))
-	v1pb.RegisterUserServiceServer(s.grpcServer, do.MustInvoke[*v1api.UserService](container))
-	v1pb.RegisterWorkspaceServiceServer(s.grpcServer, do.MustInvoke[*v1api.WorkspaceService](container))
+func registerHandlers(container do.Injector) http.Handler {
+	mux := http.NewServeMux()
 
-	conn, err := grpc.NewClient(s.profile.Addr,
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(100*1024*1024)),
-	)
-	if err != nil {
-		return err
+	var options []connect.HandlerOption
+	options = append(options, connect.WithInterceptors(interceptor.Logger()))
+	// options = append(options, connect.WithCompressMinBytes(1024))
+
+	{
+		path, authHandler := v1pb.NewAuthServiceHandler(do.MustInvoke[*apiv1.AuthService](container), options...)
+		mux.Handle(path, authHandler)
 	}
-	mux := runtime.NewServeMux()
-	if err = v1pb.RegisterAuthServiceHandler(ctx, mux, conn); err != nil {
-		return err
+	{
+		path, memoHandler := v1pb.NewMemoServiceHandler(do.MustInvoke[*apiv1.MemoService](container), options...)
+		mux.Handle(path, wrapHandler(memoHandler))
 	}
-	if err = v1pb.RegisterMemoServiceHandler(ctx, mux, conn); err != nil {
-		return err
-	}
-	if err = v1pb.RegisterUserServiceHandler(ctx, mux, conn); err != nil {
-		return err
+	{
+		path, userHandler := v1pb.NewUserServiceHandler(do.MustInvoke[*apiv1.UserService](container), options...)
+		mux.Handle(path, wrapHandler(userHandler))
 	}
 
-	s.echoServer.Any("/api/*", echo.WrapHandler(mux), middleware.CORS())
+	handler := wrapHandler(mux, middleware.CORS, middleware.NewAuth(container).Auth)
+	return handler
+}
 
-	options := []grpcweb.Option{
-		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
-		grpcweb.WithOriginFunc(func(_ string) bool {
-			return true
-		}),
+func wrapHandler(handler http.Handler, chains ...func(http.Handler) http.Handler) http.Handler {
+	// 顺序很重要，最外层的最先执行
+	for i := len(chains) - 1; i >= 0; i-- {
+		handler = chains[i](handler)
 	}
-	wrappedGrpc := grpcweb.WrapServer(s.grpcServer, options...)
-	s.echoServer.Any("/api.v1.*", echo.WrapHandler(wrappedGrpc))
-	return nil
+	return handler
 }

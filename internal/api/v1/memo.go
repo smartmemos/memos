@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"connectrpc.com/connect"
 	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
@@ -27,7 +28,7 @@ import (
 )
 
 type MemoService struct {
-	v1pb.UnimplementedMemoServiceServer
+	v1pb.UnimplementedMemoServiceHandler
 	memoService      memo.Service
 	workspaceService workspace.Service
 }
@@ -38,9 +39,9 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 	}, nil
 }
 
-func (s *MemoService) CreateMemo(ctx context.Context, req *v1pb.CreateMemoRequest) (resp *memopb.Memo, err error) {
+func (s *MemoService) CreateMemo(ctx context.Context, req *connect.Request[v1pb.CreateMemoRequest]) (resp *connect.Response[memopb.Memo], err error) {
 	var relations []model.MemoRelation
-	for _, item := range req.Memo.Relations {
+	for _, item := range req.Msg.Memo.Relations {
 		relations = append(relations, model.MemoRelation{
 			Type: model.RelationType(memopb.MemoRelation_Type_name[int32(item.Type)]),
 			Memo: model.RelationMemo{
@@ -56,15 +57,14 @@ func (s *MemoService) CreateMemo(ctx context.Context, req *v1pb.CreateMemoReques
 		})
 	}
 	memo, err := s.memoService.CreateMemo(ctx, &model.CreateMemoRequest{
-		Content:    req.Memo.Content,
-		Visibility: convertFromProtoVisibility(req.Memo.Visibility),
+		Content:    req.Msg.Memo.Content,
+		Visibility: convertFromProtoVisibility(req.Msg.Memo.Visibility),
 		Relations:  relations,
 	})
 	if err != nil {
 		return
 	}
-	resp = convertMemoToProto(memo)
-	return
+	return connect.NewResponse(convertMemoToProto(memo)), nil
 }
 
 func convertMemoToProto(memo *model.Memo) *memopb.Memo {
@@ -90,15 +90,15 @@ func convertVisibilityToProto(v model.Visibility) memopb.Visibility {
 	return memopb.Visibility(memopb.Visibility_value[string(v)])
 }
 
-func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (resp *v1pb.ListMemosResponse, err error) {
+func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v1pb.ListMemosRequest]) (resp *connect.Response[v1pb.ListMemosResponse], err error) {
 	var pageSize, page int
-	if req.PageToken != "" {
-		page, pageSize, err = parsePageToken(req.PageToken)
+	if req.Msg.PageToken != "" {
+		page, pageSize, err = parsePageToken(req.Msg.PageToken)
 		if err != nil {
 			return
 		}
 	} else {
-		pageSize = int(req.PageSize)
+		pageSize = int(req.Msg.PageSize)
 	}
 	if pageSize <= 0 {
 		pageSize = DefaultPageSize
@@ -129,11 +129,10 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		list = append(list, item)
 	}
 
-	resp = &v1pb.ListMemosResponse{
+	return connect.NewResponse(&v1pb.ListMemosResponse{
 		Memos:         list,
 		NextPageToken: nextPageToken,
-	}
-	return
+	}), nil
 }
 
 func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.MemoInfo) (item *memopb.Memo, err error) {
@@ -288,26 +287,30 @@ func getMemoContentSnippet(content string) (string, error) {
 	return plainText, nil
 }
 
-func (s *MemoService) UpdateMemo(ctx context.Context, req *v1pb.UpdateMemoRequest) (resp *memopb.Memo, err error) {
-	idStr, _ := ExtractMemoUIDFromName(req.Memo.Name)
+func (s *MemoService) UpdateMemo(ctx context.Context, req *connect.Request[v1pb.UpdateMemoRequest]) (resp *connect.Response[memopb.Memo], err error) {
+	idStr, _ := ExtractMemoUIDFromName(req.Msg.Memo.Name)
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
 		return
 	}
 	xReq := &model.UpdateMemoRequest{
-		Paths:  req.UpdateMask.Paths,
+		Paths:  req.Msg.UpdateMask.Paths,
 		ID:     id,
-		Pinned: req.Memo.Pinned,
+		Pinned: req.Msg.Memo.Pinned,
 	}
 	memo, err := s.memoService.UpdateMemo(ctx, xReq)
 	if err != nil {
 		return
 	}
-	return s.convertMemoToProto(ctx, memo)
+	result, err := s.convertMemoToProto(ctx, memo)
+	if err != nil {
+		return
+	}
+	return connect.NewResponse(result), nil
 }
 
-func (s *MemoService) DeleteMemo(ctx context.Context, req *v1pb.DeleteMemoRequest) (resp *emptypb.Empty, err error) {
-	idStr, _ := ExtractMemoUIDFromName(req.Name)
+func (s *MemoService) DeleteMemo(ctx context.Context, req *connect.Request[v1pb.DeleteMemoRequest]) (resp *connect.Response[emptypb.Empty], err error) {
+	idStr, _ := ExtractMemoUIDFromName(req.Msg.Name)
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
 		return

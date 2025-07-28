@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/proto"
-
 	"github.com/smartmemos/memos/internal/proto/model/common"
 	commonpb "github.com/smartmemos/memos/internal/proto/model/common"
+
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/proto"
 )
 
 const (

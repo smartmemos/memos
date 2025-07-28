@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 
+	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,7 +20,7 @@ import (
 )
 
 type AuthService struct {
-	v1pb.UnimplementedAuthServiceServer
+	v1pb.UnimplementedAuthServiceHandler
 	authService auth.Service
 	userService user.Service
 }
@@ -31,11 +32,11 @@ func NewAuthService(i do.Injector) (*AuthService, error) {
 	}, nil
 }
 
-func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp *userpb.User, err error) {
+func (s *AuthService) SignIn(ctx context.Context, req *connect.Request[v1pb.SignInRequest]) (resp *connect.Response[userpb.User], err error) {
 	accessToken, err := s.authService.SignIn(ctx, &model.SignInRequest{
-		Username:    req.Username,
-		Password:    req.Password,
-		NeverExpire: req.NeverExpire,
+		Username:    req.Msg.Username,
+		Password:    req.Msg.Password,
+		NeverExpire: req.Msg.NeverExpire,
 	})
 	if err != nil {
 		return
@@ -47,23 +48,21 @@ func (s *AuthService) SignIn(ctx context.Context, req *v1pb.SignInRequest) (resp
 	if err != nil {
 		return
 	}
-	resp = convertUserToProto(user)
-	return resp, nil
+	return connect.NewResponse(convertUserToProto(user)), nil
 }
 
-func (s *AuthService) SignUp(ctx context.Context, req *v1pb.SignUpRequest) (resp *userpb.User, err error) {
+func (s *AuthService) SignUp(ctx context.Context, req *connect.Request[v1pb.SignUpRequest]) (resp *connect.Response[userpb.User], err error) {
 	user, err := s.userService.CreateUser(ctx, &usermd.CreateUserRequest{
-		Username: req.Username,
-		Password: req.Password,
+		Username: req.Msg.Username,
+		Password: req.Msg.Password,
 	})
 	if err != nil {
 		return
 	}
-	resp = convertUserToProto(user)
-	return resp, nil
+	return connect.NewResponse(convertUserToProto(user)), nil
 }
 
-func (s *AuthService) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*emptypb.Empty, error) {
+func (s *AuthService) SignOut(ctx context.Context, _ *connect.Request[v1pb.SignOutRequest]) (*connect.Response[emptypb.Empty], error) {
 	token, _ := grpc_util.GetAccessToken(ctx)
 	if token != "" {
 		userID, _ := grpc_util.GetUserID(ctx)
@@ -78,10 +77,10 @@ func (s *AuthService) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*emp
 	if err := grpc_util.ClearAccessTokenCookie(ctx); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
-	return &emptypb.Empty{}, nil
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatusRequest) (resp *userpb.User, err error) {
+func (s *AuthService) GetAuthStatus(ctx context.Context, req *connect.Request[v1pb.GetAuthStatusRequest]) (resp *connect.Response[userpb.User], err error) {
 	userID, err := grpc_util.GetUserID(ctx)
 	if err != nil {
 		return
@@ -95,6 +94,5 @@ func (s *AuthService) GetAuthStatus(ctx context.Context, req *v1pb.GetAuthStatus
 		}
 		return
 	}
-	resp = convertUserToProto(user)
-	return
+	return connect.NewResponse(convertUserToProto(user)), nil
 }

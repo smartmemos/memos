@@ -5,50 +5,50 @@ import (
 	"fmt"
 	"time"
 
+	connect "connectrpc.com/connect"
 	log "github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
-type LoggerInterceptor struct {
-}
+func Logger() connect.UnaryInterceptorFunc {
+	interceptor := func(next connect.UnaryFunc) connect.UnaryFunc {
+		return connect.UnaryFunc(func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
+			startTime := time.Now()
+			logLevel := log.InfoLevel
+			logMsg := "OK"
 
-func NewLoggerInterceptor() *LoggerInterceptor {
-	return &LoggerInterceptor{}
-}
+			resp, err := next(ctx, req)
+			if err != nil {
+				switch connect.CodeOf(err) {
+				case connect.CodeUnauthenticated,
+					connect.CodeInvalidArgument,
+					connect.CodeNotFound,
+					connect.CodeOutOfRange,
+					connect.CodePermissionDenied:
 
-func (in *LoggerInterceptor) LoggerInterceptor(ctx context.Context, request any, serverInfo *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-	st := time.Now()
-	log.WithContext(ctx).WithField("request", request).Info("grpc request")
-	resp, err := handler(ctx, request)
-	in.loggerInterceptorDo(ctx, serverInfo.FullMethod, st, err)
-	return resp, err
-}
+					logLevel = log.InfoLevel
+					logMsg = "client error"
+				case connect.CodeInternal,
+					connect.CodeUnavailable,
+					connect.CodeDataLoss,
+					connect.CodeDeadlineExceeded:
+					logLevel = log.ErrorLevel
+					logMsg = "server error"
 
-func (*LoggerInterceptor) loggerInterceptorDo(ctx context.Context, fullMethod string, startTime time.Time, err error) {
-	st := status.Convert(err)
-	var logLevel log.Level
-	var logMsg string
-	switch st.Code() {
-	case codes.OK:
-		logLevel = log.InfoLevel
-		logMsg = "OK"
-	case codes.Unauthenticated, codes.OutOfRange, codes.PermissionDenied, codes.NotFound:
-		logLevel = log.InfoLevel
-		logMsg = "client error"
-	case codes.Internal, codes.Unknown, codes.DataLoss, codes.Unavailable, codes.DeadlineExceeded:
-		logLevel = log.ErrorLevel
-		logMsg = "server error"
-	default:
-		logLevel = log.ErrorLevel
-		logMsg = "unknown error"
+				case connect.CodeUnknown:
+					logLevel = log.ErrorLevel
+					logMsg = "unknown error"
+				}
+			}
+			logger := log.WithContext(ctx).
+				WithField("method", req.Spec().Procedure).
+				WithField("elapsed_time", fmt.Sprintf("%.3fms", float64(time.Since(startTime).Microseconds())/1000))
+			if err != nil {
+				logger = logger.WithField("err", err.Error())
+			}
+			logger.Log(logLevel, logMsg)
+
+			return resp, err
+		})
 	}
-	logger := log.WithContext(ctx).
-		WithField("method", fullMethod).
-		WithField("elapsed_time", fmt.Sprintf("%.3fms", float64(time.Since(startTime).Microseconds())/1000))
-	if err != nil {
-		logger.WithField("err", err.Error())
-	}
-	logger.Log(logLevel, logMsg)
+	return connect.UnaryInterceptorFunc(interceptor)
 }
