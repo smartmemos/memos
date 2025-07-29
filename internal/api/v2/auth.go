@@ -11,7 +11,7 @@ import (
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
-	modelpb "github.com/smartmemos/memos/internal/proto/model/user"
+	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
 
 type AuthService struct {
