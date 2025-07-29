@@ -8,17 +8,16 @@ import (
 	"connectrpc.com/authn"
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
-
-	"github.com/smartmemos/memos/internal/module/auth"
+	"github.com/sirupsen/logrus"
 )
 
 type Auth struct {
-	authService auth.Service
+	// authService auth.Service
 }
 
 func NewAuth(i do.Injector) *Auth {
 	return &Auth{
-		authService: do.MustInvoke[auth.Service](i),
+		// authService: do.MustInvoke[auth.Service](i),
 	}
 }
 
@@ -36,8 +35,10 @@ func (a *Auth) authenticate(_ context.Context, req *http.Request) (any, error) {
 		}
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid authorization"))
 	}
-	userId, err := a.authService.Authenticate(req.Context(), token)
-	if err != nil {
+	// userId, err := a.authService.Authenticate(req.Context(), token)
+	logrus.Info("token: ", token)
+	userId := 0
+	if !ok {
 		if isUnauthorizeAllowedMethod(req.URL.Path) {
 			return nil, nil
 		}

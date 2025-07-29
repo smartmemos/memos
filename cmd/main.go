@@ -14,7 +14,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/api"
 	"github.com/smartmemos/memos/internal/config"
-	"github.com/smartmemos/memos/internal/module"
+	"github.com/smartmemos/memos/internal/memos/service"
 	"github.com/smartmemos/memos/internal/server"
 )
 
@@ -76,7 +76,7 @@ func main() {
 
 	cobra.OnInitialize(func() {
 		config.Init(cfgFile)
-		module.Init(container)
+		service.Init(container)
 		api.Init(container)
 	})
 

@@ -2,10 +2,10 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 import "google/api/field_behavior.proto";
-import "model/common/common.proto";
+import "model/common.proto";
 
 package model;
-option go_package = "github.com/smartmemos/memos/internal/proto/model/user";
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
 
 message User {
   int64 id = 1;
@@ -26,22 +26,4 @@ message User {
   State state = 10;
   google.protobuf.Timestamp create_at = 11;
   google.protobuf.Timestamp update_at = 12;
-}
-
-enum State {
-  STATE_UNSPECIFIED = 0;
-  NORMAL = 1;
-  ARCHIVED = 2;
-}
-
-// Used internally for obfuscating the page token.
-message PageToken {
-  int32 limit = 1;
-  int32 offset = 2;
-}
-
-enum Direction {
-  DIRECTION_UNSPECIFIED = 0;
-  ASC = 1;
-  DESC = 2;
 }

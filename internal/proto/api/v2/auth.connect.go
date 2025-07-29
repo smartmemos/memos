@@ -8,7 +8,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	user "github.com/smartmemos/memos/internal/proto/model/user"
+	model "github.com/smartmemos/memos/internal/proto/model"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
@@ -48,11 +48,11 @@ const (
 // AuthServiceClient is a client for the api.v2.AuthService service.
 type AuthServiceClient interface {
 	// GetAuthStatus returns the current auth status of the user.
-	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[user.User], error)
+	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error)
 	// SignIn signs in the user with the given username and password.
-	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[user.User], error)
+	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error)
 	// SignUp signs up the user with the given username and password.
-	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[user.User], error)
+	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error)
 	// SignOut signs out the user.
 	SignOut(context.Context, *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error)
 }
@@ -68,19 +68,19 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	authServiceMethods := File_api_v2_auth_proto.Services().ByName("AuthService").Methods()
 	return &authServiceClient{
-		getAuthStatus: connect.NewClient[GetAuthStatusRequest, user.User](
+		getAuthStatus: connect.NewClient[GetAuthStatusRequest, model.User](
 			httpClient,
 			baseURL+AuthServiceGetAuthStatusProcedure,
 			connect.WithSchema(authServiceMethods.ByName("GetAuthStatus")),
 			connect.WithClientOptions(opts...),
 		),
-		signIn: connect.NewClient[SignInRequest, user.User](
+		signIn: connect.NewClient[SignInRequest, model.User](
 			httpClient,
 			baseURL+AuthServiceSignInProcedure,
 			connect.WithSchema(authServiceMethods.ByName("SignIn")),
 			connect.WithClientOptions(opts...),
 		),
-		signUp: connect.NewClient[SignUpRequest, user.User](
+		signUp: connect.NewClient[SignUpRequest, model.User](
 			httpClient,
 			baseURL+AuthServiceSignUpProcedure,
 			connect.WithSchema(authServiceMethods.ByName("SignUp")),
@@ -97,24 +97,24 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	getAuthStatus *connect.Client[GetAuthStatusRequest, user.User]
-	signIn        *connect.Client[SignInRequest, user.User]
-	signUp        *connect.Client[SignUpRequest, user.User]
+	getAuthStatus *connect.Client[GetAuthStatusRequest, model.User]
+	signIn        *connect.Client[SignInRequest, model.User]
+	signUp        *connect.Client[SignUpRequest, model.User]
 	signOut       *connect.Client[SignOutRequest, emptypb.Empty]
 }
 
 // GetAuthStatus calls api.v2.AuthService.GetAuthStatus.
-func (c *authServiceClient) GetAuthStatus(ctx context.Context, req *connect.Request[GetAuthStatusRequest]) (*connect.Response[user.User], error) {
+func (c *authServiceClient) GetAuthStatus(ctx context.Context, req *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error) {
 	return c.getAuthStatus.CallUnary(ctx, req)
 }
 
 // SignIn calls api.v2.AuthService.SignIn.
-func (c *authServiceClient) SignIn(ctx context.Context, req *connect.Request[SignInRequest]) (*connect.Response[user.User], error) {
+func (c *authServiceClient) SignIn(ctx context.Context, req *connect.Request[SignInRequest]) (*connect.Response[model.User], error) {
 	return c.signIn.CallUnary(ctx, req)
 }
 
 // SignUp calls api.v2.AuthService.SignUp.
-func (c *authServiceClient) SignUp(ctx context.Context, req *connect.Request[SignUpRequest]) (*connect.Response[user.User], error) {
+func (c *authServiceClient) SignUp(ctx context.Context, req *connect.Request[SignUpRequest]) (*connect.Response[model.User], error) {
 	return c.signUp.CallUnary(ctx, req)
 }
 
@@ -126,11 +126,11 @@ func (c *authServiceClient) SignOut(ctx context.Context, req *connect.Request[Si
 // AuthServiceHandler is an implementation of the api.v2.AuthService service.
 type AuthServiceHandler interface {
 	// GetAuthStatus returns the current auth status of the user.
-	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[user.User], error)
+	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error)
 	// SignIn signs in the user with the given username and password.
-	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[user.User], error)
+	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error)
 	// SignUp signs up the user with the given username and password.
-	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[user.User], error)
+	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error)
 	// SignOut signs out the user.
 	SignOut(context.Context, *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error)
 }
@@ -185,15 +185,15 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 // UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAuthServiceHandler struct{}
 
-func (UnimplementedAuthServiceHandler) GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[user.User], error) {
+func (UnimplementedAuthServiceHandler) GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.GetAuthStatus is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[user.User], error) {
+func (UnimplementedAuthServiceHandler) SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.SignIn is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[user.User], error) {
+func (UnimplementedAuthServiceHandler) SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.SignUp is not implemented"))
 }
 

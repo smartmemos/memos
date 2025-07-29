@@ -6,8 +6,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 
-	apiv1 "github.com/smartmemos/memos/internal/api/v1"
-	v1pb "github.com/smartmemos/memos/internal/proto/api/v1"
+	apiv2 "github.com/smartmemos/memos/internal/api/v2"
+	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	"github.com/smartmemos/memos/internal/server/interceptor"
 	"github.com/smartmemos/memos/internal/server/middleware"
 )
@@ -20,20 +20,8 @@ func registerHandlers(container do.Injector) http.Handler {
 	// options = append(options, connect.WithCompressMinBytes(1024))
 
 	{
-		path, authHandler := v1pb.NewAuthServiceHandler(do.MustInvoke[*apiv1.AuthService](container), options...)
+		path, authHandler := v2pb.NewAuthServiceHandler(do.MustInvoke[*apiv2.AuthService](container), options...)
 		mux.Handle(path, authHandler)
-	}
-	{
-		path, memoHandler := v1pb.NewMemoServiceHandler(do.MustInvoke[*apiv1.MemoService](container), options...)
-		mux.Handle(path, wrapHandler(memoHandler))
-	}
-	{
-		path, userHandler := v1pb.NewUserServiceHandler(do.MustInvoke[*apiv1.UserService](container), options...)
-		mux.Handle(path, wrapHandler(userHandler))
-	}
-	{
-		path, workspaceHandler := v1pb.NewWorkspaceServiceHandler(do.MustInvoke[*apiv1.WorkspaceService](container), options...)
-		mux.Handle(path, wrapHandler(workspaceHandler))
 	}
 
 	handler := wrapHandler(mux, middleware.CORS, middleware.NewAuth(container).Auth)

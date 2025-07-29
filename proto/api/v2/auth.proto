@@ -5,19 +5,18 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "model/user/user.proto";
-import "model/user/access_token.proto";
+import "model/user.proto";
 
 package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
 
 service AuthService {
   // GetAuthStatus returns the current auth status of the user.
-  rpc GetAuthStatus(GetAuthStatusRequest) returns (user.User) {}
+  rpc GetAuthStatus(GetAuthStatusRequest) returns (model.User) {}
   // SignIn signs in the user with the given username and password.
-  rpc SignIn(SignInRequest) returns (user.User) {}
+  rpc SignIn(SignInRequest) returns (model.User) {}
   // SignUp signs up the user with the given username and password.
-  rpc SignUp(SignUpRequest) returns (user.User) {}
+  rpc SignUp(SignUpRequest) returns (model.User) {}
   // SignOut signs out the user.
   rpc SignOut(SignOutRequest) returns (google.protobuf.Empty) {}
 }
@@ -43,5 +42,5 @@ message SignOutRequest {}
 message GetAuthStatusRequest {}
 
 message GetAuthStatusResponse {
-  user.User user = 1;
+  model.User user = 1;
 }

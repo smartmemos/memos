@@ -4,10 +4,9 @@
 // 	protoc        (unknown)
 // source: model/user.proto
 
-package user
+package model
 
 import (
-	_ "github.com/smartmemos/memos/internal/proto/model/common"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,104 +22,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-type State int32
-
-const (
-	State_STATE_UNSPECIFIED State = 0
-	State_NORMAL            State = 1
-	State_ARCHIVED          State = 2
-)
-
-// Enum value maps for State.
-var (
-	State_name = map[int32]string{
-		0: "STATE_UNSPECIFIED",
-		1: "NORMAL",
-		2: "ARCHIVED",
-	}
-	State_value = map[string]int32{
-		"STATE_UNSPECIFIED": 0,
-		"NORMAL":            1,
-		"ARCHIVED":          2,
-	}
-)
-
-func (x State) Enum() *State {
-	p := new(State)
-	*p = x
-	return p
-}
-
-func (x State) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (State) Descriptor() protoreflect.EnumDescriptor {
-	return file_model_user_proto_enumTypes[0].Descriptor()
-}
-
-func (State) Type() protoreflect.EnumType {
-	return &file_model_user_proto_enumTypes[0]
-}
-
-func (x State) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use State.Descriptor instead.
-func (State) EnumDescriptor() ([]byte, []int) {
-	return file_model_user_proto_rawDescGZIP(), []int{0}
-}
-
-type Direction int32
-
-const (
-	Direction_DIRECTION_UNSPECIFIED Direction = 0
-	Direction_ASC                   Direction = 1
-	Direction_DESC                  Direction = 2
-)
-
-// Enum value maps for Direction.
-var (
-	Direction_name = map[int32]string{
-		0: "DIRECTION_UNSPECIFIED",
-		1: "ASC",
-		2: "DESC",
-	}
-	Direction_value = map[string]int32{
-		"DIRECTION_UNSPECIFIED": 0,
-		"ASC":                   1,
-		"DESC":                  2,
-	}
-)
-
-func (x Direction) Enum() *Direction {
-	p := new(Direction)
-	*p = x
-	return p
-}
-
-func (x Direction) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_model_user_proto_enumTypes[1].Descriptor()
-}
-
-func (Direction) Type() protoreflect.EnumType {
-	return &file_model_user_proto_enumTypes[1]
-}
-
-func (x Direction) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Direction.Descriptor instead.
-func (Direction) EnumDescriptor() ([]byte, []int) {
-	return file_model_user_proto_rawDescGZIP(), []int{1}
-}
 
 type User_Role int32
 
@@ -158,11 +59,11 @@ func (x User_Role) String() string {
 }
 
 func (User_Role) Descriptor() protoreflect.EnumDescriptor {
-	return file_model_user_proto_enumTypes[2].Descriptor()
+	return file_model_user_proto_enumTypes[0].Descriptor()
 }
 
 func (User_Role) Type() protoreflect.EnumType {
-	return &file_model_user_proto_enumTypes[2]
+	return &file_model_user_proto_enumTypes[0]
 }
 
 func (x User_Role) Number() protoreflect.EnumNumber {
@@ -306,64 +207,11 @@ func (x *User) GetUpdateAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// Used internally for obfuscating the page token.
-type PageToken struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *PageToken) Reset() {
-	*x = PageToken{}
-	mi := &file_model_user_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PageToken) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PageToken) ProtoMessage() {}
-
-func (x *PageToken) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PageToken.ProtoReflect.Descriptor instead.
-func (*PageToken) Descriptor() ([]byte, []int) {
-	return file_model_user_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *PageToken) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-func (x *PageToken) GetOffset() int32 {
-	if x != nil {
-		return x.Offset
-	}
-	return 0
-}
-
 var File_model_user_proto protoreflect.FileDescriptor
 
 const file_model_user_proto_rawDesc = "" +
 	"\n" +
-	"\x10model/user.proto\x12\x05model\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19model/common/common.proto\"\xce\x03\n" +
+	"\x10model/user.proto\x12\x05model\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x12model/common.proto\"\xce\x03\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
@@ -383,19 +231,7 @@ const file_model_user_proto_rawDesc = "" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HOST\x10\x01\x12\t\n" +
 	"\x05ADMIN\x10\x02\x12\b\n" +
-	"\x04USER\x10\x03\"9\n" +
-	"\tPageToken\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset*8\n" +
-	"\x05State\x12\x15\n" +
-	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
-	"\n" +
-	"\x06NORMAL\x10\x01\x12\f\n" +
-	"\bARCHIVED\x10\x02*9\n" +
-	"\tDirection\x12\x19\n" +
-	"\x15DIRECTION_UNSPECIFIED\x10\x00\x12\a\n" +
-	"\x03ASC\x10\x01\x12\b\n" +
-	"\x04DESC\x10\x02B7Z5github.com/smartmemos/memos/internal/proto/model/userb\x06proto3"
+	"\x04USER\x10\x03B2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
 
 var (
 	file_model_user_proto_rawDescOnce sync.Once
@@ -409,21 +245,19 @@ func file_model_user_proto_rawDescGZIP() []byte {
 	return file_model_user_proto_rawDescData
 }
 
-var file_model_user_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_model_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_model_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_model_user_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_model_user_proto_goTypes = []any{
-	(State)(0),                    // 0: model.State
-	(Direction)(0),                // 1: model.Direction
-	(User_Role)(0),                // 2: model.User.Role
-	(*User)(nil),                  // 3: model.User
-	(*PageToken)(nil),             // 4: model.PageToken
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(User_Role)(0),                // 0: model.User.Role
+	(*User)(nil),                  // 1: model.User
+	(State)(0),                    // 2: model.State
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_model_user_proto_depIdxs = []int32{
-	2, // 0: model.User.role:type_name -> model.User.Role
-	0, // 1: model.User.state:type_name -> model.State
-	5, // 2: model.User.create_at:type_name -> google.protobuf.Timestamp
-	5, // 3: model.User.update_at:type_name -> google.protobuf.Timestamp
+	0, // 0: model.User.role:type_name -> model.User.Role
+	2, // 1: model.User.state:type_name -> model.State
+	3, // 2: model.User.create_at:type_name -> google.protobuf.Timestamp
+	3, // 3: model.User.update_at:type_name -> google.protobuf.Timestamp
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -436,13 +270,14 @@ func file_model_user_proto_init() {
 	if File_model_user_proto != nil {
 		return
 	}
+	file_model_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_user_proto_rawDesc), len(file_model_user_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   2,
+			NumEnums:      1,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -7,7 +7,7 @@
 package v2
 
 import (
-	user "github.com/smartmemos/memos/internal/proto/model/user"
+	model "github.com/smartmemos/memos/internal/proto/model"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -216,7 +216,7 @@ func (*GetAuthStatusRequest) Descriptor() ([]byte, []int) {
 
 type GetAuthStatusResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *user.User             `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	User          *model.User            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -251,7 +251,7 @@ func (*GetAuthStatusResponse) Descriptor() ([]byte, []int) {
 	return file_api_v2_auth_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetAuthStatusResponse) GetUser() *user.User {
+func (x *GetAuthStatusResponse) GetUser() *model.User {
 	if x != nil {
 		return x.User
 	}
@@ -262,7 +262,7 @@ var File_api_v2_auth_proto protoreflect.FileDescriptor
 
 const file_api_v2_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x11api/v2/auth.proto\x12\x06api.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15model/user/user.proto\x1a\x1dmodel/user/access_token.proto\"j\n" +
+	"\x11api/v2/auth.proto\x12\x06api.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\"j\n" +
 	"\rSignInRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12!\n" +
@@ -271,17 +271,13 @@ const file_api_v2_auth_proto_rawDesc = "" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"\x10\n" +
 	"\x0eSignOutRequest\"\x16\n" +
-	"\x14GetAuthStatusRequest\"7\n" +
-	"\x15GetAuthStatusResponse\x12\x1e\n" +
-	"\x04user\x18\x01 \x01(\v2\n" +
-	".user.UserR\x04user2\xe5\x01\n" +
-	"\vAuthService\x12;\n" +
-	"\rGetAuthStatus\x12\x1c.api.v2.GetAuthStatusRequest\x1a\n" +
-	".user.User\"\x00\x12-\n" +
-	"\x06SignIn\x12\x15.api.v2.SignInRequest\x1a\n" +
-	".user.User\"\x00\x12-\n" +
-	"\x06SignUp\x12\x15.api.v2.SignUpRequest\x1a\n" +
-	".user.User\"\x00\x12;\n" +
+	"\x14GetAuthStatusRequest\"8\n" +
+	"\x15GetAuthStatusResponse\x12\x1f\n" +
+	"\x04user\x18\x01 \x01(\v2\v.model.UserR\x04user2\xe8\x01\n" +
+	"\vAuthService\x12<\n" +
+	"\rGetAuthStatus\x12\x1c.api.v2.GetAuthStatusRequest\x1a\v.model.User\"\x00\x12.\n" +
+	"\x06SignIn\x12\x15.api.v2.SignInRequest\x1a\v.model.User\"\x00\x12.\n" +
+	"\x06SignUp\x12\x15.api.v2.SignUpRequest\x1a\v.model.User\"\x00\x12;\n" +
 	"\aSignOut\x12\x16.api.v2.SignOutRequest\x1a\x16.google.protobuf.Empty\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
@@ -303,18 +299,18 @@ var file_api_v2_auth_proto_goTypes = []any{
 	(*SignOutRequest)(nil),        // 2: api.v2.SignOutRequest
 	(*GetAuthStatusRequest)(nil),  // 3: api.v2.GetAuthStatusRequest
 	(*GetAuthStatusResponse)(nil), // 4: api.v2.GetAuthStatusResponse
-	(*user.User)(nil),             // 5: user.User
+	(*model.User)(nil),            // 5: model.User
 	(*emptypb.Empty)(nil),         // 6: google.protobuf.Empty
 }
 var file_api_v2_auth_proto_depIdxs = []int32{
-	5, // 0: api.v2.GetAuthStatusResponse.user:type_name -> user.User
+	5, // 0: api.v2.GetAuthStatusResponse.user:type_name -> model.User
 	3, // 1: api.v2.AuthService.GetAuthStatus:input_type -> api.v2.GetAuthStatusRequest
 	0, // 2: api.v2.AuthService.SignIn:input_type -> api.v2.SignInRequest
 	1, // 3: api.v2.AuthService.SignUp:input_type -> api.v2.SignUpRequest
 	2, // 4: api.v2.AuthService.SignOut:input_type -> api.v2.SignOutRequest
-	5, // 5: api.v2.AuthService.GetAuthStatus:output_type -> user.User
-	5, // 6: api.v2.AuthService.SignIn:output_type -> user.User
-	5, // 7: api.v2.AuthService.SignUp:output_type -> user.User
+	5, // 5: api.v2.AuthService.GetAuthStatus:output_type -> model.User
+	5, // 6: api.v2.AuthService.SignIn:output_type -> model.User
+	5, // 7: api.v2.AuthService.SignUp:output_type -> model.User
 	6, // 8: api.v2.AuthService.SignOut:output_type -> google.protobuf.Empty
 	5, // [5:9] is the sub-list for method output_type
 	1, // [1:5] is the sub-list for method input_type
