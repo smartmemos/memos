@@ -1,10 +1,11 @@
 import { uniq } from "lodash-es";
+import { observer } from "mobx-react-lite";
 import { memo, useEffect, useState } from "react";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { userStore } from "@/store/v2";
+import { userStore } from "@/store";
 import { State } from "@/types/proto/api/v1/common";
 import { Memo } from "@/types/proto/api/v1/memo_service";
-import { Reaction } from "@/types/proto/api/v1/reaction_service";
+import { Reaction } from "@/types/proto/api/v1/memo_service";
 import { User } from "@/types/proto/api/v1/user_service";
 import ReactionSelector from "./ReactionSelector";
 import ReactionView from "./ReactionView";
@@ -14,7 +15,7 @@ interface Props {
   reactions: Reaction[];
 }
 
-const MemoReactionListView = (props: Props) => {
+const MemoReactionListView = observer((props: Props) => {
   const { memo, reactions } = props;
   const currentUser = useCurrentUser();
   const [reactionGroup, setReactionGroup] = useState<Map<string, User[]>>(new Map());
@@ -43,6 +44,6 @@ const MemoReactionListView = (props: Props) => {
       </div>
     )
   );
-};
+});
 
 export default memo(MemoReactionListView);

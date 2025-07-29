@@ -152,6 +152,8 @@ export interface CommonLanguageSettings {
   referenceDocsUri: string;
   /** The destination where API teams want this client library to be published. */
   destinations: ClientLibraryDestination[];
+  /** Configuration for which RPCs should be generated in the GAPIC client. */
+  selectiveGapicGeneration?: SelectiveGapicGeneration | undefined;
 }
 
 /** Details about how and where to publish client libraries. */
@@ -253,6 +255,11 @@ export interface Publishing {
    * https://cloud.google.com/pubsub/lite/docs/reference/rpc
    */
   protoReferenceDocumentationUri: string;
+  /**
+   * Optional link to REST reference documentation.  Example:
+   * https://cloud.google.com/pubsub/lite/docs/reference/rest
+   */
+  restReferenceDocumentationUri: string;
 }
 
 /** Settings for Java client libraries. */
@@ -312,7 +319,40 @@ export interface PhpSettings {
 /** Settings for Python client libraries. */
 export interface PythonSettings {
   /** Some settings. */
-  common?: CommonLanguageSettings | undefined;
+  common?:
+    | CommonLanguageSettings
+    | undefined;
+  /** Experimental features to be included during client library generation. */
+  experimentalFeatures?: PythonSettings_ExperimentalFeatures | undefined;
+}
+
+/**
+ * Experimental features to be included during client library generation.
+ * These fields will be deprecated once the feature graduates and is enabled
+ * by default.
+ */
+export interface PythonSettings_ExperimentalFeatures {
+  /**
+   * Enables generation of asynchronous REST clients if `rest` transport is
+   * enabled. By default, asynchronous REST clients will not be generated.
+   * This feature will be enabled by default 1 month after launching the
+   * feature in preview packages.
+   */
+  restAsyncIoEnabled: boolean;
+  /**
+   * Enables generation of protobuf code using new types that are more
+   * Pythonic which are included in `protobuf>=5.29.x`. This feature will be
+   * enabled by default 1 month after launching the feature in preview
+   * packages.
+   */
+  protobufPythonicTypesEnabled: boolean;
+  /**
+   * Disables generation of an unversioned Python package for this client
+   * library. This means that the module names will need to be versioned in
+   * import statements. For example `import google.cloud.library_v2` instead
+   * of `import google.cloud.library`.
+   */
+  unversionedPackageDisabled: boolean;
 }
 
 /** Settings for Node client libraries. */
@@ -383,7 +423,25 @@ export interface RubySettings {
 /** Settings for Go client libraries. */
 export interface GoSettings {
   /** Some settings. */
-  common?: CommonLanguageSettings | undefined;
+  common?:
+    | CommonLanguageSettings
+    | undefined;
+  /**
+   * Map of service names to renamed services. Keys are the package relative
+   * service names and values are the name to be used for the service client
+   * and call options.
+   *
+   * publishing:
+   *   go_settings:
+   *     renamed_services:
+   *       Publisher: TopicAdmin
+   */
+  renamedServices: { [key: string]: string };
+}
+
+export interface GoSettings_RenamedServicesEntry {
+  key: string;
+  value: string;
 }
 
 /** Describes the generator configuration for a method. */
@@ -391,6 +449,13 @@ export interface MethodSettings {
   /**
    * The fully qualified name of the method, for which the options below apply.
    * This is used to find the method to apply the options.
+   *
+   * Example:
+   *
+   *    publishing:
+   *      method_settings:
+   *      - selector: google.storage.control.v2.StorageControl.CreateFolder
+   *        # method settings for CreateFolder...
    */
   selector: string;
   /**
@@ -400,17 +465,14 @@ export interface MethodSettings {
    *
    * Example of a YAML configuration::
    *
-   *  publishing:
-   *    method_settings:
+   *    publishing:
+   *      method_settings:
    *      - selector: google.cloud.speech.v2.Speech.BatchRecognize
    *        long_running:
-   *          initial_poll_delay:
-   *            seconds: 60 # 1 minute
+   *          initial_poll_delay: 60s # 1 minute
    *          poll_delay_multiplier: 1.5
-   *          max_poll_delay:
-   *            seconds: 360 # 6 minutes
-   *          total_poll_timeout:
-   *             seconds: 54000 # 90 minutes
+   *          max_poll_delay: 360s # 6 minutes
+   *          total_poll_timeout: 54000s # 90 minutes
    */
   longRunning?:
     | MethodSettings_LongRunning
@@ -422,8 +484,8 @@ export interface MethodSettings {
    *
    * Example of a YAML configuration:
    *
-   *  publishing:
-   *    method_settings:
+   *    publishing:
+   *      method_settings:
    *      - selector: google.example.v1.ExampleService.CreateExample
    *        auto_populated_fields:
    *        - request_id
@@ -466,8 +528,29 @@ export interface MethodSettings_LongRunning {
   totalPollTimeout?: Duration | undefined;
 }
 
+/**
+ * This message is used to configure the generation of a subset of the RPCs in
+ * a service for client libraries.
+ */
+export interface SelectiveGapicGeneration {
+  /**
+   * An allowlist of the fully qualified names of RPCs that should be included
+   * on public client surfaces.
+   */
+  methods: string[];
+  /**
+   * Setting this to true indicates to the client generators that methods
+   * that would be excluded from the generation should instead be generated
+   * in a way that indicates these methods should not be consumed by
+   * end users. How this is expressed is up to individual language
+   * implementations to decide. Some examples may be: added annotations,
+   * obfuscated identifiers, or other language idiomatic patterns.
+   */
+  generateOmittedAsInternal: boolean;
+}
+
 function createBaseCommonLanguageSettings(): CommonLanguageSettings {
-  return { referenceDocsUri: "", destinations: [] };
+  return { referenceDocsUri: "", destinations: [], selectiveGapicGeneration: undefined };
 }
 
 export const CommonLanguageSettings: MessageFns<CommonLanguageSettings> = {
@@ -480,6 +563,9 @@ export const CommonLanguageSettings: MessageFns<CommonLanguageSettings> = {
       writer.int32(clientLibraryDestinationToNumber(v));
     }
     writer.join();
+    if (message.selectiveGapicGeneration !== undefined) {
+      SelectiveGapicGeneration.encode(message.selectiveGapicGeneration, writer.uint32(26).fork()).join();
+    }
     return writer;
   },
 
@@ -516,6 +602,14 @@ export const CommonLanguageSettings: MessageFns<CommonLanguageSettings> = {
 
           break;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.selectiveGapicGeneration = SelectiveGapicGeneration.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -532,6 +626,10 @@ export const CommonLanguageSettings: MessageFns<CommonLanguageSettings> = {
     const message = createBaseCommonLanguageSettings();
     message.referenceDocsUri = object.referenceDocsUri ?? "";
     message.destinations = object.destinations?.map((e) => e) || [];
+    message.selectiveGapicGeneration =
+      (object.selectiveGapicGeneration !== undefined && object.selectiveGapicGeneration !== null)
+        ? SelectiveGapicGeneration.fromPartial(object.selectiveGapicGeneration)
+        : undefined;
     return message;
   },
 };
@@ -742,6 +840,7 @@ function createBasePublishing(): Publishing {
     organization: ClientLibraryOrganization.CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED,
     librarySettings: [],
     protoReferenceDocumentationUri: "",
+    restReferenceDocumentationUri: "",
   };
 }
 
@@ -776,6 +875,9 @@ export const Publishing: MessageFns<Publishing> = {
     }
     if (message.protoReferenceDocumentationUri !== "") {
       writer.uint32(882).string(message.protoReferenceDocumentationUri);
+    }
+    if (message.restReferenceDocumentationUri !== "") {
+      writer.uint32(890).string(message.restReferenceDocumentationUri);
     }
     return writer;
   },
@@ -867,6 +969,14 @@ export const Publishing: MessageFns<Publishing> = {
           message.protoReferenceDocumentationUri = reader.string();
           continue;
         }
+        case 111: {
+          if (tag !== 890) {
+            break;
+          }
+
+          message.restReferenceDocumentationUri = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -891,6 +1001,7 @@ export const Publishing: MessageFns<Publishing> = {
     message.organization = object.organization ?? ClientLibraryOrganization.CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED;
     message.librarySettings = object.librarySettings?.map((e) => ClientLibrarySettings.fromPartial(e)) || [];
     message.protoReferenceDocumentationUri = object.protoReferenceDocumentationUri ?? "";
+    message.restReferenceDocumentationUri = object.restReferenceDocumentationUri ?? "";
     return message;
   },
 };
@@ -1133,13 +1244,16 @@ export const PhpSettings: MessageFns<PhpSettings> = {
 };
 
 function createBasePythonSettings(): PythonSettings {
-  return { common: undefined };
+  return { common: undefined, experimentalFeatures: undefined };
 }
 
 export const PythonSettings: MessageFns<PythonSettings> = {
   encode(message: PythonSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.common !== undefined) {
       CommonLanguageSettings.encode(message.common, writer.uint32(10).fork()).join();
+    }
+    if (message.experimentalFeatures !== undefined) {
+      PythonSettings_ExperimentalFeatures.encode(message.experimentalFeatures, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1159,6 +1273,14 @@ export const PythonSettings: MessageFns<PythonSettings> = {
           message.common = CommonLanguageSettings.decode(reader, reader.uint32());
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.experimentalFeatures = PythonSettings_ExperimentalFeatures.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1176,6 +1298,79 @@ export const PythonSettings: MessageFns<PythonSettings> = {
     message.common = (object.common !== undefined && object.common !== null)
       ? CommonLanguageSettings.fromPartial(object.common)
       : undefined;
+    message.experimentalFeatures = (object.experimentalFeatures !== undefined && object.experimentalFeatures !== null)
+      ? PythonSettings_ExperimentalFeatures.fromPartial(object.experimentalFeatures)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePythonSettings_ExperimentalFeatures(): PythonSettings_ExperimentalFeatures {
+  return { restAsyncIoEnabled: false, protobufPythonicTypesEnabled: false, unversionedPackageDisabled: false };
+}
+
+export const PythonSettings_ExperimentalFeatures: MessageFns<PythonSettings_ExperimentalFeatures> = {
+  encode(message: PythonSettings_ExperimentalFeatures, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.restAsyncIoEnabled !== false) {
+      writer.uint32(8).bool(message.restAsyncIoEnabled);
+    }
+    if (message.protobufPythonicTypesEnabled !== false) {
+      writer.uint32(16).bool(message.protobufPythonicTypesEnabled);
+    }
+    if (message.unversionedPackageDisabled !== false) {
+      writer.uint32(24).bool(message.unversionedPackageDisabled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PythonSettings_ExperimentalFeatures {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePythonSettings_ExperimentalFeatures();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.restAsyncIoEnabled = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.protobufPythonicTypesEnabled = reader.bool();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.unversionedPackageDisabled = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<PythonSettings_ExperimentalFeatures>): PythonSettings_ExperimentalFeatures {
+    return PythonSettings_ExperimentalFeatures.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PythonSettings_ExperimentalFeatures>): PythonSettings_ExperimentalFeatures {
+    const message = createBasePythonSettings_ExperimentalFeatures();
+    message.restAsyncIoEnabled = object.restAsyncIoEnabled ?? false;
+    message.protobufPythonicTypesEnabled = object.protobufPythonicTypesEnabled ?? false;
+    message.unversionedPackageDisabled = object.unversionedPackageDisabled ?? false;
     return message;
   },
 };
@@ -1530,7 +1725,7 @@ export const RubySettings: MessageFns<RubySettings> = {
 };
 
 function createBaseGoSettings(): GoSettings {
-  return { common: undefined };
+  return { common: undefined, renamedServices: {} };
 }
 
 export const GoSettings: MessageFns<GoSettings> = {
@@ -1538,6 +1733,9 @@ export const GoSettings: MessageFns<GoSettings> = {
     if (message.common !== undefined) {
       CommonLanguageSettings.encode(message.common, writer.uint32(10).fork()).join();
     }
+    Object.entries(message.renamedServices).forEach(([key, value]) => {
+      GoSettings_RenamedServicesEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).join();
+    });
     return writer;
   },
 
@@ -1554,6 +1752,17 @@ export const GoSettings: MessageFns<GoSettings> = {
           }
 
           message.common = CommonLanguageSettings.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          const entry2 = GoSettings_RenamedServicesEntry.decode(reader, reader.uint32());
+          if (entry2.value !== undefined) {
+            message.renamedServices[entry2.key] = entry2.value;
+          }
           continue;
         }
       }
@@ -1573,6 +1782,73 @@ export const GoSettings: MessageFns<GoSettings> = {
     message.common = (object.common !== undefined && object.common !== null)
       ? CommonLanguageSettings.fromPartial(object.common)
       : undefined;
+    message.renamedServices = Object.entries(object.renamedServices ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = globalThis.String(value);
+        }
+        return acc;
+      },
+      {},
+    );
+    return message;
+  },
+};
+
+function createBaseGoSettings_RenamedServicesEntry(): GoSettings_RenamedServicesEntry {
+  return { key: "", value: "" };
+}
+
+export const GoSettings_RenamedServicesEntry: MessageFns<GoSettings_RenamedServicesEntry> = {
+  encode(message: GoSettings_RenamedServicesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GoSettings_RenamedServicesEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGoSettings_RenamedServicesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GoSettings_RenamedServicesEntry>): GoSettings_RenamedServicesEntry {
+    return GoSettings_RenamedServicesEntry.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GoSettings_RenamedServicesEntry>): GoSettings_RenamedServicesEntry {
+    const message = createBaseGoSettings_RenamedServicesEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -1733,6 +2009,64 @@ export const MethodSettings_LongRunning: MessageFns<MethodSettings_LongRunning> 
     message.totalPollTimeout = (object.totalPollTimeout !== undefined && object.totalPollTimeout !== null)
       ? Duration.fromPartial(object.totalPollTimeout)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseSelectiveGapicGeneration(): SelectiveGapicGeneration {
+  return { methods: [], generateOmittedAsInternal: false };
+}
+
+export const SelectiveGapicGeneration: MessageFns<SelectiveGapicGeneration> = {
+  encode(message: SelectiveGapicGeneration, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.methods) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.generateOmittedAsInternal !== false) {
+      writer.uint32(16).bool(message.generateOmittedAsInternal);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SelectiveGapicGeneration {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSelectiveGapicGeneration();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.methods.push(reader.string());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.generateOmittedAsInternal = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<SelectiveGapicGeneration>): SelectiveGapicGeneration {
+    return SelectiveGapicGeneration.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SelectiveGapicGeneration>): SelectiveGapicGeneration {
+    const message = createBaseSelectiveGapicGeneration();
+    message.methods = object.methods?.map((e) => e) || [];
+    message.generateOmittedAsInternal = object.generateOmittedAsInternal ?? false;
     return message;
   },
 };

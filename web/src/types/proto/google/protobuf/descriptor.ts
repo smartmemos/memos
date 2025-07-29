@@ -177,11 +177,19 @@ export interface FileDescriptorProto {
    * The supported values are "proto2", "proto3", and "editions".
    *
    * If `edition` is present, this value must be "editions".
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
    */
   syntax?:
     | string
     | undefined;
-  /** The edition of the proto file. */
+  /**
+   * The edition of the proto file.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   edition?: Edition | undefined;
 }
 
@@ -828,7 +836,12 @@ export interface FileOptions {
   rubyPackage?:
     | string
     | undefined;
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -966,7 +979,12 @@ export interface MessageOptions {
   deprecatedLegacyJsonFieldConflicts?:
     | boolean
     | undefined;
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1071,7 +1089,12 @@ export interface FieldOptions {
   retention?: FieldOptions_OptionRetention | undefined;
   targets: FieldOptions_OptionTargetType[];
   editionDefaults: FieldOptions_EditionDefault[];
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?: FeatureSet | undefined;
   featureSupport?:
     | FieldOptions_FeatureSupport
@@ -1337,7 +1360,12 @@ export interface FieldOptions_FeatureSupport {
 }
 
 export interface OneofOptions {
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1375,7 +1403,12 @@ export interface EnumOptions {
   deprecatedLegacyJsonFieldConflicts?:
     | boolean
     | undefined;
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1393,7 +1426,12 @@ export interface EnumValueOptions {
   deprecated?:
     | boolean
     | undefined;
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1414,7 +1452,12 @@ export interface EnumValueOptions {
 }
 
 export interface ServiceOptions {
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1442,7 +1485,12 @@ export interface MethodOptions {
   idempotencyLevel?:
     | MethodOptions_IdempotencyLevel
     | undefined;
-  /** Any features defined in the specific edition. */
+  /**
+   * Any features defined in the specific edition.
+   * WARNING: This field should only be used by protobuf plugins or special
+   * cases like the proto compiler. Other uses are discouraged and
+   * developers should rely on the protoreflect APIs for their client language.
+   */
   features?:
     | FeatureSet
     | undefined;
@@ -1545,6 +1593,7 @@ export interface FeatureSet {
   utf8Validation?: FeatureSet_Utf8Validation | undefined;
   messageEncoding?: FeatureSet_MessageEncoding | undefined;
   jsonFormat?: FeatureSet_JsonFormat | undefined;
+  enforceNamingStyle?: FeatureSet_EnforceNamingStyle | undefined;
 }
 
 export enum FeatureSet_FieldPresence {
@@ -1782,6 +1831,45 @@ export function featureSet_JsonFormatToNumber(object: FeatureSet_JsonFormat): nu
     case FeatureSet_JsonFormat.LEGACY_BEST_EFFORT:
       return 2;
     case FeatureSet_JsonFormat.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum FeatureSet_EnforceNamingStyle {
+  ENFORCE_NAMING_STYLE_UNKNOWN = "ENFORCE_NAMING_STYLE_UNKNOWN",
+  STYLE2024 = "STYLE2024",
+  STYLE_LEGACY = "STYLE_LEGACY",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function featureSet_EnforceNamingStyleFromJSON(object: any): FeatureSet_EnforceNamingStyle {
+  switch (object) {
+    case 0:
+    case "ENFORCE_NAMING_STYLE_UNKNOWN":
+      return FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN;
+    case 1:
+    case "STYLE2024":
+      return FeatureSet_EnforceNamingStyle.STYLE2024;
+    case 2:
+    case "STYLE_LEGACY":
+      return FeatureSet_EnforceNamingStyle.STYLE_LEGACY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeatureSet_EnforceNamingStyle.UNRECOGNIZED;
+  }
+}
+
+export function featureSet_EnforceNamingStyleToNumber(object: FeatureSet_EnforceNamingStyle): number {
+  switch (object) {
+    case FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN:
+      return 0;
+    case FeatureSet_EnforceNamingStyle.STYLE2024:
+      return 1;
+    case FeatureSet_EnforceNamingStyle.STYLE_LEGACY:
+      return 2;
+    case FeatureSet_EnforceNamingStyle.UNRECOGNIZED:
     default:
       return -1;
   }
@@ -4910,6 +4998,7 @@ function createBaseFeatureSet(): FeatureSet {
     utf8Validation: FeatureSet_Utf8Validation.UTF8_VALIDATION_UNKNOWN,
     messageEncoding: FeatureSet_MessageEncoding.MESSAGE_ENCODING_UNKNOWN,
     jsonFormat: FeatureSet_JsonFormat.JSON_FORMAT_UNKNOWN,
+    enforceNamingStyle: FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN,
   };
 }
 
@@ -4943,6 +5032,12 @@ export const FeatureSet: MessageFns<FeatureSet> = {
     }
     if (message.jsonFormat !== undefined && message.jsonFormat !== FeatureSet_JsonFormat.JSON_FORMAT_UNKNOWN) {
       writer.uint32(48).int32(featureSet_JsonFormatToNumber(message.jsonFormat));
+    }
+    if (
+      message.enforceNamingStyle !== undefined &&
+      message.enforceNamingStyle !== FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN
+    ) {
+      writer.uint32(56).int32(featureSet_EnforceNamingStyleToNumber(message.enforceNamingStyle));
     }
     return writer;
   },
@@ -5002,6 +5097,14 @@ export const FeatureSet: MessageFns<FeatureSet> = {
           message.jsonFormat = featureSet_JsonFormatFromJSON(reader.int32());
           continue;
         }
+        case 7: {
+          if (tag !== 56) {
+            break;
+          }
+
+          message.enforceNamingStyle = featureSet_EnforceNamingStyleFromJSON(reader.int32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5023,6 +5126,8 @@ export const FeatureSet: MessageFns<FeatureSet> = {
     message.utf8Validation = object.utf8Validation ?? FeatureSet_Utf8Validation.UTF8_VALIDATION_UNKNOWN;
     message.messageEncoding = object.messageEncoding ?? FeatureSet_MessageEncoding.MESSAGE_ENCODING_UNKNOWN;
     message.jsonFormat = object.jsonFormat ?? FeatureSet_JsonFormat.JSON_FORMAT_UNKNOWN;
+    message.enforceNamingStyle = object.enforceNamingStyle ??
+      FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN;
     return message;
   },
 };

@@ -14,7 +14,7 @@ const Inboxes = lazy(() => import("@/pages/Inboxes"));
 const MemoDetail = lazy(() => import("@/pages/MemoDetail"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const PermissionDenied = lazy(() => import("@/pages/PermissionDenied"));
-const Resources = lazy(() => import("@/pages/Resources"));
+const Attachments = lazy(() => import("@/pages/Attachments"));
 const Setting = lazy(() => import("@/pages/Setting"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
@@ -23,7 +23,7 @@ const MemoDetailRedirect = lazy(() => import("./MemoDetailRedirect"));
 
 export enum Routes {
   ROOT = "/",
-  RESOURCES = "/resources",
+  ATTACHMENTS = "/attachments",
   INBOX = "/inbox",
   ARCHIVED = "/archived",
   SETTING = "/setting",
@@ -85,14 +85,6 @@ const router = createBrowserRouter([
                 element: <Home />,
               },
               {
-                path: Routes.EXPLORE,
-                element: (
-                  <Suspense fallback={<Loading />}>
-                    <Explore />
-                  </Suspense>
-                ),
-              },
-              {
                 path: Routes.ARCHIVED,
                 element: (
                   <Suspense fallback={<Loading />}>
@@ -111,10 +103,18 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: Routes.RESOURCES,
+            path: Routes.EXPLORE,
             element: (
               <Suspense fallback={<Loading />}>
-                <Resources />
+                <Explore />
+              </Suspense>
+            ),
+          },
+          {
+            path: Routes.ATTACHMENTS,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Attachments />
               </Suspense>
             ),
           },

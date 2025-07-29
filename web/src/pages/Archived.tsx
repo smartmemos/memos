@@ -1,36 +1,29 @@
 import dayjs from "dayjs";
+import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
 import MemoView from "@/components/MemoView";
 import PagedMemoList from "@/components/PagedMemoList";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { useMemoFilterStore } from "@/store/v1";
-import { viewStore } from "@/store/v2";
-import { Direction, State } from "@/types/proto/api/v1/common";
+import { viewStore } from "@/store";
+import { extractUserIdFromName } from "@/store/common";
+import memoFilterStore from "@/store/memoFilter";
+import { State } from "@/types/proto/api/v1/common";
 import { Memo } from "@/types/proto/api/v1/memo_service";
 
-const Archived = () => {
+const Archived = observer(() => {
   const user = useCurrentUser();
-  const memoFilterStore = useMemoFilterStore();
 
-  const memoListFilter = useMemo(() => {
-    const conditions = [];
-    const contentSearch: string[] = [];
-    const tagSearch: string[] = [];
+  const memoFitler = useMemo(() => {
+    const conditions = [`creator_id == ${extractUserIdFromName(user.name)}`];
     for (const filter of memoFilterStore.filters) {
       if (filter.factor === "contentSearch") {
-        contentSearch.push(`"${filter.value}"`);
+        conditions.push(`content.contains("${filter.value}")`);
       } else if (filter.factor === "tagSearch") {
-        tagSearch.push(`"${filter.value}"`);
+        conditions.push(`tag in ["${filter.value}"]`);
       }
     }
-    if (contentSearch.length > 0) {
-      conditions.push(`content_search == [${contentSearch.join(", ")}]`);
-    }
-    if (tagSearch.length > 0) {
-      conditions.push(`tag_search == [${tagSearch.join(", ")}]`);
-    }
-    return conditions.join(" && ");
-  }, [user, memoFilterStore.filters]);
+    return conditions.length > 0 ? conditions.join(" && ") : undefined;
+  }, [memoFilterStore.filters]);
 
   return (
     <PagedMemoList
@@ -44,12 +37,11 @@ const Archived = () => {
               : dayjs(b.displayTime).unix() - dayjs(a.displayTime).unix(),
           )
       }
-      owner={user.name}
       state={State.ARCHIVED}
-      direction={viewStore.state.orderByTimeAsc ? Direction.ASC : Direction.DESC}
-      oldFilter={memoListFilter}
+      orderBy={viewStore.state.orderByTimeAsc ? "display_time asc" : "display_time desc"}
+      filter={memoFitler}
     />
   );
-};
+});
 
 export default Archived;

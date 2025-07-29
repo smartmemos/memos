@@ -1,18 +1,18 @@
-import { useColorScheme } from "@mui/joy";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import { getSystemColorScheme } from "./helpers/utils";
 import useNavigateTo from "./hooks/useNavigateTo";
-import { userStore, workspaceStore } from "./store/v2";
+import { userStore, workspaceStore } from "./store";
+import { loadTheme } from "./utils/theme";
 
 const App = observer(() => {
   const { i18n } = useTranslation();
   const navigateTo = useNavigateTo();
-  const { mode, setMode } = useColorScheme();
+  const [mode, setMode] = useState<"light" | "dark">("light");
   const workspaceProfile = workspaceStore.state.profile;
-  const userSetting = userStore.state.userSetting;
+  const userGeneralSetting = userStore.state.userGeneralSetting;
   const workspaceGeneralSetting = workspaceStore.state.generalSetting;
 
   // Redirect to sign up page if no instance owner.
@@ -30,11 +30,7 @@ const App = observer(() => {
     };
 
     try {
-      if (darkMediaQuery.addEventListener) {
-        darkMediaQuery.addEventListener("change", handleColorSchemeChange);
-      } else {
-        darkMediaQuery.addListener(handleColorSchemeChange);
-      }
+      darkMediaQuery.addEventListener("change", handleColorSchemeChange);
     } catch (error) {
       console.error("failed to initial color scheme listener", error);
     }
@@ -98,15 +94,22 @@ const App = observer(() => {
   }, [mode]);
 
   useEffect(() => {
-    if (!userSetting) {
+    if (!userGeneralSetting) {
       return;
     }
 
     workspaceStore.state.setPartial({
-      locale: userSetting.locale || workspaceStore.state.locale,
-      appearance: userSetting.appearance || workspaceStore.state.appearance,
+      locale: userGeneralSetting.locale || workspaceStore.state.locale,
+      appearance: userGeneralSetting.appearance || workspaceStore.state.appearance,
     });
-  }, [userSetting?.locale, userSetting?.appearance]);
+  }, [userGeneralSetting?.locale, userGeneralSetting?.appearance]);
+
+  // Load theme when user setting changes (user theme is already backfilled with workspace theme)
+  useEffect(() => {
+    if (userGeneralSetting?.theme) {
+      loadTheme(userGeneralSetting.theme);
+    }
+  }, [userGeneralSetting?.theme]);
 
   return <Outlet />;
 });
