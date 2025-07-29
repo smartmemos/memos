@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/user/user.proto";
+import "model/user/access_token.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service AuthService {
+  // GetAuthStatus returns the current auth status of the user.
+  rpc GetAuthStatus(GetAuthStatusRequest) returns (user.User) {}
+  // SignIn signs in the user with the given username and password.
+  rpc SignIn(SignInRequest) returns (user.User) {}
+  // SignUp signs up the user with the given username and password.
+  rpc SignUp(SignUpRequest) returns (user.User) {}
+  // SignOut signs out the user.
+  rpc SignOut(SignOutRequest) returns (google.protobuf.Empty) {}
+}
+
+message SignInRequest {
+  // The username to sign in with.
+  string username = 1;
+  // The password to sign in with.
+  string password = 2;
+  // Whether the session should never expire.
+  bool never_expire = 3;
+}
+
+message SignUpRequest {
+  // The username to sign up with.
+  string username = 1;
+  // The password to sign up with.
+  string password = 2;
+}
+
+message SignOutRequest {}
+
+message GetAuthStatusRequest {}
+
+message GetAuthStatusResponse {
+  user.User user = 1;
+}

@@ -989,7 +989,7 @@ paths:
               username:
                 type: string
               role:
-                $ref: '#/definitions/UserRole'
+                $ref: '#/definitions/userUserRole'
               nickname:
                 type: string
               email:
@@ -1085,14 +1085,6 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/markdownNode'
-  UserRole:
-    type: string
-    enum:
-      - ROLE_UNSPECIFIED
-      - HOST
-      - ADMIN
-      - USER
-    default: ROLE_UNSPECIFIED
   UserServiceCreateAccessTokenBody:
     type: object
     properties:
@@ -1737,7 +1729,7 @@ definitions:
       username:
         type: string
       role:
-        $ref: '#/definitions/UserRole'
+        $ref: '#/definitions/userUserRole'
       nickname:
         type: string
       email:
@@ -1758,6 +1750,14 @@ definitions:
         type: string
         format: date-time
         readOnly: true
+  userUserRole:
+    type: string
+    enum:
+      - ROLE_UNSPECIFIED
+      - HOST
+      - ADMIN
+      - USER
+    default: ROLE_UNSPECIFIED
   v1ListAccessTokensResponse:
     type: object
     properties:
