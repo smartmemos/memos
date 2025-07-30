@@ -35,6 +35,21 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateSession mocks base method.
+func (m *MockService) CreateSession(ctx context.Context, req *model.CreateSessionRequest) (*model.Session, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSession", ctx, req)
+	ret0, _ := ret[0].(*model.Session)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSession indicates an expected call of CreateSession.
+func (mr *MockServiceMockRecorder) CreateSession(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSession", reflect.TypeOf((*MockService)(nil).CreateSession), ctx, req)
+}
+
 // CreateUser mocks base method.
 func (m *MockService) CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
@@ -48,4 +63,19 @@ func (m *MockService) CreateUser(ctx context.Context, req *model.CreateUserReque
 func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), ctx, req)
+}
+
+// GetUserByID mocks base method.
+func (m *MockService) GetUserByID(ctx context.Context, id int64) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserByID", ctx, id)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserByID indicates an expected call of GetUserByID.
+func (mr *MockServiceMockRecorder) GetUserByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), ctx, id)
 }

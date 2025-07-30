@@ -2,6 +2,7 @@ package v2
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"connectrpc.com/connect"
@@ -23,6 +24,32 @@ func NewAuthService(i do.Injector) (*AuthService, error) {
 	return &AuthService{
 		memosService: do.MustInvoke[memos.Service](i),
 	}, nil
+}
+
+func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2pb.CreateSessionRequest]) (resp *connect.Response[v2pb.CreateSessionResponse], err error) {
+	passwordCredentials := req.Msg.GetPasswordCredentials()
+	if passwordCredentials == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("password credentials are required"))
+	}
+
+	session, err := s.memosService.CreateSession(ctx, &model.CreateSessionRequest{
+		Username: passwordCredentials.Username,
+		Password: passwordCredentials.Password,
+	})
+	if err != nil {
+		return
+	}
+
+	user, err := s.memosService.GetUserByID(ctx, session.UserID)
+	if err != nil {
+		return
+	}
+
+	resp = connect.NewResponse(&v2pb.CreateSessionResponse{
+		User:           convertUserToProto(user),
+		LastAccessedAt: timestamppb.New(session.CreatedAt),
+	})
+	return
 }
 
 // SignUp creates a new user.

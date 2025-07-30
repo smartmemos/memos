@@ -27,3 +27,7 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 	}
 	return user, nil
 }
+
+func (s *Service) GetUserByID(ctx context.Context, id int64) (user *model.User, err error) {
+	return s.dao.FindUserByID(ctx, id)
+}

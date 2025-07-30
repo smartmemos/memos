@@ -11,6 +11,40 @@ produces:
   - application/json
 paths: {}
 definitions:
+  CreateSessionRequestPasswordCredentials:
+    type: object
+    properties:
+      username:
+        type: string
+        description: |-
+          The username to sign in with.
+          Required field for password-based authentication.
+      password:
+        type: string
+        description: |-
+          The password to sign in with.
+          Required field for password-based authentication.
+    description: Nested message for password-based authentication credentials.
+  CreateSessionRequestSSOCredentials:
+    type: object
+    properties:
+      idpId:
+        type: integer
+        format: int32
+        description: |-
+          The ID of the SSO provider.
+          Required field to identify the SSO provider.
+      code:
+        type: string
+        description: |-
+          The authorization code from the SSO provider.
+          Required field for completing the SSO flow.
+      redirectUri:
+        type: string
+        description: |-
+          The redirect URI used in the SSO flow.
+          Required field for security validation.
+    description: Nested message for SSO authentication credentials.
   UserRole:
     type: string
     enum:
@@ -75,3 +109,15 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  v2CreateSessionResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/modelUser'
+        description: The authenticated user information.
+      lastAccessedAt:
+        type: string
+        format: date-time
+        description: |-
+          Last time the session was accessed.
+          Used for sliding expiration calculation (last_accessed_time + 2 weeks).

@@ -6,7 +6,7 @@ const (
 	TableReaction    = "reaction"
 	TableUser        = "user"
 	TableUserSetting = "user_setting"
-	TableAccessToken = "access_token"
+	TableSession     = "session"
 	TableSetting     = "workspace_setting"
 )
 

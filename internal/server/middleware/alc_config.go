@@ -8,6 +8,7 @@ var authenticationAllowlistMethods = map[string]bool{
 	"/api.v1.WorkspaceService/ListIdentityProviders": true,
 	"/api.v1.AuthService/SignOut":                    true,
 	"/api.v1.AuthService/SignUp":                     true,
+	"/api.v2.AuthService/CreateSession":              true,
 	"/api.v2.UserService/CreateUser":                 true,
 }
 

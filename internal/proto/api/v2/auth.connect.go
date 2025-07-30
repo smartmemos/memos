@@ -8,8 +8,6 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	model "github.com/smartmemos/memos/internal/proto/model"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -34,27 +32,16 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// AuthServiceGetAuthStatusProcedure is the fully-qualified name of the AuthService's GetAuthStatus
+	// AuthServiceCreateSessionProcedure is the fully-qualified name of the AuthService's CreateSession
 	// RPC.
-	AuthServiceGetAuthStatusProcedure = "/api.v2.AuthService/GetAuthStatus"
-	// AuthServiceSignInProcedure is the fully-qualified name of the AuthService's SignIn RPC.
-	AuthServiceSignInProcedure = "/api.v2.AuthService/SignIn"
-	// AuthServiceSignUpProcedure is the fully-qualified name of the AuthService's SignUp RPC.
-	AuthServiceSignUpProcedure = "/api.v2.AuthService/SignUp"
-	// AuthServiceSignOutProcedure is the fully-qualified name of the AuthService's SignOut RPC.
-	AuthServiceSignOutProcedure = "/api.v2.AuthService/SignOut"
+	AuthServiceCreateSessionProcedure = "/api.v2.AuthService/CreateSession"
 )
 
 // AuthServiceClient is a client for the api.v2.AuthService service.
 type AuthServiceClient interface {
-	// GetAuthStatus returns the current auth status of the user.
-	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error)
-	// SignIn signs in the user with the given username and password.
-	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error)
-	// SignUp signs up the user with the given username and password.
-	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error)
-	// SignOut signs out the user.
-	SignOut(context.Context, *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error)
+	// CreateSession authenticates a user and creates a new session.
+	// Returns the authenticated user information upon successful authentication.
+	CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the api.v2.AuthService service. By default, it uses
@@ -68,28 +55,10 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	authServiceMethods := File_api_v2_auth_proto.Services().ByName("AuthService").Methods()
 	return &authServiceClient{
-		getAuthStatus: connect.NewClient[GetAuthStatusRequest, model.User](
+		createSession: connect.NewClient[CreateSessionRequest, CreateSessionResponse](
 			httpClient,
-			baseURL+AuthServiceGetAuthStatusProcedure,
-			connect.WithSchema(authServiceMethods.ByName("GetAuthStatus")),
-			connect.WithClientOptions(opts...),
-		),
-		signIn: connect.NewClient[SignInRequest, model.User](
-			httpClient,
-			baseURL+AuthServiceSignInProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SignIn")),
-			connect.WithClientOptions(opts...),
-		),
-		signUp: connect.NewClient[SignUpRequest, model.User](
-			httpClient,
-			baseURL+AuthServiceSignUpProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SignUp")),
-			connect.WithClientOptions(opts...),
-		),
-		signOut: connect.NewClient[SignOutRequest, emptypb.Empty](
-			httpClient,
-			baseURL+AuthServiceSignOutProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SignOut")),
+			baseURL+AuthServiceCreateSessionProcedure,
+			connect.WithSchema(authServiceMethods.ByName("CreateSession")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -97,42 +66,19 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	getAuthStatus *connect.Client[GetAuthStatusRequest, model.User]
-	signIn        *connect.Client[SignInRequest, model.User]
-	signUp        *connect.Client[SignUpRequest, model.User]
-	signOut       *connect.Client[SignOutRequest, emptypb.Empty]
+	createSession *connect.Client[CreateSessionRequest, CreateSessionResponse]
 }
 
-// GetAuthStatus calls api.v2.AuthService.GetAuthStatus.
-func (c *authServiceClient) GetAuthStatus(ctx context.Context, req *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error) {
-	return c.getAuthStatus.CallUnary(ctx, req)
-}
-
-// SignIn calls api.v2.AuthService.SignIn.
-func (c *authServiceClient) SignIn(ctx context.Context, req *connect.Request[SignInRequest]) (*connect.Response[model.User], error) {
-	return c.signIn.CallUnary(ctx, req)
-}
-
-// SignUp calls api.v2.AuthService.SignUp.
-func (c *authServiceClient) SignUp(ctx context.Context, req *connect.Request[SignUpRequest]) (*connect.Response[model.User], error) {
-	return c.signUp.CallUnary(ctx, req)
-}
-
-// SignOut calls api.v2.AuthService.SignOut.
-func (c *authServiceClient) SignOut(ctx context.Context, req *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error) {
-	return c.signOut.CallUnary(ctx, req)
+// CreateSession calls api.v2.AuthService.CreateSession.
+func (c *authServiceClient) CreateSession(ctx context.Context, req *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error) {
+	return c.createSession.CallUnary(ctx, req)
 }
 
 // AuthServiceHandler is an implementation of the api.v2.AuthService service.
 type AuthServiceHandler interface {
-	// GetAuthStatus returns the current auth status of the user.
-	GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error)
-	// SignIn signs in the user with the given username and password.
-	SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error)
-	// SignUp signs up the user with the given username and password.
-	SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error)
-	// SignOut signs out the user.
-	SignOut(context.Context, *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error)
+	// CreateSession authenticates a user and creates a new session.
+	// Returns the authenticated user information upon successful authentication.
+	CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -142,40 +88,16 @@ type AuthServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	authServiceMethods := File_api_v2_auth_proto.Services().ByName("AuthService").Methods()
-	authServiceGetAuthStatusHandler := connect.NewUnaryHandler(
-		AuthServiceGetAuthStatusProcedure,
-		svc.GetAuthStatus,
-		connect.WithSchema(authServiceMethods.ByName("GetAuthStatus")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceSignInHandler := connect.NewUnaryHandler(
-		AuthServiceSignInProcedure,
-		svc.SignIn,
-		connect.WithSchema(authServiceMethods.ByName("SignIn")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceSignUpHandler := connect.NewUnaryHandler(
-		AuthServiceSignUpProcedure,
-		svc.SignUp,
-		connect.WithSchema(authServiceMethods.ByName("SignUp")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceSignOutHandler := connect.NewUnaryHandler(
-		AuthServiceSignOutProcedure,
-		svc.SignOut,
-		connect.WithSchema(authServiceMethods.ByName("SignOut")),
+	authServiceCreateSessionHandler := connect.NewUnaryHandler(
+		AuthServiceCreateSessionProcedure,
+		svc.CreateSession,
+		connect.WithSchema(authServiceMethods.ByName("CreateSession")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v2.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case AuthServiceGetAuthStatusProcedure:
-			authServiceGetAuthStatusHandler.ServeHTTP(w, r)
-		case AuthServiceSignInProcedure:
-			authServiceSignInHandler.ServeHTTP(w, r)
-		case AuthServiceSignUpProcedure:
-			authServiceSignUpHandler.ServeHTTP(w, r)
-		case AuthServiceSignOutProcedure:
-			authServiceSignOutHandler.ServeHTTP(w, r)
+		case AuthServiceCreateSessionProcedure:
+			authServiceCreateSessionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -185,18 +107,6 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 // UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAuthServiceHandler struct{}
 
-func (UnimplementedAuthServiceHandler) GetAuthStatus(context.Context, *connect.Request[GetAuthStatusRequest]) (*connect.Response[model.User], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.GetAuthStatus is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) SignIn(context.Context, *connect.Request[SignInRequest]) (*connect.Response[model.User], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.SignIn is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) SignUp(context.Context, *connect.Request[SignUpRequest]) (*connect.Response[model.User], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.SignUp is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) SignOut(context.Context, *connect.Request[SignOutRequest]) (*connect.Response[emptypb.Empty], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.SignOut is not implemented"))
+func (UnimplementedAuthServiceHandler) CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.CreateSession is not implemented"))
 }

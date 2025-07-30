@@ -7,9 +7,9 @@ import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2
 import { file_google_api_annotations } from "../../google/api/annotations_pb";
 import { file_google_api_client } from "../../google/api/client_pb";
 import { file_google_api_field_behavior } from "../../google/api/field_behavior_pb";
-import type { EmptySchema } from "@bufbuild/protobuf/wkt";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { User, UserSchema } from "../../model/user_pb";
+import type { User } from "../../model/user_pb";
 import { file_model_user } from "../../model/user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -17,7 +17,138 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/auth.proto.
  */
 export const file_api_v2_auth: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvYXV0aC5wcm90bxIGYXBpLnYyIkkKDVNpZ25JblJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkSFAoMbmV2ZXJfZXhwaXJlGAMgASgIIjMKDVNpZ25VcFJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkiEAoOU2lnbk91dFJlcXVlc3QiFgoUR2V0QXV0aFN0YXR1c1JlcXVlc3QiMgoVR2V0QXV0aFN0YXR1c1Jlc3BvbnNlEhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyMugBCgtBdXRoU2VydmljZRI8Cg1HZXRBdXRoU3RhdHVzEhwuYXBpLnYyLkdldEF1dGhTdGF0dXNSZXF1ZXN0GgsubW9kZWwuVXNlciIAEi4KBlNpZ25JbhIVLmFwaS52Mi5TaWduSW5SZXF1ZXN0GgsubW9kZWwuVXNlciIAEi4KBlNpZ25VcBIVLmFwaS52Mi5TaWduVXBSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjsKB1NpZ25PdXQSFi5hcGkudjIuU2lnbk91dFJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_api_annotations, file_google_api_client, file_google_api_field_behavior, file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
+  fileDesc("ChFhcGkvdjIvYXV0aC5wcm90bxIGYXBpLnYyIsACChRDcmVhdGVTZXNzaW9uUmVxdWVzdBJQChRwYXNzd29yZF9jcmVkZW50aWFscxgBIAEoCzIwLmFwaS52Mi5DcmVhdGVTZXNzaW9uUmVxdWVzdC5QYXNzd29yZENyZWRlbnRpYWxzSAASRgoPc3NvX2NyZWRlbnRpYWxzGAIgASgLMisuYXBpLnYyLkNyZWF0ZVNlc3Npb25SZXF1ZXN0LlNTT0NyZWRlbnRpYWxzSAAaOQoTUGFzc3dvcmRDcmVkZW50aWFscxIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd29yZBgCIAEoCRpECg5TU09DcmVkZW50aWFscxIOCgZpZHBfaWQYASABKAUSDAoEY29kZRgCIAEoCRIUCgxyZWRpcmVjdF91cmkYAyABKAlCDQoLY3JlZGVudGlhbHMiaAoVQ3JlYXRlU2Vzc2lvblJlc3BvbnNlEhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEjQKEGxhc3RfYWNjZXNzZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIkkKDVNpZ25JblJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkSFAoMbmV2ZXJfZXhwaXJlGAMgASgIIjMKDVNpZ25VcFJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkiEAoOU2lnbk91dFJlcXVlc3QiFgoUR2V0QXV0aFN0YXR1c1JlcXVlc3QiMgoVR2V0QXV0aFN0YXR1c1Jlc3BvbnNlEhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyMl0KC0F1dGhTZXJ2aWNlEk4KDUNyZWF0ZVNlc3Npb24SHC5hcGkudjIuQ3JlYXRlU2Vzc2lvblJlcXVlc3QaHS5hcGkudjIuQ3JlYXRlU2Vzc2lvblJlc3BvbnNlIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_api_annotations, file_google_api_client, file_google_api_field_behavior, file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
+
+/**
+ * @generated from message api.v2.CreateSessionRequest
+ */
+export type CreateSessionRequest = Message<"api.v2.CreateSessionRequest"> & {
+  /**
+   * Provide one authentication method (username/password or SSO).
+   * Required field to specify the authentication method.
+   *
+   * @generated from oneof api.v2.CreateSessionRequest.credentials
+   */
+  credentials: {
+    /**
+     * Username and password authentication method.
+     *
+     * @generated from field: api.v2.CreateSessionRequest.PasswordCredentials password_credentials = 1;
+     */
+    value: CreateSessionRequest_PasswordCredentials;
+    case: "passwordCredentials";
+  } | {
+    /**
+     * SSO provider authentication method.
+     *
+     * @generated from field: api.v2.CreateSessionRequest.SSOCredentials sso_credentials = 2;
+     */
+    value: CreateSessionRequest_SSOCredentials;
+    case: "ssoCredentials";
+  } | { case: undefined; value?: undefined };
+};
+
+/**
+ * Describes the message api.v2.CreateSessionRequest.
+ * Use `create(CreateSessionRequestSchema)` to create a new message.
+ */
+export const CreateSessionRequestSchema: GenMessage<CreateSessionRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_auth, 0);
+
+/**
+ * Nested message for password-based authentication credentials.
+ *
+ * @generated from message api.v2.CreateSessionRequest.PasswordCredentials
+ */
+export type CreateSessionRequest_PasswordCredentials = Message<"api.v2.CreateSessionRequest.PasswordCredentials"> & {
+  /**
+   * The username to sign in with.
+   * Required field for password-based authentication.
+   *
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * The password to sign in with.
+   * Required field for password-based authentication.
+   *
+   * @generated from field: string password = 2;
+   */
+  password: string;
+};
+
+/**
+ * Describes the message api.v2.CreateSessionRequest.PasswordCredentials.
+ * Use `create(CreateSessionRequest_PasswordCredentialsSchema)` to create a new message.
+ */
+export const CreateSessionRequest_PasswordCredentialsSchema: GenMessage<CreateSessionRequest_PasswordCredentials> = /*@__PURE__*/
+  messageDesc(file_api_v2_auth, 0, 0);
+
+/**
+ * Nested message for SSO authentication credentials.
+ *
+ * @generated from message api.v2.CreateSessionRequest.SSOCredentials
+ */
+export type CreateSessionRequest_SSOCredentials = Message<"api.v2.CreateSessionRequest.SSOCredentials"> & {
+  /**
+   * The ID of the SSO provider.
+   * Required field to identify the SSO provider.
+   *
+   * @generated from field: int32 idp_id = 1;
+   */
+  idpId: number;
+
+  /**
+   * The authorization code from the SSO provider.
+   * Required field for completing the SSO flow.
+   *
+   * @generated from field: string code = 2;
+   */
+  code: string;
+
+  /**
+   * The redirect URI used in the SSO flow.
+   * Required field for security validation.
+   *
+   * @generated from field: string redirect_uri = 3;
+   */
+  redirectUri: string;
+};
+
+/**
+ * Describes the message api.v2.CreateSessionRequest.SSOCredentials.
+ * Use `create(CreateSessionRequest_SSOCredentialsSchema)` to create a new message.
+ */
+export const CreateSessionRequest_SSOCredentialsSchema: GenMessage<CreateSessionRequest_SSOCredentials> = /*@__PURE__*/
+  messageDesc(file_api_v2_auth, 0, 1);
+
+/**
+ * @generated from message api.v2.CreateSessionResponse
+ */
+export type CreateSessionResponse = Message<"api.v2.CreateSessionResponse"> & {
+  /**
+   * The authenticated user information.
+   *
+   * @generated from field: model.User user = 1;
+   */
+  user?: User;
+
+  /**
+   * Last time the session was accessed.
+   * Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+   *
+   * @generated from field: google.protobuf.Timestamp last_accessed_at = 2;
+   */
+  lastAccessedAt?: Timestamp;
+};
+
+/**
+ * Describes the message api.v2.CreateSessionResponse.
+ * Use `create(CreateSessionResponseSchema)` to create a new message.
+ */
+export const CreateSessionResponseSchema: GenMessage<CreateSessionResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_auth, 1);
 
 /**
  * @generated from message api.v2.SignInRequest
@@ -50,7 +181,7 @@ export type SignInRequest = Message<"api.v2.SignInRequest"> & {
  * Use `create(SignInRequestSchema)` to create a new message.
  */
 export const SignInRequestSchema: GenMessage<SignInRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_auth, 0);
+  messageDesc(file_api_v2_auth, 2);
 
 /**
  * @generated from message api.v2.SignUpRequest
@@ -76,7 +207,7 @@ export type SignUpRequest = Message<"api.v2.SignUpRequest"> & {
  * Use `create(SignUpRequestSchema)` to create a new message.
  */
 export const SignUpRequestSchema: GenMessage<SignUpRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_auth, 1);
+  messageDesc(file_api_v2_auth, 3);
 
 /**
  * @generated from message api.v2.SignOutRequest
@@ -89,7 +220,7 @@ export type SignOutRequest = Message<"api.v2.SignOutRequest"> & {
  * Use `create(SignOutRequestSchema)` to create a new message.
  */
 export const SignOutRequestSchema: GenMessage<SignOutRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_auth, 2);
+  messageDesc(file_api_v2_auth, 4);
 
 /**
  * @generated from message api.v2.GetAuthStatusRequest
@@ -102,7 +233,7 @@ export type GetAuthStatusRequest = Message<"api.v2.GetAuthStatusRequest"> & {
  * Use `create(GetAuthStatusRequestSchema)` to create a new message.
  */
 export const GetAuthStatusRequestSchema: GenMessage<GetAuthStatusRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_auth, 3);
+  messageDesc(file_api_v2_auth, 5);
 
 /**
  * @generated from message api.v2.GetAuthStatusResponse
@@ -119,51 +250,22 @@ export type GetAuthStatusResponse = Message<"api.v2.GetAuthStatusResponse"> & {
  * Use `create(GetAuthStatusResponseSchema)` to create a new message.
  */
 export const GetAuthStatusResponseSchema: GenMessage<GetAuthStatusResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_auth, 4);
+  messageDesc(file_api_v2_auth, 6);
 
 /**
  * @generated from service api.v2.AuthService
  */
 export const AuthService: GenService<{
   /**
-   * GetAuthStatus returns the current auth status of the user.
+   * CreateSession authenticates a user and creates a new session.
+   * Returns the authenticated user information upon successful authentication.
    *
-   * @generated from rpc api.v2.AuthService.GetAuthStatus
+   * @generated from rpc api.v2.AuthService.CreateSession
    */
-  getAuthStatus: {
+  createSession: {
     methodKind: "unary";
-    input: typeof GetAuthStatusRequestSchema;
-    output: typeof UserSchema;
-  },
-  /**
-   * SignIn signs in the user with the given username and password.
-   *
-   * @generated from rpc api.v2.AuthService.SignIn
-   */
-  signIn: {
-    methodKind: "unary";
-    input: typeof SignInRequestSchema;
-    output: typeof UserSchema;
-  },
-  /**
-   * SignUp signs up the user with the given username and password.
-   *
-   * @generated from rpc api.v2.AuthService.SignUp
-   */
-  signUp: {
-    methodKind: "unary";
-    input: typeof SignUpRequestSchema;
-    output: typeof UserSchema;
-  },
-  /**
-   * SignOut signs out the user.
-   *
-   * @generated from rpc api.v2.AuthService.SignOut
-   */
-  signOut: {
-    methodKind: "unary";
-    input: typeof SignOutRequestSchema;
-    output: typeof EmptySchema;
+    input: typeof CreateSessionRequestSchema;
+    output: typeof CreateSessionResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_auth, 0);
