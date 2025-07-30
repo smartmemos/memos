@@ -2,7 +2,7 @@ import type { Interceptor, StreamResponse, UnaryResponse } from '@connectrpc/con
 import { Code, ConnectError, createClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-web';
 import type { DescMessage } from '@bufbuild/protobuf';
-import { AuthService } from './types/proto2/api/v1/auth_pb';
+import { AuthService } from './types/proto2/api/v2/auth_pb';
 
 // const grpcServiceUrl = import.meta.env.VITE_PUBLIC_GRPC_SERVICE_URL || '/grpc';
 const grpcServiceUrl = 'http://localhost:8888';

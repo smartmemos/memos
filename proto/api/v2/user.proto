@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/user.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service UserService {
+  // CreateUser creates a new user.
+  rpc CreateUser(CreateUserRequest) returns (model.User) {}
+}
+
+
+message CreateUserRequest {
+    // Required. The user to create.
+    model.User user = 1;
+  }

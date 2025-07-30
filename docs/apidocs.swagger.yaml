@@ -4,6 +4,7 @@ info:
   version: version not set
 tags:
   - name: AuthService
+  - name: UserService
 consumes:
   - application/json
 produces:

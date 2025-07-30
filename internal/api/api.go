@@ -9,5 +9,5 @@ import (
 func Init(i do.Injector) {
 	// api v2
 	do.Provide(i, apiv2.NewAuthService)
-
+	do.Provide(i, apiv2.NewUserService)
 }

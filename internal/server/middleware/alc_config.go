@@ -8,6 +8,7 @@ var authenticationAllowlistMethods = map[string]bool{
 	"/api.v1.WorkspaceService/ListIdentityProviders": true,
 	"/api.v1.AuthService/SignOut":                    true,
 	"/api.v1.AuthService/SignUp":                     true,
+	"/api.v2.UserService/CreateUser":                 true,
 }
 
 // isUnauthorizeAllowedMethod returns whether the method is exempted from authentication.
@@ -16,7 +17,7 @@ func isUnauthorizeAllowedMethod(fullMethodName string) bool {
 }
 
 var allowedMethodsOnlyForAdmin = map[string]bool{
-	"/api.v1.UserService/CreateUser": true,
+	"/api.v2.UserService/CreateUser": true,
 }
 
 // isOnlyForAdminAllowedMethod returns true if the method is allowed to be called only by admin.
