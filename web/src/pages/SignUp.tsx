@@ -7,12 +7,13 @@ import { Link } from "react-router-dom";
 import AuthFooter from "@/components/AuthFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { authServiceClient, userServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpcweb";
+import { userServiceClient } from "@/grpc";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { workspaceStore } from "@/store";
 import { initialUserStore } from "@/store/user";
-import { User, User_Role } from "@/types/proto/api/v1/user_service";
+import { User, User_Role } from "@/types/proto2/model/user_pb";
 import { useTranslate } from "@/utils/i18n";
 
 const SignUp = observer(() => {
@@ -49,11 +50,11 @@ const SignUp = observer(() => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const user = User.fromPartial({
+      const user: User = {
         username,
         password,
         role: User_Role.USER,
-      });
+      };
       await userServiceClient.createUser({ user });
       await authServiceClient.createSession({
         passwordCredentials: { username, password },
