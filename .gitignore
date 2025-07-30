@@ -30,3 +30,4 @@ dist/
 /.idea
 /memos
 __debug_bin*
+/deployments/data
