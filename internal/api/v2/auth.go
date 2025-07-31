@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
@@ -49,6 +50,15 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 		User:           convertUserToProto(user),
 		LastAccessedAt: timestamppb.New(session.CreatedAt),
 	})
+	cookie := &http.Cookie{
+		Name:     "memos.access-token",
+		Value:    "abc123",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
+	}
+	resp.Header().Set("Set-Cookie", cookie.String())
 	return
 }
 
