@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data:/var/opt/memos
     environment:
-      - MEMOS_MODE=prod
+      - MEMOS_MODE=dev
       - MEMOS_PORT=5230
       - MEMOS_DRIVER=${MEMOS_DRIVER}
       - MEMOS_DSN=${MEMOS_DSN}
