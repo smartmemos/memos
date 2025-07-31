@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { authServiceClient } from "@/grpcweb";
+import { authServiceClient } from "@/grpc";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { workspaceStore } from "@/store";
@@ -46,7 +46,10 @@ const PasswordSignInForm = observer(() => {
     try {
       actionBtnLoadingState.setLoading();
       await authServiceClient.createSession({
-        passwordCredentials: { username, password },
+        credentials: {
+          case: "passwordCredentials",
+          value: { username, password },
+        },
       });
       await initialUserStore();
       navigateTo("/");

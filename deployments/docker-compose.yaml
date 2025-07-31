@@ -11,3 +11,5 @@ services:
     environment:
       - MEMOS_MODE=prod
       - MEMOS_PORT=5230
+      - MEMOS_DRIVER=${MEMOS_DRIVER}
+      - MEMOS_DSN=${MEMOS_DSN}

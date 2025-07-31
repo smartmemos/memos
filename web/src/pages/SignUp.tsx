@@ -1,3 +1,4 @@
+import { create } from "@bufbuild/protobuf";
 import { LoaderIcon } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { ClientError } from "nice-grpc-web";
@@ -13,7 +14,8 @@ import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { workspaceStore } from "@/store";
 import { initialUserStore } from "@/store/user";
-import { User, User_Role } from "@/types/proto2/model/user_pb";
+import { CreateUserRequestSchema } from "@/types/proto2/api/v2/user_pb";
+import { User_Role, UserSchema } from "@/types/proto2/model/user_pb";
 import { useTranslate } from "@/utils/i18n";
 
 const SignUp = observer(() => {
@@ -50,12 +52,12 @@ const SignUp = observer(() => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const user: User = {
+      const user = create(UserSchema, {
         username,
         password,
         role: User_Role.USER,
-      };
-      await userServiceClient.createUser({ user });
+      });
+      await userServiceClient.createUser(create(CreateUserRequestSchema, { user }));
       await authServiceClient.createSession({
         passwordCredentials: { username, password },
       });
