@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/user.proto";
+import "model/memo.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service MemoService {
+  // CreateMemo creates a memo.
+  rpc CreateMemo(CreateMemoRequest) returns (model.Memo) {}
+
+}
+
+message CreateMemoRequest {
+  // Required. The memo to create.
+  model.Memo memo = 1;
+
+  // Optional. The memo ID to use for this memo.
+  // If empty, a unique ID will be generated.
+  string memo_id = 2;
+
+  // Optional. If set, validate the request but don't actually create the memo.
+  bool validate_only = 3;
+
+  // Optional. An idempotency token.
+  string request_id = 4;
+}

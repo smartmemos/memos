@@ -4,6 +4,7 @@ info:
   version: version not set
 tags:
   - name: AuthService
+  - name: MemoService
   - name: UserService
 consumes:
   - application/json
@@ -45,6 +46,34 @@ definitions:
           The redirect URI used in the SSO flow.
           Required field for security validation.
     description: Nested message for SSO authentication credentials.
+  ListNodeKind:
+    type: string
+    enum:
+      - KIND_UNSPECIFIED
+      - ORDERED
+      - UNORDERED
+      - DESCRIPTION
+    default: KIND_UNSPECIFIED
+  MemoProperty:
+    type: object
+    properties:
+      hasLink:
+        type: boolean
+      hasTaskList:
+        type: boolean
+      hasCode:
+        type: boolean
+      hasIncompleteTasks:
+        type: boolean
+    description: Computed properties of a memo.
+  TableNodeRow:
+    type: object
+    properties:
+      cells:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
   UserRole:
     type: string
     enum:
@@ -69,6 +98,486 @@ definitions:
         type: integer
         format: int32
     description: Memo type statistics.
+  modelAttachment:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The name of the attachment.
+          Format: attachments/{attachment}
+      createTime:
+        type: string
+        format: date-time
+        description: Output only. The creation timestamp.
+        readOnly: true
+      filename:
+        type: string
+        description: The filename of the attachment.
+      content:
+        type: string
+        format: byte
+        description: Input only. The content of the attachment.
+      externalLink:
+        type: string
+        description: Optional. The external link of the attachment.
+      type:
+        type: string
+        description: The MIME type of the attachment.
+      size:
+        type: string
+        format: int64
+        description: Output only. The size of the attachment in bytes.
+        readOnly: true
+      memo:
+        type: string
+        title: |-
+          Optional. The related memo. Refer to `Memo.name`.
+          Format: memos/{memo}
+  modelAutoLinkNode:
+    type: object
+    properties:
+      url:
+        type: string
+      isRawText:
+        type: boolean
+  modelBlockquoteNode:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelBoldItalicNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      content:
+        type: string
+  modelBoldNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelCodeBlockNode:
+    type: object
+    properties:
+      language:
+        type: string
+      content:
+        type: string
+  modelCodeNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelEmbeddedContentNode:
+    type: object
+    properties:
+      resourceName:
+        type: string
+        description: The resource name of the embedded content.
+      params:
+        type: string
+        description: Additional parameters for the embedded content.
+  modelEscapingCharacterNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+  modelHTMLElementNode:
+    type: object
+    properties:
+      tagName:
+        type: string
+      attributes:
+        type: object
+        additionalProperties:
+          type: string
+  modelHeadingNode:
+    type: object
+    properties:
+      level:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelHighlightNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelHorizontalRuleNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+  modelImageNode:
+    type: object
+    properties:
+      altText:
+        type: string
+      url:
+        type: string
+  modelItalicNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelLineBreakNode:
+    type: object
+  modelLinkNode:
+    type: object
+    properties:
+      content:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+      url:
+        type: string
+  modelListNode:
+    type: object
+    properties:
+      kind:
+        $ref: '#/definitions/ListNodeKind'
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelLocation:
+    type: object
+    properties:
+      placeholder:
+        type: string
+        description: A placeholder text for the location.
+      latitude:
+        type: number
+        format: double
+        description: The latitude of the location.
+      longitude:
+        type: number
+        format: double
+        description: The longitude of the location.
+  modelMathBlockNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelMathNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelMemo:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |-
+          The resource name of the memo.
+          Format: memos/{memo}, memo is the user defined id or uuid.
+      state:
+        $ref: '#/definitions/modelState'
+        description: The state of the memo.
+      creator:
+        type: string
+        title: |-
+          The name of the creator.
+          Format: users/{user}
+      createTime:
+        type: string
+        format: date-time
+        description: Output only. The creation timestamp.
+        readOnly: true
+      updateTime:
+        type: string
+        format: date-time
+        description: Output only. The last update timestamp.
+        readOnly: true
+      displayTime:
+        type: string
+        format: date-time
+        description: The display timestamp of the memo.
+      content:
+        type: string
+        description: Required. The content of the memo in Markdown format.
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+        description: Output only. The parsed nodes from the content.
+        readOnly: true
+      visibility:
+        $ref: '#/definitions/modelVisibility'
+        description: The visibility of the memo.
+      tags:
+        type: array
+        items:
+          type: string
+        description: Output only. The tags extracted from the content.
+        readOnly: true
+      pinned:
+        type: boolean
+        description: Whether the memo is pinned.
+      attachments:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelAttachment'
+        description: Optional. The attachments of the memo.
+      relations:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelMemoRelation'
+        description: Optional. The relations of the memo.
+      reactions:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelReaction'
+        description: Output only. The reactions to the memo.
+        readOnly: true
+      property:
+        $ref: '#/definitions/MemoProperty'
+        description: Output only. The computed properties of the memo.
+        readOnly: true
+      parent:
+        type: string
+        title: |-
+          Output only. The name of the parent memo.
+          Format: memos/{memo}
+        readOnly: true
+      snippet:
+        type: string
+        description: Output only. The snippet of the memo content. Plain text only.
+        readOnly: true
+      location:
+        $ref: '#/definitions/modelLocation'
+        description: Optional. The location of the memo.
+  modelMemoRelation:
+    type: object
+    properties:
+      memo:
+        $ref: '#/definitions/modelMemoRelationMemo'
+        description: The memo in the relation.
+      relatedMemo:
+        $ref: '#/definitions/modelMemoRelationMemo'
+        description: The related memo.
+      type:
+        $ref: '#/definitions/modelMemoRelationType'
+  modelMemoRelationMemo:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the memo.
+          Format: memos/{memo}
+      snippet:
+        type: string
+        description: Output only. The snippet of the memo content. Plain text only.
+        readOnly: true
+    description: Memo reference in relations.
+  modelMemoRelationType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - REFERENCE
+      - COMMENT
+    default: TYPE_UNSPECIFIED
+    description: The type of the relation.
+  modelNode:
+    type: object
+    properties:
+      type:
+        $ref: '#/definitions/modelNodeType'
+      lineBreakNode:
+        $ref: '#/definitions/modelLineBreakNode'
+        description: Block nodes.
+      paragraphNode:
+        $ref: '#/definitions/modelParagraphNode'
+      codeBlockNode:
+        $ref: '#/definitions/modelCodeBlockNode'
+      headingNode:
+        $ref: '#/definitions/modelHeadingNode'
+      horizontalRuleNode:
+        $ref: '#/definitions/modelHorizontalRuleNode'
+      blockquoteNode:
+        $ref: '#/definitions/modelBlockquoteNode'
+      listNode:
+        $ref: '#/definitions/modelListNode'
+      orderedListItemNode:
+        $ref: '#/definitions/modelOrderedListItemNode'
+      unorderedListItemNode:
+        $ref: '#/definitions/modelUnorderedListItemNode'
+      taskListItemNode:
+        $ref: '#/definitions/modelTaskListItemNode'
+      mathBlockNode:
+        $ref: '#/definitions/modelMathBlockNode'
+      tableNode:
+        $ref: '#/definitions/modelTableNode'
+      embeddedContentNode:
+        $ref: '#/definitions/modelEmbeddedContentNode'
+      textNode:
+        $ref: '#/definitions/modelTextNode'
+        description: Inline nodes.
+      boldNode:
+        $ref: '#/definitions/modelBoldNode'
+      italicNode:
+        $ref: '#/definitions/modelItalicNode'
+      boldItalicNode:
+        $ref: '#/definitions/modelBoldItalicNode'
+      codeNode:
+        $ref: '#/definitions/modelCodeNode'
+      imageNode:
+        $ref: '#/definitions/modelImageNode'
+      linkNode:
+        $ref: '#/definitions/modelLinkNode'
+      autoLinkNode:
+        $ref: '#/definitions/modelAutoLinkNode'
+      tagNode:
+        $ref: '#/definitions/modelTagNode'
+      strikethroughNode:
+        $ref: '#/definitions/modelStrikethroughNode'
+      escapingCharacterNode:
+        $ref: '#/definitions/modelEscapingCharacterNode'
+      mathNode:
+        $ref: '#/definitions/modelMathNode'
+      highlightNode:
+        $ref: '#/definitions/modelHighlightNode'
+      subscriptNode:
+        $ref: '#/definitions/modelSubscriptNode'
+      superscriptNode:
+        $ref: '#/definitions/modelSuperscriptNode'
+      referencedContentNode:
+        $ref: '#/definitions/modelReferencedContentNode'
+      spoilerNode:
+        $ref: '#/definitions/modelSpoilerNode'
+      htmlElementNode:
+        $ref: '#/definitions/modelHTMLElementNode'
+  modelNodeType:
+    type: string
+    enum:
+      - NODE_UNSPECIFIED
+      - LINE_BREAK
+      - PARAGRAPH
+      - CODE_BLOCK
+      - HEADING
+      - HORIZONTAL_RULE
+      - BLOCKQUOTE
+      - LIST
+      - ORDERED_LIST_ITEM
+      - UNORDERED_LIST_ITEM
+      - TASK_LIST_ITEM
+      - MATH_BLOCK
+      - TABLE
+      - EMBEDDED_CONTENT
+      - TEXT
+      - BOLD
+      - ITALIC
+      - BOLD_ITALIC
+      - CODE
+      - IMAGE
+      - LINK
+      - AUTO_LINK
+      - TAG
+      - STRIKETHROUGH
+      - ESCAPING_CHARACTER
+      - MATH
+      - HIGHLIGHT
+      - SUBSCRIPT
+      - SUPERSCRIPT
+      - REFERENCED_CONTENT
+      - SPOILER
+      - HTML_ELEMENT
+    default: NODE_UNSPECIFIED
+    description: |2-
+       - LINE_BREAK: Block nodes.
+       - TEXT: Inline nodes.
+  modelOrderedListItemNode:
+    type: object
+    properties:
+      number:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelParagraphNode:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelReaction:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the reaction.
+          Format: reactions/{reaction}
+      creator:
+        type: string
+        title: |-
+          The resource name of the creator.
+          Format: users/{user}
+      contentId:
+        type: string
+        title: |-
+          The resource name of the content.
+          For memo reactions, this should be the memo's resource name.
+          Format: memos/{memo}
+      reactionType:
+        type: string
+        description: "Required. The type of reaction (e.g., \"\U0001F44D\", \"❤️\", \"\U0001F604\")."
+      createTime:
+        type: string
+        format: date-time
+        description: Output only. The creation timestamp.
+        readOnly: true
+  modelReferencedContentNode:
+    type: object
+    properties:
+      resourceName:
+        type: string
+        description: The resource name of the referenced content.
+      params:
+        type: string
+        description: Additional parameters for the referenced content.
+  modelSpoilerNode:
+    type: object
+    properties:
+      content:
+        type: string
   modelState:
     type: string
     enum:
@@ -76,6 +585,76 @@ definitions:
       - NORMAL
       - ARCHIVED
     default: STATE_UNSPECIFIED
+  modelStrikethroughNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelSubscriptNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelSuperscriptNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelTableNode:
+    type: object
+    properties:
+      header:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+      delimiter:
+        type: array
+        items:
+          type: string
+      rows:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/TableNodeRow'
+  modelTagNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelTaskListItemNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      complete:
+        type: boolean
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+  modelTextNode:
+    type: object
+    properties:
+      content:
+        type: string
+  modelUnorderedListItemNode:
+    type: object
+    properties:
+      symbol:
+        type: string
+      indent:
+        type: integer
+        format: int32
+      children:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
   modelUser:
     type: object
     properties:
@@ -106,6 +685,14 @@ definitions:
       updateAt:
         type: string
         format: date-time
+  modelVisibility:
+    type: string
+    enum:
+      - VISIBILITY_UNSPECIFIED
+      - PRIVATE
+      - PROTECTED
+      - PUBLIC
+    default: VISIBILITY_UNSPECIFIED
   protobufAny:
     type: object
     properties:

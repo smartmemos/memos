@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "model/common.proto";
+import "model/markdown.proto";
+import "model/reaction.proto";
+import "model/memo_relation.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+
+message Memo {
+  // The resource name of the memo.
+  // Format: memos/{memo}, memo is the user defined id or uuid.
+  string name = 1;
+
+  // The state of the memo.
+  State state = 2;
+
+  // The name of the creator.
+  // Format: users/{user}
+  string creator = 3;
+
+  // Output only. The creation timestamp.
+  google.protobuf.Timestamp create_time = 4;
+
+  // Output only. The last update timestamp.
+  google.protobuf.Timestamp update_time = 5;
+
+  // The display timestamp of the memo.
+  google.protobuf.Timestamp display_time = 6;
+
+  // Required. The content of the memo in Markdown format.
+  string content = 7;
+
+  // Output only. The parsed nodes from the content.
+  repeated model.Node nodes = 8;
+
+  // The visibility of the memo.
+  Visibility visibility = 9;
+
+  // Output only. The tags extracted from the content.
+  repeated string tags = 10;
+
+  // Whether the memo is pinned.
+  bool pinned = 11;
+
+  // Optional. The attachments of the memo.
+  repeated Attachment attachments = 12;
+
+  // Optional. The relations of the memo.
+  repeated model.MemoRelation relations = 13;
+
+  // Output only. The reactions to the memo.
+  repeated model.Reaction reactions = 14;
+
+  // Output only. The computed properties of the memo.
+  Property property = 15;
+
+  // Output only. The name of the parent memo.
+  // Format: memos/{memo}
+  optional string parent = 16;
+
+  // Output only. The snippet of the memo content. Plain text only.
+  string snippet = 17;
+
+  // Optional. The location of the memo.
+  optional Location location = 18;
+
+  // Computed properties of a memo.
+  message Property {
+    bool has_link = 1;
+    bool has_task_list = 2;
+    bool has_code = 3;
+    bool has_incomplete_tasks = 4;
+  }
+}
+
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+  PRIVATE = 1;
+  PROTECTED = 2;
+  PUBLIC = 3;
+}
+
+message Attachment {
+  // The name of the attachment.
+  // Format: attachments/{attachment}
+  string name = 1;
+
+  // Output only. The creation timestamp.
+  google.protobuf.Timestamp create_time = 2;
+
+  // The filename of the attachment.
+  string filename = 3;
+
+  // Input only. The content of the attachment.
+  bytes content = 4;
+
+  // Optional. The external link of the attachment.
+  string external_link = 5;
+
+  // The MIME type of the attachment.
+  string type = 6;
+
+  // Output only. The size of the attachment in bytes.
+  int64 size = 7;
+
+  // Optional. The related memo. Refer to `Memo.name`.
+  // Format: memos/{memo}
+  optional string memo = 8;
+}
+
+message Location {
+  // A placeholder text for the location.
+  string placeholder = 1;
+
+  // The latitude of the location.
+  double latitude = 2;
+
+  // The longitude of the location.
+  double longitude = 3;
+}

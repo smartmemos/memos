@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "model/common.proto";
+import "model/markdown.proto";
+import "model/reaction.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+
+message MemoRelation {
+  // The memo in the relation.
+  Memo memo = 1;
+
+  // The related memo.
+  Memo related_memo = 2;
+
+  // The type of the relation.
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    REFERENCE = 1;
+    COMMENT = 2;
+  }
+  Type type = 3;
+
+  // Memo reference in relations.
+  message Memo {
+    // The resource name of the memo.
+    // Format: memos/{memo}
+    string name = 1;
+
+    // Output only. The snippet of the memo content. Plain text only.
+    string snippet = 2;
+  }
+}

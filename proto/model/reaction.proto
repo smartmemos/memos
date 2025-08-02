@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "model/common.proto";
+import "model/markdown.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+
+message Reaction {
+  // The resource name of the reaction.
+  // Format: reactions/{reaction}
+  string name = 1;
+
+  // The resource name of the creator.
+  // Format: users/{user}
+  string creator = 2;
+
+  // The resource name of the content.
+  // For memo reactions, this should be the memo's resource name.
+  // Format: memos/{memo}
+  string content_id = 3;
+
+  // Required. The type of reaction (e.g., "👍", "❤️", "😄").
+  string reaction_type = 4;
+
+  // Output only. The creation timestamp.
+  google.protobuf.Timestamp create_time = 5;
+}
