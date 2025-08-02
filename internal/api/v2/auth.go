@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
@@ -12,6 +12,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
+	"github.com/smartmemos/memos/internal/pkg/utils"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
@@ -25,6 +26,36 @@ func NewAuthService(i do.Injector) (*AuthService, error) {
 	return &AuthService{
 		memosService: do.MustInvoke[memos.Service](i),
 	}, nil
+}
+
+func (s *AuthService) GetCurrentSession(ctx context.Context, req *connect.Request[v2pb.GetCurrentSessionRequest]) (resp *connect.Response[v2pb.GetCurrentSessionResponse], err error) {
+	info := utils.GetInfo(ctx)
+	if info == nil {
+		// Clear auth cookies
+		// if err := s.clearAuthCookies(ctx); err != nil {
+		// 	return nil, connect.NewError(connect.CodeInternal, errors.New("failed to clear auth cookies"))
+		// }
+		// return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("user not found"))
+	}
+	user, err := s.memosService.GetUserByID(ctx, info.UserID)
+	if err != nil {
+		err = connect.NewError(connect.CodeUnauthenticated, errors.New("failed to get current user"))
+		return
+	}
+
+	var lastAccessedAt *timestamppb.Timestamp
+	if info.SessionID != "" {
+		now := timestamppb.Now()
+		// if err := s.Store.UpdateUserSessionLastAccessed(ctx, user.ID, sessionID, now); err != nil {
+		// 	slog.Error("failed to update session last accessed time", "error", err)
+		// }
+		lastAccessedAt = now
+	}
+
+	return connect.NewResponse(&v2pb.GetCurrentSessionResponse{
+		User:           convertUserToProto(user),
+		LastAccessedAt: lastAccessedAt,
+	}), nil
 }
 
 func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2pb.CreateSessionRequest]) (resp *connect.Response[v2pb.CreateSessionResponse], err error) {
@@ -50,15 +81,11 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 		User:           convertUserToProto(user),
 		LastAccessedAt: timestamppb.New(session.CreatedAt),
 	})
-	cookie := &http.Cookie{
-		Name:     "memos.access-token",
-		Value:    "abc123",
-		Path:     "/",
-		HttpOnly: true,
-		Secure:   true,
-		SameSite: http.SameSiteNoneMode,
+	cookie, err := utils.BuildCookie(ctx, "memos.access-token", "abc123", "", time.Now().Add(time.Hour*24*30))
+	if err != nil {
+		return
 	}
-	resp.Header().Set("Set-Cookie", cookie.String())
+	resp.Header().Set("Set-Cookie", cookie)
 	return
 }
 

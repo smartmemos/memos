@@ -2,53 +2,50 @@ package middleware
 
 import (
 	"context"
-	"errors"
 	"net/http"
+	"strconv"
 
 	"connectrpc.com/authn"
-	"connectrpc.com/connect"
+	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
-	"github.com/sirupsen/logrus"
+	"github.com/smartmemos/memos/internal/memos"
+	"github.com/smartmemos/memos/internal/pkg/utils"
 )
 
 type Auth struct {
-	// authService auth.Service
+	memosService memos.Service
 }
 
 func NewAuth(i do.Injector) *Auth {
 	return &Auth{
-		// authService: do.MustInvoke[auth.Service](i),
+		memosService: do.MustInvoke[memos.Service](i),
 	}
 }
 
 func (a *Auth) Auth(connectHandler http.Handler) http.Handler {
 	middleware := authn.NewMiddleware(a.authenticate)
-	handler := middleware.Wrap(connectHandler)
-	return handler
+	return middleware.Wrap(connectHandler)
 }
 
 func (a *Auth) authenticate(_ context.Context, req *http.Request) (any, error) {
-	token, ok := authn.BearerToken(req)
-	if !ok {
-		if isUnauthorizeAllowedMethod(req.URL.Path) {
-			return nil, nil
+	cookie, err := req.Cookie("memos.access-token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			return nil, err
 		}
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid authorization"))
+		return nil, errors.Wrap(err, "internal server error")
 	}
-	// userId, err := a.authService.Authenticate(req.Context(), token)
-	logrus.Info("token: ", token)
-	userId := 0
-	if !ok {
-		if isUnauthorizeAllowedMethod(req.URL.Path) {
-			return nil, nil
-		}
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid authorization"))
+	userID, err := strconv.ParseInt(cookie.Value, 10, 64)
+	if err != nil {
+		return nil, errors.Wrap(err, "no login")
 	}
-	authn.SetInfo(req.Context(), userId)
+	user, err := a.memosService.GetUserByID(req.Context(), userID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get current user")
+	}
 
-	// if isOnlyForAdminAllowedMethod(req.URL.Path) && user.Role != model.RoleHost && user.Role != model.RoleAdmin {
-	// 	return nil, errors.Errorf("user %d is not admin", user.ID)
-	// }
-
-	return userId, nil
+	return &utils.Info{
+		UserID:    user.ID,
+		SessionID: "",
+	}, nil
 }

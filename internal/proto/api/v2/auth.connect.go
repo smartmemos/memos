@@ -32,6 +32,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// AuthServiceGetCurrentSessionProcedure is the fully-qualified name of the AuthService's
+	// GetCurrentSession RPC.
+	AuthServiceGetCurrentSessionProcedure = "/api.v2.AuthService/GetCurrentSession"
 	// AuthServiceCreateSessionProcedure is the fully-qualified name of the AuthService's CreateSession
 	// RPC.
 	AuthServiceCreateSessionProcedure = "/api.v2.AuthService/CreateSession"
@@ -39,6 +42,8 @@ const (
 
 // AuthServiceClient is a client for the api.v2.AuthService service.
 type AuthServiceClient interface {
+	// GetCurrentSession returns the current session information.
+	GetCurrentSession(context.Context, *connect.Request[GetCurrentSessionRequest]) (*connect.Response[GetCurrentSessionResponse], error)
 	// CreateSession authenticates a user and creates a new session.
 	// Returns the authenticated user information upon successful authentication.
 	CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error)
@@ -55,6 +60,12 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	authServiceMethods := File_api_v2_auth_proto.Services().ByName("AuthService").Methods()
 	return &authServiceClient{
+		getCurrentSession: connect.NewClient[GetCurrentSessionRequest, GetCurrentSessionResponse](
+			httpClient,
+			baseURL+AuthServiceGetCurrentSessionProcedure,
+			connect.WithSchema(authServiceMethods.ByName("GetCurrentSession")),
+			connect.WithClientOptions(opts...),
+		),
 		createSession: connect.NewClient[CreateSessionRequest, CreateSessionResponse](
 			httpClient,
 			baseURL+AuthServiceCreateSessionProcedure,
@@ -66,7 +77,13 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	createSession *connect.Client[CreateSessionRequest, CreateSessionResponse]
+	getCurrentSession *connect.Client[GetCurrentSessionRequest, GetCurrentSessionResponse]
+	createSession     *connect.Client[CreateSessionRequest, CreateSessionResponse]
+}
+
+// GetCurrentSession calls api.v2.AuthService.GetCurrentSession.
+func (c *authServiceClient) GetCurrentSession(ctx context.Context, req *connect.Request[GetCurrentSessionRequest]) (*connect.Response[GetCurrentSessionResponse], error) {
+	return c.getCurrentSession.CallUnary(ctx, req)
 }
 
 // CreateSession calls api.v2.AuthService.CreateSession.
@@ -76,6 +93,8 @@ func (c *authServiceClient) CreateSession(ctx context.Context, req *connect.Requ
 
 // AuthServiceHandler is an implementation of the api.v2.AuthService service.
 type AuthServiceHandler interface {
+	// GetCurrentSession returns the current session information.
+	GetCurrentSession(context.Context, *connect.Request[GetCurrentSessionRequest]) (*connect.Response[GetCurrentSessionResponse], error)
 	// CreateSession authenticates a user and creates a new session.
 	// Returns the authenticated user information upon successful authentication.
 	CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error)
@@ -88,6 +107,12 @@ type AuthServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	authServiceMethods := File_api_v2_auth_proto.Services().ByName("AuthService").Methods()
+	authServiceGetCurrentSessionHandler := connect.NewUnaryHandler(
+		AuthServiceGetCurrentSessionProcedure,
+		svc.GetCurrentSession,
+		connect.WithSchema(authServiceMethods.ByName("GetCurrentSession")),
+		connect.WithHandlerOptions(opts...),
+	)
 	authServiceCreateSessionHandler := connect.NewUnaryHandler(
 		AuthServiceCreateSessionProcedure,
 		svc.CreateSession,
@@ -96,6 +121,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 	)
 	return "/api.v2.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case AuthServiceGetCurrentSessionProcedure:
+			authServiceGetCurrentSessionHandler.ServeHTTP(w, r)
 		case AuthServiceCreateSessionProcedure:
 			authServiceCreateSessionHandler.ServeHTTP(w, r)
 		default:
@@ -106,6 +133,10 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 
 // UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAuthServiceHandler struct{}
+
+func (UnimplementedAuthServiceHandler) GetCurrentSession(context.Context, *connect.Request[GetCurrentSessionRequest]) (*connect.Response[GetCurrentSessionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.GetCurrentSession is not implemented"))
+}
 
 func (UnimplementedAuthServiceHandler) CreateSession(context.Context, *connect.Request[CreateSessionRequest]) (*connect.Response[CreateSessionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.AuthService.CreateSession is not implemented"))
