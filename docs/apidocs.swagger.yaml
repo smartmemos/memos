@@ -121,3 +121,14 @@ definitions:
         description: |-
           Last time the session was accessed.
           Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  v2GetCurrentSessionResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/modelUser'
+      lastAccessedAt:
+        type: string
+        format: date-time
+        description: |-
+          Last time the session was accessed.
+          Used for sliding expiration calculation (last_accessed_time + 2 weeks).

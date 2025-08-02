@@ -11,9 +11,22 @@ package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
 
 service AuthService {
+  // GetCurrentSession returns the current session information.
+  rpc GetCurrentSession(GetCurrentSessionRequest) returns (GetCurrentSessionResponse) {}
+
   // CreateSession authenticates a user and creates a new session.
   // Returns the authenticated user information upon successful authentication.
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse) {}
+}
+
+message GetCurrentSessionRequest {}
+
+message GetCurrentSessionResponse {
+  model.User user = 1;
+
+  // Last time the session was accessed.
+  // Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  google.protobuf.Timestamp last_accessed_at = 2;
 }
 
 message CreateSessionRequest {
