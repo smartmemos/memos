@@ -5,6 +5,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
+	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
@@ -33,5 +34,21 @@ func (s *UserService) CreateUser(ctx context.Context, req *connect.Request[v2pb.
 		return
 	}
 	resp = connect.NewResponse(convertUserToProto(user))
+	return
+}
+
+func (s *UserService) GetUserStats(ctx context.Context, req *connect.Request[v2pb.GetUserStatsRequest]) (resp *connect.Response[v2pb.UserStats], err error) {
+	logrus.Info("req: ", req.Msg)
+	// userID, err := strconv.ParseInt(req.Msg.Name, 10, 64)
+	// if err != nil {
+	// 	return
+	// }
+	// user, err := s.memosService.GetUserByID(ctx, userID)
+	// if err != nil {
+	// 	return
+	// }
+	resp = connect.NewResponse(&v2pb.UserStats{
+		Name: req.Msg.Name,
+	})
 	return
 }

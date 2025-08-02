@@ -2,6 +2,7 @@ import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
 import { authServiceClient } from "@/grpc";
 import { inboxServiceClient, userServiceClient } from "@/grpcweb";
+import { userServiceClient as userServiceClientV2 } from "@/grpc";
 import { Inbox } from "@/types/proto/api/v1/inbox_service";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import {
@@ -245,7 +246,7 @@ const userStore = (() => {
         userStatsByName[userStats.name] = userStats;
       }
     } else {
-      const userStats = await userServiceClient.getUserStats({ name: user });
+      const userStats = await userServiceClientV2.getUserStats({ name: user });
       userStatsByName[user] = userStats;
     }
     state.setPartial({

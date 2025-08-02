@@ -53,6 +53,22 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
+  UserStatsMemoTypeStats:
+    type: object
+    properties:
+      linkCount:
+        type: integer
+        format: int32
+      codeCount:
+        type: integer
+        format: int32
+      todoCount:
+        type: integer
+        format: int32
+      undoCount:
+        type: integer
+        format: int32
+    description: Memo type statistics.
   modelState:
     type: string
     enum:
@@ -132,3 +148,36 @@ definitions:
         description: |-
           Last time the session was accessed.
           Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  v2UserStats:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the user whose stats these are.
+          Format: users/{user}
+      memoDisplayTimestamps:
+        type: array
+        items:
+          type: string
+          format: date-time
+        description: The timestamps when the memos were displayed.
+      memoTypeStats:
+        $ref: '#/definitions/UserStatsMemoTypeStats'
+        description: The stats of memo types.
+      tagCount:
+        type: object
+        additionalProperties:
+          type: integer
+          format: int32
+        description: The count of tags.
+      pinnedMemos:
+        type: array
+        items:
+          type: string
+        description: The pinned memos of the user.
+      totalMemoCount:
+        type: integer
+        format: int32
+        description: Total memo count.
+    title: User statistics messages

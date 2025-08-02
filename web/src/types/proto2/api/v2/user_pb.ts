@@ -4,9 +4,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_google_api_annotations } from "../../google/api/annotations_pb";
-import { file_google_api_client } from "../../google/api/client_pb";
-import { file_google_api_field_behavior } from "../../google/api/field_behavior_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { User, UserSchema } from "../../model/user_pb";
 import { file_model_user } from "../../model/user_pb";
@@ -16,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyMkUKC1VzZXJTZXJ2aWNlEjYKCkNyZWF0ZVVzZXISGS5hcGkudjIuQ3JlYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_api_annotations, file_google_api_client, file_google_api_field_behavior, file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBTKHAQoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABJACgxHZXRVc2VyU3RhdHMSGy5hcGkudjIuR2V0VXNlclN0YXRzUmVxdWVzdBoRLmFwaS52Mi5Vc2VyU3RhdHMiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -38,6 +36,117 @@ export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE_
   messageDesc(file_api_v2_user, 0);
 
 /**
+ * @generated from message api.v2.GetUserStatsRequest
+ */
+export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
+  /**
+   * Required. The resource name of the user.
+   * Format: users/{user}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message api.v2.GetUserStatsRequest.
+ * Use `create(GetUserStatsRequestSchema)` to create a new message.
+ */
+export const GetUserStatsRequestSchema: GenMessage<GetUserStatsRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 1);
+
+/**
+ * User statistics messages
+ *
+ * @generated from message api.v2.UserStats
+ */
+export type UserStats = Message<"api.v2.UserStats"> & {
+  /**
+   * The resource name of the user whose stats these are.
+   * Format: users/{user}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * The timestamps when the memos were displayed.
+   *
+   * @generated from field: repeated google.protobuf.Timestamp memo_display_timestamps = 2;
+   */
+  memoDisplayTimestamps: Timestamp[];
+
+  /**
+   * The stats of memo types.
+   *
+   * @generated from field: api.v2.UserStats.MemoTypeStats memo_type_stats = 3;
+   */
+  memoTypeStats?: UserStats_MemoTypeStats;
+
+  /**
+   * The count of tags.
+   *
+   * @generated from field: map<string, int32> tag_count = 4;
+   */
+  tagCount: { [key: string]: number };
+
+  /**
+   * The pinned memos of the user.
+   *
+   * @generated from field: repeated string pinned_memos = 5;
+   */
+  pinnedMemos: string[];
+
+  /**
+   * Total memo count.
+   *
+   * @generated from field: int32 total_memo_count = 6;
+   */
+  totalMemoCount: number;
+};
+
+/**
+ * Describes the message api.v2.UserStats.
+ * Use `create(UserStatsSchema)` to create a new message.
+ */
+export const UserStatsSchema: GenMessage<UserStats> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 2);
+
+/**
+ * Memo type statistics.
+ *
+ * @generated from message api.v2.UserStats.MemoTypeStats
+ */
+export type UserStats_MemoTypeStats = Message<"api.v2.UserStats.MemoTypeStats"> & {
+  /**
+   * @generated from field: int32 link_count = 1;
+   */
+  linkCount: number;
+
+  /**
+   * @generated from field: int32 code_count = 2;
+   */
+  codeCount: number;
+
+  /**
+   * @generated from field: int32 todo_count = 3;
+   */
+  todoCount: number;
+
+  /**
+   * @generated from field: int32 undo_count = 4;
+   */
+  undoCount: number;
+};
+
+/**
+ * Describes the message api.v2.UserStats.MemoTypeStats.
+ * Use `create(UserStats_MemoTypeStatsSchema)` to create a new message.
+ */
+export const UserStats_MemoTypeStatsSchema: GenMessage<UserStats_MemoTypeStats> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 2, 0);
+
+/**
  * @generated from service api.v2.UserService
  */
 export const UserService: GenService<{
@@ -50,6 +159,16 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof CreateUserRequestSchema;
     output: typeof UserSchema;
+  },
+  /**
+   * GetUserStats returns statistics for a specific user.
+   *
+   * @generated from rpc api.v2.UserService.GetUserStats
+   */
+  getUserStats: {
+    methodKind: "unary";
+    input: typeof GetUserStatsRequestSchema;
+    output: typeof UserStatsSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_user, 0);

@@ -8,7 +8,6 @@ package v2
 
 import (
 	model "github.com/smartmemos/memos/internal/proto/model"
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"
@@ -618,7 +617,7 @@ var File_api_v2_auth_proto protoreflect.FileDescriptor
 
 const file_api_v2_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x11api/v2/auth.proto\x12\x06api.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\"\x1a\n" +
+	"\x11api/v2/auth.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\"\x1a\n" +
 	"\x18GetCurrentSessionRequest\"\x82\x01\n" +
 	"\x19GetCurrentSessionResponse\x12\x1f\n" +
 	"\x04user\x18\x01 \x01(\v2\v.model.UserR\x04user\x12D\n" +
