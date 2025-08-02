@@ -35,12 +35,20 @@ const (
 const (
 	// MemoServiceCreateMemoProcedure is the fully-qualified name of the MemoService's CreateMemo RPC.
 	MemoServiceCreateMemoProcedure = "/api.v2.MemoService/CreateMemo"
+	// MemoServiceListMemosProcedure is the fully-qualified name of the MemoService's ListMemos RPC.
+	MemoServiceListMemosProcedure = "/api.v2.MemoService/ListMemos"
+	// MemoServiceGetMemoProcedure is the fully-qualified name of the MemoService's GetMemo RPC.
+	MemoServiceGetMemoProcedure = "/api.v2.MemoService/GetMemo"
 )
 
 // MemoServiceClient is a client for the api.v2.MemoService service.
 type MemoServiceClient interface {
 	// CreateMemo creates a memo.
 	CreateMemo(context.Context, *connect.Request[CreateMemoRequest]) (*connect.Response[model.Memo], error)
+	// ListMemos lists memos with pagination and filter.
+	ListMemos(context.Context, *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error)
+	// GetMemo gets a memo.
+	GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error)
 }
 
 // NewMemoServiceClient constructs a client for the api.v2.MemoService service. By default, it uses
@@ -60,12 +68,26 @@ func NewMemoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(memoServiceMethods.ByName("CreateMemo")),
 			connect.WithClientOptions(opts...),
 		),
+		listMemos: connect.NewClient[ListMemosRequest, ListMemosResponse](
+			httpClient,
+			baseURL+MemoServiceListMemosProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("ListMemos")),
+			connect.WithClientOptions(opts...),
+		),
+		getMemo: connect.NewClient[GetMemoRequest, model.Memo](
+			httpClient,
+			baseURL+MemoServiceGetMemoProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("GetMemo")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // memoServiceClient implements MemoServiceClient.
 type memoServiceClient struct {
 	createMemo *connect.Client[CreateMemoRequest, model.Memo]
+	listMemos  *connect.Client[ListMemosRequest, ListMemosResponse]
+	getMemo    *connect.Client[GetMemoRequest, model.Memo]
 }
 
 // CreateMemo calls api.v2.MemoService.CreateMemo.
@@ -73,10 +95,24 @@ func (c *memoServiceClient) CreateMemo(ctx context.Context, req *connect.Request
 	return c.createMemo.CallUnary(ctx, req)
 }
 
+// ListMemos calls api.v2.MemoService.ListMemos.
+func (c *memoServiceClient) ListMemos(ctx context.Context, req *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error) {
+	return c.listMemos.CallUnary(ctx, req)
+}
+
+// GetMemo calls api.v2.MemoService.GetMemo.
+func (c *memoServiceClient) GetMemo(ctx context.Context, req *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error) {
+	return c.getMemo.CallUnary(ctx, req)
+}
+
 // MemoServiceHandler is an implementation of the api.v2.MemoService service.
 type MemoServiceHandler interface {
 	// CreateMemo creates a memo.
 	CreateMemo(context.Context, *connect.Request[CreateMemoRequest]) (*connect.Response[model.Memo], error)
+	// ListMemos lists memos with pagination and filter.
+	ListMemos(context.Context, *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error)
+	// GetMemo gets a memo.
+	GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error)
 }
 
 // NewMemoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -92,10 +128,26 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(memoServiceMethods.ByName("CreateMemo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	memoServiceListMemosHandler := connect.NewUnaryHandler(
+		MemoServiceListMemosProcedure,
+		svc.ListMemos,
+		connect.WithSchema(memoServiceMethods.ByName("ListMemos")),
+		connect.WithHandlerOptions(opts...),
+	)
+	memoServiceGetMemoHandler := connect.NewUnaryHandler(
+		MemoServiceGetMemoProcedure,
+		svc.GetMemo,
+		connect.WithSchema(memoServiceMethods.ByName("GetMemo")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.MemoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MemoServiceCreateMemoProcedure:
 			memoServiceCreateMemoHandler.ServeHTTP(w, r)
+		case MemoServiceListMemosProcedure:
+			memoServiceListMemosHandler.ServeHTTP(w, r)
+		case MemoServiceGetMemoProcedure:
+			memoServiceGetMemoHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -107,4 +159,12 @@ type UnimplementedMemoServiceHandler struct{}
 
 func (UnimplementedMemoServiceHandler) CreateMemo(context.Context, *connect.Request[CreateMemoRequest]) (*connect.Response[model.Memo], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.CreateMemo is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) ListMemos(context.Context, *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.ListMemos is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.GetMemo is not implemented"))
 }

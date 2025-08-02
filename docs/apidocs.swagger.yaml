@@ -735,6 +735,24 @@ definitions:
         description: |-
           Last time the session was accessed.
           Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  v2ListMemosResponse:
+    type: object
+    properties:
+      memos:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelMemo'
+        description: The list of memos.
+      nextPageToken:
+        type: string
+        description: |-
+          A token that can be sent as `page_token` to retrieve the next page.
+          If this field is omitted, there are no subsequent pages.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of memos (may be approximate).
   v2UserStats:
     type: object
     properties:

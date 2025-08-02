@@ -4,8 +4,11 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { FieldMask } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_model_user } from "../../model/user_pb";
+import type { State } from "../../model/common_pb";
+import { file_model_common } from "../../model/common_pb";
 import type { Memo, MemoSchema } from "../../model/memo_pb";
 import { file_model_memo } from "../../model/memo_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -14,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/memo.proto.
  */
 export const file_api_v2_memo: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJMkUKC01lbW9TZXJ2aWNlEjYKCkNyZWF0ZU1lbW8SGS5hcGkudjIuQ3JlYXRlTWVtb1JlcXVlc3QaCy5tb2RlbC5NZW1vIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_memo]);
+  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrMrsBCgtNZW1vU2VydmljZRI2CgpDcmVhdGVNZW1vEhkuYXBpLnYyLkNyZWF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkIKCUxpc3RNZW1vcxIYLmFwaS52Mi5MaXN0TWVtb3NSZXF1ZXN0GhkuYXBpLnYyLkxpc3RNZW1vc1Jlc3BvbnNlIgASMAoHR2V0TWVtbxIWLmFwaS52Mi5HZXRNZW1vUmVxdWVzdBoLLm1vZGVsLk1lbW8iAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo]);
 
 /**
  * @generated from message api.v2.CreateMemoRequest
@@ -58,6 +61,131 @@ export const CreateMemoRequestSchema: GenMessage<CreateMemoRequest> = /*@__PURE_
   messageDesc(file_api_v2_memo, 0);
 
 /**
+ * @generated from message api.v2.ListMemosRequest
+ */
+export type ListMemosRequest = Message<"api.v2.ListMemosRequest"> & {
+  /**
+   * Optional. The maximum number of memos to return.
+   * The service may return fewer than this value.
+   * If unspecified, at most 50 memos will be returned.
+   * The maximum value is 1000; values above 1000 will be coerced to 1000.
+   *
+   * @generated from field: int32 page_size = 1;
+   */
+  pageSize: number;
+
+  /**
+   * Optional. A page token, received from a previous `ListMemos` call.
+   * Provide this to retrieve the subsequent page.
+   *
+   * @generated from field: string page_token = 2;
+   */
+  pageToken: string;
+
+  /**
+   * Optional. The state of the memos to list.
+   * Default to `NORMAL`. Set to `ARCHIVED` to list archived memos.
+   *
+   * @generated from field: model.State state = 3;
+   */
+  state: State;
+
+  /**
+   * Optional. The order to sort results by.
+   * Default to "display_time desc".
+   * Example: "display_time desc" or "create_time asc"
+   *
+   * @generated from field: string order_by = 4;
+   */
+  orderBy: string;
+
+  /**
+   * Optional. Filter to apply to the list results.
+   * Filter is a CEL expression to filter memos.
+   * Refer to `Shortcut.filter`.
+   *
+   * @generated from field: string filter = 5;
+   */
+  filter: string;
+
+  /**
+   * Optional. If true, show deleted memos in the response.
+   *
+   * @generated from field: bool show_deleted = 6;
+   */
+  showDeleted: boolean;
+};
+
+/**
+ * Describes the message api.v2.ListMemosRequest.
+ * Use `create(ListMemosRequestSchema)` to create a new message.
+ */
+export const ListMemosRequestSchema: GenMessage<ListMemosRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 1);
+
+/**
+ * @generated from message api.v2.ListMemosResponse
+ */
+export type ListMemosResponse = Message<"api.v2.ListMemosResponse"> & {
+  /**
+   * The list of memos.
+   *
+   * @generated from field: repeated model.Memo memos = 1;
+   */
+  memos: Memo[];
+
+  /**
+   * A token that can be sent as `page_token` to retrieve the next page.
+   * If this field is omitted, there are no subsequent pages.
+   *
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+
+  /**
+   * The total count of memos (may be approximate).
+   *
+   * @generated from field: int32 total_size = 3;
+   */
+  totalSize: number;
+};
+
+/**
+ * Describes the message api.v2.ListMemosResponse.
+ * Use `create(ListMemosResponseSchema)` to create a new message.
+ */
+export const ListMemosResponseSchema: GenMessage<ListMemosResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 2);
+
+/**
+ * @generated from message api.v2.GetMemoRequest
+ */
+export type GetMemoRequest = Message<"api.v2.GetMemoRequest"> & {
+  /**
+   * Required. The resource name of the memo.
+   * Format: memos/{memo}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * Optional. The fields to return in the response.
+   * If not specified, all fields are returned.
+   *
+   * @generated from field: google.protobuf.FieldMask read_mask = 2;
+   */
+  readMask?: FieldMask;
+};
+
+/**
+ * Describes the message api.v2.GetMemoRequest.
+ * Use `create(GetMemoRequestSchema)` to create a new message.
+ */
+export const GetMemoRequestSchema: GenMessage<GetMemoRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 3);
+
+/**
  * @generated from service api.v2.MemoService
  */
 export const MemoService: GenService<{
@@ -69,6 +197,26 @@ export const MemoService: GenService<{
   createMemo: {
     methodKind: "unary";
     input: typeof CreateMemoRequestSchema;
+    output: typeof MemoSchema;
+  },
+  /**
+   * ListMemos lists memos with pagination and filter.
+   *
+   * @generated from rpc api.v2.MemoService.ListMemos
+   */
+  listMemos: {
+    methodKind: "unary";
+    input: typeof ListMemosRequestSchema;
+    output: typeof ListMemosResponseSchema;
+  },
+  /**
+   * GetMemo gets a memo.
+   *
+   * @generated from rpc api.v2.MemoService.GetMemo
+   */
+  getMemo: {
+    methodKind: "unary";
+    input: typeof GetMemoRequestSchema;
     output: typeof MemoSchema;
   },
 }> = /*@__PURE__*/

@@ -36,7 +36,7 @@ message Memo {
   string content = 7;
 
   // Output only. The parsed nodes from the content.
-  repeated model.Node nodes = 8;
+  repeated Node nodes = 8;
 
   // The visibility of the memo.
   Visibility visibility = 9;
@@ -51,10 +51,10 @@ message Memo {
   repeated Attachment attachments = 12;
 
   // Optional. The relations of the memo.
-  repeated model.MemoRelation relations = 13;
+  repeated MemoRelation relations = 13;
 
   // Output only. The reactions to the memo.
-  repeated model.Reaction reactions = 14;
+  repeated Reaction reactions = 14;
 
   // Output only. The computed properties of the memo.
   Property property = 15;

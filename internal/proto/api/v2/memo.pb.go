@@ -11,6 +11,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -97,20 +98,257 @@ func (x *CreateMemoRequest) GetRequestId() string {
 	return ""
 }
 
+type ListMemosRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Optional. The maximum number of memos to return.
+	// The service may return fewer than this value.
+	// If unspecified, at most 50 memos will be returned.
+	// The maximum value is 1000; values above 1000 will be coerced to 1000.
+	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Optional. A page token, received from a previous `ListMemos` call.
+	// Provide this to retrieve the subsequent page.
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Optional. The state of the memos to list.
+	// Default to `NORMAL`. Set to `ARCHIVED` to list archived memos.
+	State model.State `protobuf:"varint,3,opt,name=state,proto3,enum=model.State" json:"state,omitempty"`
+	// Optional. The order to sort results by.
+	// Default to "display_time desc".
+	// Example: "display_time desc" or "create_time asc"
+	OrderBy string `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
+	// Optional. Filter to apply to the list results.
+	// Filter is a CEL expression to filter memos.
+	// Refer to `Shortcut.filter`.
+	Filter string `protobuf:"bytes,5,opt,name=filter,proto3" json:"filter,omitempty"`
+	// Optional. If true, show deleted memos in the response.
+	ShowDeleted   bool `protobuf:"varint,6,opt,name=show_deleted,json=showDeleted,proto3" json:"show_deleted,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMemosRequest) Reset() {
+	*x = ListMemosRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMemosRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMemosRequest) ProtoMessage() {}
+
+func (x *ListMemosRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMemosRequest.ProtoReflect.Descriptor instead.
+func (*ListMemosRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListMemosRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMemosRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListMemosRequest) GetState() model.State {
+	if x != nil {
+		return x.State
+	}
+	return model.State(0)
+}
+
+func (x *ListMemosRequest) GetOrderBy() string {
+	if x != nil {
+		return x.OrderBy
+	}
+	return ""
+}
+
+func (x *ListMemosRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListMemosRequest) GetShowDeleted() bool {
+	if x != nil {
+		return x.ShowDeleted
+	}
+	return false
+}
+
+type ListMemosResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The list of memos.
+	Memos []*model.Memo `protobuf:"bytes,1,rep,name=memos,proto3" json:"memos,omitempty"`
+	// A token that can be sent as `page_token` to retrieve the next page.
+	// If this field is omitted, there are no subsequent pages.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	// The total count of memos (may be approximate).
+	TotalSize     int32 `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMemosResponse) Reset() {
+	*x = ListMemosResponse{}
+	mi := &file_api_v2_memo_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMemosResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMemosResponse) ProtoMessage() {}
+
+func (x *ListMemosResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMemosResponse.ProtoReflect.Descriptor instead.
+func (*ListMemosResponse) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ListMemosResponse) GetMemos() []*model.Memo {
+	if x != nil {
+		return x.Memos
+	}
+	return nil
+}
+
+func (x *ListMemosResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+func (x *ListMemosResponse) GetTotalSize() int32 {
+	if x != nil {
+		return x.TotalSize
+	}
+	return 0
+}
+
+type GetMemoRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The resource name of the memo.
+	// Format: memos/{memo}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Optional. The fields to return in the response.
+	// If not specified, all fields are returned.
+	ReadMask      *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=read_mask,json=readMask,proto3" json:"read_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMemoRequest) Reset() {
+	*x = GetMemoRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMemoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMemoRequest) ProtoMessage() {}
+
+func (x *GetMemoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMemoRequest.ProtoReflect.Descriptor instead.
+func (*GetMemoRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetMemoRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GetMemoRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
 var File_api_v2_memo_proto protoreflect.FileDescriptor
 
 const file_api_v2_memo_proto_rawDesc = "" +
 	"\n" +
-	"\x11api/v2/memo.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\x1a\x10model/memo.proto\"\x91\x01\n" +
+	"\x11api/v2/memo.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x10model/user.proto\x1a\x12model/common.proto\x1a\x10model/memo.proto\"\x91\x01\n" +
 	"\x11CreateMemoRequest\x12\x1f\n" +
 	"\x04memo\x18\x01 \x01(\v2\v.model.MemoR\x04memo\x12\x17\n" +
 	"\amemo_id\x18\x02 \x01(\tR\x06memoId\x12#\n" +
 	"\rvalidate_only\x18\x03 \x01(\bR\fvalidateOnly\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x04 \x01(\tR\trequestId2E\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\"\xc8\x01\n" +
+	"\x10ListMemosRequest\x12\x1b\n" +
+	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x02 \x01(\tR\tpageToken\x12\"\n" +
+	"\x05state\x18\x03 \x01(\x0e2\f.model.StateR\x05state\x12\x19\n" +
+	"\border_by\x18\x04 \x01(\tR\aorderBy\x12\x16\n" +
+	"\x06filter\x18\x05 \x01(\tR\x06filter\x12!\n" +
+	"\fshow_deleted\x18\x06 \x01(\bR\vshowDeleted\"}\n" +
+	"\x11ListMemosResponse\x12!\n" +
+	"\x05memos\x18\x01 \x03(\v2\v.model.MemoR\x05memos\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1d\n" +
+	"\n" +
+	"total_size\x18\x03 \x01(\x05R\ttotalSize\"]\n" +
+	"\x0eGetMemoRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x127\n" +
+	"\tread_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMask2\xbb\x01\n" +
 	"\vMemoService\x126\n" +
 	"\n" +
-	"CreateMemo\x12\x19.api.v2.CreateMemoRequest\x1a\v.model.Memo\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"CreateMemo\x12\x19.api.v2.CreateMemoRequest\x1a\v.model.Memo\"\x00\x12B\n" +
+	"\tListMemos\x12\x18.api.v2.ListMemosRequest\x1a\x19.api.v2.ListMemosResponse\"\x00\x120\n" +
+	"\aGetMemo\x12\x16.api.v2.GetMemoRequest\x1a\v.model.Memo\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_memo_proto_rawDescOnce sync.Once
@@ -124,20 +362,32 @@ func file_api_v2_memo_proto_rawDescGZIP() []byte {
 	return file_api_v2_memo_proto_rawDescData
 }
 
-var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_api_v2_memo_proto_goTypes = []any{
-	(*CreateMemoRequest)(nil), // 0: api.v2.CreateMemoRequest
-	(*model.Memo)(nil),        // 1: model.Memo
+	(*CreateMemoRequest)(nil),     // 0: api.v2.CreateMemoRequest
+	(*ListMemosRequest)(nil),      // 1: api.v2.ListMemosRequest
+	(*ListMemosResponse)(nil),     // 2: api.v2.ListMemosResponse
+	(*GetMemoRequest)(nil),        // 3: api.v2.GetMemoRequest
+	(*model.Memo)(nil),            // 4: model.Memo
+	(model.State)(0),              // 5: model.State
+	(*fieldmaskpb.FieldMask)(nil), // 6: google.protobuf.FieldMask
 }
 var file_api_v2_memo_proto_depIdxs = []int32{
-	1, // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
-	0, // 1: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
-	1, // 2: api.v2.MemoService.CreateMemo:output_type -> model.Memo
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
+	5, // 1: api.v2.ListMemosRequest.state:type_name -> model.State
+	4, // 2: api.v2.ListMemosResponse.memos:type_name -> model.Memo
+	6, // 3: api.v2.GetMemoRequest.read_mask:type_name -> google.protobuf.FieldMask
+	0, // 4: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
+	1, // 5: api.v2.MemoService.ListMemos:input_type -> api.v2.ListMemosRequest
+	3, // 6: api.v2.MemoService.GetMemo:input_type -> api.v2.GetMemoRequest
+	4, // 7: api.v2.MemoService.CreateMemo:output_type -> model.Memo
+	2, // 8: api.v2.MemoService.ListMemos:output_type -> api.v2.ListMemosResponse
+	4, // 9: api.v2.MemoService.GetMemo:output_type -> model.Memo
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_memo_proto_init() }
@@ -151,7 +401,7 @@ func file_api_v2_memo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_memo_proto_rawDesc), len(file_api_v2_memo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
