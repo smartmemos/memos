@@ -20,4 +20,12 @@ type DAO interface {
 
 	// Session
 	CreateSession(ctx context.Context, m *model.Session) error
+
+	// Memo
+	CreateMemo(ctx context.Context, m *model.Memo) error
+	CountMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error)
+	FindMemos(ctx context.Context, filter *model.FindMemoFilter) ([]*model.Memo, error)
+	FindMemoByID(ctx context.Context, id int64) (*model.Memo, error)
+	FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error)
+	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
 }

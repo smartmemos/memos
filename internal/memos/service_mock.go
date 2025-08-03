@@ -35,6 +35,21 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateMemo mocks base method.
+func (m *MockService) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMemo indicates an expected call of CreateMemo.
+func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
+}
+
 // CreateSession mocks base method.
 func (m *MockService) CreateSession(ctx context.Context, req *model.CreateSessionRequest) (*model.Session, error) {
 	m.ctrl.T.Helper()
@@ -65,6 +80,21 @@ func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), ctx, req)
 }
 
+// GetMemo mocks base method.
+func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMemo indicates an expected call of GetMemo.
+func (mr *MockServiceMockRecorder) GetMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemo", reflect.TypeOf((*MockService)(nil).GetMemo), ctx, req)
+}
+
 // GetUserByID mocks base method.
 func (m *MockService) GetUserByID(ctx context.Context, id int64) (*model.User, error) {
 	m.ctrl.T.Helper()
@@ -78,4 +108,20 @@ func (m *MockService) GetUserByID(ctx context.Context, id int64) (*model.User, e
 func (mr *MockServiceMockRecorder) GetUserByID(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), ctx, id)
+}
+
+// ListMemos mocks base method.
+func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) (int64, []*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListMemos", ctx, req)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].([]*model.Memo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListMemos indicates an expected call of ListMemos.
+func (mr *MockServiceMockRecorder) ListMemos(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMemos", reflect.TypeOf((*MockService)(nil).ListMemos), ctx, req)
 }

@@ -6,10 +6,13 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
+	"github.com/samber/lo"
+	"github.com/usememos/gomark/ast"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
+	"github.com/smartmemos/memos/internal/pkg/utils"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
@@ -32,10 +35,41 @@ func (s *MemoService) CreateMemo(ctx context.Context, req *connect.Request[v2pb.
 }
 
 func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.ListMemosRequest]) (resp *connect.Response[v2pb.ListMemosResponse], err error) {
+	var req2 = &model.ListMemosRequest{}
+
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		req2.VisibilityList = []model.Visibility{model.Public}
+	} else {
+		// if req2.CreatorID == nil {
+		// 	filter := fmt.Sprintf(`creator_id == %d || visibility in ["PUBLIC", "PROTECTED"]`, currentUser.ID)
+		// 	req2.Filters = append(req2.Filters, filter)
+		// } else if *req2.CreatorID != currentUser.ID {
+		// 	req2.VisibilityList = []model.Visibility{model.Public, model.Protected}
+		// }
+	}
+
+	if req.Msg.State == modelpb.State_ARCHIVED {
+		req2.Status = model.Archived
+	} else {
+		req2.Status = model.Normal
+	}
+	total, list, err := s.memosService.ListMemos(ctx, req2)
+	if err != nil {
+		return
+	}
+	nextPageToken, err := utils.GetPageToken(1, 0)
+	if err != nil {
+		return
+	}
+
 	resp = connect.NewResponse(&v2pb.ListMemosResponse{
-		Memos: []*modelpb.Memo{
-			convertMemoToProto(&model.Memo{}),
-		},
+		TotalSize:     int32(total),
+		NextPageToken: nextPageToken,
+		Memos: lo.Map(list, func(item *model.Memo, _ int) *modelpb.Memo {
+
+			return convertMemoToProto(item)
+		}),
 	})
 	return
 }
@@ -44,6 +78,16 @@ func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.Get
 
 	resp = connect.NewResponse(convertMemoToProto(&model.Memo{}))
 	return
+}
+
+func convertFromASTNodes(nodes []*ast.Node) []*modelpb.Node {
+	return lo.Map(nodes, func(node *ast.Node, _ int) *modelpb.Node {
+		return convertFromASTNode(node)
+	})
+}
+
+func convertFromASTNode(node *ast.Node) *modelpb.Node {
+	return &modelpb.Node{}
 }
 
 func convertMemoToProto(memo *model.Memo) *modelpb.Memo {

@@ -2,6 +2,7 @@ package model
 
 import "github.com/smartmemos/memos/internal/pkg/db"
 
+// Memo 笔记
 type Memo struct {
 	db.Model
 
@@ -44,13 +45,33 @@ type MemoPayloadProperty struct {
 type FindMemoFilter struct {
 	db.BaseFilter
 
-	ID              int64
-	Pid             int64
-	ParentIDs       []int64
-	CreatorID       int64
-	ExcludeComments bool
-	ExcludeContent  bool
-	Status          string
+	ID              db.F[int64]
+	Pid             db.F[int64]
+	ParentIDs       db.F[[]int64]
+	CreatorID       db.F[int64]
+	ExcludeComments db.F[bool]
+	ExcludeContent  db.F[bool]
+	Status          db.F[string]
 
-	VisibilityList []Visibility
+	VisibilityList db.F[[]Visibility]
+}
+
+type CreateMemoRequest struct {
+	ParentID     int64
+	RelationType RelationType
+	CreatorID    int64
+	Content      string
+	Payload      MemoPayload `gorm:"serializer:json"`
+}
+
+type ListMemosRequest struct {
+	Status          RowStatus
+	VisibilityList  []Visibility
+	ExcludeContent  bool
+	ExcludeComments bool
+}
+
+type GetMemoRequest struct {
+	ID  int64
+	UID string
 }
