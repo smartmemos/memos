@@ -32,8 +32,11 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 }
 
 func (s *MemoService) CreateMemo(ctx context.Context, req *connect.Request[v2pb.CreateMemoRequest]) (resp *connect.Response[modelpb.Memo], err error) {
-
-	resp = connect.NewResponse(convertMemoToProto(&model.Memo{}))
+	info, err := convertMemoToProto(&model.Memo{})
+	if err != nil {
+		return
+	}
+	resp = connect.NewResponse(info)
 	return
 }
 
@@ -57,7 +60,7 @@ func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.L
 	} else {
 		req2.Status = model.Normal
 	}
-	total, list, err := s.memosService.ListMemos(ctx, req2)
+	total, memos, err := s.memosService.ListMemos(ctx, req2)
 	if err != nil {
 		return
 	}
@@ -66,20 +69,30 @@ func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.L
 		return
 	}
 
+	var list []*modelpb.Memo
+	for _, memo := range memos {
+		var info *modelpb.Memo
+		info, err = convertMemoToProto(memo)
+		if err != nil {
+			return
+		}
+		list = append(list, info)
+	}
+
 	resp = connect.NewResponse(&v2pb.ListMemosResponse{
+		Memos:         list,
 		TotalSize:     int32(total),
 		NextPageToken: nextPageToken,
-		Memos: lo.Map(list, func(item *model.Memo, _ int) *modelpb.Memo {
-
-			return convertMemoToProto(item)
-		}),
 	})
 	return
 }
 
 func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.GetMemoRequest]) (resp *connect.Response[modelpb.Memo], err error) {
-
-	resp = connect.NewResponse(convertMemoToProto(&model.Memo{}))
+	info, err := convertMemoToProto(&model.Memo{})
+	if err != nil {
+		return
+	}
+	resp = connect.NewResponse(info)
 	return
 }
 
