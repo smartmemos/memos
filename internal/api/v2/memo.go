@@ -5,8 +5,12 @@ import (
 	"fmt"
 
 	"connectrpc.com/connect"
+	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
+	"github.com/usememos/gomark/parser"
+	"github.com/usememos/gomark/parser/tokenizer"
+	"github.com/usememos/gomark/renderer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/memos"
@@ -79,11 +83,21 @@ func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.Get
 	return
 }
 
-func convertMemoToProto(memo *model.Memo) *modelpb.Memo {
-	return &modelpb.Memo{
+func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
+	info = &modelpb.Memo{
 		Name:       fmt.Sprintf("memos/%d", memo.ID),
 		Content:    memo.Content,
 		CreateTime: timestamppb.New(memo.CreatedAt),
 		UpdateTime: timestamppb.New(memo.UpdatedAt),
 	}
+	nodes, err := parser.Parse(tokenizer.Tokenize(memo.Content))
+	if err != nil {
+		err = errors.Wrap(err, "failed to parse content")
+		return
+	}
+	plainText := renderer.NewStringRenderer().Render(nodes)
+	info.Snippet = lo.If(len(plainText) > 64, lo.Substring(plainText, 0, 64)+"...").Else(plainText)
+	info.Nodes = convertFromASTNodes(nodes)
+
+	return
 }
