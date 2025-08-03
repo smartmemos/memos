@@ -7,7 +7,6 @@ import (
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
-	"github.com/usememos/gomark/ast"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/memos"
@@ -78,16 +77,6 @@ func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.Get
 
 	resp = connect.NewResponse(convertMemoToProto(&model.Memo{}))
 	return
-}
-
-func convertFromASTNodes(nodes []*ast.Node) []*modelpb.Node {
-	return lo.Map(nodes, func(node *ast.Node, _ int) *modelpb.Node {
-		return convertFromASTNode(node)
-	})
-}
-
-func convertFromASTNode(node *ast.Node) *modelpb.Node {
-	return &modelpb.Node{}
 }
 
 func convertMemoToProto(memo *model.Memo) *modelpb.Memo {

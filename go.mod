@@ -19,7 +19,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.19.0
 	github.com/subosito/gotenv v1.6.0
-	github.com/usememos/gomark v0.0.0-20250227070400-97a73c2adb29
+	github.com/usememos/gomark v0.0.0-20250328014447-c9fa41c01bc4
 	golang.org/x/crypto v0.40.0
 	golang.org/x/net v0.42.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
