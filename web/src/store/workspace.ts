@@ -1,6 +1,7 @@
 import { uniqBy } from "lodash-es";
 import { makeAutoObservable } from "mobx";
 import { workspaceServiceClient } from "@/grpcweb";
+import { workspaceServiceClient as workspaceServiceClientV2 } from "@/grpc";
 import { WorkspaceProfile, WorkspaceSetting_Key } from "@/types/proto/api/v1/workspace_service";
 import {
   WorkspaceSetting_GeneralSetting,
@@ -81,7 +82,7 @@ const workspaceStore = (() => {
 })();
 
 export const initialWorkspaceStore = async () => {
-  const workspaceProfile = await workspaceServiceClient.getWorkspaceProfile({});
+  const workspaceProfile = await workspaceServiceClientV2.getWorkspaceProfile({});
   // Prepare workspace settings.
   for (const key of [WorkspaceSetting_Key.GENERAL, WorkspaceSetting_Key.MEMO_RELATED]) {
     await workspaceStore.fetchWorkspaceSetting(key);

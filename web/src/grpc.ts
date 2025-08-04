@@ -4,6 +4,7 @@ import { createConnectTransport } from '@connectrpc/connect-web';
 import type { DescMessage } from '@bufbuild/protobuf';
 import { AuthService } from './types/proto2/api/v2/auth_pb';
 import { UserService } from './types/proto2/api/v2/user_pb';
+import { WorkspaceService } from './types/proto2/api/v2/workspace_pb';
 
 // const grpcServiceUrl = import.meta.env.VITE_PUBLIC_GRPC_SERVICE_URL || '/grpc';
 const grpcServiceUrl = 'http://localhost:3001';
@@ -54,3 +55,4 @@ const transport = createConnectTransport({
 
 export const authServiceClient = createClient(AuthService, transport);
 export const userServiceClient = createClient(UserService, transport);
+export const workspaceServiceClient = createClient(WorkspaceService, transport);
