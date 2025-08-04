@@ -36,4 +36,12 @@ type DAO interface {
 	FindSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) ([]*model.SystemSetting, error)
 	FindSystemSetting(ctx context.Context, filter *model.FindSystemSettingFilter) (*model.SystemSetting, error)
 	DeleteSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) error
+
+	// UserSetting
+	CreateUserSetting(ctx context.Context, m *model.UserSetting) error
+	UpdateUserSettings(ctx context.Context, filter *model.FindUserSettingFilter, update map[string]any) (int64, error)
+	UpdateUserSetting(ctx context.Context, m *model.UserSetting, update map[string]any) error
+	FindUserSettings(ctx context.Context, filter *model.FindUserSettingFilter) ([]*model.UserSetting, error)
+	FindUserSetting(ctx context.Context, filter *model.FindUserSettingFilter) (*model.UserSetting, error)
+	DeleteUserSettings(ctx context.Context, filter *model.FindUserSettingFilter) error
 }

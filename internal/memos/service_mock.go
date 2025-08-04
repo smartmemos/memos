@@ -155,6 +155,36 @@ func (mr *MockServiceMockRecorder) GetUserByID(ctx, id interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), ctx, id)
 }
 
+// GetUserSetting mocks base method.
+func (m *MockService) GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (*model.UserSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserSetting", ctx, req)
+	ret0, _ := ret[0].(*model.UserSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserSetting indicates an expected call of GetUserSetting.
+func (mr *MockServiceMockRecorder) GetUserSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserSetting", reflect.TypeOf((*MockService)(nil).GetUserSetting), ctx, req)
+}
+
+// GetUserSettings mocks base method.
+func (m *MockService) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserSettings", ctx, req)
+	ret0, _ := ret[0].([]*model.UserSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserSettings indicates an expected call of GetUserSettings.
+func (mr *MockServiceMockRecorder) GetUserSettings(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserSettings", reflect.TypeOf((*MockService)(nil).GetUserSettings), ctx, req)
+}
+
 // ListMemos mocks base method.
 func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) (int64, []*model.Memo, error) {
 	m.ctrl.T.Helper()

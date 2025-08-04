@@ -5,6 +5,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
+	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
 
 	"github.com/smartmemos/memos/internal/memos"
@@ -51,4 +52,34 @@ func (s *UserService) GetUserStats(ctx context.Context, req *connect.Request[v2p
 		Name: req.Msg.Name,
 	})
 	return
+}
+
+func (s *UserService) GetUserSetting(ctx context.Context, req *connect.Request[v2pb.GetUserSettingRequest]) (resp *connect.Response[modelpb.UserSetting], err error) {
+	logrus.Info("req: ", req.Msg)
+	resp = connect.NewResponse(&modelpb.UserSetting{
+		Name: req.Msg.Name,
+	})
+	return
+}
+
+func (s *UserService) ListUserSettings(ctx context.Context, req *connect.Request[v2pb.ListUserSettingsRequest]) (resp *connect.Response[v2pb.ListUserSettingsResponse], err error) {
+	logrus.Info("req: ", req.Msg)
+
+	settings, err := s.memosService.GetUserSettings(ctx, &model.GetUserSettingsRequest{})
+	if err != nil {
+		return
+	}
+
+	resp = connect.NewResponse(&v2pb.ListUserSettingsResponse{
+		Settings: lo.Map(settings, func(setting *model.UserSetting, _ int) *modelpb.UserSetting {
+			return convertUserSettingToProto(setting)
+		}),
+	})
+	return
+}
+
+func convertUserSettingToProto(setting *model.UserSetting) *modelpb.UserSetting {
+	return &modelpb.UserSetting{
+		Name: setting.Key,
+	}
 }

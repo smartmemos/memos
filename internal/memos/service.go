@@ -29,4 +29,9 @@ type Service interface {
 	GetStorageSetting(ctx context.Context) (*model.StorageSetting, error)
 	// GetMemoRelatedSetting gets the memo related setting.
 	GetMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error)
+
+	// GetUserSetting gets the user setting.
+	GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (*model.UserSetting, error)
+	// GetUserSettings gets the user settings.
+	GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error)
 }
