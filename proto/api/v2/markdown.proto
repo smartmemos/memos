@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "model/user.proto";
+import "model/markdown.proto";
 
 package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
@@ -21,5 +22,5 @@ message ParseMarkdownRequest {
 
 message ParseMarkdownResponse {
   // The parsed markdown nodes.
-  repeated Node nodes = 1;
+  repeated model.Node nodes = 1;
 }

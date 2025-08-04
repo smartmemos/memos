@@ -7,12 +7,13 @@
 package v2
 
 import (
-	_ "github.com/smartmemos/memos/internal/proto/model"
+	model "github.com/smartmemos/memos/internal/proto/model"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,20 +24,135 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ParseMarkdownRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The markdown content to parse.
+	Markdown      string `protobuf:"bytes,1,opt,name=markdown,proto3" json:"markdown,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ParseMarkdownRequest) Reset() {
+	*x = ParseMarkdownRequest{}
+	mi := &file_api_v2_markdown_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ParseMarkdownRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParseMarkdownRequest) ProtoMessage() {}
+
+func (x *ParseMarkdownRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_markdown_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParseMarkdownRequest.ProtoReflect.Descriptor instead.
+func (*ParseMarkdownRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_markdown_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ParseMarkdownRequest) GetMarkdown() string {
+	if x != nil {
+		return x.Markdown
+	}
+	return ""
+}
+
+type ParseMarkdownResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The parsed markdown nodes.
+	Nodes         []*model.Node `protobuf:"bytes,1,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ParseMarkdownResponse) Reset() {
+	*x = ParseMarkdownResponse{}
+	mi := &file_api_v2_markdown_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ParseMarkdownResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParseMarkdownResponse) ProtoMessage() {}
+
+func (x *ParseMarkdownResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_markdown_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParseMarkdownResponse.ProtoReflect.Descriptor instead.
+func (*ParseMarkdownResponse) Descriptor() ([]byte, []int) {
+	return file_api_v2_markdown_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ParseMarkdownResponse) GetNodes() []*model.Node {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
 var File_api_v2_markdown_proto protoreflect.FileDescriptor
 
 const file_api_v2_markdown_proto_rawDesc = "" +
 	"\n" +
-	"\x15api/v2/markdown.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto2\x11\n" +
-	"\x0fMarkdownServiceB3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"\x15api/v2/markdown.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\x1a\x14model/markdown.proto\"2\n" +
+	"\x14ParseMarkdownRequest\x12\x1a\n" +
+	"\bmarkdown\x18\x01 \x01(\tR\bmarkdown\":\n" +
+	"\x15ParseMarkdownResponse\x12!\n" +
+	"\x05nodes\x18\x01 \x03(\v2\v.model.NodeR\x05nodes2a\n" +
+	"\x0fMarkdownService\x12N\n" +
+	"\rParseMarkdown\x12\x1c.api.v2.ParseMarkdownRequest\x1a\x1d.api.v2.ParseMarkdownResponse\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
-var file_api_v2_markdown_proto_goTypes = []any{}
+var (
+	file_api_v2_markdown_proto_rawDescOnce sync.Once
+	file_api_v2_markdown_proto_rawDescData []byte
+)
+
+func file_api_v2_markdown_proto_rawDescGZIP() []byte {
+	file_api_v2_markdown_proto_rawDescOnce.Do(func() {
+		file_api_v2_markdown_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_v2_markdown_proto_rawDesc), len(file_api_v2_markdown_proto_rawDesc)))
+	})
+	return file_api_v2_markdown_proto_rawDescData
+}
+
+var file_api_v2_markdown_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_v2_markdown_proto_goTypes = []any{
+	(*ParseMarkdownRequest)(nil),  // 0: api.v2.ParseMarkdownRequest
+	(*ParseMarkdownResponse)(nil), // 1: api.v2.ParseMarkdownResponse
+	(*model.Node)(nil),            // 2: model.Node
+}
 var file_api_v2_markdown_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: api.v2.ParseMarkdownResponse.nodes:type_name -> model.Node
+	0, // 1: api.v2.MarkdownService.ParseMarkdown:input_type -> api.v2.ParseMarkdownRequest
+	1, // 2: api.v2.MarkdownService.ParseMarkdown:output_type -> api.v2.ParseMarkdownResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_markdown_proto_init() }
@@ -50,12 +166,13 @@ func file_api_v2_markdown_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_markdown_proto_rawDesc), len(file_api_v2_markdown_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_api_v2_markdown_proto_goTypes,
 		DependencyIndexes: file_api_v2_markdown_proto_depIdxs,
+		MessageInfos:      file_api_v2_markdown_proto_msgTypes,
 	}.Build()
 	File_api_v2_markdown_proto = out.File
 	file_api_v2_markdown_proto_goTypes = nil

@@ -30,6 +30,9 @@ func (a *Auth) Auth(connectHandler http.Handler) http.Handler {
 func (a *Auth) authenticate(_ context.Context, req *http.Request) (any, error) {
 	cookie, err := req.Cookie("memos.access-token")
 	if err != nil {
+		if isUnauthorizeAllowedMethod(req.URL.Path) {
+			return nil, nil
+		}
 		if err == http.ErrNoCookie {
 			return nil, err
 		}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/user.proto";
+import "model/workspace.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service WorkspaceService {
+  // Gets the workspace profile.
+  rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (model.WorkspaceProfile) {} 
+
+}
+
+// Request for workspace profile.
+message GetWorkspaceProfileRequest {}

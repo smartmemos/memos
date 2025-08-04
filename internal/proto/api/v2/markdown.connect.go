@@ -6,7 +6,10 @@ package v2
 
 import (
 	connect "connectrpc.com/connect"
+	context "context"
+	errors "errors"
 	http "net/http"
+	strings "strings"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -21,8 +24,24 @@ const (
 	MarkdownServiceName = "api.v2.MarkdownService"
 )
 
+// These constants are the fully-qualified names of the RPCs defined in this package. They're
+// exposed at runtime as Spec.Procedure and as the final two segments of the HTTP route.
+//
+// Note that these are different from the fully-qualified method names used by
+// google.golang.org/protobuf/reflect/protoreflect. To convert from these constants to
+// reflection-formatted method names, remove the leading slash and convert the remaining slash to a
+// period.
+const (
+	// MarkdownServiceParseMarkdownProcedure is the fully-qualified name of the MarkdownService's
+	// ParseMarkdown RPC.
+	MarkdownServiceParseMarkdownProcedure = "/api.v2.MarkdownService/ParseMarkdown"
+)
+
 // MarkdownServiceClient is a client for the api.v2.MarkdownService service.
 type MarkdownServiceClient interface {
+	// ParseMarkdown parses the given markdown content and returns a list of nodes.
+	// This is a utility method that transforms markdown text into structured nodes.
+	ParseMarkdown(context.Context, *connect.Request[ParseMarkdownRequest]) (*connect.Response[ParseMarkdownResponse], error)
 }
 
 // NewMarkdownServiceClient constructs a client for the api.v2.MarkdownService service. By default,
@@ -33,15 +52,33 @@ type MarkdownServiceClient interface {
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewMarkdownServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) MarkdownServiceClient {
-	return &markdownServiceClient{}
+	baseURL = strings.TrimRight(baseURL, "/")
+	markdownServiceMethods := File_api_v2_markdown_proto.Services().ByName("MarkdownService").Methods()
+	return &markdownServiceClient{
+		parseMarkdown: connect.NewClient[ParseMarkdownRequest, ParseMarkdownResponse](
+			httpClient,
+			baseURL+MarkdownServiceParseMarkdownProcedure,
+			connect.WithSchema(markdownServiceMethods.ByName("ParseMarkdown")),
+			connect.WithClientOptions(opts...),
+		),
+	}
 }
 
 // markdownServiceClient implements MarkdownServiceClient.
 type markdownServiceClient struct {
+	parseMarkdown *connect.Client[ParseMarkdownRequest, ParseMarkdownResponse]
+}
+
+// ParseMarkdown calls api.v2.MarkdownService.ParseMarkdown.
+func (c *markdownServiceClient) ParseMarkdown(ctx context.Context, req *connect.Request[ParseMarkdownRequest]) (*connect.Response[ParseMarkdownResponse], error) {
+	return c.parseMarkdown.CallUnary(ctx, req)
 }
 
 // MarkdownServiceHandler is an implementation of the api.v2.MarkdownService service.
 type MarkdownServiceHandler interface {
+	// ParseMarkdown parses the given markdown content and returns a list of nodes.
+	// This is a utility method that transforms markdown text into structured nodes.
+	ParseMarkdown(context.Context, *connect.Request[ParseMarkdownRequest]) (*connect.Response[ParseMarkdownResponse], error)
 }
 
 // NewMarkdownServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -50,8 +87,17 @@ type MarkdownServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewMarkdownServiceHandler(svc MarkdownServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	markdownServiceMethods := File_api_v2_markdown_proto.Services().ByName("MarkdownService").Methods()
+	markdownServiceParseMarkdownHandler := connect.NewUnaryHandler(
+		MarkdownServiceParseMarkdownProcedure,
+		svc.ParseMarkdown,
+		connect.WithSchema(markdownServiceMethods.ByName("ParseMarkdown")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.MarkdownService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case MarkdownServiceParseMarkdownProcedure:
+			markdownServiceParseMarkdownHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -60,3 +106,7 @@ func NewMarkdownServiceHandler(svc MarkdownServiceHandler, opts ...connect.Handl
 
 // UnimplementedMarkdownServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedMarkdownServiceHandler struct{}
+
+func (UnimplementedMarkdownServiceHandler) ParseMarkdown(context.Context, *connect.Request[ParseMarkdownRequest]) (*connect.Response[ParseMarkdownResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MarkdownService.ParseMarkdown is not implemented"))
+}

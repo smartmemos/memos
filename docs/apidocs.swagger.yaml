@@ -4,8 +4,10 @@ info:
   version: version not set
 tags:
   - name: AuthService
+  - name: MarkdownService
   - name: MemoService
   - name: UserService
+  - name: WorkspaceService
 consumes:
   - application/json
 produces:
@@ -693,6 +695,24 @@ definitions:
       - PROTECTED
       - PUBLIC
     default: VISIBILITY_UNSPECIFIED
+  modelWorkspaceProfile:
+    type: object
+    properties:
+      owner:
+        type: string
+        title: |-
+          The name of instance owner.
+          Format: users/{user}
+      version:
+        type: string
+        description: Version is the current version of instance.
+      mode:
+        type: string
+        description: Mode is the instance mode (e.g. "prod", "dev" or "demo").
+      instanceUrl:
+        type: string
+        description: Instance URL is the URL of the instance.
+    description: Workspace profile message containing basic workspace information.
   protobufAny:
     type: object
     properties:
@@ -753,6 +773,15 @@ definitions:
         type: integer
         format: int32
         description: The total count of memos (may be approximate).
+  v2ParseMarkdownResponse:
+    type: object
+    properties:
+      nodes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelNode'
+        description: The parsed markdown nodes.
   v2UserStats:
     type: object
     properties:

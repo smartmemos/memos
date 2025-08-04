@@ -2,21 +2,73 @@
 // @generated from file api/v2/markdown.proto (package api.v2, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_model_user } from "../../model/user_pb";
+import type { Node } from "../../model/markdown_pb";
+import { file_model_markdown } from "../../model/markdown_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v2/markdown.proto.
  */
 export const file_api_v2_markdown: GenFile = /*@__PURE__*/
-  fileDesc("ChVhcGkvdjIvbWFya2Rvd24ucHJvdG8SBmFwaS52MjIRCg9NYXJrZG93blNlcnZpY2VCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
+  fileDesc("ChVhcGkvdjIvbWFya2Rvd24ucHJvdG8SBmFwaS52MiIoChRQYXJzZU1hcmtkb3duUmVxdWVzdBIQCghtYXJrZG93bhgBIAEoCSIzChVQYXJzZU1hcmtkb3duUmVzcG9uc2USGgoFbm9kZXMYASADKAsyCy5tb2RlbC5Ob2RlMmEKD01hcmtkb3duU2VydmljZRJOCg1QYXJzZU1hcmtkb3duEhwuYXBpLnYyLlBhcnNlTWFya2Rvd25SZXF1ZXN0Gh0uYXBpLnYyLlBhcnNlTWFya2Rvd25SZXNwb25zZSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_markdown]);
+
+/**
+ * @generated from message api.v2.ParseMarkdownRequest
+ */
+export type ParseMarkdownRequest = Message<"api.v2.ParseMarkdownRequest"> & {
+  /**
+   * The markdown content to parse.
+   *
+   * @generated from field: string markdown = 1;
+   */
+  markdown: string;
+};
+
+/**
+ * Describes the message api.v2.ParseMarkdownRequest.
+ * Use `create(ParseMarkdownRequestSchema)` to create a new message.
+ */
+export const ParseMarkdownRequestSchema: GenMessage<ParseMarkdownRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_markdown, 0);
+
+/**
+ * @generated from message api.v2.ParseMarkdownResponse
+ */
+export type ParseMarkdownResponse = Message<"api.v2.ParseMarkdownResponse"> & {
+  /**
+   * The parsed markdown nodes.
+   *
+   * @generated from field: repeated model.Node nodes = 1;
+   */
+  nodes: Node[];
+};
+
+/**
+ * Describes the message api.v2.ParseMarkdownResponse.
+ * Use `create(ParseMarkdownResponseSchema)` to create a new message.
+ */
+export const ParseMarkdownResponseSchema: GenMessage<ParseMarkdownResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_markdown, 1);
 
 /**
  * @generated from service api.v2.MarkdownService
  */
 export const MarkdownService: GenService<{
+  /**
+   * ParseMarkdown parses the given markdown content and returns a list of nodes.
+   * This is a utility method that transforms markdown text into structured nodes.
+   *
+   * @generated from rpc api.v2.MarkdownService.ParseMarkdown
+   */
+  parseMarkdown: {
+    methodKind: "unary";
+    input: typeof ParseMarkdownRequestSchema;
+    output: typeof ParseMarkdownResponseSchema;
+  },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_markdown, 0);
 
