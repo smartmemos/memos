@@ -60,4 +60,22 @@ type StorageSetting struct {
 }
 
 type MemoRelatedSetting struct {
+	// disallow_public_visibility disallows set memo as public visibility.
+	DisallowPublicVisibility bool
+	// display_with_update_time orders and displays memo with update time.
+	DisplayWithUpdateTime bool
+	// content_length_limit is the limit of content length. Unit is byte.
+	ContentLengthLimit int
+	// enable_double_click_edit enables editing on double click.
+	EnableDoubleClickEdit bool
+	// enable_link_preview enables links preview.
+	EnableLinkPreview bool
+	// reactions is the list of reactions.
+	Reactions []string
+	// disable_markdown_shortcuts disallow the registration of markdown shortcuts.
+	DisableMarkdownShortcuts bool
+	// enable_blur_nsfw_content enables blurring of content marked as not safe for work (NSFW).
+	EnableBlurNsfwContent bool
+	// nsfw_tags is the list of tags that mark content as NSFW for blurring.
+	NsfwTags []string
 }

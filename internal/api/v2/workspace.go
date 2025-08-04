@@ -41,32 +41,35 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *connect
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid request"))
 	}
 
+	var info *modelpb.WorkspaceSetting
 	switch strings.ToLower(parts[2]) {
 	case "general":
 		setting, err := s.memosService.GetGeneralSetting(ctx)
 		if err != nil {
 			return nil, err
 		}
-		info := &modelpb.WorkspaceSetting{
+		info = &modelpb.WorkspaceSetting{
 			Name: parts[2],
 			Value: &modelpb.WorkspaceSetting_GeneralSetting_{
 				GeneralSetting: convertGeneralSettingToProto(setting),
 			},
 		}
-		return connect.NewResponse(info), nil
 	case "storage":
 		info := &modelpb.WorkspaceSetting{
 			Name: "name",
 		}
 		return connect.NewResponse(info), nil
 	case "memo_related":
-		info := &modelpb.WorkspaceSetting{
-			Name: "name",
+		setting, err := s.memosService.GetMemoRelatedSetting(ctx)
+		if err != nil {
+			return nil, err
 		}
-		return connect.NewResponse(info), nil
-	}
-	info := &modelpb.WorkspaceSetting{
-		Name: "name",
+		info = &modelpb.WorkspaceSetting{
+			Name: parts[2],
+			Value: &modelpb.WorkspaceSetting_MemoRelatedSetting_{
+				MemoRelatedSetting: convertMemoRelatedSettingToProto(setting),
+			},
+		}
 	}
 	return connect.NewResponse(info), nil
 }
@@ -90,6 +93,21 @@ func convertGeneralSettingToProto(setting *model.GeneralSetting) *modelpb.Worksp
 			Locale:      setting.CustomProfile.Locale,
 			Appearance:  setting.CustomProfile.Appearance,
 		}
+	}
+	return info
+}
+
+func convertMemoRelatedSettingToProto(setting *model.MemoRelatedSetting) *modelpb.WorkspaceSetting_MemoRelatedSetting {
+	info := &modelpb.WorkspaceSetting_MemoRelatedSetting{
+		DisallowPublicVisibility: setting.DisallowPublicVisibility,
+		DisplayWithUpdateTime:    setting.DisplayWithUpdateTime,
+		ContentLengthLimit:       int32(setting.ContentLengthLimit),
+		EnableDoubleClickEdit:    setting.EnableDoubleClickEdit,
+		EnableLinkPreview:        setting.EnableLinkPreview,
+		Reactions:                setting.Reactions,
+		DisableMarkdownShortcuts: setting.DisableMarkdownShortcuts,
+		EnableBlurNsfwContent:    setting.EnableBlurNsfwContent,
+		NsfwTags:                 setting.NsfwTags,
 	}
 	return info
 }
