@@ -8,13 +8,15 @@ import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { User, UserSchema } from "../../model/user_pb";
 import { file_model_user } from "../../model/user_pb";
+import type { UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
+import { file_model_user_setting } from "../../model/user_setting_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBTKHAQoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABJACgxHZXRVc2VyU3RhdHMSGy5hcGkudjIuR2V0VXNlclN0YXRzUmVxdWVzdBoRLmFwaS52Mi5Vc2VyU3RhdHMiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUypwIKC1VzZXJTZXJ2aWNlEjYKCkNyZWF0ZVVzZXISGS5hcGkudjIuQ3JlYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_user_setting]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -147,6 +149,102 @@ export const UserStats_MemoTypeStatsSchema: GenMessage<UserStats_MemoTypeStats> 
   messageDesc(file_api_v2_user, 2, 0);
 
 /**
+ * @generated from message api.v2.GetUserSettingRequest
+ */
+export type GetUserSettingRequest = Message<"api.v2.GetUserSettingRequest"> & {
+  /**
+   * Required. The resource name of the user setting.
+   * Format: users/{user}/settings/{setting}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message api.v2.GetUserSettingRequest.
+ * Use `create(GetUserSettingRequestSchema)` to create a new message.
+ */
+export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 3);
+
+/**
+ * Request message for ListUserSettings method.
+ *
+ * @generated from message api.v2.ListUserSettingsRequest
+ */
+export type ListUserSettingsRequest = Message<"api.v2.ListUserSettingsRequest"> & {
+  /**
+   * Required. The parent resource whose settings will be listed.
+   * Format: users/{user}
+   *
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * Optional. The maximum number of settings to return.
+   * The service may return fewer than this value.
+   * If unspecified, at most 50 settings will be returned.
+   * The maximum value is 1000; values above 1000 will be coerced to 1000.
+   *
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * Optional. A page token, received from a previous `ListUserSettings` call.
+   * Provide this to retrieve the subsequent page.
+   *
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+};
+
+/**
+ * Describes the message api.v2.ListUserSettingsRequest.
+ * Use `create(ListUserSettingsRequestSchema)` to create a new message.
+ */
+export const ListUserSettingsRequestSchema: GenMessage<ListUserSettingsRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 4);
+
+/**
+ * Response message for ListUserSettings method.
+ *
+ * @generated from message api.v2.ListUserSettingsResponse
+ */
+export type ListUserSettingsResponse = Message<"api.v2.ListUserSettingsResponse"> & {
+  /**
+   * The list of user settings.
+   *
+   * @generated from field: repeated model.UserSetting settings = 1;
+   */
+  settings: UserSetting[];
+
+  /**
+   * A token that can be sent as `page_token` to retrieve the next page.
+   * If this field is omitted, there are no subsequent pages.
+   *
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+
+  /**
+   * The total count of settings (may be approximate).
+   *
+   * @generated from field: int32 total_size = 3;
+   */
+  totalSize: number;
+};
+
+/**
+ * Describes the message api.v2.ListUserSettingsResponse.
+ * Use `create(ListUserSettingsResponseSchema)` to create a new message.
+ */
+export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 5);
+
+/**
  * @generated from service api.v2.UserService
  */
 export const UserService: GenService<{
@@ -169,6 +267,26 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof GetUserStatsRequestSchema;
     output: typeof UserStatsSchema;
+  },
+  /**
+   * GetUserSetting returns the user setting.
+   *
+   * @generated from rpc api.v2.UserService.GetUserSetting
+   */
+  getUserSetting: {
+    methodKind: "unary";
+    input: typeof GetUserSettingRequestSchema;
+    output: typeof UserSettingSchema;
+  },
+  /**
+   * ListUserSettings returns a list of user settings.
+   *
+   * @generated from rpc api.v2.UserService.ListUserSettings
+   */
+  listUserSettings: {
+    methodKind: "unary";
+    input: typeof ListUserSettingsRequestSchema;
+    output: typeof ListUserSettingsResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_user, 0);

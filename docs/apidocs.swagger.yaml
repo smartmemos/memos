@@ -130,6 +130,54 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
+  UserSessionClientInfo:
+    type: object
+    properties:
+      userAgent:
+        type: string
+        description: User agent string of the client.
+      ipAddress:
+        type: string
+        description: IP address of the client.
+      deviceType:
+        type: string
+        description: Optional. Device type (e.g., "mobile", "desktop", "tablet").
+      os:
+        type: string
+        description: Optional. Operating system (e.g., "iOS 17.0", "Windows 11").
+      browser:
+        type: string
+        description: Optional. Browser name and version (e.g., "Chrome 119.0").
+  UserSettingAccessTokensSetting:
+    type: object
+    properties:
+      accessTokens:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserAccessToken'
+        description: List of user access tokens.
+    description: User access tokens configuration.
+  UserSettingSessionsSetting:
+    type: object
+    properties:
+      sessions:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserSession'
+        description: List of active user sessions.
+    description: User authentication sessions configuration.
+  UserSettingWebhooksSetting:
+    type: object
+    properties:
+      webhooks:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserWebhook'
+        description: List of user webhooks.
+    description: User webhooks configuration.
   UserStatsMemoTypeStats:
     type: object
     properties:
@@ -146,43 +194,6 @@ definitions:
         type: integer
         format: int32
     description: Memo type statistics.
-  WorkspaceSettingGeneralSetting:
-    type: object
-    properties:
-      theme:
-        type: string
-        description: |-
-          theme is the name of the selected theme.
-          This references a CSS file in the web/public/themes/ directory.
-      disallowUserRegistration:
-        type: boolean
-        description: disallow_user_registration disallows user registration.
-      disallowPasswordAuth:
-        type: boolean
-        description: disallow_password_auth disallows password authentication.
-      additionalScript:
-        type: string
-        description: additional_script is the additional script.
-      additionalStyle:
-        type: string
-        description: additional_style is the additional style.
-      customProfile:
-        $ref: '#/definitions/GeneralSettingCustomProfile'
-        description: custom_profile is the custom profile.
-      weekStartDayOffset:
-        type: integer
-        format: int32
-        description: |-
-          week_start_day_offset is the week start day offset from Sunday.
-          0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday, 4: Thursday, 5: Friday, 6: Saturday
-          Default is Sunday.
-      disallowChangeUsername:
-        type: boolean
-        description: disallow_change_username disallows changing username.
-      disallowChangeNickname:
-        type: boolean
-        description: disallow_change_nickname disallows changing nickname.
-    description: General workspace settings configuration.
   WorkspaceSettingMemoRelatedSetting:
     type: object
     properties:
@@ -825,6 +836,115 @@ definitions:
       updateAt:
         type: string
         format: date-time
+  modelUserAccessToken:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the access token.
+          Format: users/{user}/accessTokens/{access_token}
+      accessToken:
+        type: string
+        description: Output only. The access token value.
+        readOnly: true
+      description:
+        type: string
+        description: The description of the access token.
+      issuedAt:
+        type: string
+        format: date-time
+        description: Output only. The issued timestamp.
+        readOnly: true
+      expiresAt:
+        type: string
+        format: date-time
+        description: Optional. The expiration timestamp.
+    title: User access token message
+  modelUserSession:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the session.
+          Format: users/{user}/sessions/{session}
+      sessionId:
+        type: string
+        description: The session ID.
+      createTime:
+        type: string
+        format: date-time
+        description: The timestamp when the session was created.
+      lastAccessedTime:
+        type: string
+        format: date-time
+        description: |-
+          The timestamp when the session was last accessed.
+          Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+      clientInfo:
+        $ref: '#/definitions/UserSessionClientInfo'
+        description: Client information associated with this session.
+  modelUserSetting:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |-
+          The name of the user setting.
+          Format: users/{user}/settings/{setting}, {setting} is the key for the setting.
+          For example, "users/123/settings/GENERAL" for general settings.
+      generalSetting:
+        $ref: '#/definitions/modelUserSettingGeneralSetting'
+      sessionsSetting:
+        $ref: '#/definitions/UserSettingSessionsSetting'
+      accessTokensSetting:
+        $ref: '#/definitions/UserSettingAccessTokensSetting'
+      webhooksSetting:
+        $ref: '#/definitions/UserSettingWebhooksSetting'
+    title: User settings message
+  modelUserSettingGeneralSetting:
+    type: object
+    properties:
+      locale:
+        type: string
+        description: The preferred locale of the user.
+      appearance:
+        type: string
+        description: The preferred appearance of the user.
+      memoVisibility:
+        type: string
+        description: The default visibility of the memo.
+      theme:
+        type: string
+        description: |-
+          The preferred theme of the user.
+          This references a CSS file in the web/public/themes/ directory.
+          If not set, the default theme will be used.
+    description: General user settings configuration.
+  modelUserWebhook:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The name of the webhook.
+          Format: users/{user}/webhooks/{webhook}
+      url:
+        type: string
+        description: The URL to send the webhook to.
+      displayName:
+        type: string
+        description: Optional. Human-readable name for the webhook.
+      createTime:
+        type: string
+        format: date-time
+        description: The creation time of the webhook.
+      updateTime:
+        type: string
+        format: date-time
+        description: The last update time of the webhook.
+    description: UserWebhook represents a webhook owned by a user.
   modelVisibility:
     type: string
     enum:
@@ -860,12 +980,49 @@ definitions:
           The name of the workspace setting.
           Format: workspace/settings/{setting}
       generalSetting:
-        $ref: '#/definitions/WorkspaceSettingGeneralSetting'
+        $ref: '#/definitions/modelWorkspaceSettingGeneralSetting'
       storageSetting:
         $ref: '#/definitions/WorkspaceSettingStorageSetting'
       memoRelatedSetting:
         $ref: '#/definitions/WorkspaceSettingMemoRelatedSetting'
     description: A workspace setting resource.
+  modelWorkspaceSettingGeneralSetting:
+    type: object
+    properties:
+      theme:
+        type: string
+        description: |-
+          theme is the name of the selected theme.
+          This references a CSS file in the web/public/themes/ directory.
+      disallowUserRegistration:
+        type: boolean
+        description: disallow_user_registration disallows user registration.
+      disallowPasswordAuth:
+        type: boolean
+        description: disallow_password_auth disallows password authentication.
+      additionalScript:
+        type: string
+        description: additional_script is the additional script.
+      additionalStyle:
+        type: string
+        description: additional_style is the additional style.
+      customProfile:
+        $ref: '#/definitions/GeneralSettingCustomProfile'
+        description: custom_profile is the custom profile.
+      weekStartDayOffset:
+        type: integer
+        format: int32
+        description: |-
+          week_start_day_offset is the week start day offset from Sunday.
+          0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday, 4: Thursday, 5: Friday, 6: Saturday
+          Default is Sunday.
+      disallowChangeUsername:
+        type: boolean
+        description: disallow_change_username disallows changing username.
+      disallowChangeNickname:
+        type: boolean
+        description: disallow_change_nickname disallows changing nickname.
+    description: General workspace settings configuration.
   protobufAny:
     type: object
     properties:
@@ -926,6 +1083,25 @@ definitions:
         type: integer
         format: int32
         description: The total count of memos (may be approximate).
+  v2ListUserSettingsResponse:
+    type: object
+    properties:
+      settings:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserSetting'
+        description: The list of user settings.
+      nextPageToken:
+        type: string
+        description: |-
+          A token that can be sent as `page_token` to retrieve the next page.
+          If this field is omitted, there are no subsequent pages.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of settings (may be approximate).
+    description: Response message for ListUserSettings method.
   v2ParseMarkdownResponse:
     type: object
     properties:

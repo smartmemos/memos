@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "model/common.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+// User settings message
+message UserSetting {
+  // The name of the user setting.
+  // Format: users/{user}/settings/{setting}, {setting} is the key for the setting.
+  // For example, "users/123/settings/GENERAL" for general settings.
+  string name = 1;
+
+  oneof value {
+    GeneralSetting general_setting = 2;
+    SessionsSetting sessions_setting = 3;
+    AccessTokensSetting access_tokens_setting = 4;
+    WebhooksSetting webhooks_setting = 5;
+  }
+
+  // Enumeration of user setting keys.
+  enum Key {
+    KEY_UNSPECIFIED = 0;
+    // GENERAL is the key for general user settings.
+    GENERAL = 1;
+    // SESSIONS is the key for user authentication sessions.
+    SESSIONS = 2;
+    // ACCESS_TOKENS is the key for access tokens.
+    ACCESS_TOKENS = 3;
+    // WEBHOOKS is the key for user webhooks.
+    WEBHOOKS = 4;
+  }
+
+  // General user settings configuration.
+  message GeneralSetting {
+    // The preferred locale of the user.
+    string locale = 1;
+    // The preferred appearance of the user.
+    string appearance = 2;
+    // The default visibility of the memo.
+    string memo_visibility = 3;
+    // The preferred theme of the user.
+    // This references a CSS file in the web/public/themes/ directory.
+    // If not set, the default theme will be used.
+    string theme = 4;
+  }
+
+  // User authentication sessions configuration.
+  message SessionsSetting {
+    // List of active user sessions.
+    repeated UserSession sessions = 1;
+  }
+
+  // User access tokens configuration.
+  message AccessTokensSetting {
+    // List of user access tokens.
+    repeated UserAccessToken access_tokens = 1;
+  }
+
+  // User webhooks configuration.
+  message WebhooksSetting {
+    // List of user webhooks.
+    repeated UserWebhook webhooks = 1;
+  }
+}
+
+message UserSession {
+  // The resource name of the session.
+  // Format: users/{user}/sessions/{session}
+  string name = 1;
+
+  // The session ID.
+  string session_id = 2;
+
+  // The timestamp when the session was created.
+  google.protobuf.Timestamp create_time = 3;
+
+  // The timestamp when the session was last accessed.
+  // Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  google.protobuf.Timestamp last_accessed_time = 4;
+
+  // Client information associated with this session.
+  ClientInfo client_info = 5;
+
+  message ClientInfo {
+    // User agent string of the client.
+    string user_agent = 1;
+
+    // IP address of the client.
+    string ip_address = 2;
+
+    // Optional. Device type (e.g., "mobile", "desktop", "tablet").
+    string device_type = 3;
+
+    // Optional. Operating system (e.g., "iOS 17.0", "Windows 11").
+    string os = 4;
+
+    // Optional. Browser name and version (e.g., "Chrome 119.0").
+    string browser = 5;
+  }
+}
+
+// User access token message
+message UserAccessToken {
+  // The resource name of the access token.
+  // Format: users/{user}/accessTokens/{access_token}
+  string name = 1;
+
+  // Output only. The access token value.
+  string access_token = 2;
+
+  // The description of the access token.
+  string description = 3;
+
+  // Output only. The issued timestamp.
+  google.protobuf.Timestamp issued_at = 4;
+
+  // Optional. The expiration timestamp.
+  google.protobuf.Timestamp expires_at = 5;
+}
+
+// UserWebhook represents a webhook owned by a user.
+message UserWebhook {
+  // The name of the webhook.
+  // Format: users/{user}/webhooks/{webhook}
+  string name = 1;
+
+  // The URL to send the webhook to.
+  string url = 2;
+
+  // Optional. Human-readable name for the webhook.
+  string display_name = 3;
+
+  // The creation time of the webhook.
+  google.protobuf.Timestamp create_time = 4;
+
+  // The last update time of the webhook.
+  google.protobuf.Timestamp update_time = 5;
+}

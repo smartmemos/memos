@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "model/user.proto";
+import "model/user_setting.proto";
 
 package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
@@ -13,6 +14,12 @@ service UserService {
 
     // GetUserStats returns statistics for a specific user.
   rpc GetUserStats(GetUserStatsRequest) returns (UserStats) {}
+
+    // GetUserSetting returns the user setting.
+  rpc GetUserSetting(GetUserSettingRequest) returns (model.UserSetting) {}
+
+  // ListUserSettings returns a list of user settings.
+  rpc ListUserSettings(ListUserSettingsRequest) returns (ListUserSettingsResponse) {}
 
 }
 
@@ -55,4 +62,40 @@ message UserStats {
     int32 todo_count = 3;
     int32 undo_count = 4;
   }
+}
+
+message GetUserSettingRequest {
+  // Required. The resource name of the user setting.
+  // Format: users/{user}/settings/{setting}
+  string name = 1;
+}
+
+// Request message for ListUserSettings method.
+message ListUserSettingsRequest {
+  // Required. The parent resource whose settings will be listed.
+  // Format: users/{user}
+  string parent = 1;
+
+  // Optional. The maximum number of settings to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 settings will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // Optional. A page token, received from a previous `ListUserSettings` call.
+  // Provide this to retrieve the subsequent page.
+  string page_token = 3;
+}
+
+// Response message for ListUserSettings method.
+message ListUserSettingsResponse {
+  // The list of user settings.
+  repeated model.UserSetting settings = 1;
+
+  // A token that can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+
+  // The total count of settings (may be approximate).
+  int32 total_size = 3;
 }
