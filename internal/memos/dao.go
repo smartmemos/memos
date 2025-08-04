@@ -28,4 +28,12 @@ type DAO interface {
 	FindMemoByID(ctx context.Context, id int64) (*model.Memo, error)
 	FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error)
 	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
+
+	// SystemSetting
+	CreateSystemSetting(ctx context.Context, m *model.SystemSetting) error
+	UpdateSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter, update map[string]any) (int64, error)
+	UpdateSystemSetting(ctx context.Context, m *model.SystemSetting, update map[string]any) error
+	FindSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) ([]*model.SystemSetting, error)
+	FindSystemSetting(ctx context.Context, filter *model.FindSystemSettingFilter) (*model.SystemSetting, error)
+	DeleteSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) error
 }

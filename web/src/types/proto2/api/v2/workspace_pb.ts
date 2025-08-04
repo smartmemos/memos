@@ -6,7 +6,7 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_model_user } from "../../model/user_pb";
-import type { WorkspaceProfileSchema } from "../../model/workspace_pb";
+import type { WorkspaceProfileSchema, WorkspaceSettingSchema } from "../../model/workspace_pb";
 import { file_model_workspace } from "../../model/workspace_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/workspace.proto.
  */
 export const file_api_v2_workspace: GenFile = /*@__PURE__*/
-  fileDesc("ChZhcGkvdjIvd29ya3NwYWNlLnByb3RvEgZhcGkudjIiHAoaR2V0V29ya3NwYWNlUHJvZmlsZVJlcXVlc3QyaAoQV29ya3NwYWNlU2VydmljZRJUChNHZXRXb3Jrc3BhY2VQcm9maWxlEiIuYXBpLnYyLkdldFdvcmtzcGFjZVByb2ZpbGVSZXF1ZXN0GhcubW9kZWwuV29ya3NwYWNlUHJvZmlsZSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_workspace]);
+  fileDesc("ChZhcGkvdjIvd29ya3NwYWNlLnByb3RvEgZhcGkudjIiHAoaR2V0V29ya3NwYWNlUHJvZmlsZVJlcXVlc3QiKgoaR2V0V29ya3NwYWNlU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCTK+AQoQV29ya3NwYWNlU2VydmljZRJUChNHZXRXb3Jrc3BhY2VQcm9maWxlEiIuYXBpLnYyLkdldFdvcmtzcGFjZVByb2ZpbGVSZXF1ZXN0GhcubW9kZWwuV29ya3NwYWNlUHJvZmlsZSIAElQKE0dldFdvcmtzcGFjZVNldHRpbmcSIi5hcGkudjIuR2V0V29ya3NwYWNlU2V0dGluZ1JlcXVlc3QaFy5tb2RlbC5Xb3Jrc3BhY2VTZXR0aW5nIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_workspace]);
 
 /**
  * Request for workspace profile.
@@ -32,6 +32,28 @@ export const GetWorkspaceProfileRequestSchema: GenMessage<GetWorkspaceProfileReq
   messageDesc(file_api_v2_workspace, 0);
 
 /**
+ * Request message for GetWorkspaceSetting method.
+ *
+ * @generated from message api.v2.GetWorkspaceSettingRequest
+ */
+export type GetWorkspaceSettingRequest = Message<"api.v2.GetWorkspaceSettingRequest"> & {
+  /**
+   * The resource name of the workspace setting.
+   * Format: workspace/settings/{setting}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message api.v2.GetWorkspaceSettingRequest.
+ * Use `create(GetWorkspaceSettingRequestSchema)` to create a new message.
+ */
+export const GetWorkspaceSettingRequestSchema: GenMessage<GetWorkspaceSettingRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_workspace, 1);
+
+/**
  * @generated from service api.v2.WorkspaceService
  */
 export const WorkspaceService: GenService<{
@@ -44,6 +66,16 @@ export const WorkspaceService: GenService<{
     methodKind: "unary";
     input: typeof GetWorkspaceProfileRequestSchema;
     output: typeof WorkspaceProfileSchema;
+  },
+  /**
+   * Gets a workspace setting.
+   *
+   * @generated from rpc api.v2.WorkspaceService.GetWorkspaceSetting
+   */
+  getWorkspaceSetting: {
+    methodKind: "unary";
+    input: typeof GetWorkspaceSettingRequestSchema;
+    output: typeof WorkspaceSettingSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_workspace, 0);

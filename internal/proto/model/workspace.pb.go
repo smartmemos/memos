@@ -803,9 +803,9 @@ const file_model_workspace_proto_rawDesc = "" +
 	"\x05owner\x18\x01 \x01(\tR\x05owner\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x12\n" +
 	"\x04mode\x18\x03 \x01(\tR\x04mode\x12!\n" +
-	"\finstance_url\x18\x06 \x01(\tR\vinstanceUrl\"\xa6\x10\n" +
-	"\x10WorkspaceSetting\x12\x17\n" +
-	"\x04name\x18\x01 \x01(\tB\x03\xe0A\bR\x04name\x12Q\n" +
+	"\finstance_url\x18\x06 \x01(\tR\vinstanceUrl\"\xa1\x10\n" +
+	"\x10WorkspaceSetting\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12Q\n" +
 	"\x0fgeneral_setting\x18\x02 \x01(\v2&.model.WorkspaceSetting.GeneralSettingH\x00R\x0egeneralSetting\x12Q\n" +
 	"\x0fstorage_setting\x18\x03 \x01(\v2&.model.WorkspaceSetting.StorageSettingH\x00R\x0estorageSetting\x12^\n" +
 	"\x14memo_related_setting\x18\x04 \x01(\v2*.model.WorkspaceSetting.MemoRelatedSettingH\x00R\x12memoRelatedSetting\x1a\x93\x05\n" +

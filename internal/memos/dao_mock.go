@@ -93,6 +93,20 @@ func (mr *MockDAOMockRecorder) CreateSession(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSession", reflect.TypeOf((*MockDAO)(nil).CreateSession), ctx, m)
 }
 
+// CreateSystemSetting mocks base method.
+func (m_2 *MockDAO) CreateSystemSetting(ctx context.Context, m *model.SystemSetting) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateSystemSetting", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateSystemSetting indicates an expected call of CreateSystemSetting.
+func (mr *MockDAOMockRecorder) CreateSystemSetting(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSystemSetting", reflect.TypeOf((*MockDAO)(nil).CreateSystemSetting), ctx, m)
+}
+
 // CreateUser mocks base method.
 func (m_2 *MockDAO) CreateUser(ctx context.Context, m *model.User) error {
 	m_2.ctrl.T.Helper()
@@ -119,6 +133,20 @@ func (m *MockDAO) DeleteMemos(ctx context.Context, filter *model.FindMemoFilter)
 func (mr *MockDAOMockRecorder) DeleteMemos(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemos", reflect.TypeOf((*MockDAO)(nil).DeleteMemos), ctx, filter)
+}
+
+// DeleteSystemSettings mocks base method.
+func (m *MockDAO) DeleteSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteSystemSettings", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteSystemSettings indicates an expected call of DeleteSystemSettings.
+func (mr *MockDAOMockRecorder) DeleteSystemSettings(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSystemSettings", reflect.TypeOf((*MockDAO)(nil).DeleteSystemSettings), ctx, filter)
 }
 
 // DeleteUsers mocks base method.
@@ -180,6 +208,36 @@ func (mr *MockDAOMockRecorder) FindMemos(ctx, filter interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), ctx, filter)
 }
 
+// FindSystemSetting mocks base method.
+func (m *MockDAO) FindSystemSetting(ctx context.Context, filter *model.FindSystemSettingFilter) (*model.SystemSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSystemSetting", ctx, filter)
+	ret0, _ := ret[0].(*model.SystemSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSystemSetting indicates an expected call of FindSystemSetting.
+func (mr *MockDAOMockRecorder) FindSystemSetting(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSystemSetting", reflect.TypeOf((*MockDAO)(nil).FindSystemSetting), ctx, filter)
+}
+
+// FindSystemSettings mocks base method.
+func (m *MockDAO) FindSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) ([]*model.SystemSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindSystemSettings", ctx, filter)
+	ret0, _ := ret[0].([]*model.SystemSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindSystemSettings indicates an expected call of FindSystemSettings.
+func (mr *MockDAOMockRecorder) FindSystemSettings(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSystemSettings", reflect.TypeOf((*MockDAO)(nil).FindSystemSettings), ctx, filter)
+}
+
 // FindUser mocks base method.
 func (m *MockDAO) FindUser(ctx context.Context, filter *model.FindUserFilter) (*model.User, error) {
 	m.ctrl.T.Helper()
@@ -223,6 +281,35 @@ func (m *MockDAO) FindUsers(ctx context.Context, filter *model.FindUserFilter) (
 func (mr *MockDAOMockRecorder) FindUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsers", reflect.TypeOf((*MockDAO)(nil).FindUsers), ctx, filter)
+}
+
+// UpdateSystemSetting mocks base method.
+func (m_2 *MockDAO) UpdateSystemSetting(ctx context.Context, m *model.SystemSetting, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateSystemSetting", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSystemSetting indicates an expected call of UpdateSystemSetting.
+func (mr *MockDAOMockRecorder) UpdateSystemSetting(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSystemSetting", reflect.TypeOf((*MockDAO)(nil).UpdateSystemSetting), ctx, m, update)
+}
+
+// UpdateSystemSettings mocks base method.
+func (m *MockDAO) UpdateSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter, update map[string]any) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateSystemSettings", ctx, filter, update)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateSystemSettings indicates an expected call of UpdateSystemSettings.
+func (mr *MockDAOMockRecorder) UpdateSystemSettings(ctx, filter, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSystemSettings", reflect.TypeOf((*MockDAO)(nil).UpdateSystemSettings), ctx, filter, update)
 }
 
 // UpdateUser mocks base method.

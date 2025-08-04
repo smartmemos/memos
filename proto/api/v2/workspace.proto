@@ -12,7 +12,17 @@ service WorkspaceService {
   // Gets the workspace profile.
   rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (model.WorkspaceProfile) {} 
 
+  // Gets a workspace setting.
+  rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (model.WorkspaceSetting) {}
+
 }
 
 // Request for workspace profile.
 message GetWorkspaceProfileRequest {}
+
+// Request message for GetWorkspaceSetting method.
+message GetWorkspaceSettingRequest {
+  // The resource name of the workspace setting.
+  // Format: workspace/settings/{setting}
+  string name = 1;
+}

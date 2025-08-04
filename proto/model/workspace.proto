@@ -27,7 +27,7 @@ message WorkspaceProfile {
 message WorkspaceSetting {
   // The name of the workspace setting.
   // Format: workspace/settings/{setting}
-  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+  string name = 1;
 
   oneof value {
     GeneralSetting general_setting = 2;

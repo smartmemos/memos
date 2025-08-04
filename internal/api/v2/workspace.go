@@ -2,11 +2,14 @@ package v2
 
 import (
 	"context"
+	"errors"
+	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 
 	"github.com/smartmemos/memos/internal/memos"
+	"github.com/smartmemos/memos/internal/memos/model"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
@@ -30,4 +33,63 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *connect
 		InstanceUrl: "http://localhost:8080",
 	}
 	return connect.NewResponse(info), nil
+}
+
+func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *connect.Request[v2pb.GetWorkspaceSettingRequest]) (resp *connect.Response[modelpb.WorkspaceSetting], err error) {
+	parts := strings.Split(req.Msg.Name, "/")
+	if len(parts) != 3 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid request"))
+	}
+
+	switch strings.ToLower(parts[2]) {
+	case "general":
+		setting, err := s.memosService.GetGeneralSetting(ctx)
+		if err != nil {
+			return nil, err
+		}
+		info := &modelpb.WorkspaceSetting{
+			Name: parts[2],
+			Value: &modelpb.WorkspaceSetting_GeneralSetting_{
+				GeneralSetting: convertGeneralSettingToProto(setting),
+			},
+		}
+		return connect.NewResponse(info), nil
+	case "storage":
+		info := &modelpb.WorkspaceSetting{
+			Name: "name",
+		}
+		return connect.NewResponse(info), nil
+	case "memo_related":
+		info := &modelpb.WorkspaceSetting{
+			Name: "name",
+		}
+		return connect.NewResponse(info), nil
+	}
+	info := &modelpb.WorkspaceSetting{
+		Name: "name",
+	}
+	return connect.NewResponse(info), nil
+}
+
+func convertGeneralSettingToProto(setting *model.GeneralSetting) *modelpb.WorkspaceSetting_GeneralSetting {
+	info := &modelpb.WorkspaceSetting_GeneralSetting{
+		Theme:                    setting.Theme,
+		DisallowUserRegistration: setting.DisallowUserRegistration,
+		DisallowPasswordAuth:     setting.DisallowPasswordAuth,
+		AdditionalScript:         setting.AdditionalScript,
+		AdditionalStyle:          setting.AdditionalStyle,
+		WeekStartDayOffset:       int32(setting.WeekStartDayOffset),
+		DisallowChangeUsername:   setting.DisallowChangeUsername,
+		DisallowChangeNickname:   setting.DisallowChangeNickname,
+	}
+	if setting.CustomProfile != nil {
+		info.CustomProfile = &modelpb.WorkspaceSetting_GeneralSetting_CustomProfile{
+			Title:       setting.CustomProfile.Title,
+			Description: setting.CustomProfile.Description,
+			LogoUrl:     setting.CustomProfile.LogoURL,
+			Locale:      setting.CustomProfile.Locale,
+			Appearance:  setting.CustomProfile.Appearance,
+		}
+	}
+	return info
 }

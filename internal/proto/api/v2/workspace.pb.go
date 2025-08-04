@@ -61,14 +61,64 @@ func (*GetWorkspaceProfileRequest) Descriptor() ([]byte, []int) {
 	return file_api_v2_workspace_proto_rawDescGZIP(), []int{0}
 }
 
+// Request message for GetWorkspaceSetting method.
+type GetWorkspaceSettingRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The resource name of the workspace setting.
+	// Format: workspace/settings/{setting}
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWorkspaceSettingRequest) Reset() {
+	*x = GetWorkspaceSettingRequest{}
+	mi := &file_api_v2_workspace_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWorkspaceSettingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWorkspaceSettingRequest) ProtoMessage() {}
+
+func (x *GetWorkspaceSettingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_workspace_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWorkspaceSettingRequest.ProtoReflect.Descriptor instead.
+func (*GetWorkspaceSettingRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_workspace_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetWorkspaceSettingRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_api_v2_workspace_proto protoreflect.FileDescriptor
 
 const file_api_v2_workspace_proto_rawDesc = "" +
 	"\n" +
 	"\x16api/v2/workspace.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\x1a\x15model/workspace.proto\"\x1c\n" +
-	"\x1aGetWorkspaceProfileRequest2h\n" +
+	"\x1aGetWorkspaceProfileRequest\"0\n" +
+	"\x1aGetWorkspaceSettingRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name2\xbe\x01\n" +
 	"\x10WorkspaceService\x12T\n" +
-	"\x13GetWorkspaceProfile\x12\".api.v2.GetWorkspaceProfileRequest\x1a\x17.model.WorkspaceProfile\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"\x13GetWorkspaceProfile\x12\".api.v2.GetWorkspaceProfileRequest\x1a\x17.model.WorkspaceProfile\"\x00\x12T\n" +
+	"\x13GetWorkspaceSetting\x12\".api.v2.GetWorkspaceSettingRequest\x1a\x17.model.WorkspaceSetting\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_workspace_proto_rawDescOnce sync.Once
@@ -82,16 +132,20 @@ func file_api_v2_workspace_proto_rawDescGZIP() []byte {
 	return file_api_v2_workspace_proto_rawDescData
 }
 
-var file_api_v2_workspace_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_api_v2_workspace_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_api_v2_workspace_proto_goTypes = []any{
 	(*GetWorkspaceProfileRequest)(nil), // 0: api.v2.GetWorkspaceProfileRequest
-	(*model.WorkspaceProfile)(nil),     // 1: model.WorkspaceProfile
+	(*GetWorkspaceSettingRequest)(nil), // 1: api.v2.GetWorkspaceSettingRequest
+	(*model.WorkspaceProfile)(nil),     // 2: model.WorkspaceProfile
+	(*model.WorkspaceSetting)(nil),     // 3: model.WorkspaceSetting
 }
 var file_api_v2_workspace_proto_depIdxs = []int32{
 	0, // 0: api.v2.WorkspaceService.GetWorkspaceProfile:input_type -> api.v2.GetWorkspaceProfileRequest
-	1, // 1: api.v2.WorkspaceService.GetWorkspaceProfile:output_type -> model.WorkspaceProfile
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	1, // 1: api.v2.WorkspaceService.GetWorkspaceSetting:input_type -> api.v2.GetWorkspaceSettingRequest
+	2, // 2: api.v2.WorkspaceService.GetWorkspaceProfile:output_type -> model.WorkspaceProfile
+	3, // 3: api.v2.WorkspaceService.GetWorkspaceSetting:output_type -> model.WorkspaceSetting
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -108,7 +162,7 @@ func file_api_v2_workspace_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_workspace_proto_rawDesc), len(file_api_v2_workspace_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

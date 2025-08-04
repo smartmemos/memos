@@ -1,13 +1,13 @@
 package model
 
 const (
-	TableMemo        = "memo"
-	TableResource    = "resource"
-	TableReaction    = "reaction"
-	TableUser        = "user"
-	TableUserSetting = "user_setting"
-	TableSession     = "session"
-	TableSetting     = "workspace_setting"
+	TableMemo          = "memo"
+	TableResource      = "resource"
+	TableReaction      = "reaction"
+	TableUser          = "user"
+	TableUserSetting   = "user_setting"
+	TableSession       = "session"
+	TableSystemSetting = "system_setting"
 )
 
 // Visibility is the type of a visibility.

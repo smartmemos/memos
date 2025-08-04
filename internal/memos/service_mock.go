@@ -80,6 +80,21 @@ func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), ctx, req)
 }
 
+// GetGeneralSetting mocks base method.
+func (m *MockService) GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetGeneralSetting", ctx)
+	ret0, _ := ret[0].(*model.GeneralSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetGeneralSetting indicates an expected call of GetGeneralSetting.
+func (mr *MockServiceMockRecorder) GetGeneralSetting(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGeneralSetting", reflect.TypeOf((*MockService)(nil).GetGeneralSetting), ctx)
+}
+
 // GetMemo mocks base method.
 func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
 	m.ctrl.T.Helper()
@@ -93,6 +108,36 @@ func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*
 func (mr *MockServiceMockRecorder) GetMemo(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemo", reflect.TypeOf((*MockService)(nil).GetMemo), ctx, req)
+}
+
+// GetMemoRelatedSetting mocks base method.
+func (m *MockService) GetMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMemoRelatedSetting", ctx)
+	ret0, _ := ret[0].(*model.MemoRelatedSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMemoRelatedSetting indicates an expected call of GetMemoRelatedSetting.
+func (mr *MockServiceMockRecorder) GetMemoRelatedSetting(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemoRelatedSetting", reflect.TypeOf((*MockService)(nil).GetMemoRelatedSetting), ctx)
+}
+
+// GetStorageSetting mocks base method.
+func (m *MockService) GetStorageSetting(ctx context.Context) (*model.StorageSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStorageSetting", ctx)
+	ret0, _ := ret[0].(*model.StorageSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStorageSetting indicates an expected call of GetStorageSetting.
+func (mr *MockServiceMockRecorder) GetStorageSetting(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageSetting", reflect.TypeOf((*MockService)(nil).GetStorageSetting), ctx)
 }
 
 // GetUserByID mocks base method.
