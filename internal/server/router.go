@@ -6,7 +6,7 @@ import (
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 
-	apiv2 "github.com/smartmemos/memos/internal/api/v2"
+	v2api "github.com/smartmemos/memos/internal/api/v2"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	"github.com/smartmemos/memos/internal/server/interceptor"
 	"github.com/smartmemos/memos/internal/server/middleware"
@@ -20,19 +20,19 @@ func registerHandlers(container do.Injector) http.Handler {
 	// options = append(options, connect.WithCompressMinBytes(1024))
 
 	{
-		path, authHandler := v2pb.NewAuthServiceHandler(do.MustInvoke[*apiv2.AuthService](container), options...)
+		path, authHandler := v2pb.NewAuthServiceHandler(do.MustInvoke[*v2api.AuthService](container), options...)
 		mux.Handle(path, authHandler)
 	}
 	{
-		path, authHandler := v2pb.NewUserServiceHandler(do.MustInvoke[*apiv2.UserService](container), options...)
+		path, authHandler := v2pb.NewUserServiceHandler(do.MustInvoke[*v2api.UserService](container), options...)
 		mux.Handle(path, authHandler)
 	}
 	{
-		path, authHandler := v2pb.NewWorkspaceServiceHandler(do.MustInvoke[*apiv2.WorkspaceService](container), options...)
+		path, authHandler := v2pb.NewWorkspaceServiceHandler(do.MustInvoke[*v2api.WorkspaceService](container), options...)
 		mux.Handle(path, authHandler)
 	}
 	{
-		path, authHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*apiv2.MarkdownService](container), options...)
+		path, authHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*v2api.MarkdownService](container), options...)
 		mux.Handle(path, authHandler)
 	}
 

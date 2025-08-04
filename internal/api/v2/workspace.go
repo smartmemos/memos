@@ -25,9 +25,9 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *connect.Request[v2pb.GetWorkspaceProfileRequest]) (resp *connect.Response[modelpb.WorkspaceProfile], err error) {
 	info := &modelpb.WorkspaceProfile{
 		Owner:       "owner",
-		Version:     "version",
-		Mode:        "mode",
-		InstanceUrl: "instance_url",
+		Version:     "0.1.0",
+		Mode:        "dev",
+		InstanceUrl: "http://localhost:8080",
 	}
 	return connect.NewResponse(info), nil
 }

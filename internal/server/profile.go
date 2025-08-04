@@ -5,6 +5,9 @@ import (
 )
 
 type Profile struct {
-	Addr      string
-	Container do.Injector
+	Container   do.Injector
+	Addr        string
+	Version     string
+	Mode        string
+	InstanceUrl string
 }

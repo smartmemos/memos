@@ -39,8 +39,10 @@ var (
 			serverCfg := config.GetConfig().Server
 			ctx, cancel := context.WithCancel(context.Background())
 			sv, err := server.NewServer(&server.Profile{
-				Addr:      fmt.Sprintf("%s:%d", serverCfg.Host, serverCfg.Port),
 				Container: container,
+				Mode:      "dev",
+				Addr:      fmt.Sprintf("%s:%d", serverCfg.Host, serverCfg.Port),
+				Version:   "0.1.0",
 			})
 			if err != nil {
 				log.Fatalln(err)
