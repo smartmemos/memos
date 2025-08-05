@@ -9,8 +9,8 @@ require (
 	connectrpc.com/connect v1.18.1
 	connectrpc.com/cors v0.1.0
 	github.com/caarlos0/env/v8 v8.0.0
-	github.com/golang-jwt/jwt/v5 v5.2.3
 	github.com/golang/mock v1.6.0
+	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.11.1
 	github.com/samber/do/v2 v2.0.0-beta.7

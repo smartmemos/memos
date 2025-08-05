@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
+	"github.com/google/uuid"
 	"github.com/samber/do/v2"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -77,11 +78,14 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 		return
 	}
 
+	sessionID := uuid.New().String()
+	cookieValue := fmt.Sprintf("%d-%s", user.ID, sessionID)
+
 	resp = connect.NewResponse(&v2pb.CreateSessionResponse{
 		User:           convertUserToProto(user),
 		LastAccessedAt: timestamppb.New(session.CreatedAt),
 	})
-	cookie, err := utils.BuildCookie(ctx, "memos.access-token", "abc123", "", time.Now().Add(time.Hour*24*30))
+	cookie, err := utils.BuildCookie(ctx, "memos.access-token", cookieValue, "", time.Now().Add(time.Hour*24*30))
 	if err != nil {
 		return
 	}

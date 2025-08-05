@@ -4,6 +4,7 @@ info:
   version: version not set
 tags:
   - name: AuthService
+  - name: InboxService
   - name: MarkdownService
   - name: MemoService
   - name: UserService
@@ -249,6 +250,19 @@ definitions:
         $ref: '#/definitions/StorageSettingS3Config'
         description: The S3 config.
     description: Storage configuration settings for workspace attachments.
+  googlerpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
   modelAttachment:
     type: object
     properties:
@@ -380,6 +394,65 @@ definitions:
         type: string
       url:
         type: string
+  modelInbox:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the inbox.
+          Format: inboxes/{inbox}
+      sender:
+        type: string
+        title: |-
+          The sender of the inbox notification.
+          Format: users/{user}
+      receiver:
+        type: string
+        title: |-
+          The receiver of the inbox notification.
+          Format: users/{user}
+      status:
+        $ref: '#/definitions/modelInboxStatus'
+        description: The status of the inbox notification.
+      createTime:
+        type: string
+        format: date-time
+        description: Output only. The creation timestamp.
+        readOnly: true
+      type:
+        $ref: '#/definitions/modelInboxType'
+        description: The type of the inbox notification.
+      activityId:
+        type: integer
+        format: int32
+        description: Optional. The activity ID associated with this inbox notification.
+  modelInboxStatus:
+    type: string
+    enum:
+      - STATUS_UNSPECIFIED
+      - UNREAD
+      - ARCHIVED
+    default: STATUS_UNSPECIFIED
+    description: |-
+      Status enumeration for inbox notifications.
+
+       - STATUS_UNSPECIFIED: Unspecified status.
+       - UNREAD: The notification is unread.
+       - ARCHIVED: The notification is archived.
+  modelInboxType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - MEMO_COMMENT
+      - VERSION_UPDATE
+    default: TYPE_UNSPECIFIED
+    description: |-
+      Type enumeration for inbox notifications.
+
+       - TYPE_UNSPECIFIED: Unspecified type.
+       - MEMO_COMMENT: Memo comment notification.
+       - VERSION_UPDATE: Version update notification.
   modelItalicNode:
     type: object
     properties:
@@ -1029,19 +1102,6 @@ definitions:
       '@type':
         type: string
     additionalProperties: {}
-  rpcStatus:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      details:
-        type: array
-        items:
-          type: object
-          $ref: '#/definitions/protobufAny'
   v2CreateSessionResponse:
     type: object
     properties:
@@ -1065,6 +1125,24 @@ definitions:
         description: |-
           Last time the session was accessed.
           Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  v2ListInboxesResponse:
+    type: object
+    properties:
+      inboxes:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelInbox'
+        description: The list of inboxes.
+      nextPageToken:
+        type: string
+        description: |-
+          A token that can be sent as `page_token` to retrieve the next page.
+          If this field is omitted, there are no subsequent pages.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of inboxes (may be approximate).
   v2ListMemosResponse:
     type: object
     properties:

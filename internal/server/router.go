@@ -35,6 +35,10 @@ func registerHandlers(container do.Injector) http.Handler {
 		path, authHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*v2api.MarkdownService](container), options...)
 		mux.Handle(path, authHandler)
 	}
+	{
+		path, authHandler := v2pb.NewInboxServiceHandler(do.MustInvoke[*v2api.InboxService](container), options...)
+		mux.Handle(path, authHandler)
+	}
 
 	handler := wrapHandler(mux, middleware.CORS, middleware.NewAuth(container).Auth)
 	return handler

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+message Inbox {
+  // The resource name of the inbox.
+  // Format: inboxes/{inbox}
+  string name = 1;
+
+  // The sender of the inbox notification.
+  // Format: users/{user}
+  string sender = 2;
+
+  // The receiver of the inbox notification.
+  // Format: users/{user}
+  string receiver = 3;
+
+  // The status of the inbox notification.
+  Status status = 4;
+
+  // Output only. The creation timestamp.
+  google.protobuf.Timestamp create_time = 5;
+
+  // The type of the inbox notification.
+  Type type = 6;
+
+  // Optional. The activity ID associated with this inbox notification.
+  optional int32 activity_id = 7;
+
+  // Status enumeration for inbox notifications.
+  enum Status {
+    // Unspecified status.
+    STATUS_UNSPECIFIED = 0;
+    // The notification is unread.
+    UNREAD = 1;
+    // The notification is archived.
+    ARCHIVED = 2;
+  }
+
+  // Type enumeration for inbox notifications.
+  enum Type {
+    // Unspecified type.
+    TYPE_UNSPECIFIED = 0;
+    // Memo comment notification.
+    MEMO_COMMENT = 1;
+    // Version update notification.
+    VERSION_UPDATE = 2;
+  }
+}

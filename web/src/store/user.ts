@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 import { authServiceClient } from "@/grpc";
 import { inboxServiceClient, userServiceClient } from "@/grpcweb";
 import { userServiceClient as userServiceClientV2 } from "@/grpc";
+import { inboxServiceClient as inboxServiceClientV2 } from "@/grpc";
 import { Inbox } from "@/types/proto/api/v1/inbox_service";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import {
@@ -206,7 +207,7 @@ const userStore = (() => {
       throw new Error("No current user available");
     }
 
-    const { inboxes } = await inboxServiceClient.listInboxes({
+    const { inboxes } = await inboxServiceClientV2.listInboxes({
       parent: state.currentUser,
     });
 

@@ -8,6 +8,7 @@ const (
 	TableUserSetting   = "user_setting"
 	TableSession       = "session"
 	TableSystemSetting = "system_setting"
+	TableInbox         = "inbox"
 )
 
 // Visibility is the type of a visibility.

@@ -10,6 +10,7 @@ func Init(i do.Injector) {
 	// api v2
 	do.Provide(i, apiv2.NewAuthService)
 	do.Provide(i, apiv2.NewUserService)
+	do.Provide(i, apiv2.NewInboxService)
 	do.Provide(i, apiv2.NewWorkspaceService)
 	do.Provide(i, apiv2.NewMarkdownService)
 }

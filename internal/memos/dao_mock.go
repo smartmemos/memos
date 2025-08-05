@@ -35,6 +35,21 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
 }
 
+// CountInboxes mocks base method.
+func (m *MockDAO) CountInboxes(ctx context.Context, filter *model.FindInboxFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountInboxes", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountInboxes indicates an expected call of CountInboxes.
+func (mr *MockDAOMockRecorder) CountInboxes(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountInboxes", reflect.TypeOf((*MockDAO)(nil).CountInboxes), ctx, filter)
+}
+
 // CountMemos mocks base method.
 func (m *MockDAO) CountMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error) {
 	m.ctrl.T.Helper()
@@ -63,6 +78,20 @@ func (m *MockDAO) CountUsers(ctx context.Context, filter *model.FindUserFilter) 
 func (mr *MockDAOMockRecorder) CountUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountUsers", reflect.TypeOf((*MockDAO)(nil).CountUsers), ctx, filter)
+}
+
+// CreateInbox mocks base method.
+func (m_2 *MockDAO) CreateInbox(ctx context.Context, m *model.Inbox) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateInbox", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateInbox indicates an expected call of CreateInbox.
+func (mr *MockDAOMockRecorder) CreateInbox(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInbox", reflect.TypeOf((*MockDAO)(nil).CreateInbox), ctx, m)
 }
 
 // CreateMemo mocks base method.
@@ -135,6 +164,20 @@ func (mr *MockDAOMockRecorder) CreateUserSetting(ctx, m interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserSetting", reflect.TypeOf((*MockDAO)(nil).CreateUserSetting), ctx, m)
 }
 
+// DeleteInboxes mocks base method.
+func (m *MockDAO) DeleteInboxes(ctx context.Context, filter *model.FindInboxFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteInboxes", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteInboxes indicates an expected call of DeleteInboxes.
+func (mr *MockDAOMockRecorder) DeleteInboxes(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteInboxes", reflect.TypeOf((*MockDAO)(nil).DeleteInboxes), ctx, filter)
+}
+
 // DeleteMemos mocks base method.
 func (m *MockDAO) DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error {
 	m.ctrl.T.Helper()
@@ -189,6 +232,51 @@ func (m *MockDAO) DeleteUsers(ctx context.Context, filter *model.FindUserFilter)
 func (mr *MockDAOMockRecorder) DeleteUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUsers", reflect.TypeOf((*MockDAO)(nil).DeleteUsers), ctx, filter)
+}
+
+// FindInbox mocks base method.
+func (m *MockDAO) FindInbox(ctx context.Context, filter *model.FindInboxFilter) (*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindInbox", ctx, filter)
+	ret0, _ := ret[0].(*model.Inbox)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindInbox indicates an expected call of FindInbox.
+func (mr *MockDAOMockRecorder) FindInbox(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInbox", reflect.TypeOf((*MockDAO)(nil).FindInbox), ctx, filter)
+}
+
+// FindInboxByID mocks base method.
+func (m *MockDAO) FindInboxByID(ctx context.Context, id int64) (*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindInboxByID", ctx, id)
+	ret0, _ := ret[0].(*model.Inbox)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindInboxByID indicates an expected call of FindInboxByID.
+func (mr *MockDAOMockRecorder) FindInboxByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxByID", reflect.TypeOf((*MockDAO)(nil).FindInboxByID), ctx, id)
+}
+
+// FindInboxes mocks base method.
+func (m *MockDAO) FindInboxes(ctx context.Context, filter *model.FindInboxFilter) ([]*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindInboxes", ctx, filter)
+	ret0, _ := ret[0].([]*model.Inbox)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindInboxes indicates an expected call of FindInboxes.
+func (mr *MockDAOMockRecorder) FindInboxes(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxes", reflect.TypeOf((*MockDAO)(nil).FindInboxes), ctx, filter)
 }
 
 // FindMemo mocks base method.
@@ -339,6 +427,35 @@ func (m *MockDAO) FindUsers(ctx context.Context, filter *model.FindUserFilter) (
 func (mr *MockDAOMockRecorder) FindUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsers", reflect.TypeOf((*MockDAO)(nil).FindUsers), ctx, filter)
+}
+
+// UpdateInbox mocks base method.
+func (m_2 *MockDAO) UpdateInbox(ctx context.Context, m *model.Inbox, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateInbox", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateInbox indicates an expected call of UpdateInbox.
+func (mr *MockDAOMockRecorder) UpdateInbox(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateInbox", reflect.TypeOf((*MockDAO)(nil).UpdateInbox), ctx, m, update)
+}
+
+// UpdateInboxes mocks base method.
+func (m *MockDAO) UpdateInboxes(ctx context.Context, filter *model.FindInboxFilter, update map[string]any) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateInboxes", ctx, filter, update)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateInboxes indicates an expected call of UpdateInboxes.
+func (mr *MockDAOMockRecorder) UpdateInboxes(ctx, filter, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateInboxes", reflect.TypeOf((*MockDAO)(nil).UpdateInboxes), ctx, filter, update)
 }
 
 // UpdateSystemSetting mocks base method.

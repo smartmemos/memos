@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "model/inbox.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service InboxService {
+    // ListInboxes lists inboxes for a user.
+  rpc ListInboxes(ListInboxesRequest) returns (ListInboxesResponse) {}
+}
+
+message ListInboxesRequest {
+  // Required. The parent resource whose inboxes will be listed.
+  // Format: users/{user}
+  string parent = 1;
+
+  // Optional. The maximum number of inboxes to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 inboxes will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // Optional. A page token, received from a previous `ListInboxes` call.
+  // Provide this to retrieve the subsequent page.
+  string page_token = 3;
+
+  // Optional. Filter to apply to the list results.
+  // Example: "status=UNREAD" or "type=MEMO_COMMENT"
+  // Supported operators: =, !=
+  // Supported fields: status, type, sender, create_time
+  string filter = 4;
+
+  // Optional. The order to sort results by.
+  // Example: "create_time desc" or "status asc"
+  string order_by = 5;
+}
+
+message ListInboxesResponse {
+  // The list of inboxes.
+  repeated model.Inbox inboxes = 1;
+
+  // A token that can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+
+  // The total count of inboxes (may be approximate).
+  int32 total_size = 3;
+}

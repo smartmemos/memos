@@ -34,4 +34,7 @@ type Service interface {
 	GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (*model.UserSetting, error)
 	// GetUserSettings gets the user settings.
 	GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error)
+
+	// ListInboxes lists the inboxes.
+	ListInboxes(ctx context.Context, req *model.ListInboxesRequest) (int64, []*model.Inbox, error)
 }

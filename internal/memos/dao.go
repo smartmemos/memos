@@ -18,6 +18,16 @@ type DAO interface {
 	FindUser(ctx context.Context, filter *model.FindUserFilter) (*model.User, error)
 	DeleteUsers(ctx context.Context, filter *model.FindUserFilter) error
 
+	// Inbox
+	CreateInbox(ctx context.Context, m *model.Inbox) error
+	UpdateInboxes(ctx context.Context, filter *model.FindInboxFilter, update map[string]any) (int64, error)
+	UpdateInbox(ctx context.Context, m *model.Inbox, update map[string]any) error
+	CountInboxes(ctx context.Context, filter *model.FindInboxFilter) (int64, error)
+	FindInboxes(ctx context.Context, filter *model.FindInboxFilter) ([]*model.Inbox, error)
+	FindInboxByID(ctx context.Context, id int64) (*model.Inbox, error)
+	FindInbox(ctx context.Context, filter *model.FindInboxFilter) (*model.Inbox, error)
+	DeleteInboxes(ctx context.Context, filter *model.FindInboxFilter) error
+
 	// Session
 	CreateSession(ctx context.Context, m *model.Session) error
 
