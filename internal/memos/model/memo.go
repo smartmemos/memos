@@ -15,7 +15,7 @@ type Memo struct {
 	Tags         []string    `gorm:"serializer:json"`
 	Pinned       bool
 	Visibility   Visibility
-	Status       string
+	RowStatus    string
 }
 
 func (Memo) TableName() string {

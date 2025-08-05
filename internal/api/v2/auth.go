@@ -85,11 +85,17 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 		User:           convertUserToProto(user),
 		LastAccessedAt: timestamppb.New(session.CreatedAt),
 	})
-	cookie, err := utils.BuildCookie(ctx, "memos.access-token", cookieValue, "", time.Now().Add(time.Hour*24*30))
+
+	cookie1, err := utils.BuildCookie(ctx, "memos.access-token", cookieValue, "", time.Now().Add(time.Hour*24*30))
 	if err != nil {
 		return
 	}
-	resp.Header().Set("Set-Cookie", cookie)
+	cookie2, err := utils.BuildCookie(ctx, "user_session", cookieValue, "", time.Now().Add(time.Hour*24*30))
+	if err != nil {
+		return
+	}
+	resp.Header().Add("Set-Cookie", cookie1)
+	resp.Header().Add("Set-Cookie", cookie2)
 	return
 }
 

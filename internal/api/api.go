@@ -11,6 +11,7 @@ func Init(i do.Injector) {
 	do.Provide(i, apiv2.NewAuthService)
 	do.Provide(i, apiv2.NewUserService)
 	do.Provide(i, apiv2.NewInboxService)
+	do.Provide(i, apiv2.NewMemoService)
 	do.Provide(i, apiv2.NewWorkspaceService)
 	do.Provide(i, apiv2.NewMarkdownService)
 }

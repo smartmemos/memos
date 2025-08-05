@@ -28,6 +28,10 @@ func registerHandlers(container do.Injector) http.Handler {
 		mux.Handle(path, authHandler)
 	}
 	{
+		path, authHandler := v2pb.NewMemoServiceHandler(do.MustInvoke[*v2api.MemoService](container), options...)
+		mux.Handle(path, authHandler)
+	}
+	{
 		path, authHandler := v2pb.NewWorkspaceServiceHandler(do.MustInvoke[*v2api.WorkspaceService](container), options...)
 		mux.Handle(path, authHandler)
 	}

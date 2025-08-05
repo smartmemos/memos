@@ -8,7 +8,7 @@ import { DEFAULT_LIST_MEMOS_PAGE_SIZE } from "@/helpers/consts";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { Routes } from "@/router";
 import { memoStore, viewStore } from "@/store";
-import { State } from "@/types/proto/api/v1/common";
+import { State as StateV2 } from "@/types/proto2/model/common_pb";
 import { Memo } from "@/types/proto/api/v1/memo_service";
 import { useTranslate } from "@/utils/i18n";
 import Empty from "../Empty";
@@ -47,7 +47,7 @@ const PagedMemoList = observer((props: Props) => {
 
     try {
       const response = await memoStore.fetchMemos({
-        state: props.state || State.NORMAL,
+        state: props.state || StateV2.NORMAL,
         orderBy: props.orderBy || "display_time desc",
         filter: props.filter,
         pageSize: props.pageSize || DEFAULT_LIST_MEMOS_PAGE_SIZE,

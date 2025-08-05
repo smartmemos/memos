@@ -99,6 +99,7 @@ func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.Get
 func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	info = &modelpb.Memo{
 		Name:       fmt.Sprintf("memos/%d", memo.ID),
+		State:      modelpb.State(modelpb.State_value[memo.RowStatus]),
 		Content:    memo.Content,
 		CreateTime: timestamppb.New(memo.CreatedAt),
 		UpdateTime: timestamppb.New(memo.UpdatedAt),
@@ -111,6 +112,5 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	plainText := renderer.NewStringRenderer().Render(nodes)
 	info.Snippet = lo.If(len(plainText) > 64, lo.Substring(plainText, 0, 64)+"...").Else(plainText)
 	info.Nodes = convertFromASTNodes(nodes)
-
 	return
 }

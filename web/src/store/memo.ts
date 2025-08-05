@@ -1,11 +1,13 @@
 import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
+import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
 import { memoServiceClient } from "@/grpcweb";
 import { CreateMemoRequest, ListMemosRequest, Memo } from "@/types/proto/api/v1/memo_service";
+import {ListMemosRequest as ListMemosRequestV2, Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 
 class LocalState {
   stateId: string = uniqueId();
-  memoMapByName: Record<string, Memo> = {};
+  memoMapByName: Record<string, MemoV2> = {};
   currentRequest: AbortController | null = null;
 
   constructor() {
@@ -32,7 +34,7 @@ class LocalState {
 const memoStore = (() => {
   const state = new LocalState();
 
-  const fetchMemos = async (request: Partial<ListMemosRequest>) => {
+  const fetchMemos = async (request: Partial<ListMemosRequestV2>) => {
     if (state.currentRequest) {
       state.currentRequest.abort();
     }
@@ -41,13 +43,12 @@ const memoStore = (() => {
     state.setPartial({ currentRequest: controller });
 
     try {
-      const { memos, nextPageToken } = await memoServiceClient.listMemos(
+      const { memos, nextPageToken } = await memoServiceClientV2.listMemos(
         {
           ...request,
         },
         { signal: controller.signal },
       );
-
       if (!controller.signal.aborted) {
         const memoMap = request.pageToken ? { ...state.memoMapByName } : {};
         for (const memo of memos) {
