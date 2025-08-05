@@ -169,7 +169,8 @@ const userStore = (() => {
     }
 
     const settingName = `${state.currentUser}/settings/${UserSetting_Key.GENERAL}`;
-    const userSetting = await userServiceClient.getUserSetting({ name: settingName });
+    const userSetting = await userServiceClientV2.getUserSetting({ name: settingName });
+    console.log("get user setting", userSetting);
 
     state.setPartial({
       userGeneralSetting: userSetting.generalSetting,
@@ -183,7 +184,8 @@ const userStore = (() => {
       return;
     }
 
-    const { settings } = await userServiceClient.listUserSettings({ parent: state.currentUser });
+    const { settings } = await userServiceClientV2.listUserSettings({ parent: state.currentUser });
+    console.log("list user settings", settings);
 
     // Extract and store each setting type
     const generalSetting = settings.find((s) => s.generalSetting)?.generalSetting;
