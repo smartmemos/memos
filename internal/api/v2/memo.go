@@ -97,13 +97,25 @@ func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb
 }
 
 func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
+	displayTs := memo.CreatedAt
+
 	info = &modelpb.Memo{
-		Name:       fmt.Sprintf("memos/%d", memo.ID),
-		State:      modelpb.State(modelpb.State_value[memo.RowStatus]),
-		Content:    memo.Content,
-		CreateTime: timestamppb.New(memo.CreatedAt),
-		UpdateTime: timestamppb.New(memo.UpdatedAt),
+		Name:        fmt.Sprintf("%s%d", MemoNamePrefix, memo.ID),
+		State:       modelpb.State(modelpb.State_value[memo.RowStatus]),
+		Creator:     fmt.Sprintf("%s%d", UserNamePrefix, memo.CreatorID),
+		Content:     memo.Content,
+		DisplayTime: timestamppb.New(displayTs),
+		Visibility:  modelpb.Visibility(modelpb.Visibility_value[string(memo.Visibility)]),
+		Pinned:      memo.Pinned,
+		CreateTime:  timestamppb.New(memo.CreatedAt),
+		UpdateTime:  timestamppb.New(memo.UpdatedAt),
 	}
+	if memo.Payload != nil {
+		info.Tags = memo.Payload.Tags
+		info.Property = convertMemoPropertyToProto(memo.Payload.Property)
+		info.Location = convertLocationToProto(memo.Payload.Location)
+	}
+
 	nodes, err := parser.Parse(tokenizer.Tokenize(memo.Content))
 	if err != nil {
 		err = errors.Wrap(err, "failed to parse content")
@@ -113,4 +125,27 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	info.Snippet = lo.If(len(plainText) > 64, lo.Substring(plainText, 0, 64)+"...").Else(plainText)
 	info.Nodes = convertFromASTNodes(nodes)
 	return
+}
+
+func convertMemoPropertyToProto(property *model.MemoPayloadProperty) *modelpb.Memo_Property {
+	if property == nil {
+		return nil
+	}
+	return &modelpb.Memo_Property{
+		HasLink:            property.HasLink,
+		HasTaskList:        property.HasTaskList,
+		HasCode:            property.HasCode,
+		HasIncompleteTasks: property.HasIncompleteTasks,
+	}
+}
+
+func convertLocationToProto(location *model.MemoPayloadLocation) *modelpb.Location {
+	if location == nil {
+		return nil
+	}
+	return &modelpb.Location{
+		Placeholder: location.Placeholder,
+		Latitude:    location.Latitude,
+		Longitude:   location.Longitude,
+	}
 }

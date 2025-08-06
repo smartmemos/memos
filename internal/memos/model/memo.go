@@ -11,8 +11,8 @@ type Memo struct {
 	RelationType RelationType
 	CreatorID    int64
 	Content      string
-	Payload      MemoPayload `gorm:"serializer:json"`
-	Tags         []string    `gorm:"serializer:json"`
+	Payload      *MemoPayload `gorm:"serializer:json"`
+	Tags         []string     `gorm:"serializer:json"`
 	Pinned       bool
 	Visibility   Visibility
 	RowStatus    string
