@@ -120,6 +120,58 @@ func (Direction) EnumDescriptor() ([]byte, []int) {
 	return file_model_common_proto_rawDescGZIP(), []int{1}
 }
 
+type Visibility int32
+
+const (
+	Visibility_VISIBILITY_UNSPECIFIED Visibility = 0
+	Visibility_PRIVATE                Visibility = 1
+	Visibility_PROTECTED              Visibility = 2
+	Visibility_PUBLIC                 Visibility = 3
+)
+
+// Enum value maps for Visibility.
+var (
+	Visibility_name = map[int32]string{
+		0: "VISIBILITY_UNSPECIFIED",
+		1: "PRIVATE",
+		2: "PROTECTED",
+		3: "PUBLIC",
+	}
+	Visibility_value = map[string]int32{
+		"VISIBILITY_UNSPECIFIED": 0,
+		"PRIVATE":                1,
+		"PROTECTED":              2,
+		"PUBLIC":                 3,
+	}
+)
+
+func (x Visibility) Enum() *Visibility {
+	p := new(Visibility)
+	*p = x
+	return p
+}
+
+func (x Visibility) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Visibility) Descriptor() protoreflect.EnumDescriptor {
+	return file_model_common_proto_enumTypes[2].Descriptor()
+}
+
+func (Visibility) Type() protoreflect.EnumType {
+	return &file_model_common_proto_enumTypes[2]
+}
+
+func (x Visibility) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Visibility.Descriptor instead.
+func (Visibility) EnumDescriptor() ([]byte, []int) {
+	return file_model_common_proto_rawDescGZIP(), []int{2}
+}
+
 // Used internally for obfuscating the page token.
 type PageToken struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -173,6 +225,69 @@ func (x *PageToken) GetOffset() int32 {
 	return 0
 }
 
+type Location struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// A placeholder text for the location.
+	Placeholder string `protobuf:"bytes,1,opt,name=placeholder,proto3" json:"placeholder,omitempty"`
+	// The latitude of the location.
+	Latitude float64 `protobuf:"fixed64,2,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	// The longitude of the location.
+	Longitude     float64 `protobuf:"fixed64,3,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Location) Reset() {
+	*x = Location{}
+	mi := &file_model_common_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Location) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Location) ProtoMessage() {}
+
+func (x *Location) ProtoReflect() protoreflect.Message {
+	mi := &file_model_common_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Location.ProtoReflect.Descriptor instead.
+func (*Location) Descriptor() ([]byte, []int) {
+	return file_model_common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Location) GetPlaceholder() string {
+	if x != nil {
+		return x.Placeholder
+	}
+	return ""
+}
+
+func (x *Location) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *Location) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
 var File_model_common_proto protoreflect.FileDescriptor
 
 const file_model_common_proto_rawDesc = "" +
@@ -180,7 +295,11 @@ const file_model_common_proto_rawDesc = "" +
 	"\x12model/common.proto\x12\x05model\x1a\x1fgoogle/protobuf/timestamp.proto\"9\n" +
 	"\tPageToken\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset*8\n" +
+	"\x06offset\x18\x02 \x01(\x05R\x06offset\"f\n" +
+	"\bLocation\x12 \n" +
+	"\vplaceholder\x18\x01 \x01(\tR\vplaceholder\x12\x1a\n" +
+	"\blatitude\x18\x02 \x01(\x01R\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\x03 \x01(\x01R\tlongitude*8\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
@@ -189,7 +308,14 @@ const file_model_common_proto_rawDesc = "" +
 	"\tDirection\x12\x19\n" +
 	"\x15DIRECTION_UNSPECIFIED\x10\x00\x12\a\n" +
 	"\x03ASC\x10\x01\x12\b\n" +
-	"\x04DESC\x10\x02B2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
+	"\x04DESC\x10\x02*P\n" +
+	"\n" +
+	"Visibility\x12\x1a\n" +
+	"\x16VISIBILITY_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aPRIVATE\x10\x01\x12\r\n" +
+	"\tPROTECTED\x10\x02\x12\n" +
+	"\n" +
+	"\x06PUBLIC\x10\x03B2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
 
 var (
 	file_model_common_proto_rawDescOnce sync.Once
@@ -203,12 +329,14 @@ func file_model_common_proto_rawDescGZIP() []byte {
 	return file_model_common_proto_rawDescData
 }
 
-var file_model_common_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_model_common_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_model_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_model_common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_model_common_proto_goTypes = []any{
 	(State)(0),        // 0: model.State
 	(Direction)(0),    // 1: model.Direction
-	(*PageToken)(nil), // 2: model.PageToken
+	(Visibility)(0),   // 2: model.Visibility
+	(*PageToken)(nil), // 3: model.PageToken
+	(*Location)(nil),  // 4: model.Location
 }
 var file_model_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -228,8 +356,8 @@ func file_model_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_common_proto_rawDesc), len(file_model_common_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   1,
+			NumEnums:      3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

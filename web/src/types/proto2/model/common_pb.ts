@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file model/common.proto.
  */
 export const file_model_common: GenFile = /*@__PURE__*/
-  fileDesc("ChJtb2RlbC9jb21tb24ucHJvdG8SBW1vZGVsIioKCVBhZ2VUb2tlbhINCgVsaW1pdBgBIAEoBRIOCgZvZmZzZXQYAiABKAUqOAoFU3RhdGUSFQoRU1RBVEVfVU5TUEVDSUZJRUQQABIKCgZOT1JNQUwQARIMCghBUkNISVZFRBACKjkKCURpcmVjdGlvbhIZChVESVJFQ1RJT05fVU5TUEVDSUZJRUQQABIHCgNBU0MQARIICgRERVNDEAJCMlowZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL21vZGVsYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJtb2RlbC9jb21tb24ucHJvdG8SBW1vZGVsIioKCVBhZ2VUb2tlbhINCgVsaW1pdBgBIAEoBRIOCgZvZmZzZXQYAiABKAUiRAoITG9jYXRpb24SEwoLcGxhY2Vob2xkZXIYASABKAkSEAoIbGF0aXR1ZGUYAiABKAESEQoJbG9uZ2l0dWRlGAMgASgBKjgKBVN0YXRlEhUKEVNUQVRFX1VOU1BFQ0lGSUVEEAASCgoGTk9STUFMEAESDAoIQVJDSElWRUQQAio5CglEaXJlY3Rpb24SGQoVRElSRUNUSU9OX1VOU1BFQ0lGSUVEEAASBwoDQVNDEAESCAoEREVTQxACKlAKClZpc2liaWxpdHkSGgoWVklTSUJJTElUWV9VTlNQRUNJRklFRBAAEgsKB1BSSVZBVEUQARINCglQUk9URUNURUQQAhIKCgZQVUJMSUMQA0IyWjBnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vbW9kZWxiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * Used internally for obfuscating the page token.
@@ -36,6 +36,39 @@ export type PageToken = Message<"model.PageToken"> & {
  */
 export const PageTokenSchema: GenMessage<PageToken> = /*@__PURE__*/
   messageDesc(file_model_common, 0);
+
+/**
+ * @generated from message model.Location
+ */
+export type Location = Message<"model.Location"> & {
+  /**
+   * A placeholder text for the location.
+   *
+   * @generated from field: string placeholder = 1;
+   */
+  placeholder: string;
+
+  /**
+   * The latitude of the location.
+   *
+   * @generated from field: double latitude = 2;
+   */
+  latitude: number;
+
+  /**
+   * The longitude of the location.
+   *
+   * @generated from field: double longitude = 3;
+   */
+  longitude: number;
+};
+
+/**
+ * Describes the message model.Location.
+ * Use `create(LocationSchema)` to create a new message.
+ */
+export const LocationSchema: GenMessage<Location> = /*@__PURE__*/
+  messageDesc(file_model_common, 1);
 
 /**
  * @generated from enum model.State
@@ -88,4 +121,35 @@ export enum Direction {
  */
 export const DirectionSchema: GenEnum<Direction> = /*@__PURE__*/
   enumDesc(file_model_common, 1);
+
+/**
+ * @generated from enum model.Visibility
+ */
+export enum Visibility {
+  /**
+   * @generated from enum value: VISIBILITY_UNSPECIFIED = 0;
+   */
+  VISIBILITY_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PRIVATE = 1;
+   */
+  PRIVATE = 1,
+
+  /**
+   * @generated from enum value: PROTECTED = 2;
+   */
+  PROTECTED = 2,
+
+  /**
+   * @generated from enum value: PUBLIC = 3;
+   */
+  PUBLIC = 3,
+}
+
+/**
+ * Describes the enum model.Visibility.
+ */
+export const VisibilitySchema: GenEnum<Visibility> = /*@__PURE__*/
+  enumDesc(file_model_common, 2);
 

@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
 import { memoServiceClient } from "@/grpcweb";
 import { CreateMemoRequest, ListMemosRequest, Memo } from "@/types/proto/api/v1/memo_service";
-import {ListMemosRequest as ListMemosRequestV2, Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import {ListMemosRequest as ListMemosRequestV2, CreateMemoRequest as CreateMemoRequestV2,Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 
 class LocalState {
   stateId: string = uniqueId();
@@ -98,8 +98,8 @@ const memoStore = (() => {
     return state.memoMapByName[name];
   };
 
-  const createMemo = async (request: CreateMemoRequest) => {
-    const memo = await memoServiceClient.createMemo(request);
+  const createMemo = async (request: CreateMemoRequestV2) => {
+    const memo = await memoServiceClientV2.createMemo(request);
     const memoMap = { ...state.memoMapByName };
     memoMap[memo.name] = memo;
     state.setPartial({

@@ -22,3 +22,21 @@ enum Direction {
   ASC = 1;
   DESC = 2;
 }
+
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+  PRIVATE = 1;
+  PROTECTED = 2;
+  PUBLIC = 3;
+}
+
+message Location {
+  // A placeholder text for the location.
+  string placeholder = 1;
+
+  // The latitude of the location.
+  double latitude = 2;
+
+  // The longitude of the location.
+  double longitude = 3;
+}

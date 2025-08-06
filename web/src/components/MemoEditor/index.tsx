@@ -17,6 +17,8 @@ import { memoStore, attachmentStore, userStore, workspaceStore } from "@/store";
 import { extractMemoIdFromName } from "@/store/common";
 import { Attachment } from "@/types/proto/api/v1/attachment_service";
 import { Location, Memo, MemoRelation, MemoRelation_Type, Visibility } from "@/types/proto/api/v1/memo_service";
+import { CreateMemoRequest as CreateMemoRequestV2, Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import { Visibility as VisibilityV2 } from "@/types/proto2/model/common_pb";
 import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityFromString } from "@/utils/memo";
 import DateTimeInput from "../DateTimeInput";
@@ -46,7 +48,7 @@ export interface Props {
 }
 
 interface State {
-  memoVisibility: Visibility;
+  memoVisibility: VisibilityV2;
   attachmentList: Attachment[];
   relationList: MemoRelation[];
   location: Location | undefined;
@@ -62,7 +64,7 @@ const MemoEditor = observer((props: Props) => {
   const { i18n } = useTranslation();
   const currentUser = useCurrentUser();
   const [state, setState] = useState<State>({
-    memoVisibility: Visibility.PRIVATE,
+    memoVisibility: VisibilityV2.PRIVATE,
     attachmentList: [],
     relationList: [],
     location: undefined,
@@ -98,9 +100,9 @@ const MemoEditor = observer((props: Props) => {
   }, [autoFocus]);
 
   useAsyncEffect(async () => {
-    let visibility = convertVisibilityFromString(userGeneralSetting?.memoVisibility || "PRIVATE");
-    if (workspaceMemoRelatedSetting.disallowPublicVisibility && visibility === Visibility.PUBLIC) {
-      visibility = Visibility.PROTECTED;
+    let visibility = convertVisibilityFromString(userGeneralSetting?.memoVisibility || VisibilityV2.PRIVATE);
+    if (workspaceMemoRelatedSetting.disallowPublicVisibility && visibility === VisibilityV2.PUBLIC) {
+      visibility = VisibilityV2.PROTECTED;
     }
     if (parentMemoName) {
       const parentMemo = await memoStore.getOrFetchMemoByName(parentMemoName);
@@ -385,21 +387,22 @@ const MemoEditor = observer((props: Props) => {
           }
         }
       } else {
+        console.log("create memo visibility", state.memoVisibility);
         // Create memo or memo comment.
         const request = !parentMemoName
           ? memoStore.createMemo({
-              memo: Memo.fromPartial({
+              memo: {
                 content,
                 visibility: state.memoVisibility,
                 attachments: state.attachmentList,
                 relations: state.relationList,
                 location: state.location,
-              }),
+              },
               // Optional fields can be omitted
               memoId: "",
               validateOnly: false,
               requestId: "",
-            })
+            } as Partial<CreateMemoRequestV2>)
           : memoServiceClient
               .createMemoComment({
                 name: parentMemoName,

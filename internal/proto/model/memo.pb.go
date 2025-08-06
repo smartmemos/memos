@@ -23,58 +23,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Visibility int32
-
-const (
-	Visibility_VISIBILITY_UNSPECIFIED Visibility = 0
-	Visibility_PRIVATE                Visibility = 1
-	Visibility_PROTECTED              Visibility = 2
-	Visibility_PUBLIC                 Visibility = 3
-)
-
-// Enum value maps for Visibility.
-var (
-	Visibility_name = map[int32]string{
-		0: "VISIBILITY_UNSPECIFIED",
-		1: "PRIVATE",
-		2: "PROTECTED",
-		3: "PUBLIC",
-	}
-	Visibility_value = map[string]int32{
-		"VISIBILITY_UNSPECIFIED": 0,
-		"PRIVATE":                1,
-		"PROTECTED":              2,
-		"PUBLIC":                 3,
-	}
-)
-
-func (x Visibility) Enum() *Visibility {
-	p := new(Visibility)
-	*p = x
-	return p
-}
-
-func (x Visibility) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Visibility) Descriptor() protoreflect.EnumDescriptor {
-	return file_model_memo_proto_enumTypes[0].Descriptor()
-}
-
-func (Visibility) Type() protoreflect.EnumType {
-	return &file_model_memo_proto_enumTypes[0]
-}
-
-func (x Visibility) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Visibility.Descriptor instead.
-func (Visibility) EnumDescriptor() ([]byte, []int) {
-	return file_model_memo_proto_rawDescGZIP(), []int{0}
-}
-
 type Memo struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The resource name of the memo.
@@ -386,69 +334,6 @@ func (x *Attachment) GetMemo() string {
 	return ""
 }
 
-type Location struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A placeholder text for the location.
-	Placeholder string `protobuf:"bytes,1,opt,name=placeholder,proto3" json:"placeholder,omitempty"`
-	// The latitude of the location.
-	Latitude float64 `protobuf:"fixed64,2,opt,name=latitude,proto3" json:"latitude,omitempty"`
-	// The longitude of the location.
-	Longitude     float64 `protobuf:"fixed64,3,opt,name=longitude,proto3" json:"longitude,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Location) Reset() {
-	*x = Location{}
-	mi := &file_model_memo_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Location) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Location) ProtoMessage() {}
-
-func (x *Location) ProtoReflect() protoreflect.Message {
-	mi := &file_model_memo_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Location.ProtoReflect.Descriptor instead.
-func (*Location) Descriptor() ([]byte, []int) {
-	return file_model_memo_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Location) GetPlaceholder() string {
-	if x != nil {
-		return x.Placeholder
-	}
-	return ""
-}
-
-func (x *Location) GetLatitude() float64 {
-	if x != nil {
-		return x.Latitude
-	}
-	return 0
-}
-
-func (x *Location) GetLongitude() float64 {
-	if x != nil {
-		return x.Longitude
-	}
-	return 0
-}
-
 // Computed properties of a memo.
 type Memo_Property struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
@@ -462,7 +347,7 @@ type Memo_Property struct {
 
 func (x *Memo_Property) Reset() {
 	*x = Memo_Property{}
-	mi := &file_model_memo_proto_msgTypes[3]
+	mi := &file_model_memo_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -474,7 +359,7 @@ func (x *Memo_Property) String() string {
 func (*Memo_Property) ProtoMessage() {}
 
 func (x *Memo_Property) ProtoReflect() protoreflect.Message {
-	mi := &file_model_memo_proto_msgTypes[3]
+	mi := &file_model_memo_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -565,18 +450,7 @@ const file_model_memo_proto_rawDesc = "" +
 	"\x04type\x18\x06 \x01(\tR\x04type\x12\x12\n" +
 	"\x04size\x18\a \x01(\x03R\x04size\x12\x17\n" +
 	"\x04memo\x18\b \x01(\tH\x00R\x04memo\x88\x01\x01B\a\n" +
-	"\x05_memo\"f\n" +
-	"\bLocation\x12 \n" +
-	"\vplaceholder\x18\x01 \x01(\tR\vplaceholder\x12\x1a\n" +
-	"\blatitude\x18\x02 \x01(\x01R\blatitude\x12\x1c\n" +
-	"\tlongitude\x18\x03 \x01(\x01R\tlongitude*P\n" +
-	"\n" +
-	"Visibility\x12\x1a\n" +
-	"\x16VISIBILITY_UNSPECIFIED\x10\x00\x12\v\n" +
-	"\aPRIVATE\x10\x01\x12\r\n" +
-	"\tPROTECTED\x10\x02\x12\n" +
-	"\n" +
-	"\x06PUBLIC\x10\x03B2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
+	"\x05_memoB2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
 
 var (
 	file_model_memo_proto_rawDescOnce sync.Once
@@ -590,33 +464,32 @@ func file_model_memo_proto_rawDescGZIP() []byte {
 	return file_model_memo_proto_rawDescData
 }
 
-var file_model_memo_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_model_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_model_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_model_memo_proto_goTypes = []any{
-	(Visibility)(0),               // 0: model.Visibility
-	(*Memo)(nil),                  // 1: model.Memo
-	(*Attachment)(nil),            // 2: model.Attachment
-	(*Location)(nil),              // 3: model.Location
-	(*Memo_Property)(nil),         // 4: model.Memo.Property
-	(State)(0),                    // 5: model.State
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
-	(*Node)(nil),                  // 7: model.Node
-	(*MemoRelation)(nil),          // 8: model.MemoRelation
-	(*Reaction)(nil),              // 9: model.Reaction
+	(*Memo)(nil),                  // 0: model.Memo
+	(*Attachment)(nil),            // 1: model.Attachment
+	(*Memo_Property)(nil),         // 2: model.Memo.Property
+	(State)(0),                    // 3: model.State
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	(*Node)(nil),                  // 5: model.Node
+	(Visibility)(0),               // 6: model.Visibility
+	(*MemoRelation)(nil),          // 7: model.MemoRelation
+	(*Reaction)(nil),              // 8: model.Reaction
+	(*Location)(nil),              // 9: model.Location
 }
 var file_model_memo_proto_depIdxs = []int32{
-	5,  // 0: model.Memo.state:type_name -> model.State
-	6,  // 1: model.Memo.create_time:type_name -> google.protobuf.Timestamp
-	6,  // 2: model.Memo.update_time:type_name -> google.protobuf.Timestamp
-	6,  // 3: model.Memo.display_time:type_name -> google.protobuf.Timestamp
-	7,  // 4: model.Memo.nodes:type_name -> model.Node
-	0,  // 5: model.Memo.visibility:type_name -> model.Visibility
-	2,  // 6: model.Memo.attachments:type_name -> model.Attachment
-	8,  // 7: model.Memo.relations:type_name -> model.MemoRelation
-	9,  // 8: model.Memo.reactions:type_name -> model.Reaction
-	4,  // 9: model.Memo.property:type_name -> model.Memo.Property
-	3,  // 10: model.Memo.location:type_name -> model.Location
-	6,  // 11: model.Attachment.create_time:type_name -> google.protobuf.Timestamp
+	3,  // 0: model.Memo.state:type_name -> model.State
+	4,  // 1: model.Memo.create_time:type_name -> google.protobuf.Timestamp
+	4,  // 2: model.Memo.update_time:type_name -> google.protobuf.Timestamp
+	4,  // 3: model.Memo.display_time:type_name -> google.protobuf.Timestamp
+	5,  // 4: model.Memo.nodes:type_name -> model.Node
+	6,  // 5: model.Memo.visibility:type_name -> model.Visibility
+	1,  // 6: model.Memo.attachments:type_name -> model.Attachment
+	7,  // 7: model.Memo.relations:type_name -> model.MemoRelation
+	8,  // 8: model.Memo.reactions:type_name -> model.Reaction
+	2,  // 9: model.Memo.property:type_name -> model.Memo.Property
+	9,  // 10: model.Memo.location:type_name -> model.Location
+	4,  // 11: model.Attachment.create_time:type_name -> google.protobuf.Timestamp
 	12, // [12:12] is the sub-list for method output_type
 	12, // [12:12] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
@@ -640,14 +513,13 @@ func file_model_memo_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_memo_proto_rawDesc), len(file_model_memo_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   4,
+			NumEnums:      0,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_model_memo_proto_goTypes,
 		DependencyIndexes: file_model_memo_proto_depIdxs,
-		EnumInfos:         file_model_memo_proto_enumTypes,
 		MessageInfos:      file_model_memo_proto_msgTypes,
 	}.Build()
 	File_model_memo_proto = out.File

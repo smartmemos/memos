@@ -2,12 +2,12 @@
 // @generated from file model/memo.proto (package model, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_api_field_behavior } from "../google/api/field_behavior_pb";
-import type { State } from "./common_pb";
+import type { Location, State, Visibility } from "./common_pb";
 import { file_model_common } from "./common_pb";
 import type { Node } from "./markdown_pb";
 import { file_model_markdown } from "./markdown_pb";
@@ -21,7 +21,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file model/memo.proto.
  */
 export const file_model_memo: GenFile = /*@__PURE__*/
-  fileDesc("ChBtb2RlbC9tZW1vLnByb3RvEgVtb2RlbCKvBQoETWVtbxIMCgRuYW1lGAEgASgJEhsKBXN0YXRlGAIgASgOMgwubW9kZWwuU3RhdGUSDwoHY3JlYXRvchgDIAEoCRIvCgtjcmVhdGVfdGltZRgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoLdXBkYXRlX3RpbWUYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjAKDGRpc3BsYXlfdGltZRgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDwoHY29udGVudBgHIAEoCRIaCgVub2RlcxgIIAMoCzILLm1vZGVsLk5vZGUSJQoKdmlzaWJpbGl0eRgJIAEoDjIRLm1vZGVsLlZpc2liaWxpdHkSDAoEdGFncxgKIAMoCRIOCgZwaW5uZWQYCyABKAgSJgoLYXR0YWNobWVudHMYDCADKAsyES5tb2RlbC5BdHRhY2htZW50EiYKCXJlbGF0aW9ucxgNIAMoCzITLm1vZGVsLk1lbW9SZWxhdGlvbhIiCglyZWFjdGlvbnMYDiADKAsyDy5tb2RlbC5SZWFjdGlvbhImCghwcm9wZXJ0eRgPIAEoCzIULm1vZGVsLk1lbW8uUHJvcGVydHkSEwoGcGFyZW50GBAgASgJSACIAQESDwoHc25pcHBldBgRIAEoCRImCghsb2NhdGlvbhgSIAEoCzIPLm1vZGVsLkxvY2F0aW9uSAGIAQEaYwoIUHJvcGVydHkSEAoIaGFzX2xpbmsYASABKAgSFQoNaGFzX3Rhc2tfbGlzdBgCIAEoCBIQCghoYXNfY29kZRgDIAEoCBIcChRoYXNfaW5jb21wbGV0ZV90YXNrcxgEIAEoCEIJCgdfcGFyZW50QgsKCV9sb2NhdGlvbiK9AQoKQXR0YWNobWVudBIMCgRuYW1lGAEgASgJEi8KC2NyZWF0ZV90aW1lGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghmaWxlbmFtZRgDIAEoCRIPCgdjb250ZW50GAQgASgMEhUKDWV4dGVybmFsX2xpbmsYBSABKAkSDAoEdHlwZRgGIAEoCRIMCgRzaXplGAcgASgDEhEKBG1lbW8YCCABKAlIAIgBAUIHCgVfbWVtbyJECghMb2NhdGlvbhITCgtwbGFjZWhvbGRlchgBIAEoCRIQCghsYXRpdHVkZRgCIAEoARIRCglsb25naXR1ZGUYAyABKAEqUAoKVmlzaWJpbGl0eRIaChZWSVNJQklMSVRZX1VOU1BFQ0lGSUVEEAASCwoHUFJJVkFURRABEg0KCVBST1RFQ1RFRBACEgoKBlBVQkxJQxADQjJaMGdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9tb2RlbGIGcHJvdG8z", [file_google_protobuf_timestamp, file_google_api_field_behavior, file_model_common, file_model_markdown, file_model_reaction, file_model_memo_relation]);
+  fileDesc("ChBtb2RlbC9tZW1vLnByb3RvEgVtb2RlbCKvBQoETWVtbxIMCgRuYW1lGAEgASgJEhsKBXN0YXRlGAIgASgOMgwubW9kZWwuU3RhdGUSDwoHY3JlYXRvchgDIAEoCRIvCgtjcmVhdGVfdGltZRgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoLdXBkYXRlX3RpbWUYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjAKDGRpc3BsYXlfdGltZRgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDwoHY29udGVudBgHIAEoCRIaCgVub2RlcxgIIAMoCzILLm1vZGVsLk5vZGUSJQoKdmlzaWJpbGl0eRgJIAEoDjIRLm1vZGVsLlZpc2liaWxpdHkSDAoEdGFncxgKIAMoCRIOCgZwaW5uZWQYCyABKAgSJgoLYXR0YWNobWVudHMYDCADKAsyES5tb2RlbC5BdHRhY2htZW50EiYKCXJlbGF0aW9ucxgNIAMoCzITLm1vZGVsLk1lbW9SZWxhdGlvbhIiCglyZWFjdGlvbnMYDiADKAsyDy5tb2RlbC5SZWFjdGlvbhImCghwcm9wZXJ0eRgPIAEoCzIULm1vZGVsLk1lbW8uUHJvcGVydHkSEwoGcGFyZW50GBAgASgJSACIAQESDwoHc25pcHBldBgRIAEoCRImCghsb2NhdGlvbhgSIAEoCzIPLm1vZGVsLkxvY2F0aW9uSAGIAQEaYwoIUHJvcGVydHkSEAoIaGFzX2xpbmsYASABKAgSFQoNaGFzX3Rhc2tfbGlzdBgCIAEoCBIQCghoYXNfY29kZRgDIAEoCBIcChRoYXNfaW5jb21wbGV0ZV90YXNrcxgEIAEoCEIJCgdfcGFyZW50QgsKCV9sb2NhdGlvbiK9AQoKQXR0YWNobWVudBIMCgRuYW1lGAEgASgJEi8KC2NyZWF0ZV90aW1lGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghmaWxlbmFtZRgDIAEoCRIPCgdjb250ZW50GAQgASgMEhUKDWV4dGVybmFsX2xpbmsYBSABKAkSDAoEdHlwZRgGIAEoCRIMCgRzaXplGAcgASgDEhEKBG1lbW8YCCABKAlIAIgBAUIHCgVfbWVtb0IyWjBnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vbW9kZWxiBnByb3RvMw", [file_google_protobuf_timestamp, file_google_api_field_behavior, file_model_common, file_model_markdown, file_model_reaction, file_model_memo_relation]);
 
 /**
  * @generated from message model.Memo
@@ -267,68 +267,4 @@ export type Attachment = Message<"model.Attachment"> & {
  */
 export const AttachmentSchema: GenMessage<Attachment> = /*@__PURE__*/
   messageDesc(file_model_memo, 1);
-
-/**
- * @generated from message model.Location
- */
-export type Location = Message<"model.Location"> & {
-  /**
-   * A placeholder text for the location.
-   *
-   * @generated from field: string placeholder = 1;
-   */
-  placeholder: string;
-
-  /**
-   * The latitude of the location.
-   *
-   * @generated from field: double latitude = 2;
-   */
-  latitude: number;
-
-  /**
-   * The longitude of the location.
-   *
-   * @generated from field: double longitude = 3;
-   */
-  longitude: number;
-};
-
-/**
- * Describes the message model.Location.
- * Use `create(LocationSchema)` to create a new message.
- */
-export const LocationSchema: GenMessage<Location> = /*@__PURE__*/
-  messageDesc(file_model_memo, 2);
-
-/**
- * @generated from enum model.Visibility
- */
-export enum Visibility {
-  /**
-   * @generated from enum value: VISIBILITY_UNSPECIFIED = 0;
-   */
-  VISIBILITY_UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: PRIVATE = 1;
-   */
-  PRIVATE = 1,
-
-  /**
-   * @generated from enum value: PROTECTED = 2;
-   */
-  PROTECTED = 2,
-
-  /**
-   * @generated from enum value: PUBLIC = 3;
-   */
-  PUBLIC = 3,
-}
-
-/**
- * Describes the enum model.Visibility.
- */
-export const VisibilitySchema: GenEnum<Visibility> = /*@__PURE__*/
-  enumDesc(file_model_memo, 0);
 
