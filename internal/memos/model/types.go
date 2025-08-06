@@ -9,6 +9,7 @@ const (
 	TableSession       = "session"
 	TableSystemSetting = "system_setting"
 	TableInbox         = "inbox"
+	TableAttachment    = "attachment"
 )
 
 // Visibility is the type of a visibility.

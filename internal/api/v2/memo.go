@@ -32,7 +32,23 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 }
 
 func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v2pb.CreateMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
-	info, err := convertMemoToProto(&model.Memo{})
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		err = errors.New("failed to get user")
+		return
+	}
+
+	req := &model.CreateMemoRequest{
+		UserID:     userInfo.UserID,
+		Content:    request.Msg.Memo.Content,
+		Visibility: model.Visibility(request.Msg.Memo.Visibility),
+		// RelationType: model.RelationType(request.Msg.Memo.RelationType),
+	}
+	memo, err := s.memosService.CreateMemo(ctx, req)
+	if err != nil {
+		return
+	}
+	info, err := convertMemoToProto(memo)
 	if err != nil {
 		return
 	}

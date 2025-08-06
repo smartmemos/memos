@@ -35,6 +35,21 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
 }
 
+// CountAttachments mocks base method.
+func (m *MockDAO) CountAttachments(ctx context.Context, filter *model.FindAttachmentFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountAttachments", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountAttachments indicates an expected call of CountAttachments.
+func (mr *MockDAOMockRecorder) CountAttachments(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountAttachments", reflect.TypeOf((*MockDAO)(nil).CountAttachments), ctx, filter)
+}
+
 // CountInboxes mocks base method.
 func (m *MockDAO) CountInboxes(ctx context.Context, filter *model.FindInboxFilter) (int64, error) {
 	m.ctrl.T.Helper()
@@ -78,6 +93,20 @@ func (m *MockDAO) CountUsers(ctx context.Context, filter *model.FindUserFilter) 
 func (mr *MockDAOMockRecorder) CountUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountUsers", reflect.TypeOf((*MockDAO)(nil).CountUsers), ctx, filter)
+}
+
+// CreateAttachment mocks base method.
+func (m_2 *MockDAO) CreateAttachment(ctx context.Context, m *model.Attachment) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateAttachment", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateAttachment indicates an expected call of CreateAttachment.
+func (mr *MockDAOMockRecorder) CreateAttachment(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAttachment", reflect.TypeOf((*MockDAO)(nil).CreateAttachment), ctx, m)
 }
 
 // CreateInbox mocks base method.
@@ -164,6 +193,20 @@ func (mr *MockDAOMockRecorder) CreateUserSetting(ctx, m interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserSetting", reflect.TypeOf((*MockDAO)(nil).CreateUserSetting), ctx, m)
 }
 
+// DeleteAttachments mocks base method.
+func (m *MockDAO) DeleteAttachments(ctx context.Context, filter *model.FindAttachmentFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAttachments", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAttachments indicates an expected call of DeleteAttachments.
+func (mr *MockDAOMockRecorder) DeleteAttachments(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAttachments", reflect.TypeOf((*MockDAO)(nil).DeleteAttachments), ctx, filter)
+}
+
 // DeleteInboxes mocks base method.
 func (m *MockDAO) DeleteInboxes(ctx context.Context, filter *model.FindInboxFilter) error {
 	m.ctrl.T.Helper()
@@ -232,6 +275,51 @@ func (m *MockDAO) DeleteUsers(ctx context.Context, filter *model.FindUserFilter)
 func (mr *MockDAOMockRecorder) DeleteUsers(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUsers", reflect.TypeOf((*MockDAO)(nil).DeleteUsers), ctx, filter)
+}
+
+// FindAttachment mocks base method.
+func (m *MockDAO) FindAttachment(ctx context.Context, filter *model.FindAttachmentFilter) (*model.Attachment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindAttachment", ctx, filter)
+	ret0, _ := ret[0].(*model.Attachment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindAttachment indicates an expected call of FindAttachment.
+func (mr *MockDAOMockRecorder) FindAttachment(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAttachment", reflect.TypeOf((*MockDAO)(nil).FindAttachment), ctx, filter)
+}
+
+// FindAttachmentByID mocks base method.
+func (m *MockDAO) FindAttachmentByID(ctx context.Context, id int64) (*model.Attachment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindAttachmentByID", ctx, id)
+	ret0, _ := ret[0].(*model.Attachment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindAttachmentByID indicates an expected call of FindAttachmentByID.
+func (mr *MockDAOMockRecorder) FindAttachmentByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAttachmentByID", reflect.TypeOf((*MockDAO)(nil).FindAttachmentByID), ctx, id)
+}
+
+// FindAttachments mocks base method.
+func (m *MockDAO) FindAttachments(ctx context.Context, filter *model.FindAttachmentFilter) ([]*model.Attachment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindAttachments", ctx, filter)
+	ret0, _ := ret[0].([]*model.Attachment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindAttachments indicates an expected call of FindAttachments.
+func (mr *MockDAOMockRecorder) FindAttachments(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAttachments", reflect.TypeOf((*MockDAO)(nil).FindAttachments), ctx, filter)
 }
 
 // FindInbox mocks base method.

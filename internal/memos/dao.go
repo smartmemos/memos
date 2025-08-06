@@ -39,6 +39,14 @@ type DAO interface {
 	FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error)
 	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
 
+	// Attachment
+	CreateAttachment(ctx context.Context, m *model.Attachment) error
+	CountAttachments(ctx context.Context, filter *model.FindAttachmentFilter) (int64, error)
+	FindAttachments(ctx context.Context, filter *model.FindAttachmentFilter) ([]*model.Attachment, error)
+	FindAttachmentByID(ctx context.Context, id int64) (*model.Attachment, error)
+	FindAttachment(ctx context.Context, filter *model.FindAttachmentFilter) (*model.Attachment, error)
+	DeleteAttachments(ctx context.Context, filter *model.FindAttachmentFilter) error
+
 	// SystemSetting
 	CreateSystemSetting(ctx context.Context, m *model.SystemSetting) error
 	UpdateSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter, update map[string]any) (int64, error)

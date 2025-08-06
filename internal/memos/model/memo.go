@@ -57,11 +57,12 @@ type FindMemoFilter struct {
 }
 
 type CreateMemoRequest struct {
+	UserID       int64
 	ParentID     int64
 	RelationType RelationType
-	CreatorID    int64
+	Visibility   Visibility
 	Content      string
-	Payload      MemoPayload `gorm:"serializer:json"`
+	Location     *MemoPayloadLocation
 }
 
 type ListMemosRequest struct {
