@@ -27,15 +27,15 @@ func NewInboxService(i do.Injector) (*InboxService, error) {
 	}, nil
 }
 
-func (s *InboxService) ListInboxes(ctx context.Context, req *connect.Request[v2pb.ListInboxesRequest]) (resp *connect.Response[v2pb.ListInboxesResponse], err error) {
-	logrus.Info("req: ", req.Msg)
+func (s *InboxService) ListInboxes(ctx context.Context, request *connect.Request[v2pb.ListInboxesRequest]) (response *connect.Response[v2pb.ListInboxesResponse], err error) {
+	logrus.Info("req: ", request.Msg)
 
 	total, inboxes, err := s.memosService.ListInboxes(ctx, &model.ListInboxesRequest{})
 	if err != nil {
 		return
 	}
 
-	resp = connect.NewResponse(&v2pb.ListInboxesResponse{
+	response = connect.NewResponse(&v2pb.ListInboxesResponse{
 		TotalSize:     int32(total),
 		NextPageToken: "",
 		Inboxes: lo.Map(inboxes, func(inbox *model.Inbox, _ int) *modelpb.Inbox {

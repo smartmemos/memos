@@ -29,7 +29,7 @@ func NewAuthService(i do.Injector) (*AuthService, error) {
 	}, nil
 }
 
-func (s *AuthService) GetCurrentSession(ctx context.Context, req *connect.Request[v2pb.GetCurrentSessionRequest]) (resp *connect.Response[v2pb.GetCurrentSessionResponse], err error) {
+func (s *AuthService) GetCurrentSession(ctx context.Context, request *connect.Request[v2pb.GetCurrentSessionRequest]) (response *connect.Response[v2pb.GetCurrentSessionResponse], err error) {
 	info := utils.GetInfo(ctx)
 	if info == nil {
 		// Clear auth cookies
@@ -59,8 +59,8 @@ func (s *AuthService) GetCurrentSession(ctx context.Context, req *connect.Reques
 	}), nil
 }
 
-func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2pb.CreateSessionRequest]) (resp *connect.Response[v2pb.CreateSessionResponse], err error) {
-	passwordCredentials := req.Msg.GetPasswordCredentials()
+func (s *AuthService) CreateSession(ctx context.Context, request *connect.Request[v2pb.CreateSessionRequest]) (response *connect.Response[v2pb.CreateSessionResponse], err error) {
+	passwordCredentials := request.Msg.GetPasswordCredentials()
 	if passwordCredentials == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("password credentials are required"))
 	}
@@ -81,7 +81,7 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 	sessionID := uuid.New().String()
 	cookieValue := fmt.Sprintf("%d-%s", user.ID, sessionID)
 
-	resp = connect.NewResponse(&v2pb.CreateSessionResponse{
+	response = connect.NewResponse(&v2pb.CreateSessionResponse{
 		User:           convertUserToProto(user),
 		LastAccessedAt: timestamppb.New(session.CreatedAt),
 	})
@@ -94,21 +94,21 @@ func (s *AuthService) CreateSession(ctx context.Context, req *connect.Request[v2
 	if err != nil {
 		return
 	}
-	resp.Header().Add("Set-Cookie", cookie1)
-	resp.Header().Add("Set-Cookie", cookie2)
+	response.Header().Add("Set-Cookie", cookie1)
+	response.Header().Add("Set-Cookie", cookie2)
 	return
 }
 
 // SignUp creates a new user.
-func (s *AuthService) SignUp(ctx context.Context, req *connect.Request[v2pb.SignUpRequest]) (resp *connect.Response[modelpb.User], err error) {
+func (s *AuthService) SignUp(ctx context.Context, request *connect.Request[v2pb.SignUpRequest]) (response *connect.Response[modelpb.User], err error) {
 	user, err := s.memosService.CreateUser(ctx, &model.CreateUserRequest{
-		Username: req.Msg.Username,
-		Password: req.Msg.Password,
+		Username: request.Msg.Username,
+		Password: request.Msg.Password,
 	})
 	if err != nil {
 		return
 	}
-	resp = connect.NewResponse(convertUserToProto(user))
+	response = connect.NewResponse(convertUserToProto(user))
 	return
 }
 

@@ -26,20 +26,20 @@ func NewUserService(i do.Injector) (*UserService, error) {
 }
 
 // CreateUser creates a new user.
-func (s *UserService) CreateUser(ctx context.Context, req *connect.Request[v2pb.CreateUserRequest]) (resp *connect.Response[modelpb.User], err error) {
+func (s *UserService) CreateUser(ctx context.Context, request *connect.Request[v2pb.CreateUserRequest]) (response *connect.Response[modelpb.User], err error) {
 	user, err := s.memosService.CreateUser(ctx, &model.CreateUserRequest{
-		Username: req.Msg.User.Username,
-		Password: req.Msg.User.Password,
+		Username: request.Msg.User.Username,
+		Password: request.Msg.User.Password,
 	})
 	if err != nil {
 		return
 	}
-	resp = connect.NewResponse(convertUserToProto(user))
+	response = connect.NewResponse(convertUserToProto(user))
 	return
 }
 
-func (s *UserService) GetUserStats(ctx context.Context, req *connect.Request[v2pb.GetUserStatsRequest]) (resp *connect.Response[v2pb.UserStats], err error) {
-	logrus.Info("req: ", req.Msg)
+func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[v2pb.UserStats], err error) {
+	logrus.Info("req: ", request.Msg)
 	// userID, err := strconv.ParseInt(req.Msg.Name, 10, 64)
 	// if err != nil {
 	// 	return
@@ -48,29 +48,29 @@ func (s *UserService) GetUserStats(ctx context.Context, req *connect.Request[v2p
 	// if err != nil {
 	// 	return
 	// }
-	resp = connect.NewResponse(&v2pb.UserStats{
-		Name: req.Msg.Name,
+	response = connect.NewResponse(&v2pb.UserStats{
+		Name: request.Msg.Name,
 	})
 	return
 }
 
-func (s *UserService) GetUserSetting(ctx context.Context, req *connect.Request[v2pb.GetUserSettingRequest]) (resp *connect.Response[modelpb.UserSetting], err error) {
-	logrus.Info("req: ", req.Msg)
-	resp = connect.NewResponse(&modelpb.UserSetting{
-		Name: req.Msg.Name,
+func (s *UserService) GetUserSetting(ctx context.Context, request *connect.Request[v2pb.GetUserSettingRequest]) (response *connect.Response[modelpb.UserSetting], err error) {
+	logrus.Info("req: ", request.Msg)
+	response = connect.NewResponse(&modelpb.UserSetting{
+		Name: request.Msg.Name,
 	})
 	return
 }
 
-func (s *UserService) ListUserSettings(ctx context.Context, req *connect.Request[v2pb.ListUserSettingsRequest]) (resp *connect.Response[v2pb.ListUserSettingsResponse], err error) {
-	logrus.Info("req: ", req.Msg)
+func (s *UserService) ListUserSettings(ctx context.Context, request *connect.Request[v2pb.ListUserSettingsRequest]) (response *connect.Response[v2pb.ListUserSettingsResponse], err error) {
+	logrus.Info("req: ", request.Msg)
 
 	settings, err := s.memosService.GetUserSettings(ctx, &model.GetUserSettingsRequest{})
 	if err != nil {
 		return
 	}
 
-	resp = connect.NewResponse(&v2pb.ListUserSettingsResponse{
+	response = connect.NewResponse(&v2pb.ListUserSettingsResponse{
 		Settings: lo.Map(settings, func(setting *model.UserSetting, _ int) *modelpb.UserSetting {
 			return convertUserSettingToProto(setting)
 		}),

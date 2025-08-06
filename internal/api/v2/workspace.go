@@ -25,7 +25,7 @@ func NewWorkspaceService(i do.Injector) (*WorkspaceService, error) {
 	}, nil
 }
 
-func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *connect.Request[v2pb.GetWorkspaceProfileRequest]) (resp *connect.Response[modelpb.WorkspaceProfile], err error) {
+func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, request *connect.Request[v2pb.GetWorkspaceProfileRequest]) (response *connect.Response[modelpb.WorkspaceProfile], err error) {
 	info := &modelpb.WorkspaceProfile{
 		Owner:       "owner",
 		Version:     "0.1.0",
@@ -35,8 +35,8 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, req *connect
 	return connect.NewResponse(info), nil
 }
 
-func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, req *connect.Request[v2pb.GetWorkspaceSettingRequest]) (resp *connect.Response[modelpb.WorkspaceSetting], err error) {
-	parts := strings.Split(req.Msg.Name, "/")
+func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, request *connect.Request[v2pb.GetWorkspaceSettingRequest]) (response *connect.Response[modelpb.WorkspaceSetting], err error) {
+	parts := strings.Split(request.Msg.Name, "/")
 	if len(parts) != 3 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid request"))
 	}

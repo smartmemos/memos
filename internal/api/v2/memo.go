@@ -31,21 +31,21 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 	}, nil
 }
 
-func (s *MemoService) CreateMemo(ctx context.Context, req *connect.Request[v2pb.CreateMemoRequest]) (resp *connect.Response[modelpb.Memo], err error) {
+func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v2pb.CreateMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
 	info, err := convertMemoToProto(&model.Memo{})
 	if err != nil {
 		return
 	}
-	resp = connect.NewResponse(info)
+	response = connect.NewResponse(info)
 	return
 }
 
-func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.ListMemosRequest]) (resp *connect.Response[v2pb.ListMemosResponse], err error) {
-	var req2 = &model.ListMemosRequest{}
+func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2pb.ListMemosRequest]) (response *connect.Response[v2pb.ListMemosResponse], err error) {
+	var req = &model.ListMemosRequest{}
 
 	userInfo := utils.GetInfo(ctx)
 	if userInfo == nil {
-		req2.VisibilityList = []model.Visibility{model.Public}
+		req.VisibilityList = []model.Visibility{model.Public}
 	} else {
 		// if req2.CreatorID == nil {
 		// 	filter := fmt.Sprintf(`creator_id == %d || visibility in ["PUBLIC", "PROTECTED"]`, currentUser.ID)
@@ -55,12 +55,12 @@ func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.L
 		// }
 	}
 
-	if req.Msg.State == modelpb.State_ARCHIVED {
-		req2.Status = model.Archived
+	if request.Msg.State == modelpb.State_ARCHIVED {
+		req.Status = model.Archived
 	} else {
-		req2.Status = model.Normal
+		req.Status = model.Normal
 	}
-	total, memos, err := s.memosService.ListMemos(ctx, req2)
+	total, memos, err := s.memosService.ListMemos(ctx, req)
 	if err != nil {
 		return
 	}
@@ -79,7 +79,7 @@ func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.L
 		list = append(list, info)
 	}
 
-	resp = connect.NewResponse(&v2pb.ListMemosResponse{
+	response = connect.NewResponse(&v2pb.ListMemosResponse{
 		Memos:         list,
 		TotalSize:     int32(total),
 		NextPageToken: nextPageToken,
@@ -87,12 +87,12 @@ func (s *MemoService) ListMemos(ctx context.Context, req *connect.Request[v2pb.L
 	return
 }
 
-func (s *MemoService) GetMemo(ctx context.Context, req *connect.Request[v2pb.GetMemoRequest]) (resp *connect.Response[modelpb.Memo], err error) {
+func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb.GetMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
 	info, err := convertMemoToProto(&model.Memo{})
 	if err != nil {
 		return
 	}
-	resp = connect.NewResponse(info)
+	response = connect.NewResponse(info)
 	return
 }
 
