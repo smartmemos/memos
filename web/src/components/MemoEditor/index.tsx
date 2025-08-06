@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { memoStore, attachmentStore, userStore, workspaceStore } from "@/store";
 import { extractMemoIdFromName } from "@/store/common";
 import { Attachment } from "@/types/proto/api/v1/attachment_service";
-import { Location, Memo, MemoRelation, MemoRelation_Type, Visibility } from "@/types/proto/api/v1/memo_service";
+import { Location, Memo, MemoRelation, MemoRelation_Type } from "@/types/proto/api/v1/memo_service";
 import { CreateMemoRequest as CreateMemoRequestV2, Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { Visibility as VisibilityV2 } from "@/types/proto2/model/common_pb";
 import { useTranslate } from "@/utils/i18n";
@@ -179,10 +179,11 @@ const MemoEditor = observer((props: Props) => {
     }
   };
 
-  const handleMemoVisibilityChange = (visibility: Visibility) => {
+  const handleMemoVisibilityChange = (visibility: string) => {
+    console.log("handleMemoVisibilityChange", visibility);
     setState((prevState) => ({
       ...prevState,
-      memoVisibility: visibility,
+      memoVisibility: Number(visibility) as VisibilityV2,
     }));
   };
 

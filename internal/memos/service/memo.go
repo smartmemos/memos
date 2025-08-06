@@ -21,6 +21,7 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 		CreatorID:  req.UserID,
 		Content:    req.Content,
 		Visibility: req.Visibility,
+		RowStatus:  req.RowStatus,
 	}
 	memoRelatedSetting, err := s.GetMemoRelatedSetting(ctx)
 	if err != nil {

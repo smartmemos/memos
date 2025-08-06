@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
+	"github.com/sirupsen/logrus"
 	"github.com/usememos/gomark/parser"
 	"github.com/usememos/gomark/parser/tokenizer"
 	"github.com/usememos/gomark/renderer"
@@ -32,6 +33,8 @@ func NewMemoService(i do.Injector) (*MemoService, error) {
 }
 
 func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v2pb.CreateMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
+	logrus.Infof("CreateMemo: %+v", request.Msg.Memo)
+
 	userInfo := utils.GetInfo(ctx)
 	if userInfo == nil {
 		err = errors.New("failed to get user")
@@ -41,7 +44,8 @@ func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v
 	req := &model.CreateMemoRequest{
 		UserID:     userInfo.UserID,
 		Content:    request.Msg.Memo.Content,
-		Visibility: model.Visibility(request.Msg.Memo.Visibility),
+		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
+		RowStatus:  model.Normal,
 		// RelationType: model.RelationType(request.Msg.Memo.RelationType),
 	}
 	memo, err := s.memosService.CreateMemo(ctx, req)
@@ -117,7 +121,7 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 
 	info = &modelpb.Memo{
 		Name:        fmt.Sprintf("%s%d", MemoNamePrefix, memo.ID),
-		State:       modelpb.State(modelpb.State_value[memo.RowStatus]),
+		State:       modelpb.State(modelpb.State_value[string(memo.RowStatus)]),
 		Creator:     fmt.Sprintf("%s%d", UserNamePrefix, memo.CreatorID),
 		Content:     memo.Content,
 		DisplayTime: timestamppb.New(displayTs),

@@ -1,11 +1,11 @@
 import VisibilityIcon from "@/components/VisibilityIcon";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Visibility } from "@/types/proto/api/v1/memo_service";
+import { Visibility as VisibilityV2 } from "@/types/proto2/model/common_pb";
 import { useTranslate } from "@/utils/i18n";
 
 interface Props {
-  value: Visibility;
-  onChange: (visibility: Visibility) => void;
+  value: VisibilityV2;
+  onChange: (visibility: VisibilityV2) => void;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -14,9 +14,9 @@ const VisibilitySelector = (props: Props) => {
   const t = useTranslate();
 
   const visibilityOptions = [
-    { value: Visibility.PRIVATE, label: t("memo.visibility.private") },
-    { value: Visibility.PROTECTED, label: t("memo.visibility.protected") },
-    { value: Visibility.PUBLIC, label: t("memo.visibility.public") },
+    { value: VisibilityV2.PRIVATE, label: t("memo.visibility.private") },
+    { value: VisibilityV2.PROTECTED, label: t("memo.visibility.protected") },
+    { value: VisibilityV2.PUBLIC, label: t("memo.visibility.public") },
   ];
 
   const handleOpenChange = (open: boolean) => {

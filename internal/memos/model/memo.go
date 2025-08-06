@@ -13,7 +13,7 @@ type Memo struct {
 	Payload    *MemoPayload `gorm:"serializer:json"`
 	Pinned     bool
 	Visibility Visibility
-	RowStatus  string
+	RowStatus  RowStatus
 }
 
 func (Memo) TableName() string {
@@ -60,6 +60,7 @@ type CreateMemoRequest struct {
 	RelationType RelationType
 	Visibility   Visibility
 	Content      string
+	RowStatus    RowStatus
 	Location     *MemoPayloadLocation
 }
 
