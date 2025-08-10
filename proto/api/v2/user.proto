@@ -2,8 +2,9 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "model/user.proto";
+import "model/user_session.proto";
 import "model/user_setting.proto";
+import "model/user.proto";
 
 package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
@@ -21,6 +22,11 @@ service UserService {
   // ListUserSettings returns a list of user settings.
   rpc ListUserSettings(ListUserSettingsRequest) returns (ListUserSettingsResponse) {}
 
+    // ListUserSessions returns a list of active sessions for a user.
+  rpc ListUserSessions(ListUserSessionsRequest) returns (ListUserSessionsResponse) {}
+  
+  // RevokeUserSession revokes a specific session for a user.
+  rpc RevokeUserSession(RevokeUserSessionRequest) returns (google.protobuf.Empty) {}
 }
 
 message CreateUserRequest {
@@ -98,4 +104,21 @@ message ListUserSettingsResponse {
 
   // The total count of settings (may be approximate).
   int32 total_size = 3;
+}
+
+message ListUserSessionsRequest {
+  // Required. The resource name of the parent.
+  // Format: users/{user}
+  string parent = 1;
+}
+
+message ListUserSessionsResponse {
+  // The list of user sessions.
+  repeated model.UserSession sessions = 1;
+}
+
+message RevokeUserSessionRequest {
+  // Required. The resource name of the session to revoke.
+  // Format: users/{user}/sessions/{session}
+  string name = 1;
 }

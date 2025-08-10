@@ -120,9 +120,9 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	displayTs := memo.CreatedAt
 
 	info = &modelpb.Memo{
-		Name:        fmt.Sprintf("%s%d", MemoNamePrefix, memo.ID),
+		Name:        fmt.Sprintf("%s%d", model.MemoNamePrefix, memo.ID),
 		State:       modelpb.State(modelpb.State_value[string(memo.RowStatus)]),
-		Creator:     fmt.Sprintf("%s%d", UserNamePrefix, memo.CreatorID),
+		Creator:     fmt.Sprintf("%s%d", model.UserNamePrefix, memo.CreatorID),
 		Content:     memo.Content,
 		DisplayTime: timestamppb.New(displayTs),
 		Visibility:  modelpb.Visibility(modelpb.Visibility_value[string(memo.Visibility)]),

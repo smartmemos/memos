@@ -50,3 +50,7 @@ type UpdateUserRequest struct {
 	Description string
 	Status      RowStatus
 }
+
+type GetUserSessionsRequest struct {
+	UserID int64
+}

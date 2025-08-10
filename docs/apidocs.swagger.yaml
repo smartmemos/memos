@@ -1161,6 +1161,15 @@ definitions:
         type: integer
         format: int32
         description: The total count of memos (may be approximate).
+  v2ListUserSessionsResponse:
+    type: object
+    properties:
+      sessions:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserSession'
+        description: The list of user sessions.
   v2ListUserSettingsResponse:
     type: object
     properties:

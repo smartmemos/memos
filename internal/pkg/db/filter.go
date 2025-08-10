@@ -30,16 +30,14 @@ func BuildQuery(f any) (string, []any) {
 			if op != "" {
 				var columnName string
 				if tag := field.Tag.Get("gorm"); tag != "" {
-					for _, part := range strings.Split(tag, ";") {
-						if strings.HasPrefix(part, "column:") {
-							columnName = strings.TrimPrefix(part, "column:")
-						}
+					for part := range strings.SplitSeq(tag, ";") {
+						columnName, _ = strings.CutPrefix(part, "column:")
 					}
 				}
 				if columnName == "" {
 					columnName = ns.ColumnName("", field.Name)
 				}
-				conditions = append(conditions, fmt.Sprintf("%s %s", columnName, op))
+				conditions = append(conditions, fmt.Sprintf("`%s` %s", columnName, op))
 				args = append(args, val)
 			}
 		}

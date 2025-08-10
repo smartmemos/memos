@@ -2,11 +2,15 @@ package v2
 
 import (
 	"context"
+	"strconv"
+	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
@@ -75,6 +79,49 @@ func (s *UserService) ListUserSettings(ctx context.Context, request *connect.Req
 			return convertUserSettingToProto(setting)
 		}),
 	})
+	return
+}
+
+func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Request[v2pb.ListUserSessionsRequest]) (response *connect.Response[v2pb.ListUserSessionsResponse], err error) {
+	logrus.Info("req: ", request.Msg)
+	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.Parent, model.UserNamePrefix), 10, 64)
+	if err != nil {
+		return
+	}
+	sessions, err := s.memosService.GetUserSessions(ctx, &model.GetUserSessionsRequest{
+		UserID: userID,
+	})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(&v2pb.ListUserSessionsResponse{
+		Sessions: lo.Map(sessions, func(session *model.UserSession, _ int) *modelpb.UserSession {
+			return convertUserSessionToProto(session)
+		}),
+	})
+	return
+}
+
+func convertUserSessionToProto(session *model.UserSession) *modelpb.UserSession {
+	return &modelpb.UserSession{
+		Name:             session.Name,
+		SessionId:        session.SessionID,
+		CreateTime:       timestamppb.New(session.CreateTime),
+		LastAccessedTime: timestamppb.New(session.LastAccessedTime),
+		ClientInfo: &modelpb.UserSession_ClientInfo{
+			UserAgent:  session.ClientInfo.UserAgent,
+			IpAddress:  session.ClientInfo.IPAddress,
+			DeviceType: session.ClientInfo.DeviceType,
+			Os:         session.ClientInfo.OS,
+			Browser:    session.ClientInfo.Browser,
+		},
+	}
+}
+
+func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
+	logrus.Info("req: ", request.Msg)
+
+	response = connect.NewResponse(&emptypb.Empty{})
 	return
 }
 

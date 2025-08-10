@@ -2,15 +2,20 @@ import { ClockIcon, MonitorIcon, SmartphoneIcon, TabletIcon, TrashIcon, WifiIcon
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
+import { userServiceClient as userServiceClientV2 } from "@/grpc";
 import { userServiceClient } from "@/grpcweb";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { UserSession } from "@/types/proto/api/v1/user_service";
+import { UserSession } from "@/types/proto2/model/user_session_pb";
 import { useTranslate } from "@/utils/i18n";
 import LearnMore from "../LearnMore";
 
 const listUserSessions = async (parent: string) => {
-  const { sessions } = await userServiceClient.listUserSessions({ parent });
-  return sessions.sort((a, b) => (b.lastAccessedTime?.getTime() ?? 0) - (a.lastAccessedTime?.getTime() ?? 0));
+  const { sessions } = await userServiceClientV2.listUserSessions({ parent });
+  return sessions.sort((a, b) => {
+    const timeA = a.lastAccessedTime ? Number(a.lastAccessedTime.seconds) * 1000 + Number(a.lastAccessedTime.nanos) / 1000000 : 0;
+    const timeB = b.lastAccessedTime ? Number(b.lastAccessedTime.seconds) * 1000 + Number(b.lastAccessedTime.nanos) / 1000000 : 0;
+    return timeB - timeA;
+  });
 };
 
 const UserSessionsSection = () => {
@@ -119,7 +124,14 @@ const UserSessionsSection = () => {
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1">
                           <ClockIcon className="w-4 h-4" />
-                          <span>{userSession.lastAccessedTime?.toLocaleString()}</span>
+                          <span>
+                            {userSession.lastAccessedTime
+                              ? new Date(
+                                  Number(userSession.lastAccessedTime.seconds) * 1000 +
+                                    Number(userSession.lastAccessedTime.nanos) / 1000000,
+                                ).toLocaleString()
+                              : "Unknown"}
+                          </span>
                         </div>
                       </td>
                       <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">

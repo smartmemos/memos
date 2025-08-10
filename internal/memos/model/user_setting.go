@@ -16,6 +16,15 @@ func (UserSetting) TableName() string {
 	return TableUserSetting
 }
 
+type UserSettingKey string
+
+const (
+	UserSettingKeyGeneral      UserSettingKey = "GENERAL"
+	UserSettingKeySessions     UserSettingKey = "SESSIONS"
+	UserSettingKeyAccessTokens UserSettingKey = "ACCESS_TOKENS"
+	UserSettingKeyWebhooks     UserSettingKey = "WEBHOOKS"
+)
+
 type UserSettingValue struct {
 	*GeneralUserSetting
 	*SessionsUserSetting
@@ -31,7 +40,7 @@ type GeneralUserSetting struct {
 }
 
 type SessionsUserSetting struct {
-	UserSessions []*UserSession
+	Sessions []*UserSession
 }
 
 type UserSession struct {
@@ -77,9 +86,8 @@ type UserWebhook struct {
 type FindUserSettingFilter struct {
 	db.BaseFilter
 
-	ID       db.F[int64]
-	Username db.F[string]
-	Role     db.F[Role]
+	UserID db.F[int64]
+	Key    db.F[UserSettingKey]
 }
 
 type GetUserSettingRequest struct {

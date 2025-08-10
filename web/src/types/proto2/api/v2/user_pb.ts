@@ -4,19 +4,21 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import type { EmptySchema, Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { User, UserSchema } from "../../model/user_pb";
-import { file_model_user } from "../../model/user_pb";
+import type { UserSession } from "../../model/user_session_pb";
+import { file_model_user_session } from "../../model/user_session_pb";
 import type { UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
 import { file_model_user_setting } from "../../model/user_setting_pb";
+import type { User, UserSchema } from "../../model/user_pb";
+import { file_model_user } from "../../model/user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUypwIKC1VzZXJTZXJ2aWNlEjYKCkNyZWF0ZVVzZXISGS5hcGkudjIuQ3JlYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_user_setting]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiKQoXTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJIkAKGExpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZRIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uIigKGFJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMtEDCgtVc2VyU2VydmljZRI2CgpDcmVhdGVVc2VyEhkuYXBpLnYyLkNyZWF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEkAKDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhEuYXBpLnYyLlVzZXJTdGF0cyIAEkUKDkdldFVzZXJTZXR0aW5nEh0uYXBpLnYyLkdldFVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASVwoQTGlzdFVzZXJTZXR0aW5ncxIfLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVzcG9uc2UiABJXChBMaXN0VXNlclNlc3Npb25zEh8uYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZSIAEk8KEVJldm9rZVVzZXJTZXNzaW9uEiAuYXBpLnYyLlJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user_session, file_model_user_setting, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -245,6 +247,65 @@ export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse
   messageDesc(file_api_v2_user, 5);
 
 /**
+ * @generated from message api.v2.ListUserSessionsRequest
+ */
+export type ListUserSessionsRequest = Message<"api.v2.ListUserSessionsRequest"> & {
+  /**
+   * Required. The resource name of the parent.
+   * Format: users/{user}
+   *
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+};
+
+/**
+ * Describes the message api.v2.ListUserSessionsRequest.
+ * Use `create(ListUserSessionsRequestSchema)` to create a new message.
+ */
+export const ListUserSessionsRequestSchema: GenMessage<ListUserSessionsRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 6);
+
+/**
+ * @generated from message api.v2.ListUserSessionsResponse
+ */
+export type ListUserSessionsResponse = Message<"api.v2.ListUserSessionsResponse"> & {
+  /**
+   * The list of user sessions.
+   *
+   * @generated from field: repeated model.UserSession sessions = 1;
+   */
+  sessions: UserSession[];
+};
+
+/**
+ * Describes the message api.v2.ListUserSessionsResponse.
+ * Use `create(ListUserSessionsResponseSchema)` to create a new message.
+ */
+export const ListUserSessionsResponseSchema: GenMessage<ListUserSessionsResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 7);
+
+/**
+ * @generated from message api.v2.RevokeUserSessionRequest
+ */
+export type RevokeUserSessionRequest = Message<"api.v2.RevokeUserSessionRequest"> & {
+  /**
+   * Required. The resource name of the session to revoke.
+   * Format: users/{user}/sessions/{session}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message api.v2.RevokeUserSessionRequest.
+ * Use `create(RevokeUserSessionRequestSchema)` to create a new message.
+ */
+export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 8);
+
+/**
  * @generated from service api.v2.UserService
  */
 export const UserService: GenService<{
@@ -287,6 +348,26 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof ListUserSettingsRequestSchema;
     output: typeof ListUserSettingsResponseSchema;
+  },
+  /**
+   * ListUserSessions returns a list of active sessions for a user.
+   *
+   * @generated from rpc api.v2.UserService.ListUserSessions
+   */
+  listUserSessions: {
+    methodKind: "unary";
+    input: typeof ListUserSessionsRequestSchema;
+    output: typeof ListUserSessionsResponseSchema;
+  },
+  /**
+   * RevokeUserSession revokes a specific session for a user.
+   *
+   * @generated from rpc api.v2.UserService.RevokeUserSession
+   */
+  revokeUserSession: {
+    methodKind: "unary";
+    input: typeof RevokeUserSessionRequestSchema;
+    output: typeof EmptySchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_user, 0);

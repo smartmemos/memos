@@ -7,7 +7,6 @@
 package model
 
 import (
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -209,89 +208,6 @@ func (*UserSetting_AccessTokensSetting_) isUserSetting_Value() {}
 
 func (*UserSetting_WebhooksSetting_) isUserSetting_Value() {}
 
-type UserSession struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The resource name of the session.
-	// Format: users/{user}/sessions/{session}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The session ID.
-	SessionId string `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	// The timestamp when the session was created.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
-	// The timestamp when the session was last accessed.
-	// Used for sliding expiration calculation (last_accessed_time + 2 weeks).
-	LastAccessedTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_accessed_time,json=lastAccessedTime,proto3" json:"last_accessed_time,omitempty"`
-	// Client information associated with this session.
-	ClientInfo    *UserSession_ClientInfo `protobuf:"bytes,5,opt,name=client_info,json=clientInfo,proto3" json:"client_info,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UserSession) Reset() {
-	*x = UserSession{}
-	mi := &file_model_user_setting_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UserSession) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserSession) ProtoMessage() {}
-
-func (x *UserSession) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UserSession.ProtoReflect.Descriptor instead.
-func (*UserSession) Descriptor() ([]byte, []int) {
-	return file_model_user_setting_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *UserSession) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UserSession) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *UserSession) GetCreateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreateTime
-	}
-	return nil
-}
-
-func (x *UserSession) GetLastAccessedTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.LastAccessedTime
-	}
-	return nil
-}
-
-func (x *UserSession) GetClientInfo() *UserSession_ClientInfo {
-	if x != nil {
-		return x.ClientInfo
-	}
-	return nil
-}
-
 // User access token message
 type UserAccessToken struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -312,7 +228,7 @@ type UserAccessToken struct {
 
 func (x *UserAccessToken) Reset() {
 	*x = UserAccessToken{}
-	mi := &file_model_user_setting_proto_msgTypes[2]
+	mi := &file_model_user_setting_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -324,7 +240,7 @@ func (x *UserAccessToken) String() string {
 func (*UserAccessToken) ProtoMessage() {}
 
 func (x *UserAccessToken) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[2]
+	mi := &file_model_user_setting_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -337,7 +253,7 @@ func (x *UserAccessToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAccessToken.ProtoReflect.Descriptor instead.
 func (*UserAccessToken) Descriptor() ([]byte, []int) {
-	return file_model_user_setting_proto_rawDescGZIP(), []int{2}
+	return file_model_user_setting_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UserAccessToken) GetName() string {
@@ -395,7 +311,7 @@ type UserWebhook struct {
 
 func (x *UserWebhook) Reset() {
 	*x = UserWebhook{}
-	mi := &file_model_user_setting_proto_msgTypes[3]
+	mi := &file_model_user_setting_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -407,7 +323,7 @@ func (x *UserWebhook) String() string {
 func (*UserWebhook) ProtoMessage() {}
 
 func (x *UserWebhook) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[3]
+	mi := &file_model_user_setting_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -420,7 +336,7 @@ func (x *UserWebhook) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserWebhook.ProtoReflect.Descriptor instead.
 func (*UserWebhook) Descriptor() ([]byte, []int) {
-	return file_model_user_setting_proto_rawDescGZIP(), []int{3}
+	return file_model_user_setting_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserWebhook) GetName() string {
@@ -477,7 +393,7 @@ type UserSetting_GeneralSetting struct {
 
 func (x *UserSetting_GeneralSetting) Reset() {
 	*x = UserSetting_GeneralSetting{}
-	mi := &file_model_user_setting_proto_msgTypes[4]
+	mi := &file_model_user_setting_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -489,7 +405,7 @@ func (x *UserSetting_GeneralSetting) String() string {
 func (*UserSetting_GeneralSetting) ProtoMessage() {}
 
 func (x *UserSetting_GeneralSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[4]
+	mi := &file_model_user_setting_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -544,7 +460,7 @@ type UserSetting_SessionsSetting struct {
 
 func (x *UserSetting_SessionsSetting) Reset() {
 	*x = UserSetting_SessionsSetting{}
-	mi := &file_model_user_setting_proto_msgTypes[5]
+	mi := &file_model_user_setting_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -556,7 +472,7 @@ func (x *UserSetting_SessionsSetting) String() string {
 func (*UserSetting_SessionsSetting) ProtoMessage() {}
 
 func (x *UserSetting_SessionsSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[5]
+	mi := &file_model_user_setting_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -590,7 +506,7 @@ type UserSetting_AccessTokensSetting struct {
 
 func (x *UserSetting_AccessTokensSetting) Reset() {
 	*x = UserSetting_AccessTokensSetting{}
-	mi := &file_model_user_setting_proto_msgTypes[6]
+	mi := &file_model_user_setting_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -602,7 +518,7 @@ func (x *UserSetting_AccessTokensSetting) String() string {
 func (*UserSetting_AccessTokensSetting) ProtoMessage() {}
 
 func (x *UserSetting_AccessTokensSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[6]
+	mi := &file_model_user_setting_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -636,7 +552,7 @@ type UserSetting_WebhooksSetting struct {
 
 func (x *UserSetting_WebhooksSetting) Reset() {
 	*x = UserSetting_WebhooksSetting{}
-	mi := &file_model_user_setting_proto_msgTypes[7]
+	mi := &file_model_user_setting_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -648,7 +564,7 @@ func (x *UserSetting_WebhooksSetting) String() string {
 func (*UserSetting_WebhooksSetting) ProtoMessage() {}
 
 func (x *UserSetting_WebhooksSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[7]
+	mi := &file_model_user_setting_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -671,92 +587,11 @@ func (x *UserSetting_WebhooksSetting) GetWebhooks() []*UserWebhook {
 	return nil
 }
 
-type UserSession_ClientInfo struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// User agent string of the client.
-	UserAgent string `protobuf:"bytes,1,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
-	// IP address of the client.
-	IpAddress string `protobuf:"bytes,2,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
-	// Optional. Device type (e.g., "mobile", "desktop", "tablet").
-	DeviceType string `protobuf:"bytes,3,opt,name=device_type,json=deviceType,proto3" json:"device_type,omitempty"`
-	// Optional. Operating system (e.g., "iOS 17.0", "Windows 11").
-	Os string `protobuf:"bytes,4,opt,name=os,proto3" json:"os,omitempty"`
-	// Optional. Browser name and version (e.g., "Chrome 119.0").
-	Browser       string `protobuf:"bytes,5,opt,name=browser,proto3" json:"browser,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UserSession_ClientInfo) Reset() {
-	*x = UserSession_ClientInfo{}
-	mi := &file_model_user_setting_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UserSession_ClientInfo) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserSession_ClientInfo) ProtoMessage() {}
-
-func (x *UserSession_ClientInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_model_user_setting_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UserSession_ClientInfo.ProtoReflect.Descriptor instead.
-func (*UserSession_ClientInfo) Descriptor() ([]byte, []int) {
-	return file_model_user_setting_proto_rawDescGZIP(), []int{1, 0}
-}
-
-func (x *UserSession_ClientInfo) GetUserAgent() string {
-	if x != nil {
-		return x.UserAgent
-	}
-	return ""
-}
-
-func (x *UserSession_ClientInfo) GetIpAddress() string {
-	if x != nil {
-		return x.IpAddress
-	}
-	return ""
-}
-
-func (x *UserSession_ClientInfo) GetDeviceType() string {
-	if x != nil {
-		return x.DeviceType
-	}
-	return ""
-}
-
-func (x *UserSession_ClientInfo) GetOs() string {
-	if x != nil {
-		return x.Os
-	}
-	return ""
-}
-
-func (x *UserSession_ClientInfo) GetBrowser() string {
-	if x != nil {
-		return x.Browser
-	}
-	return ""
-}
-
 var File_model_user_setting_proto protoreflect.FileDescriptor
 
 const file_model_user_setting_proto_rawDesc = "" +
 	"\n" +
-	"\x18model/user_setting.proto\x12\x05model\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x12model/common.proto\"\xb4\x06\n" +
+	"\x18model/user_setting.proto\x12\x05model\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18model/user_session.proto\"\xb4\x06\n" +
 	"\vUserSetting\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12L\n" +
 	"\x0fgeneral_setting\x18\x02 \x01(\v2!.model.UserSetting.GeneralSettingH\x00R\x0egeneralSetting\x12O\n" +
@@ -782,26 +617,7 @@ const file_model_user_setting_proto_rawDesc = "" +
 	"\bSESSIONS\x10\x02\x12\x11\n" +
 	"\rACCESS_TOKENS\x10\x03\x12\f\n" +
 	"\bWEBHOOKS\x10\x04B\a\n" +
-	"\x05value\"\x9f\x03\n" +
-	"\vUserSession\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\x12;\n" +
-	"\vcreate_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"createTime\x12H\n" +
-	"\x12last_accessed_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10lastAccessedTime\x12>\n" +
-	"\vclient_info\x18\x05 \x01(\v2\x1d.model.UserSession.ClientInfoR\n" +
-	"clientInfo\x1a\x95\x01\n" +
-	"\n" +
-	"ClientInfo\x12\x1d\n" +
-	"\n" +
-	"user_agent\x18\x01 \x01(\tR\tuserAgent\x12\x1d\n" +
-	"\n" +
-	"ip_address\x18\x02 \x01(\tR\tipAddress\x12\x1f\n" +
-	"\vdevice_type\x18\x03 \x01(\tR\n" +
-	"deviceType\x12\x0e\n" +
-	"\x02os\x18\x04 \x01(\tR\x02os\x12\x18\n" +
-	"\abrowser\x18\x05 \x01(\tR\abrowser\"\xde\x01\n" +
+	"\x05value\"\xde\x01\n" +
 	"\x0fUserAccessToken\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
 	"\faccess_token\x18\x02 \x01(\tR\vaccessToken\x12 \n" +
@@ -831,40 +647,36 @@ func file_model_user_setting_proto_rawDescGZIP() []byte {
 }
 
 var file_model_user_setting_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_model_user_setting_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_model_user_setting_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_model_user_setting_proto_goTypes = []any{
 	(UserSetting_Key)(0),                    // 0: model.UserSetting.Key
 	(*UserSetting)(nil),                     // 1: model.UserSetting
-	(*UserSession)(nil),                     // 2: model.UserSession
-	(*UserAccessToken)(nil),                 // 3: model.UserAccessToken
-	(*UserWebhook)(nil),                     // 4: model.UserWebhook
-	(*UserSetting_GeneralSetting)(nil),      // 5: model.UserSetting.GeneralSetting
-	(*UserSetting_SessionsSetting)(nil),     // 6: model.UserSetting.SessionsSetting
-	(*UserSetting_AccessTokensSetting)(nil), // 7: model.UserSetting.AccessTokensSetting
-	(*UserSetting_WebhooksSetting)(nil),     // 8: model.UserSetting.WebhooksSetting
-	(*UserSession_ClientInfo)(nil),          // 9: model.UserSession.ClientInfo
-	(*timestamppb.Timestamp)(nil),           // 10: google.protobuf.Timestamp
+	(*UserAccessToken)(nil),                 // 2: model.UserAccessToken
+	(*UserWebhook)(nil),                     // 3: model.UserWebhook
+	(*UserSetting_GeneralSetting)(nil),      // 4: model.UserSetting.GeneralSetting
+	(*UserSetting_SessionsSetting)(nil),     // 5: model.UserSetting.SessionsSetting
+	(*UserSetting_AccessTokensSetting)(nil), // 6: model.UserSetting.AccessTokensSetting
+	(*UserSetting_WebhooksSetting)(nil),     // 7: model.UserSetting.WebhooksSetting
+	(*timestamppb.Timestamp)(nil),           // 8: google.protobuf.Timestamp
+	(*UserSession)(nil),                     // 9: model.UserSession
 }
 var file_model_user_setting_proto_depIdxs = []int32{
-	5,  // 0: model.UserSetting.general_setting:type_name -> model.UserSetting.GeneralSetting
-	6,  // 1: model.UserSetting.sessions_setting:type_name -> model.UserSetting.SessionsSetting
-	7,  // 2: model.UserSetting.access_tokens_setting:type_name -> model.UserSetting.AccessTokensSetting
-	8,  // 3: model.UserSetting.webhooks_setting:type_name -> model.UserSetting.WebhooksSetting
-	10, // 4: model.UserSession.create_time:type_name -> google.protobuf.Timestamp
-	10, // 5: model.UserSession.last_accessed_time:type_name -> google.protobuf.Timestamp
-	9,  // 6: model.UserSession.client_info:type_name -> model.UserSession.ClientInfo
-	10, // 7: model.UserAccessToken.issued_at:type_name -> google.protobuf.Timestamp
-	10, // 8: model.UserAccessToken.expires_at:type_name -> google.protobuf.Timestamp
-	10, // 9: model.UserWebhook.create_time:type_name -> google.protobuf.Timestamp
-	10, // 10: model.UserWebhook.update_time:type_name -> google.protobuf.Timestamp
-	2,  // 11: model.UserSetting.SessionsSetting.sessions:type_name -> model.UserSession
-	3,  // 12: model.UserSetting.AccessTokensSetting.access_tokens:type_name -> model.UserAccessToken
-	4,  // 13: model.UserSetting.WebhooksSetting.webhooks:type_name -> model.UserWebhook
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	4,  // 0: model.UserSetting.general_setting:type_name -> model.UserSetting.GeneralSetting
+	5,  // 1: model.UserSetting.sessions_setting:type_name -> model.UserSetting.SessionsSetting
+	6,  // 2: model.UserSetting.access_tokens_setting:type_name -> model.UserSetting.AccessTokensSetting
+	7,  // 3: model.UserSetting.webhooks_setting:type_name -> model.UserSetting.WebhooksSetting
+	8,  // 4: model.UserAccessToken.issued_at:type_name -> google.protobuf.Timestamp
+	8,  // 5: model.UserAccessToken.expires_at:type_name -> google.protobuf.Timestamp
+	8,  // 6: model.UserWebhook.create_time:type_name -> google.protobuf.Timestamp
+	8,  // 7: model.UserWebhook.update_time:type_name -> google.protobuf.Timestamp
+	9,  // 8: model.UserSetting.SessionsSetting.sessions:type_name -> model.UserSession
+	2,  // 9: model.UserSetting.AccessTokensSetting.access_tokens:type_name -> model.UserAccessToken
+	3,  // 10: model.UserSetting.WebhooksSetting.webhooks:type_name -> model.UserWebhook
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_model_user_setting_proto_init() }
@@ -872,7 +684,7 @@ func file_model_user_setting_proto_init() {
 	if File_model_user_setting_proto != nil {
 		return
 	}
-	file_model_common_proto_init()
+	file_model_user_session_proto_init()
 	file_model_user_setting_proto_msgTypes[0].OneofWrappers = []any{
 		(*UserSetting_GeneralSetting_)(nil),
 		(*UserSetting_SessionsSetting_)(nil),
@@ -885,7 +697,7 @@ func file_model_user_setting_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_user_setting_proto_rawDesc), len(file_model_user_setting_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -6,15 +6,15 @@ import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2"
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_api_field_behavior } from "../google/api/field_behavior_pb";
-import { file_model_common } from "./common_pb";
+import type { UserSession } from "./user_session_pb";
+import { file_model_user_session } from "./user_session_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file model/user_setting.proto.
  */
 export const file_model_user_setting: GenFile = /*@__PURE__*/
-  fileDesc("Chhtb2RlbC91c2VyX3NldHRpbmcucHJvdG8SBW1vZGVsIpkFCgtVc2VyU2V0dGluZxIMCgRuYW1lGAEgASgJEjwKD2dlbmVyYWxfc2V0dGluZxgCIAEoCzIhLm1vZGVsLlVzZXJTZXR0aW5nLkdlbmVyYWxTZXR0aW5nSAASPgoQc2Vzc2lvbnNfc2V0dGluZxgDIAEoCzIiLm1vZGVsLlVzZXJTZXR0aW5nLlNlc3Npb25zU2V0dGluZ0gAEkcKFWFjY2Vzc190b2tlbnNfc2V0dGluZxgEIAEoCzImLm1vZGVsLlVzZXJTZXR0aW5nLkFjY2Vzc1Rva2Vuc1NldHRpbmdIABI+ChB3ZWJob29rc19zZXR0aW5nGAUgASgLMiIubW9kZWwuVXNlclNldHRpbmcuV2ViaG9va3NTZXR0aW5nSAAaXAoOR2VuZXJhbFNldHRpbmcSDgoGbG9jYWxlGAEgASgJEhIKCmFwcGVhcmFuY2UYAiABKAkSFwoPbWVtb192aXNpYmlsaXR5GAMgASgJEg0KBXRoZW1lGAQgASgJGjcKD1Nlc3Npb25zU2V0dGluZxIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uGkQKE0FjY2Vzc1Rva2Vuc1NldHRpbmcSLQoNYWNjZXNzX3Rva2VucxgBIAMoCzIWLm1vZGVsLlVzZXJBY2Nlc3NUb2tlbho3Cg9XZWJob29rc1NldHRpbmcSJAoId2ViaG9va3MYASADKAsyEi5tb2RlbC5Vc2VyV2ViaG9vayJWCgNLZXkSEwoPS0VZX1VOU1BFQ0lGSUVEEAASCwoHR0VORVJBTBABEgwKCFNFU1NJT05TEAISEQoNQUNDRVNTX1RPS0VOUxADEgwKCFdFQkhPT0tTEARCBwoFdmFsdWUitAIKC1VzZXJTZXNzaW9uEgwKBG5hbWUYASABKAkSEgoKc2Vzc2lvbl9pZBgCIAEoCRIvCgtjcmVhdGVfdGltZRgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASNgoSbGFzdF9hY2Nlc3NlZF90aW1lGAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgtjbGllbnRfaW5mbxgFIAEoCzIdLm1vZGVsLlVzZXJTZXNzaW9uLkNsaWVudEluZm8aZgoKQ2xpZW50SW5mbxISCgp1c2VyX2FnZW50GAEgASgJEhIKCmlwX2FkZHJlc3MYAiABKAkSEwoLZGV2aWNlX3R5cGUYAyABKAkSCgoCb3MYBCABKAkSDwoHYnJvd3NlchgFIAEoCSKpAQoPVXNlckFjY2Vzc1Rva2VuEgwKBG5hbWUYASABKAkSFAoMYWNjZXNzX3Rva2VuGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEi0KCWlzc3VlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZXhwaXJlc19hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAioAEKC1VzZXJXZWJob29rEgwKBG5hbWUYASABKAkSCwoDdXJsGAIgASgJEhQKDGRpc3BsYXlfbmFtZRgDIAEoCRIvCgtjcmVhdGVfdGltZRgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoLdXBkYXRlX3RpbWUYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQjJaMGdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9tb2RlbGIGcHJvdG8z", [file_google_protobuf_timestamp, file_google_api_field_behavior, file_model_common]);
+  fileDesc("Chhtb2RlbC91c2VyX3NldHRpbmcucHJvdG8SBW1vZGVsIpkFCgtVc2VyU2V0dGluZxIMCgRuYW1lGAEgASgJEjwKD2dlbmVyYWxfc2V0dGluZxgCIAEoCzIhLm1vZGVsLlVzZXJTZXR0aW5nLkdlbmVyYWxTZXR0aW5nSAASPgoQc2Vzc2lvbnNfc2V0dGluZxgDIAEoCzIiLm1vZGVsLlVzZXJTZXR0aW5nLlNlc3Npb25zU2V0dGluZ0gAEkcKFWFjY2Vzc190b2tlbnNfc2V0dGluZxgEIAEoCzImLm1vZGVsLlVzZXJTZXR0aW5nLkFjY2Vzc1Rva2Vuc1NldHRpbmdIABI+ChB3ZWJob29rc19zZXR0aW5nGAUgASgLMiIubW9kZWwuVXNlclNldHRpbmcuV2ViaG9va3NTZXR0aW5nSAAaXAoOR2VuZXJhbFNldHRpbmcSDgoGbG9jYWxlGAEgASgJEhIKCmFwcGVhcmFuY2UYAiABKAkSFwoPbWVtb192aXNpYmlsaXR5GAMgASgJEg0KBXRoZW1lGAQgASgJGjcKD1Nlc3Npb25zU2V0dGluZxIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uGkQKE0FjY2Vzc1Rva2Vuc1NldHRpbmcSLQoNYWNjZXNzX3Rva2VucxgBIAMoCzIWLm1vZGVsLlVzZXJBY2Nlc3NUb2tlbho3Cg9XZWJob29rc1NldHRpbmcSJAoId2ViaG9va3MYASADKAsyEi5tb2RlbC5Vc2VyV2ViaG9vayJWCgNLZXkSEwoPS0VZX1VOU1BFQ0lGSUVEEAASCwoHR0VORVJBTBABEgwKCFNFU1NJT05TEAISEQoNQUNDRVNTX1RPS0VOUxADEgwKCFdFQkhPT0tTEARCBwoFdmFsdWUiqQEKD1VzZXJBY2Nlc3NUb2tlbhIMCgRuYW1lGAEgASgJEhQKDGFjY2Vzc190b2tlbhgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRItCglpc3N1ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmV4cGlyZXNfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIqABCgtVc2VyV2ViaG9vaxIMCgRuYW1lGAEgASgJEgsKA3VybBgCIAEoCRIUCgxkaXNwbGF5X25hbWUYAyABKAkSLwoLY3JlYXRlX3RpbWUYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC3VwZGF0ZV90aW1lGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIyWjBnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vbW9kZWxiBnByb3RvMw", [file_google_protobuf_timestamp, file_model_user_session]);
 
 /**
  * User settings message
@@ -222,102 +222,6 @@ export const UserSetting_KeySchema: GenEnum<UserSetting_Key> = /*@__PURE__*/
   enumDesc(file_model_user_setting, 0, 0);
 
 /**
- * @generated from message model.UserSession
- */
-export type UserSession = Message<"model.UserSession"> & {
-  /**
-   * The resource name of the session.
-   * Format: users/{user}/sessions/{session}
-   *
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * The session ID.
-   *
-   * @generated from field: string session_id = 2;
-   */
-  sessionId: string;
-
-  /**
-   * The timestamp when the session was created.
-   *
-   * @generated from field: google.protobuf.Timestamp create_time = 3;
-   */
-  createTime?: Timestamp;
-
-  /**
-   * The timestamp when the session was last accessed.
-   * Used for sliding expiration calculation (last_accessed_time + 2 weeks).
-   *
-   * @generated from field: google.protobuf.Timestamp last_accessed_time = 4;
-   */
-  lastAccessedTime?: Timestamp;
-
-  /**
-   * Client information associated with this session.
-   *
-   * @generated from field: model.UserSession.ClientInfo client_info = 5;
-   */
-  clientInfo?: UserSession_ClientInfo;
-};
-
-/**
- * Describes the message model.UserSession.
- * Use `create(UserSessionSchema)` to create a new message.
- */
-export const UserSessionSchema: GenMessage<UserSession> = /*@__PURE__*/
-  messageDesc(file_model_user_setting, 1);
-
-/**
- * @generated from message model.UserSession.ClientInfo
- */
-export type UserSession_ClientInfo = Message<"model.UserSession.ClientInfo"> & {
-  /**
-   * User agent string of the client.
-   *
-   * @generated from field: string user_agent = 1;
-   */
-  userAgent: string;
-
-  /**
-   * IP address of the client.
-   *
-   * @generated from field: string ip_address = 2;
-   */
-  ipAddress: string;
-
-  /**
-   * Optional. Device type (e.g., "mobile", "desktop", "tablet").
-   *
-   * @generated from field: string device_type = 3;
-   */
-  deviceType: string;
-
-  /**
-   * Optional. Operating system (e.g., "iOS 17.0", "Windows 11").
-   *
-   * @generated from field: string os = 4;
-   */
-  os: string;
-
-  /**
-   * Optional. Browser name and version (e.g., "Chrome 119.0").
-   *
-   * @generated from field: string browser = 5;
-   */
-  browser: string;
-};
-
-/**
- * Describes the message model.UserSession.ClientInfo.
- * Use `create(UserSession_ClientInfoSchema)` to create a new message.
- */
-export const UserSession_ClientInfoSchema: GenMessage<UserSession_ClientInfo> = /*@__PURE__*/
-  messageDesc(file_model_user_setting, 1, 0);
-
-/**
  * User access token message
  *
  * @generated from message model.UserAccessToken
@@ -365,7 +269,7 @@ export type UserAccessToken = Message<"model.UserAccessToken"> & {
  * Use `create(UserAccessTokenSchema)` to create a new message.
  */
 export const UserAccessTokenSchema: GenMessage<UserAccessToken> = /*@__PURE__*/
-  messageDesc(file_model_user_setting, 2);
+  messageDesc(file_model_user_setting, 1);
 
 /**
  * UserWebhook represents a webhook owned by a user.
@@ -415,5 +319,5 @@ export type UserWebhook = Message<"model.UserWebhook"> & {
  * Use `create(UserWebhookSchema)` to create a new message.
  */
 export const UserWebhookSchema: GenMessage<UserWebhook> = /*@__PURE__*/
-  messageDesc(file_model_user_setting, 3);
+  messageDesc(file_model_user_setting, 2);
 

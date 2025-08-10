@@ -9,6 +9,7 @@ import (
 	context "context"
 	errors "errors"
 	model "github.com/smartmemos/memos/internal/proto/model"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -44,6 +45,12 @@ const (
 	// UserServiceListUserSettingsProcedure is the fully-qualified name of the UserService's
 	// ListUserSettings RPC.
 	UserServiceListUserSettingsProcedure = "/api.v2.UserService/ListUserSettings"
+	// UserServiceListUserSessionsProcedure is the fully-qualified name of the UserService's
+	// ListUserSessions RPC.
+	UserServiceListUserSessionsProcedure = "/api.v2.UserService/ListUserSessions"
+	// UserServiceRevokeUserSessionProcedure is the fully-qualified name of the UserService's
+	// RevokeUserSession RPC.
+	UserServiceRevokeUserSessionProcedure = "/api.v2.UserService/RevokeUserSession"
 )
 
 // UserServiceClient is a client for the api.v2.UserService service.
@@ -56,6 +63,10 @@ type UserServiceClient interface {
 	GetUserSetting(context.Context, *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error)
 	// ListUserSettings returns a list of user settings.
 	ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error)
+	// ListUserSessions returns a list of active sessions for a user.
+	ListUserSessions(context.Context, *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error)
+	// RevokeUserSession revokes a specific session for a user.
+	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewUserServiceClient constructs a client for the api.v2.UserService service. By default, it uses
@@ -93,15 +104,29 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("ListUserSettings")),
 			connect.WithClientOptions(opts...),
 		),
+		listUserSessions: connect.NewClient[ListUserSessionsRequest, ListUserSessionsResponse](
+			httpClient,
+			baseURL+UserServiceListUserSessionsProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ListUserSessions")),
+			connect.WithClientOptions(opts...),
+		),
+		revokeUserSession: connect.NewClient[RevokeUserSessionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+UserServiceRevokeUserSessionProcedure,
+			connect.WithSchema(userServiceMethods.ByName("RevokeUserSession")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	createUser       *connect.Client[CreateUserRequest, model.User]
-	getUserStats     *connect.Client[GetUserStatsRequest, UserStats]
-	getUserSetting   *connect.Client[GetUserSettingRequest, model.UserSetting]
-	listUserSettings *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
+	createUser        *connect.Client[CreateUserRequest, model.User]
+	getUserStats      *connect.Client[GetUserStatsRequest, UserStats]
+	getUserSetting    *connect.Client[GetUserSettingRequest, model.UserSetting]
+	listUserSettings  *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
+	listUserSessions  *connect.Client[ListUserSessionsRequest, ListUserSessionsResponse]
+	revokeUserSession *connect.Client[RevokeUserSessionRequest, emptypb.Empty]
 }
 
 // CreateUser calls api.v2.UserService.CreateUser.
@@ -124,6 +149,16 @@ func (c *userServiceClient) ListUserSettings(ctx context.Context, req *connect.R
 	return c.listUserSettings.CallUnary(ctx, req)
 }
 
+// ListUserSessions calls api.v2.UserService.ListUserSessions.
+func (c *userServiceClient) ListUserSessions(ctx context.Context, req *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error) {
+	return c.listUserSessions.CallUnary(ctx, req)
+}
+
+// RevokeUserSession calls api.v2.UserService.RevokeUserSession.
+func (c *userServiceClient) RevokeUserSession(ctx context.Context, req *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.revokeUserSession.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the api.v2.UserService service.
 type UserServiceHandler interface {
 	// CreateUser creates a new user.
@@ -134,6 +169,10 @@ type UserServiceHandler interface {
 	GetUserSetting(context.Context, *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error)
 	// ListUserSettings returns a list of user settings.
 	ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error)
+	// ListUserSessions returns a list of active sessions for a user.
+	ListUserSessions(context.Context, *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error)
+	// RevokeUserSession revokes a specific session for a user.
+	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -167,6 +206,18 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("ListUserSettings")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceListUserSessionsHandler := connect.NewUnaryHandler(
+		UserServiceListUserSessionsProcedure,
+		svc.ListUserSessions,
+		connect.WithSchema(userServiceMethods.ByName("ListUserSessions")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceRevokeUserSessionHandler := connect.NewUnaryHandler(
+		UserServiceRevokeUserSessionProcedure,
+		svc.RevokeUserSession,
+		connect.WithSchema(userServiceMethods.ByName("RevokeUserSession")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceCreateUserProcedure:
@@ -177,6 +228,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceGetUserSettingHandler.ServeHTTP(w, r)
 		case UserServiceListUserSettingsProcedure:
 			userServiceListUserSettingsHandler.ServeHTTP(w, r)
+		case UserServiceListUserSessionsProcedure:
+			userServiceListUserSessionsHandler.ServeHTTP(w, r)
+		case UserServiceRevokeUserSessionProcedure:
+			userServiceRevokeUserSessionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -200,4 +255,12 @@ func (UnimplementedUserServiceHandler) GetUserSetting(context.Context, *connect.
 
 func (UnimplementedUserServiceHandler) ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.ListUserSettings is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ListUserSessions(context.Context, *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.ListUserSessions is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.RevokeUserSession is not implemented"))
 }
