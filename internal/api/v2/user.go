@@ -83,7 +83,6 @@ func (s *UserService) ListUserSettings(ctx context.Context, request *connect.Req
 }
 
 func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Request[v2pb.ListUserSessionsRequest]) (response *connect.Response[v2pb.ListUserSessionsResponse], err error) {
-	logrus.Info("req: ", request.Msg)
 	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.Parent, model.UserNamePrefix), 10, 64)
 	if err != nil {
 		return
@@ -99,6 +98,22 @@ func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Req
 			return convertUserSessionToProto(session)
 		}),
 	})
+	return
+}
+
+func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
+	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.Name, model.UserNamePrefix), 10, 64)
+	if err != nil {
+		return
+	}
+
+	err = s.memosService.RevokeUserSession(ctx, &model.RevokeUserSessionRequest{
+		UserID: userID,
+	})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(&emptypb.Empty{})
 	return
 }
 
