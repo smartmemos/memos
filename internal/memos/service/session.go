@@ -31,3 +31,7 @@ func (s *Service) CreateSession(ctx context.Context, req *model.CreateSessionReq
 	}
 	return
 }
+
+func (s *Service) RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) (err error) {
+	return
+}

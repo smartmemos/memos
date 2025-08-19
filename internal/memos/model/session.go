@@ -24,3 +24,7 @@ type CreateSessionRequest struct {
 	Username string
 	Password string
 }
+
+type RevokeUserSessionRequest struct {
+	UserID int64
+}

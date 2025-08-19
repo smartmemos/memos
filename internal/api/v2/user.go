@@ -133,13 +133,6 @@ func convertUserSessionToProto(session *model.UserSession) *modelpb.UserSession 
 	}
 }
 
-func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
-	logrus.Info("req: ", request.Msg)
-
-	response = connect.NewResponse(&emptypb.Empty{})
-	return
-}
-
 func convertUserSettingToProto(setting *model.UserSetting) *modelpb.UserSetting {
 	return &modelpb.UserSetting{
 		Name: setting.Key,
