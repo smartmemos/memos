@@ -15,8 +15,6 @@ type Service interface {
 
 	// CreateSession creates a session.
 	CreateSession(ctx context.Context, req *model.CreateSessionRequest) (*model.Session, error)
-	// RevokeUserSession revokes a user session.
-	RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) error
 
 	// CreateMemo creates a memo.
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
@@ -39,6 +37,8 @@ type Service interface {
 
 	// GetUserSessions lists the user sessions.
 	GetUserSessions(ctx context.Context, req *model.GetUserSessionsRequest) ([]*model.UserSession, error)
+	// RevokeUserSession revokes a user session.
+	RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) error
 
 	// ListInboxes lists the inboxes.
 	ListInboxes(ctx context.Context, req *model.ListInboxesRequest) (int64, []*model.Inbox, error)

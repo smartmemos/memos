@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { userServiceClient as userServiceClientV2 } from "@/grpc";
-import { userServiceClient } from "@/grpcweb";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { UserSession } from "@/types/proto2/model/user_session_pb";
 import { useTranslate } from "@/utils/i18n";
@@ -33,7 +32,7 @@ const UserSessionsSection = () => {
     const formattedSessionId = getFormattedSessionId(userSession.sessionId);
     const confirmed = window.confirm(t("setting.user-sessions-section.session-revocation", { sessionId: formattedSessionId }));
     if (confirmed) {
-      await userServiceClient.revokeUserSession({ name: userSession.name });
+      await userServiceClientV2.revokeUserSession({ name: userSession.name });
       setUserSessions(userSessions.filter((session) => session.sessionId !== userSession.sessionId));
       toast.success(t("setting.user-sessions-section.session-revoked"));
     }
@@ -127,9 +126,9 @@ const UserSessionsSection = () => {
                           <span>
                             {userSession.lastAccessedTime
                               ? new Date(
-                                  Number(userSession.lastAccessedTime.seconds) * 1000 +
-                                    Number(userSession.lastAccessedTime.nanos) / 1000000,
-                                ).toLocaleString()
+                                Number(userSession.lastAccessedTime.seconds) * 1000 +
+                                Number(userSession.lastAccessedTime.nanos) / 1000000,
+                              ).toLocaleString()
                               : "Unknown"}
                           </span>
                         </div>

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/pkg/errors"
 	"github.com/samber/do/v2"
 	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
@@ -102,13 +103,19 @@ func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Req
 }
 
 func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
-	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.Name, model.UserNamePrefix), 10, 64)
-	if err != nil {
+	parts := strings.Split(request.Msg.Name, "/")
+	if len(parts) != 4 || parts[0] != "users" || parts[2] != "sessions" {
+		err = errors.Errorf("invalid session name format: %s", request.Msg.Name)
 		return
 	}
-
+	userID, err := strconv.ParseInt(parts[1], 10, 64)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
 	err = s.memosService.RevokeUserSession(ctx, &model.RevokeUserSessionRequest{
-		UserID: userID,
+		UserID:    userID,
+		SessionID: parts[3],
 	})
 	if err != nil {
 		return

@@ -37,7 +37,25 @@ func (s *Service) GetUserSessions(ctx context.Context, req *model.GetUserSession
 		return nil, err
 	}
 	return lo.Map(setting.Value.Sessions, func(session *model.UserSession, _ int) *model.UserSession {
-		session.Name = fmt.Sprintf("%s%d/%s", model.UserNamePrefix, setting.UserID, session.SessionID)
+		session.Name = fmt.Sprintf("%s%d/sessions/%s", model.UserNamePrefix, setting.UserID, session.SessionID)
 		return session
 	}), nil
+}
+
+func (s *Service) RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) (err error) {
+	filter := &model.FindUserSettingFilter{
+		UserID: db.Eq(req.UserID),
+		Key:    db.Eq(model.UserSettingKeySessions),
+	}
+	setting, err := s.dao.FindUserSetting(ctx, filter)
+	if err != nil {
+		return err
+	}
+	sessions := lo.Filter(setting.Value.Sessions, func(session *model.UserSession, _ int) bool {
+		return session.SessionID != req.SessionID
+	})
+	if err = s.dao.UpdateUserSetting(ctx, setting, map[string]any{"value": sessions}); err != nil {
+		return err
+	}
+	return
 }

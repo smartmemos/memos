@@ -26,5 +26,6 @@ type CreateSessionRequest struct {
 }
 
 type RevokeUserSessionRequest struct {
-	UserID int64
+	UserID    int64
+	SessionID string
 }
