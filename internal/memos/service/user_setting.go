@@ -54,7 +54,7 @@ func (s *Service) RevokeUserSession(ctx context.Context, req *model.RevokeUserSe
 	sessions := lo.Filter(setting.Value.Sessions, func(session *model.UserSession, _ int) bool {
 		return session.SessionID != req.SessionID
 	})
-	if err = s.dao.UpdateUserSetting(ctx, setting, map[string]any{"value": sessions}); err != nil {
+	if _, err = s.dao.UpdateUserSettings(ctx, filter, map[string]any{"value": sessions}); err != nil {
 		return err
 	}
 	return
