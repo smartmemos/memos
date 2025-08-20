@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/samber/lo"
@@ -54,7 +55,13 @@ func (s *Service) RevokeUserSession(ctx context.Context, req *model.RevokeUserSe
 	sessions := lo.Filter(setting.Value.Sessions, func(session *model.UserSession, _ int) bool {
 		return session.SessionID != req.SessionID
 	})
-	if _, err = s.dao.UpdateUserSettings(ctx, filter, map[string]any{"value": sessions}); err != nil {
+	valueBytes, err := json.Marshal(model.UserSettingValue{
+		SessionsUserSetting: &model.SessionsUserSetting{Sessions: sessions},
+	})
+	if err != nil {
+		return err
+	}
+	if _, err = s.dao.UpdateUserSettings(ctx, filter, map[string]any{"value": string(valueBytes)}); err != nil {
 		return err
 	}
 	return
