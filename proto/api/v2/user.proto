@@ -23,6 +23,9 @@ service UserService {
     // GetUserSetting returns the user setting.
   rpc GetUserSetting(GetUserSettingRequest) returns (model.UserSetting) {}
 
+    // UpdateUserSetting updates the user setting.
+  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (model.UserSetting) {}
+
   // ListUserSettings returns a list of user settings.
   rpc ListUserSettings(ListUserSettingsRequest) returns (ListUserSettingsResponse) {}
 
@@ -89,6 +92,14 @@ message GetUserSettingRequest {
   // Required. The resource name of the user setting.
   // Format: users/{user}/settings/{setting}
   string name = 1;
+}
+
+message UpdateUserSettingRequest {
+  // Required. The user setting to update.
+  model.UserSetting setting = 1;
+
+  // Required. The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 // Request message for ListUserSettings method.

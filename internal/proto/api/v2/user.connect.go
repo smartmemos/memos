@@ -44,6 +44,9 @@ const (
 	// UserServiceGetUserSettingProcedure is the fully-qualified name of the UserService's
 	// GetUserSetting RPC.
 	UserServiceGetUserSettingProcedure = "/api.v2.UserService/GetUserSetting"
+	// UserServiceUpdateUserSettingProcedure is the fully-qualified name of the UserService's
+	// UpdateUserSetting RPC.
+	UserServiceUpdateUserSettingProcedure = "/api.v2.UserService/UpdateUserSetting"
 	// UserServiceListUserSettingsProcedure is the fully-qualified name of the UserService's
 	// ListUserSettings RPC.
 	UserServiceListUserSettingsProcedure = "/api.v2.UserService/ListUserSettings"
@@ -65,6 +68,8 @@ type UserServiceClient interface {
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
 	GetUserSetting(context.Context, *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error)
+	// UpdateUserSetting updates the user setting.
+	UpdateUserSetting(context.Context, *connect.Request[UpdateUserSettingRequest]) (*connect.Response[model.UserSetting], error)
 	// ListUserSettings returns a list of user settings.
 	ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error)
 	// ListUserSessions returns a list of active sessions for a user.
@@ -108,6 +113,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("GetUserSetting")),
 			connect.WithClientOptions(opts...),
 		),
+		updateUserSetting: connect.NewClient[UpdateUserSettingRequest, model.UserSetting](
+			httpClient,
+			baseURL+UserServiceUpdateUserSettingProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UpdateUserSetting")),
+			connect.WithClientOptions(opts...),
+		),
 		listUserSettings: connect.NewClient[ListUserSettingsRequest, ListUserSettingsResponse](
 			httpClient,
 			baseURL+UserServiceListUserSettingsProcedure,
@@ -135,6 +146,7 @@ type userServiceClient struct {
 	updateUser        *connect.Client[UpdateUserRequest, model.User]
 	getUserStats      *connect.Client[GetUserStatsRequest, UserStats]
 	getUserSetting    *connect.Client[GetUserSettingRequest, model.UserSetting]
+	updateUserSetting *connect.Client[UpdateUserSettingRequest, model.UserSetting]
 	listUserSettings  *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
 	listUserSessions  *connect.Client[ListUserSessionsRequest, ListUserSessionsResponse]
 	revokeUserSession *connect.Client[RevokeUserSessionRequest, emptypb.Empty]
@@ -158,6 +170,11 @@ func (c *userServiceClient) GetUserStats(ctx context.Context, req *connect.Reque
 // GetUserSetting calls api.v2.UserService.GetUserSetting.
 func (c *userServiceClient) GetUserSetting(ctx context.Context, req *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error) {
 	return c.getUserSetting.CallUnary(ctx, req)
+}
+
+// UpdateUserSetting calls api.v2.UserService.UpdateUserSetting.
+func (c *userServiceClient) UpdateUserSetting(ctx context.Context, req *connect.Request[UpdateUserSettingRequest]) (*connect.Response[model.UserSetting], error) {
+	return c.updateUserSetting.CallUnary(ctx, req)
 }
 
 // ListUserSettings calls api.v2.UserService.ListUserSettings.
@@ -185,6 +202,8 @@ type UserServiceHandler interface {
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
 	GetUserSetting(context.Context, *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error)
+	// UpdateUserSetting updates the user setting.
+	UpdateUserSetting(context.Context, *connect.Request[UpdateUserSettingRequest]) (*connect.Response[model.UserSetting], error)
 	// ListUserSettings returns a list of user settings.
 	ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error)
 	// ListUserSessions returns a list of active sessions for a user.
@@ -224,6 +243,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("GetUserSetting")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceUpdateUserSettingHandler := connect.NewUnaryHandler(
+		UserServiceUpdateUserSettingProcedure,
+		svc.UpdateUserSetting,
+		connect.WithSchema(userServiceMethods.ByName("UpdateUserSetting")),
+		connect.WithHandlerOptions(opts...),
+	)
 	userServiceListUserSettingsHandler := connect.NewUnaryHandler(
 		UserServiceListUserSettingsProcedure,
 		svc.ListUserSettings,
@@ -252,6 +277,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceGetUserStatsHandler.ServeHTTP(w, r)
 		case UserServiceGetUserSettingProcedure:
 			userServiceGetUserSettingHandler.ServeHTTP(w, r)
+		case UserServiceUpdateUserSettingProcedure:
+			userServiceUpdateUserSettingHandler.ServeHTTP(w, r)
 		case UserServiceListUserSettingsProcedure:
 			userServiceListUserSettingsHandler.ServeHTTP(w, r)
 		case UserServiceListUserSessionsProcedure:
@@ -281,6 +308,10 @@ func (UnimplementedUserServiceHandler) GetUserStats(context.Context, *connect.Re
 
 func (UnimplementedUserServiceHandler) GetUserSetting(context.Context, *connect.Request[GetUserSettingRequest]) (*connect.Response[model.UserSetting], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.GetUserSetting is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UpdateUserSetting(context.Context, *connect.Request[UpdateUserSettingRequest]) (*connect.Response[model.UserSetting], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.UpdateUserSetting is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) ListUserSettings(context.Context, *connect.Request[ListUserSettingsRequest]) (*connect.Response[ListUserSettingsResponse], error) {

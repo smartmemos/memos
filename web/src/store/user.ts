@@ -16,7 +16,20 @@ import {
   UserSetting_WebhooksSetting,
   UserStats,
 } from "@/types/proto/api/v1/user_service";
-import { User as UserV2 } from "@/types/proto2/model/user_pb";
+import { 
+  User as UserV2,
+} from "@/types/proto2/model/user_pb";
+
+import { 
+  User as UserV2,
+  UserSetting as UserSettingV2,
+  UserSetting_GeneralSetting as UserSetting_GeneralSettingV2,
+  UserSetting_SessionsSetting as UserSetting_SessionsSettingV2,
+  UserSetting_AccessTokensSetting as UserSetting_AccessTokensSettingV2,
+  UserSetting_WebhooksSetting as UserSetting_WebhooksSettingV2,
+} from "@/types/proto2/model/user_setting_pb";
+
+
 import { FieldMask } from "@/types/proto/google/protobuf/field_mask";
 import { findNearestMatchedLanguage } from "@/utils/i18n";
 import workspaceStore from "./workspace";
@@ -145,20 +158,23 @@ const userStore = (() => {
     });
   };
 
-  const updateUserGeneralSetting = async (generalSetting: Partial<UserSetting_GeneralSetting>, updateMask: string[]) => {
+  const updateUserGeneralSetting = async (generalSetting: Partial<UserSetting_GeneralSettingV2>, updateMask: string[]) => {
     if (!state.currentUser) {
       throw new Error("No current user");
     }
 
     const settingName = `${state.currentUser}/settings/${UserSetting_Key.GENERAL}`;
-    const userSetting: UserSetting = {
+    const userSetting: UserSettingV2 = {
       name: settingName,
-      generalSetting: generalSetting as UserSetting_GeneralSetting,
+      value: {
+        case: "generalSetting",
+        value: generalSetting as UserSetting_GeneralSettingV2,
+      },
     };
 
-    const updatedUserSetting = await userServiceClient.updateUserSetting({
+    const updatedUserSetting = await userServiceClientV2.updateUserSetting({
       setting: userSetting,
-      updateMask: updateMask,
+      updateMask: FieldMask.create({ paths: updateMask }),
     });
 
     state.setPartial({

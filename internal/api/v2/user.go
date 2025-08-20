@@ -105,6 +105,55 @@ func (s *UserService) GetUserSetting(ctx context.Context, request *connect.Reque
 	return
 }
 
+func (s *UserService) UpdateUserSetting(ctx context.Context, request *connect.Request[v2pb.UpdateUserSettingRequest]) (response *connect.Response[modelpb.UserSetting], err error) {
+	logrus.Info("req: ", request.Msg)
+
+	parts := strings.Split(request.Msg.Setting.Name, "/")
+	if len(parts) != 4 || parts[0] != "users" || parts[2] != "settings" {
+		err = errors.Errorf("invalid setting name format: %s", request.Msg.Setting.Name)
+		return
+	}
+	userID, err := strconv.ParseInt(parts[1], 10, 64)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		err = errors.New("failed to get user")
+		return
+	} else if userID != userInfo.UserID {
+		err = errors.New("user not found")
+		return
+	}
+	var settingValue model.UserSettingValue
+	if request.Msg.Setting.Value != nil {
+		switch value := request.Msg.Setting.Value.(type) {
+		case *modelpb.UserSetting_GeneralSetting_:
+			settingValue = model.UserSettingValue{
+				GeneralUserSetting: &model.GeneralUserSetting{
+					Locale:         value.GeneralSetting.Locale,
+					Appearance:     value.GeneralSetting.Appearance,
+					MemoVisibility: value.GeneralSetting.MemoVisibility,
+					Theme:          value.GeneralSetting.Theme,
+				},
+			}
+		}
+	}
+	setting, err := s.memosService.UpdateUserSetting(ctx, &model.UpdateUserSettingRequest{
+		UpdateMask: request.Msg.UpdateMask.Paths,
+		UserID:     userID,
+		Key:        model.UserSettingKey(parts[3]),
+		Value:      settingValue,
+	})
+	if err != nil {
+		return
+	}
+
+	response = connect.NewResponse(convertUserSettingToProto(setting))
+	return
+}
+
 func (s *UserService) ListUserSettings(ctx context.Context, request *connect.Request[v2pb.ListUserSettingsRequest]) (response *connect.Response[v2pb.ListUserSettingsResponse], err error) {
 	logrus.Info("req: ", request.Msg)
 

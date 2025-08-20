@@ -34,6 +34,8 @@ type Service interface {
 
 	// GetUserSetting gets the user setting.
 	GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (*model.UserSetting, error)
+	// UpdateUserSetting updates the user setting.
+	UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) (*model.UserSetting, error)
 	// GetUserSettings gets the user settings.
 	GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error)
 

@@ -28,6 +28,45 @@ func (s *Service) GetUserSettings(ctx context.Context, req *model.GetUserSetting
 	return settings, nil
 }
 
+func (s *Service) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) (setting *model.UserSetting, err error) {
+	filter := &model.FindUserSettingFilter{
+		UserID: db.Eq(req.UserID),
+		Key:    db.Eq(req.Key),
+	}
+	setting, err = s.dao.FindUserSetting(ctx, filter)
+	if err != nil {
+		return
+	}
+	switch req.Key {
+	case model.UserSettingKeyGeneral:
+		if setting.Value.GeneralUserSetting == nil {
+			setting.Value.GeneralUserSetting = &model.GeneralUserSetting{}
+		}
+		if lo.Contains(req.UpdateMask, "locale") {
+			setting.Value.GeneralUserSetting.Locale = req.Value.GeneralUserSetting.Locale
+		}
+		if lo.Contains(req.UpdateMask, "appearance") {
+			setting.Value.GeneralUserSetting.Appearance = req.Value.GeneralUserSetting.Appearance
+		}
+		if lo.Contains(req.UpdateMask, "memo_visibility") {
+			setting.Value.GeneralUserSetting.MemoVisibility = req.Value.GeneralUserSetting.MemoVisibility
+		}
+		if lo.Contains(req.UpdateMask, "theme") {
+			setting.Value.GeneralUserSetting.Theme = req.Value.GeneralUserSetting.Theme
+		}
+	case model.UserSettingKeySessions:
+		setting.Value.SessionsUserSetting = req.Value.SessionsUserSetting
+	}
+	valueBytes, err := json.Marshal(setting.Value)
+	if err != nil {
+		return
+	}
+	if _, err = s.dao.UpdateUserSettings(ctx, filter, map[string]any{"value": valueBytes}); err != nil {
+		return
+	}
+	return setting, nil
+}
+
 func (s *Service) GetUserSessions(ctx context.Context, req *model.GetUserSessionsRequest) ([]*model.UserSession, error) {
 	filter := &model.FindUserSettingFilter{
 		UserID: db.Eq(req.UserID),

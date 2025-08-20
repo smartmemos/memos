@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiKQoXTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJIkAKGExpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZRIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uIigKGFJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMokECgtVc2VyU2VydmljZRI2CgpDcmVhdGVVc2VyEhkuYXBpLnYyLkNyZWF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjYKClVwZGF0ZVVzZXISGS5hcGkudjIuVXBkYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAElcKEExpc3RVc2VyU2Vzc2lvbnMSHy5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlIgASTwoRUmV2b2tlVXNlclNlc3Npb24SIC5hcGkudjIuUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJwChhVcGRhdGVVc2VyU2V0dGluZ1JlcXVlc3QSIwoHc2V0dGluZxgBIAEoCzISLm1vZGVsLlVzZXJTZXR0aW5nEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiKQoXTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJIkAKGExpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZRIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uIigKGFJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMtYECgtVc2VyU2VydmljZRI2CgpDcmVhdGVVc2VyEhkuYXBpLnYyLkNyZWF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjYKClVwZGF0ZVVzZXISGS5hcGkudjIuVXBkYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJLChFVcGRhdGVVc2VyU2V0dGluZxIgLmFwaS52Mi5VcGRhdGVVc2VyU2V0dGluZ1JlcXVlc3QaEi5tb2RlbC5Vc2VyU2V0dGluZyIAElcKEExpc3RVc2VyU2V0dGluZ3MSHy5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlIgASVwoQTGlzdFVzZXJTZXNzaW9ucxIfLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVzcG9uc2UiABJPChFSZXZva2VVc2VyU2Vzc2lvbhIgLmFwaS52Mi5SZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -204,6 +204,32 @@ export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*
   messageDesc(file_api_v2_user, 4);
 
 /**
+ * @generated from message api.v2.UpdateUserSettingRequest
+ */
+export type UpdateUserSettingRequest = Message<"api.v2.UpdateUserSettingRequest"> & {
+  /**
+   * Required. The user setting to update.
+   *
+   * @generated from field: model.UserSetting setting = 1;
+   */
+  setting?: UserSetting;
+
+  /**
+   * Required. The list of fields to update.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message api.v2.UpdateUserSettingRequest.
+ * Use `create(UpdateUserSettingRequestSchema)` to create a new message.
+ */
+export const UpdateUserSettingRequestSchema: GenMessage<UpdateUserSettingRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 5);
+
+/**
  * Request message for ListUserSettings method.
  *
  * @generated from message api.v2.ListUserSettingsRequest
@@ -241,7 +267,7 @@ export type ListUserSettingsRequest = Message<"api.v2.ListUserSettingsRequest"> 
  * Use `create(ListUserSettingsRequestSchema)` to create a new message.
  */
 export const ListUserSettingsRequestSchema: GenMessage<ListUserSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 5);
+  messageDesc(file_api_v2_user, 6);
 
 /**
  * Response message for ListUserSettings method.
@@ -277,7 +303,7 @@ export type ListUserSettingsResponse = Message<"api.v2.ListUserSettingsResponse"
  * Use `create(ListUserSettingsResponseSchema)` to create a new message.
  */
 export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 6);
+  messageDesc(file_api_v2_user, 7);
 
 /**
  * @generated from message api.v2.ListUserSessionsRequest
@@ -297,7 +323,7 @@ export type ListUserSessionsRequest = Message<"api.v2.ListUserSessionsRequest"> 
  * Use `create(ListUserSessionsRequestSchema)` to create a new message.
  */
 export const ListUserSessionsRequestSchema: GenMessage<ListUserSessionsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 7);
+  messageDesc(file_api_v2_user, 8);
 
 /**
  * @generated from message api.v2.ListUserSessionsResponse
@@ -316,7 +342,7 @@ export type ListUserSessionsResponse = Message<"api.v2.ListUserSessionsResponse"
  * Use `create(ListUserSessionsResponseSchema)` to create a new message.
  */
 export const ListUserSessionsResponseSchema: GenMessage<ListUserSessionsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 8);
+  messageDesc(file_api_v2_user, 9);
 
 /**
  * @generated from message api.v2.RevokeUserSessionRequest
@@ -336,7 +362,7 @@ export type RevokeUserSessionRequest = Message<"api.v2.RevokeUserSessionRequest"
  * Use `create(RevokeUserSessionRequestSchema)` to create a new message.
  */
 export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 9);
+  messageDesc(file_api_v2_user, 10);
 
 /**
  * @generated from service api.v2.UserService
@@ -380,6 +406,16 @@ export const UserService: GenService<{
   getUserSetting: {
     methodKind: "unary";
     input: typeof GetUserSettingRequestSchema;
+    output: typeof UserSettingSchema;
+  },
+  /**
+   * UpdateUserSetting updates the user setting.
+   *
+   * @generated from rpc api.v2.UserService.UpdateUserSetting
+   */
+  updateUserSetting: {
+    methodKind: "unary";
+    input: typeof UpdateUserSettingRequestSchema;
     output: typeof UserSettingSchema;
   },
   /**

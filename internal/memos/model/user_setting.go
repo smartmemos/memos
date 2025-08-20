@@ -91,6 +91,15 @@ type FindUserSettingFilter struct {
 }
 
 type GetUserSettingRequest struct {
+	UserID int64
+	Key    UserSettingKey
+}
+
+type UpdateUserSettingRequest struct {
+	UpdateMask []string
+	UserID     int64
+	Key        UserSettingKey
+	Value      UserSettingValue
 }
 
 type GetUserSettingsRequest struct {
