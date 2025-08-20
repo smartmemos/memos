@@ -4,8 +4,8 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { EmptySchema, Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { EmptySchema, FieldMask, Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { UserSession } from "../../model/user_session_pb";
 import { file_model_user_session } from "../../model/user_session_pb";
 import type { UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiKQoXTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJIkAKGExpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZRIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uIigKGFJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMtEDCgtVc2VyU2VydmljZRI2CgpDcmVhdGVVc2VyEhkuYXBpLnYyLkNyZWF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEkAKDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhEuYXBpLnYyLlVzZXJTdGF0cyIAEkUKDkdldFVzZXJTZXR0aW5nEh0uYXBpLnYyLkdldFVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASVwoQTGlzdFVzZXJTZXR0aW5ncxIfLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVzcG9uc2UiABJXChBMaXN0VXNlclNlc3Npb25zEh8uYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZSIAEk8KEVJldm9rZVVzZXJTZXNzaW9uEiAuYXBpLnYyLlJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user_session, file_model_user_setting, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIiMKE0dldFVzZXJTdGF0c1JlcXVlc3QSDAoEbmFtZRgBIAEoCSKGAwoJVXNlclN0YXRzEgwKBG5hbWUYASABKAkSOwoXbWVtb19kaXNwbGF5X3RpbWVzdGFtcHMYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjgKD21lbW9fdHlwZV9zdGF0cxgDIAEoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIyCgl0YWdfY291bnQYBCADKAsyHy5hcGkudjIuVXNlclN0YXRzLlRhZ0NvdW50RW50cnkSFAoMcGlubmVkX21lbW9zGAUgAygJEhgKEHRvdGFsX21lbW9fY291bnQYBiABKAUaLwoNVGFnQ291bnRFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAU6AjgBGl8KDU1lbW9UeXBlU3RhdHMSEgoKbGlua19jb3VudBgBIAEoBRISCgpjb2RlX2NvdW50GAIgASgFEhIKCnRvZG9fY291bnQYAyABKAUSEgoKdW5kb19jb3VudBgEIAEoBSIlChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJQChdMaXN0VXNlclNldHRpbmdzUmVxdWVzdBIOCgZwYXJlbnQYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkibQoYTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlEiQKCHNldHRpbmdzGAEgAygLMhIubW9kZWwuVXNlclNldHRpbmcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiKQoXTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJIkAKGExpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZRIkCghzZXNzaW9ucxgBIAMoCzISLm1vZGVsLlVzZXJTZXNzaW9uIigKGFJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMokECgtVc2VyU2VydmljZRI2CgpDcmVhdGVVc2VyEhkuYXBpLnYyLkNyZWF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjYKClVwZGF0ZVVzZXISGS5hcGkudjIuVXBkYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAElcKEExpc3RVc2VyU2Vzc2lvbnMSHy5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlIgASTwoRUmV2b2tlVXNlclNlc3Npb24SIC5hcGkudjIuUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -40,6 +40,39 @@ export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE_
   messageDesc(file_api_v2_user, 0);
 
 /**
+ * @generated from message api.v2.UpdateUserRequest
+ */
+export type UpdateUserRequest = Message<"api.v2.UpdateUserRequest"> & {
+  /**
+   * Required. The user to update.
+   *
+   * @generated from field: model.User user = 1;
+   */
+  user?: User;
+
+  /**
+   * Required. The list of fields to update.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+
+  /**
+   * Optional. If set to true, allows updating sensitive fields.
+   *
+   * @generated from field: bool allow_missing = 3;
+   */
+  allowMissing: boolean;
+};
+
+/**
+ * Describes the message api.v2.UpdateUserRequest.
+ * Use `create(UpdateUserRequestSchema)` to create a new message.
+ */
+export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 1);
+
+/**
  * @generated from message api.v2.GetUserStatsRequest
  */
 export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
@@ -57,7 +90,7 @@ export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
  * Use `create(GetUserStatsRequestSchema)` to create a new message.
  */
 export const GetUserStatsRequestSchema: GenMessage<GetUserStatsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 1);
+  messageDesc(file_api_v2_user, 2);
 
 /**
  * User statistics messages
@@ -114,7 +147,7 @@ export type UserStats = Message<"api.v2.UserStats"> & {
  * Use `create(UserStatsSchema)` to create a new message.
  */
 export const UserStatsSchema: GenMessage<UserStats> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 2);
+  messageDesc(file_api_v2_user, 3);
 
 /**
  * Memo type statistics.
@@ -148,7 +181,7 @@ export type UserStats_MemoTypeStats = Message<"api.v2.UserStats.MemoTypeStats"> 
  * Use `create(UserStats_MemoTypeStatsSchema)` to create a new message.
  */
 export const UserStats_MemoTypeStatsSchema: GenMessage<UserStats_MemoTypeStats> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 2, 0);
+  messageDesc(file_api_v2_user, 3, 0);
 
 /**
  * @generated from message api.v2.GetUserSettingRequest
@@ -168,7 +201,7 @@ export type GetUserSettingRequest = Message<"api.v2.GetUserSettingRequest"> & {
  * Use `create(GetUserSettingRequestSchema)` to create a new message.
  */
 export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 3);
+  messageDesc(file_api_v2_user, 4);
 
 /**
  * Request message for ListUserSettings method.
@@ -208,7 +241,7 @@ export type ListUserSettingsRequest = Message<"api.v2.ListUserSettingsRequest"> 
  * Use `create(ListUserSettingsRequestSchema)` to create a new message.
  */
 export const ListUserSettingsRequestSchema: GenMessage<ListUserSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 4);
+  messageDesc(file_api_v2_user, 5);
 
 /**
  * Response message for ListUserSettings method.
@@ -244,7 +277,7 @@ export type ListUserSettingsResponse = Message<"api.v2.ListUserSettingsResponse"
  * Use `create(ListUserSettingsResponseSchema)` to create a new message.
  */
 export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 5);
+  messageDesc(file_api_v2_user, 6);
 
 /**
  * @generated from message api.v2.ListUserSessionsRequest
@@ -264,7 +297,7 @@ export type ListUserSessionsRequest = Message<"api.v2.ListUserSessionsRequest"> 
  * Use `create(ListUserSessionsRequestSchema)` to create a new message.
  */
 export const ListUserSessionsRequestSchema: GenMessage<ListUserSessionsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 6);
+  messageDesc(file_api_v2_user, 7);
 
 /**
  * @generated from message api.v2.ListUserSessionsResponse
@@ -283,7 +316,7 @@ export type ListUserSessionsResponse = Message<"api.v2.ListUserSessionsResponse"
  * Use `create(ListUserSessionsResponseSchema)` to create a new message.
  */
 export const ListUserSessionsResponseSchema: GenMessage<ListUserSessionsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 7);
+  messageDesc(file_api_v2_user, 8);
 
 /**
  * @generated from message api.v2.RevokeUserSessionRequest
@@ -303,7 +336,7 @@ export type RevokeUserSessionRequest = Message<"api.v2.RevokeUserSessionRequest"
  * Use `create(RevokeUserSessionRequestSchema)` to create a new message.
  */
 export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 8);
+  messageDesc(file_api_v2_user, 9);
 
 /**
  * @generated from service api.v2.UserService
@@ -317,6 +350,16 @@ export const UserService: GenService<{
   createUser: {
     methodKind: "unary";
     input: typeof CreateUserRequestSchema;
+    output: typeof UserSchema;
+  },
+  /**
+   * UpdateUser updates a user.
+   *
+   * @generated from rpc api.v2.UserService.UpdateUser
+   */
+  updateUser: {
+    methodKind: "unary";
+    input: typeof UpdateUserRequestSchema;
     output: typeof UserSchema;
   },
   /**

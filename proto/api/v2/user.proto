@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 import "model/user_session.proto";
 import "model/user_setting.proto";
 import "model/user.proto";
@@ -12,6 +13,9 @@ option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
 service UserService {
   // CreateUser creates a new user.
   rpc CreateUser(CreateUserRequest) returns (model.User) {}
+
+    // UpdateUser updates a user.
+  rpc UpdateUser(UpdateUserRequest) returns (model.User) {}
 
     // GetUserStats returns statistics for a specific user.
   rpc GetUserStats(GetUserStatsRequest) returns (UserStats) {}
@@ -32,6 +36,17 @@ service UserService {
 message CreateUserRequest {
     // Required. The user to create.
     model.User user = 1;
+}
+
+message UpdateUserRequest {
+  // Required. The user to update.
+  model.User user = 1;
+
+  // Required. The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2;
+
+  // Optional. If set to true, allows updating sensitive fields.
+  bool allow_missing = 3;
 }
 
 message GetUserStatsRequest {

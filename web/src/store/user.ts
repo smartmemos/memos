@@ -1,9 +1,9 @@
 import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
 import { authServiceClient } from "@/grpc";
-import { inboxServiceClient, userServiceClient } from "@/grpcweb";
 import { userServiceClient as userServiceClientV2 } from "@/grpc";
 import { inboxServiceClient as inboxServiceClientV2 } from "@/grpc";
+import { inboxServiceClient, userServiceClient } from "@/grpcweb";
 import { Inbox } from "@/types/proto/api/v1/inbox_service";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import {
@@ -16,6 +16,8 @@ import {
   UserSetting_WebhooksSetting,
   UserStats,
 } from "@/types/proto/api/v1/user_service";
+import { User as UserV2 } from "@/types/proto2/model/user_pb";
+import { FieldMask } from "@/types/proto/google/protobuf/field_mask";
 import { findNearestMatchedLanguage } from "@/utils/i18n";
 import workspaceStore from "./workspace";
 
@@ -120,10 +122,11 @@ const userStore = (() => {
     return users;
   };
 
-  const updateUser = async (user: Partial<User>, updateMask: string[]) => {
-    const updatedUser = await userServiceClient.updateUser({
+  const updateUser = async (user: UserV2, updateMask: string[]) => {
+    console.log("updateUser....", user, updateMask);
+    const updatedUser = await userServiceClientV2.updateUser({
       user,
-      updateMask,
+      updateMask: FieldMask.create({ paths: updateMask }),
     });
     state.setPartial({
       userMapByName: {

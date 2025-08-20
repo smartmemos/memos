@@ -15,6 +15,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
+	"github.com/smartmemos/memos/internal/pkg/utils"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
@@ -43,6 +44,43 @@ func (s *UserService) CreateUser(ctx context.Context, request *connect.Request[v
 	return
 }
 
+// UpdateUser updates a user.
+func (s *UserService) UpdateUser(ctx context.Context, request *connect.Request[v2pb.UpdateUserRequest]) (response *connect.Response[modelpb.User], err error) {
+	logrus.Info("req: ", request.Msg)
+
+	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.User.Name, model.UserNamePrefix), 10, 64)
+	if err != nil {
+		return
+	}
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		err = errors.New("failed to get user")
+		return
+	} else if userID != userInfo.UserID {
+		err = errors.New("user not found")
+		return
+	}
+
+	user, err := s.memosService.UpdateUser(ctx, &model.UpdateUserRequest{
+		UpdateMask:  request.Msg.UpdateMask.Paths,
+		ID:          userID,
+		Username:    request.Msg.User.Username,
+		Role:        model.Role(request.Msg.User.Role),
+		Email:       request.Msg.User.Email,
+		Nickname:    request.Msg.User.Nickname,
+		Password:    request.Msg.User.Password,
+		AvatarURL:   request.Msg.User.AvatarUrl,
+		Description: request.Msg.User.Description,
+		// Status:      model.RowStatus(request.Msg.User.Status),
+	})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(convertUserToProto(user))
+	return
+}
+
+// GetUserStats returns statistics for a specific user.
 func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[v2pb.UserStats], err error) {
 	logrus.Info("req: ", request.Msg)
 	// userID, err := strconv.ParseInt(req.Msg.Name, 10, 64)

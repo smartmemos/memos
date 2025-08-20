@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { convertFileToBase64 } from "@/helpers/utils";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { userStore, workspaceStore } from "@/store";
-import { User as UserPb } from "@/types/proto/api/v1/user_service";
+import { User as UserV2 } from "@/types/proto2/model/user_pb";
 import { useTranslate } from "@/utils/i18n";
 import UserAvatar from "./UserAvatar";
 
@@ -127,14 +127,14 @@ function UpdateAccountDialog({ open, onOpenChange, onSuccess }: Props) {
         updateMask.push("description");
       }
       await userStore.updateUser(
-        UserPb.fromPartial({
+        {
           name: currentUser.name,
           username: state.username,
-          displayName: state.displayName,
+          nickname: state.displayName,
           email: state.email,
           avatarUrl: state.avatarUrl,
           description: state.description,
-        }),
+        } as UserV2,
         updateMask,
       );
       toast.success(t("message.update-succeed"));

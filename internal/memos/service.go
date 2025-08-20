@@ -10,6 +10,8 @@ import (
 type Service interface {
 	// CreateUser creates a user.
 	CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User, error)
+	// UpdateUser updates a user.
+	UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error)
 	// GetUserByID gets a user by ID.
 	GetUserByID(ctx context.Context, id int64) (*model.User, error)
 

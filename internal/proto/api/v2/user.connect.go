@@ -36,6 +36,8 @@ const (
 const (
 	// UserServiceCreateUserProcedure is the fully-qualified name of the UserService's CreateUser RPC.
 	UserServiceCreateUserProcedure = "/api.v2.UserService/CreateUser"
+	// UserServiceUpdateUserProcedure is the fully-qualified name of the UserService's UpdateUser RPC.
+	UserServiceUpdateUserProcedure = "/api.v2.UserService/UpdateUser"
 	// UserServiceGetUserStatsProcedure is the fully-qualified name of the UserService's GetUserStats
 	// RPC.
 	UserServiceGetUserStatsProcedure = "/api.v2.UserService/GetUserStats"
@@ -57,6 +59,8 @@ const (
 type UserServiceClient interface {
 	// CreateUser creates a new user.
 	CreateUser(context.Context, *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error)
+	// UpdateUser updates a user.
+	UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error)
 	// GetUserStats returns statistics for a specific user.
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
@@ -84,6 +88,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			httpClient,
 			baseURL+UserServiceCreateUserProcedure,
 			connect.WithSchema(userServiceMethods.ByName("CreateUser")),
+			connect.WithClientOptions(opts...),
+		),
+		updateUser: connect.NewClient[UpdateUserRequest, model.User](
+			httpClient,
+			baseURL+UserServiceUpdateUserProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UpdateUser")),
 			connect.WithClientOptions(opts...),
 		),
 		getUserStats: connect.NewClient[GetUserStatsRequest, UserStats](
@@ -122,6 +132,7 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
 	createUser        *connect.Client[CreateUserRequest, model.User]
+	updateUser        *connect.Client[UpdateUserRequest, model.User]
 	getUserStats      *connect.Client[GetUserStatsRequest, UserStats]
 	getUserSetting    *connect.Client[GetUserSettingRequest, model.UserSetting]
 	listUserSettings  *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
@@ -132,6 +143,11 @@ type userServiceClient struct {
 // CreateUser calls api.v2.UserService.CreateUser.
 func (c *userServiceClient) CreateUser(ctx context.Context, req *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error) {
 	return c.createUser.CallUnary(ctx, req)
+}
+
+// UpdateUser calls api.v2.UserService.UpdateUser.
+func (c *userServiceClient) UpdateUser(ctx context.Context, req *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error) {
+	return c.updateUser.CallUnary(ctx, req)
 }
 
 // GetUserStats calls api.v2.UserService.GetUserStats.
@@ -163,6 +179,8 @@ func (c *userServiceClient) RevokeUserSession(ctx context.Context, req *connect.
 type UserServiceHandler interface {
 	// CreateUser creates a new user.
 	CreateUser(context.Context, *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error)
+	// UpdateUser updates a user.
+	UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error)
 	// GetUserStats returns statistics for a specific user.
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
@@ -186,6 +204,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		UserServiceCreateUserProcedure,
 		svc.CreateUser,
 		connect.WithSchema(userServiceMethods.ByName("CreateUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUpdateUserHandler := connect.NewUnaryHandler(
+		UserServiceUpdateUserProcedure,
+		svc.UpdateUser,
+		connect.WithSchema(userServiceMethods.ByName("UpdateUser")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceGetUserStatsHandler := connect.NewUnaryHandler(
@@ -222,6 +246,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		switch r.URL.Path {
 		case UserServiceCreateUserProcedure:
 			userServiceCreateUserHandler.ServeHTTP(w, r)
+		case UserServiceUpdateUserProcedure:
+			userServiceUpdateUserHandler.ServeHTTP(w, r)
 		case UserServiceGetUserStatsProcedure:
 			userServiceGetUserStatsHandler.ServeHTTP(w, r)
 		case UserServiceGetUserSettingProcedure:
@@ -243,6 +269,10 @@ type UnimplementedUserServiceHandler struct{}
 
 func (UnimplementedUserServiceHandler) CreateUser(context.Context, *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.CreateUser is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.UpdateUser is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error) {

@@ -245,3 +245,18 @@ func (mr *MockServiceMockRecorder) RevokeUserSession(ctx, req interface{}) *gomo
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeUserSession", reflect.TypeOf((*MockService)(nil).RevokeUserSession), ctx, req)
 }
+
+// UpdateUser mocks base method.
+func (m *MockService) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUser", ctx, req)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateUser indicates an expected call of UpdateUser.
+func (mr *MockServiceMockRecorder) UpdateUser(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockService)(nil).UpdateUser), ctx, req)
+}
