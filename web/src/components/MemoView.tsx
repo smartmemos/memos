@@ -10,9 +10,12 @@ import { cn } from "@/lib/utils";
 import { memoStore, userStore, workspaceStore } from "@/store";
 import { State } from "@/types/proto/api/v1/common";
 import { Memo, MemoRelation_Type, Visibility } from "@/types/proto/api/v1/memo_service";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityToString } from "@/utils/memo";
 import { isSuperUser } from "@/utils/user";
+import { fromTimestamp } from "@/utils/date";
+
 import MemoActionMenu from "./MemoActionMenu";
 import MemoAttachmentListView from "./MemoAttachmentListView";
 import MemoContent from "./MemoContent";
@@ -26,7 +29,7 @@ import UserAvatar from "./UserAvatar";
 import VisibilityIcon from "./VisibilityIcon";
 
 interface Props {
-  memo: Memo;
+  memo: MemoV2;
   compact?: boolean;
   showCreator?: boolean;
   showVisibility?: boolean;
@@ -56,7 +59,7 @@ const MemoView: React.FC<Props> = observer((props: Props) => {
   const commentAmount = memo.relations.filter(
     (relation) => relation.type === MemoRelation_Type.COMMENT && relation.relatedMemo?.name === memo.name,
   ).length;
-  const relativeTimeFormat = Date.now() - memo.displayTime!.getTime() > 1000 * 60 * 60 * 24 ? "datetime" : "auto";
+  const relativeTimeFormat = Date.now() - fromTimestamp(memo.displayTime!).getTime() > 1000 * 60 * 60 * 24 ? "datetime" : "auto";
   const isArchived = memo.state === State.ARCHIVED;
   const readonly = memo.creator !== user?.name && !isSuperUser(user);
   const isInMemoDetailPage = location.pathname.startsWith(`/${memo.name}`);
@@ -119,9 +122,9 @@ const MemoView: React.FC<Props> = observer((props: Props) => {
   };
 
   const displayTime = isArchived ? (
-    memo.displayTime?.toLocaleString()
+    memo.displayTime ? fromTimestamp(memo.displayTime).toLocaleString() : ""
   ) : (
-    <relative-time datetime={memo.displayTime?.toISOString()} format={relativeTimeFormat}></relative-time>
+    <relative-time datetime={memo.displayTime ? fromTimestamp(memo.displayTime).toISOString() : ""} format={relativeTimeFormat}></relative-time>
   );
 
   return showEditor ? (

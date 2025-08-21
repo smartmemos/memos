@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
 import MemoView from "@/components/MemoView";
@@ -7,8 +6,8 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { viewStore, userStore, workspaceStore } from "@/store";
 import { extractUserIdFromName } from "@/store/common";
 import memoFilterStore from "@/store/memoFilter";
-import { State } from "@/types/proto/api/v1/common";
-import { Memo } from "@/types/proto/api/v1/memo_service";
+import { State as StateV2 } from "@/types/proto2/model/common_pb";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { WorkspaceSetting_Key } from "@/types/proto/api/v1/workspace_service";
 
 // Helper function to extract shortcut ID from resource name
@@ -57,14 +56,14 @@ const Home = observer(() => {
   return (
     <div className="w-full min-h-full bg-background text-foreground">
       <PagedMemoList
-        renderer={(memo: Memo) => <MemoView key={`${memo.name}-${memo.displayTime}`} memo={memo} showVisibility showPinned compact />}
-        listSort={(memos: Memo[]) =>
+        renderer={(memo: MemoV2) => <MemoView key={`${memo.name}-${memo.displayTime}`} memo={memo} showVisibility showPinned compact />}
+        listSort={(memos: MemoV2[]) =>
           memos
-            .filter((memo) => memo.state === State.NORMAL)
+            .filter((memo) => memo.state === StateV2.NORMAL)
             .sort((a, b) =>
               viewStore.state.orderByTimeAsc
-                ? dayjs(a.displayTime).unix() - dayjs(b.displayTime).unix()
-                : dayjs(b.displayTime).unix() - dayjs(a.displayTime).unix(),
+                ? Number(a.displayTime?.seconds || 0) - Number(b.displayTime?.seconds || 0)
+                : Number(b.displayTime?.seconds || 0) - Number(a.displayTime?.seconds || 0),
             )
         }
         orderBy={viewStore.state.orderByTimeAsc ? "display_time asc" : "display_time desc"}

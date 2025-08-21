@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Memo } from "@/types/proto/api/v1/memo_service";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 
 interface Props {
-  memoList: Memo[];
-  renderer: (memo: Memo) => JSX.Element;
+  memoList: MemoV2[];
+  renderer: (memo: MemoV2) => JSX.Element;
   prefixElement?: JSX.Element;
   listMode?: boolean;
 }
 
 interface MemoItemProps {
-  memo: Memo;
-  renderer: (memo: Memo) => JSX.Element;
+  memo: MemoV2;
+  renderer: (memo: MemoV2) => JSX.Element;
   onHeightChange: (memoName: string, height: number) => void;
 }
 
@@ -51,7 +51,7 @@ const MemoItem = ({ memo, renderer, onHeightChange }: MemoItemProps) => {
  * Uses greedy approach: always place next memo in the shortest column
  */
 const distributeMemosToColumns = (
-  memos: Memo[],
+  memos: MemoV2[],
   columns: number,
   itemHeights: Map<string, number>,
   prefixElementHeight: number = 0,

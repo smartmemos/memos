@@ -9,16 +9,16 @@ import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { Routes } from "@/router";
 import { memoStore, viewStore } from "@/store";
 import { State as StateV2 } from "@/types/proto2/model/common_pb";
-import { Memo } from "@/types/proto/api/v1/memo_service";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { useTranslate } from "@/utils/i18n";
 import Empty from "../Empty";
 import MasonryView from "../MasonryView";
 import MemoEditor from "../MemoEditor";
 
 interface Props {
-  renderer: (memo: Memo) => JSX.Element;
-  listSort?: (list: Memo[]) => Memo[];
-  state?: State;
+  renderer: (memo: MemoV2) => JSX.Element;
+  listSort?: (list: MemoV2[]) => MemoV2[];
+  state?: StateV2;
   orderBy?: string;
   filter?: string;
   pageSize?: number;

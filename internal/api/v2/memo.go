@@ -77,6 +77,21 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		// }
 	}
 
+	var limit, offset int
+	if request.Msg.PageToken != "" {
+		var pageToken modelpb.PageToken
+		if err = utils.UnmarshalPageToken(request.Msg.PageToken, &pageToken); err != nil {
+			return
+		}
+		limit = int(pageToken.Limit)
+		offset = int(pageToken.Offset)
+	} else {
+		limit = int(request.Msg.PageSize)
+	}
+	if limit < 0 {
+		limit = DefaultPageSize
+	}
+
 	if request.Msg.State == modelpb.State_ARCHIVED {
 		req.Status = model.Archived
 	} else {
@@ -86,9 +101,12 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 	if err != nil {
 		return
 	}
-	nextPageToken, err := utils.GetPageToken(1, 0)
-	if err != nil {
-		return
+	var nextPageToken string
+	if offset < int(total) {
+		nextPageToken, err = utils.GetPageToken(limit, offset+limit)
+		if err != nil {
+			return
+		}
 	}
 
 	var list []*modelpb.Memo
@@ -142,7 +160,7 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	displayTs := memo.CreatedAt
 
 	info = &modelpb.Memo{
-		Name:        fmt.Sprintf("%s%d", model.MemoNamePrefix, memo.ID),
+		Name:        fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID),
 		State:       modelpb.State(modelpb.State_value[string(memo.RowStatus)]),
 		Creator:     fmt.Sprintf("%s%d", model.UserNamePrefix, memo.CreatorID),
 		Content:     memo.Content,
