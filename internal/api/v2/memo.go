@@ -3,6 +3,7 @@ package v2
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/pkg/errors"
@@ -12,6 +13,7 @@ import (
 	"github.com/usememos/gomark/parser"
 	"github.com/usememos/gomark/parser/tokenizer"
 	"github.com/usememos/gomark/renderer"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/smartmemos/memos/internal/memos"
@@ -113,6 +115,26 @@ func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb
 		return
 	}
 	response = connect.NewResponse(info)
+	return
+}
+
+func (s *MemoService) UpdateMemo(ctx context.Context, request *connect.Request[v2pb.UpdateMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
+	info, err := convertMemoToProto(&model.Memo{})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(info)
+	return
+}
+
+func (s *MemoService) DeleteMemo(ctx context.Context, request *connect.Request[v2pb.DeleteMemoRequest]) (response *connect.Response[emptypb.Empty], err error) {
+	err = s.memosService.DeleteMemo(ctx, &model.DeleteMemoRequest{
+		UID: strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix),
+	})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(&emptypb.Empty{})
 	return
 }
 

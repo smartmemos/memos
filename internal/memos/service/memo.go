@@ -172,3 +172,13 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (memo 
 
 	return
 }
+
+func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
+
+	return
+}
+
+func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
+	err = s.dao.DeleteMemos(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+	return
+}

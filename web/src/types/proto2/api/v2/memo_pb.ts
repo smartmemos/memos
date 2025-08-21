@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { FieldMask } from "@bufbuild/protobuf/wkt";
+import type { EmptySchema, FieldMask } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_model_user } from "../../model/user_pb";
 import type { State } from "../../model/common_pb";
@@ -17,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/memo.proto.
  */
 export const file_api_v2_memo: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrMrsBCgtNZW1vU2VydmljZRI2CgpDcmVhdGVNZW1vEhkuYXBpLnYyLkNyZWF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkIKCUxpc3RNZW1vcxIYLmFwaS52Mi5MaXN0TWVtb3NSZXF1ZXN0GhkuYXBpLnYyLkxpc3RNZW1vc1Jlc3BvbnNlIgASMAoHR2V0TWVtbxIWLmFwaS52Mi5HZXRNZW1vUmVxdWVzdBoLLm1vZGVsLk1lbW8iAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo]);
+  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrInYKEVVwZGF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIjAKEURlbGV0ZU1lbW9SZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZm9yY2UYAiABKAgytgIKC01lbW9TZXJ2aWNlEjYKCkNyZWF0ZU1lbW8SGS5hcGkudjIuQ3JlYXRlTWVtb1JlcXVlc3QaCy5tb2RlbC5NZW1vIgASQgoJTGlzdE1lbW9zEhguYXBpLnYyLkxpc3RNZW1vc1JlcXVlc3QaGS5hcGkudjIuTGlzdE1lbW9zUmVzcG9uc2UiABIwCgdHZXRNZW1vEhYuYXBpLnYyLkdldE1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEjYKClVwZGF0ZU1lbW8SGS5hcGkudjIuVXBkYXRlTWVtb1JlcXVlc3QaCy5tb2RlbC5NZW1vIgASQQoKRGVsZXRlTWVtbxIZLmFwaS52Mi5EZWxldGVNZW1vUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo]);
 
 /**
  * @generated from message api.v2.CreateMemoRequest
@@ -186,6 +186,67 @@ export const GetMemoRequestSchema: GenMessage<GetMemoRequest> = /*@__PURE__*/
   messageDesc(file_api_v2_memo, 3);
 
 /**
+ * @generated from message api.v2.UpdateMemoRequest
+ */
+export type UpdateMemoRequest = Message<"api.v2.UpdateMemoRequest"> & {
+  /**
+   * Required. The memo to update.
+   * The `name` field is required.
+   *
+   * @generated from field: model.Memo memo = 1;
+   */
+  memo?: Memo;
+
+  /**
+   * Required. The list of fields to update.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+
+  /**
+   * Optional. If set to true, allows updating sensitive fields.
+   *
+   * @generated from field: bool allow_missing = 3;
+   */
+  allowMissing: boolean;
+};
+
+/**
+ * Describes the message api.v2.UpdateMemoRequest.
+ * Use `create(UpdateMemoRequestSchema)` to create a new message.
+ */
+export const UpdateMemoRequestSchema: GenMessage<UpdateMemoRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 4);
+
+/**
+ * @generated from message api.v2.DeleteMemoRequest
+ */
+export type DeleteMemoRequest = Message<"api.v2.DeleteMemoRequest"> & {
+  /**
+   * Required. The resource name of the memo to delete.
+   * Format: memos/{memo}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * Optional. If set to true, the memo will be deleted even if it has associated data.
+   *
+   * @generated from field: bool force = 2;
+   */
+  force: boolean;
+};
+
+/**
+ * Describes the message api.v2.DeleteMemoRequest.
+ * Use `create(DeleteMemoRequestSchema)` to create a new message.
+ */
+export const DeleteMemoRequestSchema: GenMessage<DeleteMemoRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 5);
+
+/**
  * @generated from service api.v2.MemoService
  */
 export const MemoService: GenService<{
@@ -218,6 +279,26 @@ export const MemoService: GenService<{
     methodKind: "unary";
     input: typeof GetMemoRequestSchema;
     output: typeof MemoSchema;
+  },
+  /**
+   * UpdateMemo updates a memo.
+   *
+   * @generated from rpc api.v2.MemoService.UpdateMemo
+   */
+  updateMemo: {
+    methodKind: "unary";
+    input: typeof UpdateMemoRequestSchema;
+    output: typeof MemoSchema;
+  },
+  /**
+   * DeleteMemo deletes a memo.
+   *
+   * @generated from rpc api.v2.MemoService.DeleteMemo
+   */
+  deleteMemo: {
+    methodKind: "unary";
+    input: typeof DeleteMemoRequestSchema;
+    output: typeof EmptySchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_memo, 0);

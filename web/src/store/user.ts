@@ -21,7 +21,6 @@ import {
 } from "@/types/proto2/model/user_pb";
 
 import { 
-  User as UserV2,
   UserSetting as UserSettingV2,
   UserSetting_GeneralSetting as UserSetting_GeneralSettingV2,
   UserSetting_SessionsSetting as UserSetting_SessionsSettingV2,

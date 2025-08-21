@@ -24,6 +24,10 @@ type Service interface {
 	ListMemos(ctx context.Context, req *model.ListMemosRequest) (int64, []*model.Memo, error)
 	// GetMemo gets a memo by ID.
 	GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error)
+	// UpdateMemo updates a memo.
+	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error)
+	// DeleteMemo deletes a memo.
+	DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error
 
 	// GetGeneralSetting gets the general setting.
 	GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error)

@@ -9,6 +9,7 @@ import (
 	context "context"
 	errors "errors"
 	model "github.com/smartmemos/memos/internal/proto/model"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -39,6 +40,10 @@ const (
 	MemoServiceListMemosProcedure = "/api.v2.MemoService/ListMemos"
 	// MemoServiceGetMemoProcedure is the fully-qualified name of the MemoService's GetMemo RPC.
 	MemoServiceGetMemoProcedure = "/api.v2.MemoService/GetMemo"
+	// MemoServiceUpdateMemoProcedure is the fully-qualified name of the MemoService's UpdateMemo RPC.
+	MemoServiceUpdateMemoProcedure = "/api.v2.MemoService/UpdateMemo"
+	// MemoServiceDeleteMemoProcedure is the fully-qualified name of the MemoService's DeleteMemo RPC.
+	MemoServiceDeleteMemoProcedure = "/api.v2.MemoService/DeleteMemo"
 )
 
 // MemoServiceClient is a client for the api.v2.MemoService service.
@@ -49,6 +54,10 @@ type MemoServiceClient interface {
 	ListMemos(context.Context, *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error)
 	// GetMemo gets a memo.
 	GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error)
+	// UpdateMemo updates a memo.
+	UpdateMemo(context.Context, *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error)
+	// DeleteMemo deletes a memo.
+	DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewMemoServiceClient constructs a client for the api.v2.MemoService service. By default, it uses
@@ -80,6 +89,18 @@ func NewMemoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(memoServiceMethods.ByName("GetMemo")),
 			connect.WithClientOptions(opts...),
 		),
+		updateMemo: connect.NewClient[UpdateMemoRequest, model.Memo](
+			httpClient,
+			baseURL+MemoServiceUpdateMemoProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("UpdateMemo")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMemo: connect.NewClient[DeleteMemoRequest, emptypb.Empty](
+			httpClient,
+			baseURL+MemoServiceDeleteMemoProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("DeleteMemo")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -88,6 +109,8 @@ type memoServiceClient struct {
 	createMemo *connect.Client[CreateMemoRequest, model.Memo]
 	listMemos  *connect.Client[ListMemosRequest, ListMemosResponse]
 	getMemo    *connect.Client[GetMemoRequest, model.Memo]
+	updateMemo *connect.Client[UpdateMemoRequest, model.Memo]
+	deleteMemo *connect.Client[DeleteMemoRequest, emptypb.Empty]
 }
 
 // CreateMemo calls api.v2.MemoService.CreateMemo.
@@ -105,6 +128,16 @@ func (c *memoServiceClient) GetMemo(ctx context.Context, req *connect.Request[Ge
 	return c.getMemo.CallUnary(ctx, req)
 }
 
+// UpdateMemo calls api.v2.MemoService.UpdateMemo.
+func (c *memoServiceClient) UpdateMemo(ctx context.Context, req *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error) {
+	return c.updateMemo.CallUnary(ctx, req)
+}
+
+// DeleteMemo calls api.v2.MemoService.DeleteMemo.
+func (c *memoServiceClient) DeleteMemo(ctx context.Context, req *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.deleteMemo.CallUnary(ctx, req)
+}
+
 // MemoServiceHandler is an implementation of the api.v2.MemoService service.
 type MemoServiceHandler interface {
 	// CreateMemo creates a memo.
@@ -113,6 +146,10 @@ type MemoServiceHandler interface {
 	ListMemos(context.Context, *connect.Request[ListMemosRequest]) (*connect.Response[ListMemosResponse], error)
 	// GetMemo gets a memo.
 	GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error)
+	// UpdateMemo updates a memo.
+	UpdateMemo(context.Context, *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error)
+	// DeleteMemo deletes a memo.
+	DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewMemoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -140,6 +177,18 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(memoServiceMethods.ByName("GetMemo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	memoServiceUpdateMemoHandler := connect.NewUnaryHandler(
+		MemoServiceUpdateMemoProcedure,
+		svc.UpdateMemo,
+		connect.WithSchema(memoServiceMethods.ByName("UpdateMemo")),
+		connect.WithHandlerOptions(opts...),
+	)
+	memoServiceDeleteMemoHandler := connect.NewUnaryHandler(
+		MemoServiceDeleteMemoProcedure,
+		svc.DeleteMemo,
+		connect.WithSchema(memoServiceMethods.ByName("DeleteMemo")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.MemoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MemoServiceCreateMemoProcedure:
@@ -148,6 +197,10 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 			memoServiceListMemosHandler.ServeHTTP(w, r)
 		case MemoServiceGetMemoProcedure:
 			memoServiceGetMemoHandler.ServeHTTP(w, r)
+		case MemoServiceUpdateMemoProcedure:
+			memoServiceUpdateMemoHandler.ServeHTTP(w, r)
+		case MemoServiceDeleteMemoProcedure:
+			memoServiceDeleteMemoHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -167,4 +220,12 @@ func (UnimplementedMemoServiceHandler) ListMemos(context.Context, *connect.Reque
 
 func (UnimplementedMemoServiceHandler) GetMemo(context.Context, *connect.Request[GetMemoRequest]) (*connect.Response[model.Memo], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.GetMemo is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) UpdateMemo(context.Context, *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.UpdateMemo is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.DeleteMemo is not implemented"))
 }

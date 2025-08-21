@@ -1,9 +1,9 @@
 import { uniqueId } from "lodash-es";
 import { makeAutoObservable } from "mobx";
 import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
-import { memoServiceClient } from "@/grpcweb";
-import { CreateMemoRequest, ListMemosRequest, Memo } from "@/types/proto/api/v1/memo_service";
-import {ListMemosRequest as ListMemosRequestV2, CreateMemoRequest as CreateMemoRequestV2,Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import { ListMemosRequest as ListMemosRequestV2, CreateMemoRequest as CreateMemoRequestV2 } from "@/types/proto2/api/v2/memo_pb";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import { FieldMask } from "@/types/proto/google/protobuf/field_mask";
 
 class LocalState {
   stateId: string = uniqueId();
@@ -43,12 +43,7 @@ const memoStore = (() => {
     state.setPartial({ currentRequest: controller });
 
     try {
-      const { memos, nextPageToken } = await memoServiceClientV2.listMemos(
-        {
-          ...request,
-        },
-        { signal: controller.signal },
-      );
+      const { memos, nextPageToken } = await memoServiceClientV2.listMemos(request as ListMemosRequestV2, { signal: controller.signal });
       if (!controller.signal.aborted) {
         const memoMap = request.pageToken ? { ...state.memoMapByName } : {};
         for (const memo of memos) {
@@ -78,7 +73,7 @@ const memoStore = (() => {
       return memoCache;
     }
 
-    const memo = await memoServiceClient.getMemo({
+    const memo = await memoServiceClientV2.getMemo({
       name,
     });
 
@@ -109,10 +104,10 @@ const memoStore = (() => {
     return memo;
   };
 
-  const updateMemo = async (update: Partial<Memo>, updateMask: string[]) => {
-    const memo = await memoServiceClient.updateMemo({
-      memo: update,
-      updateMask,
+  const updateMemo = async (update: Partial<MemoV2>, updateMask: string[]) => {
+    const memo = await memoServiceClientV2.updateMemo({
+      memo: update as MemoV2,
+      updateMask: FieldMask.create({ paths: updateMask }),
     });
 
     const memoMap = { ...state.memoMapByName };
@@ -125,7 +120,7 @@ const memoStore = (() => {
   };
 
   const deleteMemo = async (name: string) => {
-    await memoServiceClient.deleteMemo({
+    await memoServiceClientV2.deleteMemo({
       name,
     });
 

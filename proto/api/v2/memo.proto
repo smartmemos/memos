@@ -20,6 +20,12 @@ service MemoService {
   // GetMemo gets a memo.
   rpc GetMemo(GetMemoRequest) returns (model.Memo) {}
 
+  // UpdateMemo updates a memo.
+  rpc UpdateMemo(UpdateMemoRequest) returns (model.Memo) {}
+
+  // DeleteMemo deletes a memo.
+  rpc DeleteMemo(DeleteMemoRequest) returns (google.protobuf.Empty) {}
+
 }
 
 message CreateMemoRequest {
@@ -86,4 +92,25 @@ message GetMemoRequest {
   // Optional. The fields to return in the response.
   // If not specified, all fields are returned.
   google.protobuf.FieldMask read_mask = 2;
+}
+
+message UpdateMemoRequest {
+  // Required. The memo to update.
+  // The `name` field is required.
+  model.Memo memo = 1;
+
+  // Required. The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2;
+
+  // Optional. If set to true, allows updating sensitive fields.
+  bool allow_missing = 3;
+}
+
+message DeleteMemoRequest {
+  // Required. The resource name of the memo to delete.
+  // Format: memos/{memo}
+  string name = 1;
+
+  // Optional. If set to true, the memo will be deleted even if it has associated data.
+  bool force = 2;
 }

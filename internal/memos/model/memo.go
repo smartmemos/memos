@@ -44,6 +44,7 @@ type FindMemoFilter struct {
 	db.BaseFilter
 
 	ID              db.F[int64]
+	UID             db.F[string]
 	Pid             db.F[int64]
 	ParentIDs       db.F[[]int64]
 	CreatorID       db.F[int64]
@@ -71,7 +72,23 @@ type ListMemosRequest struct {
 	ExcludeComments bool
 }
 
+type UpdateMemoRequest struct {
+	ID           int64
+	UserID       int64
+	ParentID     int64
+	RelationType RelationType
+	Visibility   Visibility
+	Content      string
+	RowStatus    RowStatus
+	Location     *MemoPayloadLocation
+}
+
 type GetMemoRequest struct {
+	ID  int64
+	UID string
+}
+
+type DeleteMemoRequest struct {
 	ID  int64
 	UID string
 }
