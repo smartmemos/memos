@@ -1,4 +1,4 @@
-import { Node, TableNode_Row } from "@/types/proto/api/v1/markdown_service";
+import { Node, TableNode_Row } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 
 interface Props {

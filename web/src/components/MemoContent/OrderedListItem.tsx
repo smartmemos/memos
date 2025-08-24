@@ -1,4 +1,4 @@
-import { Node } from "@/types/proto/api/v1/markdown_service";
+import { Node } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 import { BaseProps } from "./types";
 
@@ -8,7 +8,7 @@ interface Props extends BaseProps {
   children: Node[];
 }
 
-const OrderedListItem: React.FC<Props> = ({ children }: Props) => {
+const OrderedListItem: React.FC<Props> = ({ children = [] }: Props) => {
   return (
     <li>
       {children.map((child, index) => (

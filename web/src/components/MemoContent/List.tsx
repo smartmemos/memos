@@ -1,7 +1,7 @@
 import { head } from "lodash-es";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { ListNode_Kind, Node, NodeType } from "@/types/proto/api/v1/markdown_service";
+import { ListNode_Kind, Node, NodeType } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 
 interface Props {

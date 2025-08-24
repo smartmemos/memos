@@ -1,4 +1,4 @@
-import { Node } from "@/types/proto/api/v1/markdown_service";
+import { Node } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 import { BaseProps } from "./types";
 

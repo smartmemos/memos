@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { markdownServiceClient } from "@/grpcweb";
 import { workspaceStore } from "@/store";
-import { LinkMetadata, Node } from "@/types/proto/api/v1/markdown_service";
+import { LinkMetadata, Node } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Node } from "@/types/proto/api/v1/markdown_service";
+import { Node } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 import { BaseProps } from "./types";
 
@@ -6,7 +6,7 @@ interface Props extends BaseProps {
   children: Node[];
 }
 
-const Paragraph: React.FC<Props> = ({ children }: Props) => {
+const Paragraph: React.FC<Props> = ({ children = [] }: Props) => {
   return (
     <p>
       {children.map((child, index) => (

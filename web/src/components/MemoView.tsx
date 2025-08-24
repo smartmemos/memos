@@ -8,12 +8,14 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { cn } from "@/lib/utils";
 import { memoStore, userStore, workspaceStore } from "@/store";
-import { State } from "@/types/proto/api/v1/common";
-import { Memo, MemoRelation_Type, Visibility } from "@/types/proto/api/v1/memo_service";
 import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import { MemoRelation_Type } from "@/types/proto2/model/memo_relation_pb";
+import { State as StateV2 } from "@/types/proto2/model/common_pb";
+import { Visibility } from "@/types/proto2/model/common_pb";
 import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityToString } from "@/utils/memo";
 import { isSuperUser } from "@/utils/user";
+
 import { fromTimestamp } from "@/utils/date";
 
 import MemoActionMenu from "./MemoActionMenu";
@@ -60,7 +62,7 @@ const MemoView: React.FC<Props> = observer((props: Props) => {
     (relation) => relation.type === MemoRelation_Type.COMMENT && relation.relatedMemo?.name === memo.name,
   ).length;
   const relativeTimeFormat = Date.now() - fromTimestamp(memo.displayTime!).getTime() > 1000 * 60 * 60 * 24 ? "datetime" : "auto";
-  const isArchived = memo.state === State.ARCHIVED;
+  const isArchived = memo.state === StateV2.ARCHIVED;
   const readonly = memo.creator !== user?.name && !isSuperUser(user);
   const isInMemoDetailPage = location.pathname.startsWith(`/${memo.name}`);
   const parentPage = props.parentPage || location.pathname;

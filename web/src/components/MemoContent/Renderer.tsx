@@ -31,7 +31,7 @@ import {
   TaskListItemNode,
   TextNode,
   UnorderedListItemNode,
-} from "@/types/proto/api/v1/markdown_service";
+} from "@/types/proto2/model/markdown_pb";
 import Blockquote from "./Blockquote";
 import Bold from "./Bold";
 import BoldItalic from "./BoldItalic";
@@ -72,65 +72,65 @@ const Renderer: React.FC<Props> = ({ index, node }: Props) => {
     case NodeType.LINE_BREAK:
       return <LineBreak />;
     case NodeType.PARAGRAPH:
-      return <Paragraph index={index} {...(node.paragraphNode as ParagraphNode)} />;
+      return <Paragraph index={index} {...(node.node.value as ParagraphNode)} />;
     case NodeType.CODE_BLOCK:
-      return <CodeBlock index={index} {...(node.codeBlockNode as CodeBlockNode)} />;
+      return <CodeBlock index={index} {...(node.node.value as CodeBlockNode)} />;
     case NodeType.HEADING:
-      return <Heading index={index} {...(node.headingNode as HeadingNode)} />;
+      return <Heading index={index} {...(node.node.value as HeadingNode)} />;
     case NodeType.HORIZONTAL_RULE:
-      return <HorizontalRule index={index} {...(node.horizontalRuleNode as HorizontalRuleNode)} />;
+      return <HorizontalRule index={index} {...(node.node.value as HorizontalRuleNode)} />;
     case NodeType.BLOCKQUOTE:
-      return <Blockquote index={index} {...(node.blockquoteNode as BlockquoteNode)} />;
+      return <Blockquote index={index} {...(node.node.value as BlockquoteNode)} />;
     case NodeType.LIST:
-      return <List index={index} {...(node.listNode as ListNode)} />;
+      return <List index={index} {...(node.node.value as ListNode)} />;
     case NodeType.ORDERED_LIST_ITEM:
-      return <OrderedListItem index={index} {...(node.orderedListItemNode as OrderedListItemNode)} />;
+      return <OrderedListItem index={index} {...(node.node.value as OrderedListItemNode)} />;
     case NodeType.UNORDERED_LIST_ITEM:
-      return <UnorderedListItem {...(node.unorderedListItemNode as UnorderedListItemNode)} />;
+      return <UnorderedListItem {...(node.node.value as UnorderedListItemNode)} />;
     case NodeType.TASK_LIST_ITEM:
-      return <TaskListItem index={index} node={node} {...(node.taskListItemNode as TaskListItemNode)} />;
+      return <TaskListItem index={index} node={node} {...(node.node.value as TaskListItemNode)} />;
     case NodeType.MATH_BLOCK:
-      return <Math {...(node.mathBlockNode as MathBlockNode)} block={true} />;
+      return <Math {...(node.node.value as MathBlockNode)} block={true} />;
     case NodeType.TABLE:
-      return <Table index={index} {...(node.tableNode as TableNode)} />;
+      return <Table index={index} {...(node.node.value as TableNode)} />;
     case NodeType.EMBEDDED_CONTENT:
-      return <EmbeddedContent {...(node.embeddedContentNode as EmbeddedContentNode)} />;
+      return <EmbeddedContent {...(node.node.value as EmbeddedContentNode)} />;
     case NodeType.TEXT:
-      return <Text {...(node.textNode as TextNode)} />;
+      return <Text {...(node.node.value as TextNode)} />;
     case NodeType.BOLD:
-      return <Bold {...(node.boldNode as BoldNode)} />;
+      return <Bold {...(node.node.value as BoldNode)} />;
     case NodeType.ITALIC:
-      return <Italic {...(node.italicNode as ItalicNode)} />;
+      return <Italic {...(node.node.value as ItalicNode)} />;
     case NodeType.BOLD_ITALIC:
-      return <BoldItalic {...(node.boldItalicNode as BoldItalicNode)} />;
+      return <BoldItalic {...(node.node.value as BoldItalicNode)} />;
     case NodeType.CODE:
-      return <Code {...(node.codeNode as CodeNode)} />;
+      return <Code {...(node.node.value as CodeNode)} />;
     case NodeType.IMAGE:
-      return <Image {...(node.imageNode as ImageNode)} />;
+      return <Image {...(node.node.value as ImageNode)} />;
     case NodeType.LINK:
-      return <Link {...(node.linkNode as LinkNode)} />;
+      return <Link {...(node.node.value as LinkNode)} />;
     case NodeType.AUTO_LINK:
-      return <Link {...(node.autoLinkNode as AutoLinkNode)} />;
+      return <Link {...(node.node.value as AutoLinkNode)} />;
     case NodeType.TAG:
-      return <Tag {...(node.tagNode as TagNode)} />;
+      return <Tag {...(node.node.value as TagNode)} />;
     case NodeType.STRIKETHROUGH:
-      return <Strikethrough {...(node.strikethroughNode as StrikethroughNode)} />;
+      return <Strikethrough {...(node.node.value as StrikethroughNode)} />;
     case NodeType.MATH:
-      return <Math {...(node.mathNode as MathNode)} />;
+      return <Math {...(node.node.value as MathNode)} />;
     case NodeType.HIGHLIGHT:
-      return <Highlight {...(node.highlightNode as HighlightNode)} />;
+      return <Highlight {...(node.node.value as HighlightNode)} />;
     case NodeType.ESCAPING_CHARACTER:
-      return <EscapingCharacter {...(node.escapingCharacterNode as EscapingCharacterNode)} />;
+      return <EscapingCharacter {...(node.node.value as EscapingCharacterNode)} />;
     case NodeType.SUBSCRIPT:
-      return <Subscript {...(node.subscriptNode as SubscriptNode)} />;
+      return <Subscript {...(node.node.value as SubscriptNode)} />;
     case NodeType.SUPERSCRIPT:
-      return <Superscript {...(node.superscriptNode as SuperscriptNode)} />;
+      return <Superscript {...(node.node.value as SuperscriptNode)} />;
     case NodeType.REFERENCED_CONTENT:
-      return <ReferencedContent {...(node.referencedContentNode as ReferencedContentNode)} />;
+      return <ReferencedContent {...(node.node.value as ReferencedContentNode)} />;
     case NodeType.SPOILER:
-      return <Spoiler {...(node.spoilerNode as SpoilerNode)} />;
+      return <Spoiler {...(node.node.value as SpoilerNode)} />;
     case NodeType.HTML_ELEMENT:
-      return <HTMLElement {...(node.htmlElementNode as HTMLElementNode)} />;
+      return <HTMLElement {...(node.node.value as HTMLElementNode)} />;
     default:
       return null;
   }

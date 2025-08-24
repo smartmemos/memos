@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { markdownServiceClient } from "@/grpcweb";
 import { cn } from "@/lib/utils";
 import { memoStore } from "@/store";
-import { Node, TaskListItemNode } from "@/types/proto/api/v1/markdown_service";
+import { Node, TaskListItemNode } from "@/types/proto2/model/markdown_pb";
 import Renderer from "./Renderer";
 import { RendererContext } from "./types";
 
