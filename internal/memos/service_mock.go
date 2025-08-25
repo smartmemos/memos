@@ -94,6 +94,20 @@ func (mr *MockServiceMockRecorder) DeleteMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemo", reflect.TypeOf((*MockService)(nil).DeleteMemo), ctx, req)
 }
 
+// DeleteReaction mocks base method.
+func (m *MockService) DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteReaction", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReaction indicates an expected call of DeleteReaction.
+func (mr *MockServiceMockRecorder) DeleteReaction(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReaction", reflect.TypeOf((*MockService)(nil).DeleteReaction), ctx, req)
+}
+
 // GetGeneralSetting mocks base method.
 func (m *MockService) GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error) {
 	m.ctrl.T.Helper()
@@ -303,4 +317,19 @@ func (m *MockService) UpdateUserSetting(ctx context.Context, req *model.UpdateUs
 func (mr *MockServiceMockRecorder) UpdateUserSetting(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserSetting", reflect.TypeOf((*MockService)(nil).UpdateUserSetting), ctx, req)
+}
+
+// UpsertReaction mocks base method.
+func (m *MockService) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertReaction", ctx, req)
+	ret0, _ := ret[0].(*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertReaction indicates an expected call of UpsertReaction.
+func (mr *MockServiceMockRecorder) UpsertReaction(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertReaction", reflect.TypeOf((*MockService)(nil).UpsertReaction), ctx, req)
 }

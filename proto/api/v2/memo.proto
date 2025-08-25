@@ -6,6 +6,7 @@ import "google/protobuf/field_mask.proto";
 import "model/user.proto";
 import "model/common.proto";
 import "model/memo.proto";
+import "model/reaction.proto";
 
 package api.v2;
 option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
@@ -26,6 +27,11 @@ service MemoService {
   // DeleteMemo deletes a memo.
   rpc DeleteMemo(DeleteMemoRequest) returns (google.protobuf.Empty) {}
 
+  // UpsertMemoReaction upserts a reaction for a memo.
+  rpc UpsertMemoReaction(UpsertMemoReactionRequest) returns (model.Reaction) {}
+
+  // DeleteMemoReaction deletes a reaction for a memo.
+  rpc DeleteMemoReaction(DeleteMemoReactionRequest) returns (google.protobuf.Empty) {}
 }
 
 message CreateMemoRequest {
@@ -113,4 +119,20 @@ message DeleteMemoRequest {
 
   // Optional. If set to true, the memo will be deleted even if it has associated data.
   bool force = 2;
+}
+
+
+message UpsertMemoReactionRequest {
+  // Required. The resource name of the memo.
+  // Format: memos/{memo}
+  string name = 1;
+
+  // Required. The reaction to upsert.
+  model.Reaction reaction = 2;
+}
+
+message DeleteMemoReactionRequest {
+  // Required. The resource name of the reaction to delete.
+  // Format: reactions/{reaction}
+  string name = 1;
 }

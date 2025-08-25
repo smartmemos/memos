@@ -436,11 +436,112 @@ func (x *DeleteMemoRequest) GetForce() bool {
 	return false
 }
 
+type UpsertMemoReactionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The resource name of the memo.
+	// Format: memos/{memo}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Required. The reaction to upsert.
+	Reaction      *model.Reaction `protobuf:"bytes,2,opt,name=reaction,proto3" json:"reaction,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertMemoReactionRequest) Reset() {
+	*x = UpsertMemoReactionRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertMemoReactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertMemoReactionRequest) ProtoMessage() {}
+
+func (x *UpsertMemoReactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertMemoReactionRequest.ProtoReflect.Descriptor instead.
+func (*UpsertMemoReactionRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpsertMemoReactionRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpsertMemoReactionRequest) GetReaction() *model.Reaction {
+	if x != nil {
+		return x.Reaction
+	}
+	return nil
+}
+
+type DeleteMemoReactionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The resource name of the reaction to delete.
+	// Format: reactions/{reaction}
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMemoReactionRequest) Reset() {
+	*x = DeleteMemoReactionRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMemoReactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMemoReactionRequest) ProtoMessage() {}
+
+func (x *DeleteMemoReactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMemoReactionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMemoReactionRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeleteMemoReactionRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_api_v2_memo_proto protoreflect.FileDescriptor
 
 const file_api_v2_memo_proto_rawDesc = "" +
 	"\n" +
-	"\x11api/v2/memo.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x10model/user.proto\x1a\x12model/common.proto\x1a\x10model/memo.proto\"\x91\x01\n" +
+	"\x11api/v2/memo.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x10model/user.proto\x1a\x12model/common.proto\x1a\x10model/memo.proto\x1a\x14model/reaction.proto\"\x91\x01\n" +
 	"\x11CreateMemoRequest\x12\x1f\n" +
 	"\x04memo\x18\x01 \x01(\v2\v.model.MemoR\x04memo\x12\x17\n" +
 	"\amemo_id\x18\x02 \x01(\tR\x06memoId\x12#\n" +
@@ -470,7 +571,12 @@ const file_api_v2_memo_proto_rawDesc = "" +
 	"\rallow_missing\x18\x03 \x01(\bR\fallowMissing\"=\n" +
 	"\x11DeleteMemoRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05force\x18\x02 \x01(\bR\x05force2\xb6\x02\n" +
+	"\x05force\x18\x02 \x01(\bR\x05force\"\\\n" +
+	"\x19UpsertMemoReactionRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12+\n" +
+	"\breaction\x18\x02 \x01(\v2\x0f.model.ReactionR\breaction\"/\n" +
+	"\x19DeleteMemoReactionRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name2\xd5\x03\n" +
 	"\vMemoService\x126\n" +
 	"\n" +
 	"CreateMemo\x12\x19.api.v2.CreateMemoRequest\x1a\v.model.Memo\"\x00\x12B\n" +
@@ -479,7 +585,9 @@ const file_api_v2_memo_proto_rawDesc = "" +
 	"\n" +
 	"UpdateMemo\x12\x19.api.v2.UpdateMemoRequest\x1a\v.model.Memo\"\x00\x12A\n" +
 	"\n" +
-	"DeleteMemo\x12\x19.api.v2.DeleteMemoRequest\x1a\x16.google.protobuf.Empty\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"DeleteMemo\x12\x19.api.v2.DeleteMemoRequest\x1a\x16.google.protobuf.Empty\"\x00\x12J\n" +
+	"\x12UpsertMemoReaction\x12!.api.v2.UpsertMemoReactionRequest\x1a\x0f.model.Reaction\"\x00\x12Q\n" +
+	"\x12DeleteMemoReaction\x12!.api.v2.DeleteMemoReactionRequest\x1a\x16.google.protobuf.Empty\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_memo_proto_rawDescOnce sync.Once
@@ -493,41 +601,49 @@ func file_api_v2_memo_proto_rawDescGZIP() []byte {
 	return file_api_v2_memo_proto_rawDescData
 }
 
-var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_api_v2_memo_proto_goTypes = []any{
-	(*CreateMemoRequest)(nil),     // 0: api.v2.CreateMemoRequest
-	(*ListMemosRequest)(nil),      // 1: api.v2.ListMemosRequest
-	(*ListMemosResponse)(nil),     // 2: api.v2.ListMemosResponse
-	(*GetMemoRequest)(nil),        // 3: api.v2.GetMemoRequest
-	(*UpdateMemoRequest)(nil),     // 4: api.v2.UpdateMemoRequest
-	(*DeleteMemoRequest)(nil),     // 5: api.v2.DeleteMemoRequest
-	(*model.Memo)(nil),            // 6: model.Memo
-	(model.State)(0),              // 7: model.State
-	(*fieldmaskpb.FieldMask)(nil), // 8: google.protobuf.FieldMask
-	(*emptypb.Empty)(nil),         // 9: google.protobuf.Empty
+	(*CreateMemoRequest)(nil),         // 0: api.v2.CreateMemoRequest
+	(*ListMemosRequest)(nil),          // 1: api.v2.ListMemosRequest
+	(*ListMemosResponse)(nil),         // 2: api.v2.ListMemosResponse
+	(*GetMemoRequest)(nil),            // 3: api.v2.GetMemoRequest
+	(*UpdateMemoRequest)(nil),         // 4: api.v2.UpdateMemoRequest
+	(*DeleteMemoRequest)(nil),         // 5: api.v2.DeleteMemoRequest
+	(*UpsertMemoReactionRequest)(nil), // 6: api.v2.UpsertMemoReactionRequest
+	(*DeleteMemoReactionRequest)(nil), // 7: api.v2.DeleteMemoReactionRequest
+	(*model.Memo)(nil),                // 8: model.Memo
+	(model.State)(0),                  // 9: model.State
+	(*fieldmaskpb.FieldMask)(nil),     // 10: google.protobuf.FieldMask
+	(*model.Reaction)(nil),            // 11: model.Reaction
+	(*emptypb.Empty)(nil),             // 12: google.protobuf.Empty
 }
 var file_api_v2_memo_proto_depIdxs = []int32{
-	6,  // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
-	7,  // 1: api.v2.ListMemosRequest.state:type_name -> model.State
-	6,  // 2: api.v2.ListMemosResponse.memos:type_name -> model.Memo
-	8,  // 3: api.v2.GetMemoRequest.read_mask:type_name -> google.protobuf.FieldMask
-	6,  // 4: api.v2.UpdateMemoRequest.memo:type_name -> model.Memo
-	8,  // 5: api.v2.UpdateMemoRequest.update_mask:type_name -> google.protobuf.FieldMask
-	0,  // 6: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
-	1,  // 7: api.v2.MemoService.ListMemos:input_type -> api.v2.ListMemosRequest
-	3,  // 8: api.v2.MemoService.GetMemo:input_type -> api.v2.GetMemoRequest
-	4,  // 9: api.v2.MemoService.UpdateMemo:input_type -> api.v2.UpdateMemoRequest
-	5,  // 10: api.v2.MemoService.DeleteMemo:input_type -> api.v2.DeleteMemoRequest
-	6,  // 11: api.v2.MemoService.CreateMemo:output_type -> model.Memo
-	2,  // 12: api.v2.MemoService.ListMemos:output_type -> api.v2.ListMemosResponse
-	6,  // 13: api.v2.MemoService.GetMemo:output_type -> model.Memo
-	6,  // 14: api.v2.MemoService.UpdateMemo:output_type -> model.Memo
-	9,  // 15: api.v2.MemoService.DeleteMemo:output_type -> google.protobuf.Empty
-	11, // [11:16] is the sub-list for method output_type
-	6,  // [6:11] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	8,  // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
+	9,  // 1: api.v2.ListMemosRequest.state:type_name -> model.State
+	8,  // 2: api.v2.ListMemosResponse.memos:type_name -> model.Memo
+	10, // 3: api.v2.GetMemoRequest.read_mask:type_name -> google.protobuf.FieldMask
+	8,  // 4: api.v2.UpdateMemoRequest.memo:type_name -> model.Memo
+	10, // 5: api.v2.UpdateMemoRequest.update_mask:type_name -> google.protobuf.FieldMask
+	11, // 6: api.v2.UpsertMemoReactionRequest.reaction:type_name -> model.Reaction
+	0,  // 7: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
+	1,  // 8: api.v2.MemoService.ListMemos:input_type -> api.v2.ListMemosRequest
+	3,  // 9: api.v2.MemoService.GetMemo:input_type -> api.v2.GetMemoRequest
+	4,  // 10: api.v2.MemoService.UpdateMemo:input_type -> api.v2.UpdateMemoRequest
+	5,  // 11: api.v2.MemoService.DeleteMemo:input_type -> api.v2.DeleteMemoRequest
+	6,  // 12: api.v2.MemoService.UpsertMemoReaction:input_type -> api.v2.UpsertMemoReactionRequest
+	7,  // 13: api.v2.MemoService.DeleteMemoReaction:input_type -> api.v2.DeleteMemoReactionRequest
+	8,  // 14: api.v2.MemoService.CreateMemo:output_type -> model.Memo
+	2,  // 15: api.v2.MemoService.ListMemos:output_type -> api.v2.ListMemosResponse
+	8,  // 16: api.v2.MemoService.GetMemo:output_type -> model.Memo
+	8,  // 17: api.v2.MemoService.UpdateMemo:output_type -> model.Memo
+	12, // 18: api.v2.MemoService.DeleteMemo:output_type -> google.protobuf.Empty
+	11, // 19: api.v2.MemoService.UpsertMemoReaction:output_type -> model.Reaction
+	12, // 20: api.v2.MemoService.DeleteMemoReaction:output_type -> google.protobuf.Empty
+	14, // [14:21] is the sub-list for method output_type
+	7,  // [7:14] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_memo_proto_init() }
@@ -541,7 +657,7 @@ func file_api_v2_memo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_memo_proto_rawDesc), len(file_api_v2_memo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -172,7 +172,7 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (t
 }
 
 func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (memo *model.Memo, err error) {
-
+	memo, err = s.dao.FindMemo(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
 	return
 }
 
@@ -230,5 +230,37 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 
 func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
 	err = s.dao.DeleteMemos(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+	return
+}
+
+func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (reaction *model.Reaction, err error) {
+	reaction, err = s.dao.FindReaction(ctx, &model.FindReactionFilter{
+		CreatorID: db.Eq(req.CreatorID),
+		ContentID: db.Eq(req.ContentID),
+	})
+	if db.IsDbError(err) {
+		return
+	}
+	if db.IsRecordNotFound(err) {
+		reaction = &model.Reaction{
+			CreatorID:    req.CreatorID,
+			ContentID:    req.ContentID,
+			ReactionType: req.ReactionType,
+		}
+		err = s.dao.CreateReaction(ctx, reaction)
+		return
+	}
+	err = s.dao.UpdateReaction(ctx, reaction, map[string]any{"reaction_type": req.ReactionType})
+	if err != nil {
+		err = errors.Wrap(err, "failed to update reaction")
+		return
+	}
+	return
+}
+
+func (s *Service) DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) (err error) {
+	err = s.dao.DeleteReactions(ctx, &model.FindReactionFilter{
+		ID: db.Eq(req.ID),
+	})
 	return
 }

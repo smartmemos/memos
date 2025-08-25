@@ -3,6 +3,7 @@ package v2
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"connectrpc.com/connect"
@@ -128,7 +129,13 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 }
 
 func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb.GetMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
-	info, err := convertMemoToProto(&model.Memo{})
+	uid := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
+	memo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: uid})
+	if err != nil {
+		return
+	}
+
+	info, err := convertMemoToProto(memo)
 	if err != nil {
 		return
 	}
@@ -228,4 +235,58 @@ func convertLocationToProto(location *model.MemoPayloadLocation) *modelpb.Locati
 		Latitude:    location.Latitude,
 		Longitude:   location.Longitude,
 	}
+}
+
+func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *connect.Request[v2pb.UpsertMemoReactionRequest]) (response *connect.Response[modelpb.Reaction], err error) {
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		err = errors.New("failed to get current user")
+		return
+	}
+	reaction, err := s.memosService.UpsertReaction(ctx, &model.UpsertReactionRequest{
+		CreatorID:    int32(userInfo.UserID),
+		ContentID:    request.Msg.Reaction.ContentId,
+		ReactionType: request.Msg.Reaction.ReactionType,
+	})
+	if err != nil {
+		err = errors.Wrap(err, "failed to upsert reaction")
+		return
+	}
+	_, err = s.memosService.GetUserByID(ctx, int64(reaction.CreatorID))
+	if err != nil {
+		err = errors.Wrap(err, "failed to get user")
+		return
+	}
+	info, err := convertReactionToProto(reaction)
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(info)
+	return
+}
+
+func (s *MemoService) DeleteMemoReaction(ctx context.Context, request *connect.Request[v2pb.DeleteMemoReactionRequest]) (response *connect.Response[emptypb.Empty], err error) {
+	id := strings.TrimPrefix(request.Msg.Name, model.ReactionNamePrefix)
+	reactionID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		err = errors.Wrap(err, "failed to parse reaction id")
+		return
+	}
+	err = s.memosService.DeleteReaction(ctx, &model.DeleteReactionRequest{ID: reactionID})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(&emptypb.Empty{})
+	return
+}
+
+func convertReactionToProto(reaction *model.Reaction) (*modelpb.Reaction, error) {
+	reactionUID := fmt.Sprintf("%d", reaction.ID)
+	return &modelpb.Reaction{
+		Name:         fmt.Sprintf("%s%s", model.ReactionNamePrefix, reactionUID),
+		Creator:      fmt.Sprintf("%s%d", model.UserNamePrefix, reaction.CreatorID),
+		ContentId:    reaction.ContentID,
+		ReactionType: reaction.ReactionType,
+		CreateTime:   timestamppb.New(reaction.CreatedAt),
+	}, nil
 }

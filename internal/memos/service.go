@@ -29,6 +29,12 @@ type Service interface {
 	// DeleteMemo deletes a memo.
 	DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error
 
+	// UpsertReaction upserts a memo reaction.
+	UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error)
+
+	// DeleteReaction deletes a memo reaction.
+	DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) error
+
 	// GetGeneralSetting gets the general setting.
 	GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error)
 	// GetStorageSetting gets the storage setting.

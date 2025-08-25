@@ -80,6 +80,21 @@ func (mr *MockDAOMockRecorder) CountMemos(ctx, filter interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountMemos", reflect.TypeOf((*MockDAO)(nil).CountMemos), ctx, filter)
 }
 
+// CountReactions mocks base method.
+func (m *MockDAO) CountReactions(ctx context.Context, filter *model.FindReactionFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountReactions", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountReactions indicates an expected call of CountReactions.
+func (mr *MockDAOMockRecorder) CountReactions(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountReactions", reflect.TypeOf((*MockDAO)(nil).CountReactions), ctx, filter)
+}
+
 // CountUsers mocks base method.
 func (m *MockDAO) CountUsers(ctx context.Context, filter *model.FindUserFilter) (int64, error) {
 	m.ctrl.T.Helper()
@@ -135,6 +150,20 @@ func (m_2 *MockDAO) CreateMemo(ctx context.Context, m *model.Memo) error {
 func (mr *MockDAOMockRecorder) CreateMemo(ctx, m interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, m)
+}
+
+// CreateReaction mocks base method.
+func (m_2 *MockDAO) CreateReaction(ctx context.Context, m *model.Reaction) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateReaction", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateReaction indicates an expected call of CreateReaction.
+func (mr *MockDAOMockRecorder) CreateReaction(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReaction", reflect.TypeOf((*MockDAO)(nil).CreateReaction), ctx, m)
 }
 
 // CreateSession mocks base method.
@@ -233,6 +262,20 @@ func (m *MockDAO) DeleteMemos(ctx context.Context, filter *model.FindMemoFilter)
 func (mr *MockDAOMockRecorder) DeleteMemos(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemos", reflect.TypeOf((*MockDAO)(nil).DeleteMemos), ctx, filter)
+}
+
+// DeleteReactions mocks base method.
+func (m *MockDAO) DeleteReactions(ctx context.Context, filter *model.FindReactionFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteReactions", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReactions indicates an expected call of DeleteReactions.
+func (mr *MockDAOMockRecorder) DeleteReactions(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReactions", reflect.TypeOf((*MockDAO)(nil).DeleteReactions), ctx, filter)
 }
 
 // DeleteSystemSettings mocks base method.
@@ -412,6 +455,51 @@ func (mr *MockDAOMockRecorder) FindMemos(ctx, filter interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), ctx, filter)
 }
 
+// FindReaction mocks base method.
+func (m *MockDAO) FindReaction(ctx context.Context, filter *model.FindReactionFilter) (*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindReaction", ctx, filter)
+	ret0, _ := ret[0].(*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindReaction indicates an expected call of FindReaction.
+func (mr *MockDAOMockRecorder) FindReaction(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReaction", reflect.TypeOf((*MockDAO)(nil).FindReaction), ctx, filter)
+}
+
+// FindReactionByID mocks base method.
+func (m *MockDAO) FindReactionByID(ctx context.Context, id int64) (*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindReactionByID", ctx, id)
+	ret0, _ := ret[0].(*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindReactionByID indicates an expected call of FindReactionByID.
+func (mr *MockDAOMockRecorder) FindReactionByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactionByID", reflect.TypeOf((*MockDAO)(nil).FindReactionByID), ctx, id)
+}
+
+// FindReactions mocks base method.
+func (m *MockDAO) FindReactions(ctx context.Context, filter *model.FindReactionFilter) ([]*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindReactions", ctx, filter)
+	ret0, _ := ret[0].([]*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindReactions indicates an expected call of FindReactions.
+func (mr *MockDAOMockRecorder) FindReactions(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactions", reflect.TypeOf((*MockDAO)(nil).FindReactions), ctx, filter)
+}
+
 // FindSystemSetting mocks base method.
 func (m *MockDAO) FindSystemSetting(ctx context.Context, filter *model.FindSystemSettingFilter) (*model.SystemSetting, error) {
 	m.ctrl.T.Helper()
@@ -558,6 +646,20 @@ func (m_2 *MockDAO) UpdateMemo(ctx context.Context, m *model.Memo, update map[st
 func (mr *MockDAOMockRecorder) UpdateMemo(ctx, m, update interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockDAO)(nil).UpdateMemo), ctx, m, update)
+}
+
+// UpdateReaction mocks base method.
+func (m_2 *MockDAO) UpdateReaction(ctx context.Context, m *model.Reaction, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateReaction", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReaction indicates an expected call of UpdateReaction.
+func (mr *MockDAOMockRecorder) UpdateReaction(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReaction", reflect.TypeOf((*MockDAO)(nil).UpdateReaction), ctx, m, update)
 }
 
 // UpdateSystemSetting mocks base method.

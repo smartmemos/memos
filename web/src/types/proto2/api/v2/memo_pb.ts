@@ -11,13 +11,15 @@ import type { State } from "../../model/common_pb";
 import { file_model_common } from "../../model/common_pb";
 import type { Memo, MemoSchema } from "../../model/memo_pb";
 import { file_model_memo } from "../../model/memo_pb";
+import type { Reaction, ReactionSchema } from "../../model/reaction_pb";
+import { file_model_reaction } from "../../model/reaction_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v2/memo.proto.
  */
 export const file_api_v2_memo: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrInYKEVVwZGF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIjAKEURlbGV0ZU1lbW9SZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZm9yY2UYAiABKAgytgIKC01lbW9TZXJ2aWNlEjYKCkNyZWF0ZU1lbW8SGS5hcGkudjIuQ3JlYXRlTWVtb1JlcXVlc3QaCy5tb2RlbC5NZW1vIgASQgoJTGlzdE1lbW9zEhguYXBpLnYyLkxpc3RNZW1vc1JlcXVlc3QaGS5hcGkudjIuTGlzdE1lbW9zUmVzcG9uc2UiABIwCgdHZXRNZW1vEhYuYXBpLnYyLkdldE1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEjYKClVwZGF0ZU1lbW8SGS5hcGkudjIuVXBkYXRlTWVtb1JlcXVlc3QaCy5tb2RlbC5NZW1vIgASQQoKRGVsZXRlTWVtbxIZLmFwaS52Mi5EZWxldGVNZW1vUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAQjNaMWdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9hcGkvdjJiBnByb3RvMw", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo]);
+  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrInYKEVVwZGF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIjAKEURlbGV0ZU1lbW9SZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZm9yY2UYAiABKAgiTAoZVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJEiEKCHJlYWN0aW9uGAIgASgLMg8ubW9kZWwuUmVhY3Rpb24iKQoZRGVsZXRlTWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMtUDCgtNZW1vU2VydmljZRI2CgpDcmVhdGVNZW1vEhkuYXBpLnYyLkNyZWF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkIKCUxpc3RNZW1vcxIYLmFwaS52Mi5MaXN0TWVtb3NSZXF1ZXN0GhkuYXBpLnYyLkxpc3RNZW1vc1Jlc3BvbnNlIgASMAoHR2V0TWVtbxIWLmFwaS52Mi5HZXRNZW1vUmVxdWVzdBoLLm1vZGVsLk1lbW8iABI2CgpVcGRhdGVNZW1vEhkuYXBpLnYyLlVwZGF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkEKCkRlbGV0ZU1lbW8SGS5hcGkudjIuRGVsZXRlTWVtb1JlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJKChJVcHNlcnRNZW1vUmVhY3Rpb24SIS5hcGkudjIuVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBoPLm1vZGVsLlJlYWN0aW9uIgASUQoSRGVsZXRlTWVtb1JlYWN0aW9uEiEuYXBpLnYyLkRlbGV0ZU1lbW9SZWFjdGlvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo, file_model_reaction]);
 
 /**
  * @generated from message api.v2.CreateMemoRequest
@@ -247,6 +249,53 @@ export const DeleteMemoRequestSchema: GenMessage<DeleteMemoRequest> = /*@__PURE_
   messageDesc(file_api_v2_memo, 5);
 
 /**
+ * @generated from message api.v2.UpsertMemoReactionRequest
+ */
+export type UpsertMemoReactionRequest = Message<"api.v2.UpsertMemoReactionRequest"> & {
+  /**
+   * Required. The resource name of the memo.
+   * Format: memos/{memo}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * Required. The reaction to upsert.
+   *
+   * @generated from field: model.Reaction reaction = 2;
+   */
+  reaction?: Reaction;
+};
+
+/**
+ * Describes the message api.v2.UpsertMemoReactionRequest.
+ * Use `create(UpsertMemoReactionRequestSchema)` to create a new message.
+ */
+export const UpsertMemoReactionRequestSchema: GenMessage<UpsertMemoReactionRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 6);
+
+/**
+ * @generated from message api.v2.DeleteMemoReactionRequest
+ */
+export type DeleteMemoReactionRequest = Message<"api.v2.DeleteMemoReactionRequest"> & {
+  /**
+   * Required. The resource name of the reaction to delete.
+   * Format: reactions/{reaction}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message api.v2.DeleteMemoReactionRequest.
+ * Use `create(DeleteMemoReactionRequestSchema)` to create a new message.
+ */
+export const DeleteMemoReactionRequestSchema: GenMessage<DeleteMemoReactionRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 7);
+
+/**
  * @generated from service api.v2.MemoService
  */
 export const MemoService: GenService<{
@@ -298,6 +347,26 @@ export const MemoService: GenService<{
   deleteMemo: {
     methodKind: "unary";
     input: typeof DeleteMemoRequestSchema;
+    output: typeof EmptySchema;
+  },
+  /**
+   * UpsertMemoReaction upserts a reaction for a memo.
+   *
+   * @generated from rpc api.v2.MemoService.UpsertMemoReaction
+   */
+  upsertMemoReaction: {
+    methodKind: "unary";
+    input: typeof UpsertMemoReactionRequestSchema;
+    output: typeof ReactionSchema;
+  },
+  /**
+   * DeleteMemoReaction deletes a reaction for a memo.
+   *
+   * @generated from rpc api.v2.MemoService.DeleteMemoReaction
+   */
+  deleteMemoReaction: {
+    methodKind: "unary";
+    input: typeof DeleteMemoReactionRequestSchema;
     output: typeof EmptySchema;
   },
 }> = /*@__PURE__*/

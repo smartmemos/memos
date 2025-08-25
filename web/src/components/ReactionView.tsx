@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { memoStore } from "@/store";
@@ -43,7 +43,7 @@ const ReactionView = observer((props: Props) => {
     const index = users.findIndex((user) => user.username === currentUser.username);
     try {
       if (index === -1) {
-        await memoServiceClient.upsertMemoReaction({
+        await memoServiceClientV2.upsertMemoReaction({
           name: memo.name,
           reaction: {
             contentId: memo.name,
@@ -55,7 +55,7 @@ const ReactionView = observer((props: Props) => {
           (reaction) => reaction.reactionType === reactionType && reaction.creator === currentUser.name,
         );
         for (const reaction of reactions) {
-          await memoServiceClient.deleteMemoReaction({ name: reaction.name });
+          await memoServiceClientV2.deleteMemoReaction({ name: reaction.name });
         }
       }
     } catch {

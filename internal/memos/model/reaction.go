@@ -7,11 +7,30 @@ import (
 type Reaction struct {
 	db.Model
 
-	Type      string
-	CreatorID int32
-	ContentID string
+	CreatorID    int32
+	ContentID    string
+	ReactionType string
 }
 
 func (Reaction) TableName() string {
 	return TableReaction
+}
+
+type FindReactionFilter struct {
+	db.BaseFilter
+
+	ID           db.F[int64]
+	CreatorID    db.F[int32]
+	ContentID    db.F[string]
+	ReactionType db.F[string]
+}
+
+type UpsertReactionRequest struct {
+	CreatorID    int32
+	ContentID    string
+	ReactionType string
+}
+
+type DeleteReactionRequest struct {
+	ID int64
 }

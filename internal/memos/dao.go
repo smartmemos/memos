@@ -40,6 +40,15 @@ type DAO interface {
 	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
 	UpdateMemo(ctx context.Context, m *model.Memo, update map[string]any) error
 
+	// Reaction
+	CreateReaction(ctx context.Context, m *model.Reaction) error
+	CountReactions(ctx context.Context, filter *model.FindReactionFilter) (int64, error)
+	FindReactions(ctx context.Context, filter *model.FindReactionFilter) ([]*model.Reaction, error)
+	FindReactionByID(ctx context.Context, id int64) (*model.Reaction, error)
+	FindReaction(ctx context.Context, filter *model.FindReactionFilter) (*model.Reaction, error)
+	DeleteReactions(ctx context.Context, filter *model.FindReactionFilter) error
+	UpdateReaction(ctx context.Context, m *model.Reaction, update map[string]any) error
+
 	// Attachment
 	CreateAttachment(ctx context.Context, m *model.Attachment) error
 	CountAttachments(ctx context.Context, filter *model.FindAttachmentFilter) (int64, error)

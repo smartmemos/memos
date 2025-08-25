@@ -44,6 +44,12 @@ const (
 	MemoServiceUpdateMemoProcedure = "/api.v2.MemoService/UpdateMemo"
 	// MemoServiceDeleteMemoProcedure is the fully-qualified name of the MemoService's DeleteMemo RPC.
 	MemoServiceDeleteMemoProcedure = "/api.v2.MemoService/DeleteMemo"
+	// MemoServiceUpsertMemoReactionProcedure is the fully-qualified name of the MemoService's
+	// UpsertMemoReaction RPC.
+	MemoServiceUpsertMemoReactionProcedure = "/api.v2.MemoService/UpsertMemoReaction"
+	// MemoServiceDeleteMemoReactionProcedure is the fully-qualified name of the MemoService's
+	// DeleteMemoReaction RPC.
+	MemoServiceDeleteMemoReactionProcedure = "/api.v2.MemoService/DeleteMemoReaction"
 )
 
 // MemoServiceClient is a client for the api.v2.MemoService service.
@@ -58,6 +64,10 @@ type MemoServiceClient interface {
 	UpdateMemo(context.Context, *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error)
 	// DeleteMemo deletes a memo.
 	DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error)
+	// UpsertMemoReaction upserts a reaction for a memo.
+	UpsertMemoReaction(context.Context, *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error)
+	// DeleteMemoReaction deletes a reaction for a memo.
+	DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewMemoServiceClient constructs a client for the api.v2.MemoService service. By default, it uses
@@ -101,16 +111,30 @@ func NewMemoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(memoServiceMethods.ByName("DeleteMemo")),
 			connect.WithClientOptions(opts...),
 		),
+		upsertMemoReaction: connect.NewClient[UpsertMemoReactionRequest, model.Reaction](
+			httpClient,
+			baseURL+MemoServiceUpsertMemoReactionProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("UpsertMemoReaction")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMemoReaction: connect.NewClient[DeleteMemoReactionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+MemoServiceDeleteMemoReactionProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("DeleteMemoReaction")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // memoServiceClient implements MemoServiceClient.
 type memoServiceClient struct {
-	createMemo *connect.Client[CreateMemoRequest, model.Memo]
-	listMemos  *connect.Client[ListMemosRequest, ListMemosResponse]
-	getMemo    *connect.Client[GetMemoRequest, model.Memo]
-	updateMemo *connect.Client[UpdateMemoRequest, model.Memo]
-	deleteMemo *connect.Client[DeleteMemoRequest, emptypb.Empty]
+	createMemo         *connect.Client[CreateMemoRequest, model.Memo]
+	listMemos          *connect.Client[ListMemosRequest, ListMemosResponse]
+	getMemo            *connect.Client[GetMemoRequest, model.Memo]
+	updateMemo         *connect.Client[UpdateMemoRequest, model.Memo]
+	deleteMemo         *connect.Client[DeleteMemoRequest, emptypb.Empty]
+	upsertMemoReaction *connect.Client[UpsertMemoReactionRequest, model.Reaction]
+	deleteMemoReaction *connect.Client[DeleteMemoReactionRequest, emptypb.Empty]
 }
 
 // CreateMemo calls api.v2.MemoService.CreateMemo.
@@ -138,6 +162,16 @@ func (c *memoServiceClient) DeleteMemo(ctx context.Context, req *connect.Request
 	return c.deleteMemo.CallUnary(ctx, req)
 }
 
+// UpsertMemoReaction calls api.v2.MemoService.UpsertMemoReaction.
+func (c *memoServiceClient) UpsertMemoReaction(ctx context.Context, req *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error) {
+	return c.upsertMemoReaction.CallUnary(ctx, req)
+}
+
+// DeleteMemoReaction calls api.v2.MemoService.DeleteMemoReaction.
+func (c *memoServiceClient) DeleteMemoReaction(ctx context.Context, req *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.deleteMemoReaction.CallUnary(ctx, req)
+}
+
 // MemoServiceHandler is an implementation of the api.v2.MemoService service.
 type MemoServiceHandler interface {
 	// CreateMemo creates a memo.
@@ -150,6 +184,10 @@ type MemoServiceHandler interface {
 	UpdateMemo(context.Context, *connect.Request[UpdateMemoRequest]) (*connect.Response[model.Memo], error)
 	// DeleteMemo deletes a memo.
 	DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error)
+	// UpsertMemoReaction upserts a reaction for a memo.
+	UpsertMemoReaction(context.Context, *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error)
+	// DeleteMemoReaction deletes a reaction for a memo.
+	DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewMemoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -189,6 +227,18 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(memoServiceMethods.ByName("DeleteMemo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	memoServiceUpsertMemoReactionHandler := connect.NewUnaryHandler(
+		MemoServiceUpsertMemoReactionProcedure,
+		svc.UpsertMemoReaction,
+		connect.WithSchema(memoServiceMethods.ByName("UpsertMemoReaction")),
+		connect.WithHandlerOptions(opts...),
+	)
+	memoServiceDeleteMemoReactionHandler := connect.NewUnaryHandler(
+		MemoServiceDeleteMemoReactionProcedure,
+		svc.DeleteMemoReaction,
+		connect.WithSchema(memoServiceMethods.ByName("DeleteMemoReaction")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.MemoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MemoServiceCreateMemoProcedure:
@@ -201,6 +251,10 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 			memoServiceUpdateMemoHandler.ServeHTTP(w, r)
 		case MemoServiceDeleteMemoProcedure:
 			memoServiceDeleteMemoHandler.ServeHTTP(w, r)
+		case MemoServiceUpsertMemoReactionProcedure:
+			memoServiceUpsertMemoReactionHandler.ServeHTTP(w, r)
+		case MemoServiceDeleteMemoReactionProcedure:
+			memoServiceDeleteMemoReactionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -228,4 +282,12 @@ func (UnimplementedMemoServiceHandler) UpdateMemo(context.Context, *connect.Requ
 
 func (UnimplementedMemoServiceHandler) DeleteMemo(context.Context, *connect.Request[DeleteMemoRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.DeleteMemo is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) UpsertMemoReaction(context.Context, *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.UpsertMemoReaction is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.DeleteMemoReaction is not implemented"))
 }

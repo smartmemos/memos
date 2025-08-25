@@ -2,7 +2,7 @@ import { SmilePlusIcon } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
 import useClickAway from "react-use/lib/useClickAway";
-import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { memoStore, workspaceStore } from "@/store";
@@ -36,10 +36,10 @@ const ReactionSelector = observer((props: Props) => {
           (reaction) => reaction.reactionType === reactionType && reaction.creator === currentUser.name,
         );
         for (const reaction of reactions) {
-          await memoServiceClient.deleteMemoReaction({ name: reaction.name });
+          await memoServiceClientV2.deleteMemoReaction({ name: reaction.name });
         }
       } else {
-        await memoServiceClient.upsertMemoReaction({
+        await memoServiceClientV2.upsertMemoReaction({
           name: memo.name,
           reaction: {
             contentId: memo.name,
