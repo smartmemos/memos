@@ -137,7 +137,27 @@ func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb
 }
 
 func (s *MemoService) UpdateMemo(ctx context.Context, request *connect.Request[v2pb.UpdateMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
-	info, err := convertMemoToProto(&model.Memo{})
+	uid := strings.TrimPrefix(request.Msg.Memo.Name, model.MemoNamePrefix)
+
+	memo, err := s.memosService.UpdateMemo(ctx, &model.UpdateMemoRequest{
+		UpdateMask: request.Msg.UpdateMask.Paths,
+		UID:        uid,
+		Content:    request.Msg.Memo.Content,
+		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
+		RowStatus:  model.RowStatus(modelpb.State_name[int32(request.Msg.Memo.State)]),
+		Pinned:     request.Msg.Memo.Pinned,
+		// MemoPayload: &model.MemoPayload{
+		// 	Location: &model.MemoPayloadLocation{
+		// 		Placeholder: request.Msg.Memo.Location.Placeholder,
+		// 		Latitude:    request.Msg.Memo.Location.Latitude,
+		// 		Longitude:   request.Msg.Memo.Location.Longitude,
+		// 	},
+		// },
+	})
+	if err != nil {
+		return
+	}
+	info, err := convertMemoToProto(memo)
 	if err != nil {
 		return
 	}

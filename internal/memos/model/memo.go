@@ -1,6 +1,8 @@
 package model
 
-import "github.com/smartmemos/memos/internal/pkg/db"
+import (
+	"github.com/smartmemos/memos/internal/pkg/db"
+)
 
 // Memo 笔记
 type Memo struct {
@@ -73,14 +75,17 @@ type ListMemosRequest struct {
 }
 
 type UpdateMemoRequest struct {
+	UpdateMask   []string
 	ID           int64
+	UID          string
+	Pinned       bool
 	UserID       int64
 	ParentID     int64
 	RelationType RelationType
 	Visibility   Visibility
 	Content      string
 	RowStatus    RowStatus
-	Location     *MemoPayloadLocation
+	MemoPayload  *MemoPayload
 }
 
 type GetMemoRequest struct {

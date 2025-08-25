@@ -38,6 +38,7 @@ type DAO interface {
 	FindMemoByID(ctx context.Context, id int64) (*model.Memo, error)
 	FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error)
 	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
+	UpdateMemo(ctx context.Context, m *model.Memo, update map[string]any) error
 
 	// Attachment
 	CreateAttachment(ctx context.Context, m *model.Attachment) error

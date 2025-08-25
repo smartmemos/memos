@@ -546,6 +546,20 @@ func (mr *MockDAOMockRecorder) UpdateInboxes(ctx, filter, update interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateInboxes", reflect.TypeOf((*MockDAO)(nil).UpdateInboxes), ctx, filter, update)
 }
 
+// UpdateMemo mocks base method.
+func (m_2 *MockDAO) UpdateMemo(ctx context.Context, m *model.Memo, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateMemo", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMemo indicates an expected call of UpdateMemo.
+func (mr *MockDAOMockRecorder) UpdateMemo(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockDAO)(nil).UpdateMemo), ctx, m, update)
+}
+
 // UpdateSystemSetting mocks base method.
 func (m_2 *MockDAO) UpdateSystemSetting(ctx context.Context, m *model.SystemSetting, update map[string]any) error {
 	m_2.ctrl.T.Helper()

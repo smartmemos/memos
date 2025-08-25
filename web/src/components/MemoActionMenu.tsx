@@ -16,21 +16,21 @@ import { useLocation } from "react-router-dom";
 import { markdownServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { memoStore, userStore } from "@/store";
-import { State } from "@/types/proto/api/v1/common";
-import { NodeType } from "@/types/proto/api/v1/markdown_service";
-import { Memo } from "@/types/proto/api/v1/memo_service";
+import { NodeType } from "@/types/proto2/model/markdown_pb";
+import { State as StateV2 } from "@/types/proto2/model/common_pb";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { useTranslate } from "@/utils/i18n";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 interface Props {
-  memo: Memo;
+  memo: MemoV2;
   readonly?: boolean;
   className?: string;
   onEdit?: () => void;
 }
 
-const checkHasCompletedTaskList = (memo: Memo) => {
+const checkHasCompletedTaskList = (memo: MemoV2) => {
   for (const node of memo.nodes) {
     if (node.type === NodeType.LIST && node.listNode?.children && node.listNode?.children?.length > 0) {
       for (let j = 0; j < node.listNode.children.length; j++) {
@@ -51,7 +51,7 @@ const MemoActionMenu = observer((props: Props) => {
   const hasCompletedTaskList = checkHasCompletedTaskList(memo);
   const isInMemoDetailPage = location.pathname.startsWith(`/${memo.name}`);
   const isComment = Boolean(memo.parent);
-  const isArchived = memo.state === State.ARCHIVED;
+  const isArchived = memo.state === StateV2.ARCHIVED;
 
   const memoUpdatedCallback = () => {
     // Refresh user stats.
@@ -90,8 +90,8 @@ const MemoActionMenu = observer((props: Props) => {
   };
 
   const handleToggleMemoStatusClick = async () => {
-    const state = memo.state === State.ARCHIVED ? State.NORMAL : State.ARCHIVED;
-    const message = memo.state === State.ARCHIVED ? t("message.restored-successfully") : t("message.archived-successfully");
+    const state = memo.state === StateV2.ARCHIVED ? StateV2.NORMAL : StateV2.ARCHIVED;
+    const message = memo.state === StateV2.ARCHIVED ? t("message.restored-successfully") : t("message.archived-successfully");
     try {
       await memoStore.updateMemo(
         {
@@ -108,7 +108,7 @@ const MemoActionMenu = observer((props: Props) => {
     }
 
     if (isInMemoDetailPage) {
-      navigateTo(memo.state === State.ARCHIVED ? "/" : "/archived");
+      navigateTo(memo.state === StateV2.ARCHIVED ? "/" : "/archived");
     }
     memoUpdatedCallback();
   };

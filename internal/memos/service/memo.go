@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"slices"
 
 	"github.com/lithammer/shortuuid/v4"
@@ -10,6 +11,8 @@ import (
 	"github.com/usememos/gomark/ast"
 	"github.com/usememos/gomark/parser"
 	"github.com/usememos/gomark/parser/tokenizer"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/smartmemos/memos/internal/memos/model"
 	"github.com/smartmemos/memos/internal/pkg/db"
@@ -174,7 +177,54 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (memo 
 }
 
 func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
-
+	memo, err = s.dao.FindMemo(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+	if err != nil {
+		return
+	}
+	update := make(map[string]any)
+	if lo.Contains(req.UpdateMask, "pinned") {
+		update["pinned"] = req.Pinned
+	}
+	if lo.Contains(req.UpdateMask, "visibility") {
+		update["visibility"] = req.Visibility
+	}
+	var payload *model.MemoPayload
+	if lo.Contains(req.UpdateMask, "content") {
+		var memoRelatedSetting *model.MemoRelatedSetting
+		memoRelatedSetting, err = s.GetMemoRelatedSetting(ctx)
+		if err != nil {
+			err = errors.New("failed to get workspace memo related setting")
+			return
+		}
+		if contentLimit := memoRelatedSetting.ContentLengthLimit; len(memo.Content) > contentLimit {
+			err = errors.Errorf("content too long (max %d characters)", contentLimit)
+			return
+		}
+		memo.Content = req.Content
+		if err := s.RebuildMemoPayload(memo); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to rebuild memo payload: %v", err)
+		}
+		update["content"] = req.Content
+		payload = memo.Payload
+	}
+	if lo.Contains(req.UpdateMask, "state") {
+		update["row_status"] = req.RowStatus
+	}
+	if lo.Contains(req.UpdateMask, "location") {
+		if payload == nil {
+			payload = memo.Payload
+		}
+		payload.Location = req.MemoPayload.Location
+	}
+	if payload != nil {
+		var payloadBytes []byte
+		payloadBytes, err = json.Marshal(payload)
+		if err != nil {
+			return
+		}
+		update["payload"] = string(payloadBytes)
+	}
+	err = s.dao.UpdateMemo(ctx, memo, update)
 	return
 }
 
