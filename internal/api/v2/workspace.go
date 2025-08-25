@@ -3,6 +3,7 @@ package v2
 import (
 	"context"
 	"errors"
+	"strconv"
 	"strings"
 
 	"connectrpc.com/connect"
@@ -41,22 +42,23 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, request *con
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid request"))
 	}
 
+	key, _ := strconv.Atoi(parts[2])
 	var info *modelpb.WorkspaceSetting
-	switch strings.ToLower(parts[2]) {
+	switch strings.ToLower(modelpb.WorkspaceSetting_Key_name[int32(key)]) {
 	case "general":
 		setting, err := s.memosService.GetGeneralSetting(ctx)
 		if err != nil {
 			return nil, err
 		}
 		info = &modelpb.WorkspaceSetting{
-			Name: parts[2],
+			Name: request.Msg.Name,
 			Value: &modelpb.WorkspaceSetting_GeneralSetting_{
 				GeneralSetting: convertGeneralSettingToProto(setting),
 			},
 		}
 	case "storage":
 		info := &modelpb.WorkspaceSetting{
-			Name: "name",
+			Name: request.Msg.Name,
 		}
 		return connect.NewResponse(info), nil
 	case "memo_related":
@@ -65,7 +67,7 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, request *con
 			return nil, err
 		}
 		info = &modelpb.WorkspaceSetting{
-			Name: parts[2],
+			Name: request.Msg.Name,
 			Value: &modelpb.WorkspaceSetting_MemoRelatedSetting_{
 				MemoRelatedSetting: convertMemoRelatedSettingToProto(setting),
 			},

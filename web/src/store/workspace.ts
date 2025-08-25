@@ -2,33 +2,40 @@ import { uniqBy } from "lodash-es";
 import { makeAutoObservable } from "mobx";
 import { workspaceServiceClient } from "@/grpcweb";
 import { workspaceServiceClient as workspaceServiceClientV2  } from "@/grpc";
-import { WorkspaceProfile, WorkspaceSetting_Key } from "@/types/proto/api/v1/workspace_service";
 import {
-  WorkspaceSetting_GeneralSetting,
-  WorkspaceSetting_MemoRelatedSetting,
+  WorkspaceProfile,
+  WorkspaceSetting_Key,
   WorkspaceSetting,
-} from "@/types/proto/api/v1/workspace_service";
+  WorkspaceProfileSchema,
+  WorkspaceSettingSchema,
+  WorkspaceSetting_GeneralSettingSchema,
+  WorkspaceSetting_MemoRelatedSettingSchema,
+} from "@/types/proto2/model/workspace_pb";
+import { create } from "@bufbuild/protobuf";
 import { isValidateLocale } from "@/utils/i18n";
 import { workspaceSettingNamePrefix } from "./common";
 
 class LocalState {
   locale: string = "en";
   appearance: string = "system";
-  profile: WorkspaceProfile = WorkspaceProfile.fromPartial({});
+  profile: WorkspaceProfile = create(WorkspaceProfileSchema, {});
   settings: WorkspaceSetting[] = [];
 
   get generalSetting() {
-    return (
-      this.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${WorkspaceSetting_Key.GENERAL}`)?.generalSetting ||
-      WorkspaceSetting_GeneralSetting.fromPartial({})
-    );
+    const setting = this.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${WorkspaceSetting_Key.GENERAL}`);
+    if (setting?.value?.case === "generalSetting") {
+      return setting.value.value;
+    }
+    return create(WorkspaceSetting_GeneralSettingSchema, {});
   }
 
   get memoRelatedSetting() {
-    return (
-      this.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${WorkspaceSetting_Key.MEMO_RELATED}`)
-        ?.memoRelatedSetting || WorkspaceSetting_MemoRelatedSetting.fromPartial({})
-    );
+    const setting = this.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${WorkspaceSetting_Key.MEMO_RELATED}`);
+
+    if (setting?.value?.case === "memoRelatedSetting") {
+      return setting.value.value;
+    }
+    return create(WorkspaceSetting_MemoRelatedSettingSchema, {});
   }
 
   constructor() {
@@ -69,7 +76,7 @@ const workspaceStore = (() => {
 
   const getWorkspaceSettingByKey = (settingKey: WorkspaceSetting_Key) => {
     return (
-      state.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${settingKey}`) || WorkspaceSetting.fromPartial({})
+      state.settings.find((setting) => setting.name === `${workspaceSettingNamePrefix}${settingKey}`) || create(WorkspaceSettingSchema, {})
     );
   };
 

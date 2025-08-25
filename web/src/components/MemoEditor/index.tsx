@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { memoStore, attachmentStore, userStore, workspaceStore } from "@/store";
 import { extractMemoIdFromName } from "@/store/common";
 import { Attachment } from "@/types/proto/api/v1/attachment_service";
-import { Location, Memo, MemoRelation, MemoRelation_Type } from "@/types/proto/api/v1/memo_service";
+import { Location, MemoRelation, MemoRelation_Type } from "@/types/proto/api/v1/memo_service";
 import { CreateMemoRequest as CreateMemoRequestV2, Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
 import { Visibility as VisibilityV2 } from "@/types/proto2/model/common_pb";
 import { useTranslate } from "@/utils/i18n";
@@ -340,7 +340,7 @@ const MemoEditor = observer((props: Props) => {
         const prevMemo = await memoStore.getOrFetchMemoByName(memoName);
         if (prevMemo) {
           const updateMask = new Set<string>();
-          const memoPatch: Partial<Memo> = {
+          const memoPatch: Partial<MemoV2> = {
             name: prevMemo.name,
             content,
           };
