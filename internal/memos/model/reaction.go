@@ -22,6 +22,7 @@ type FindReactionFilter struct {
 	ID           db.F[int64]
 	CreatorID    db.F[int32]
 	ContentID    db.F[string]
+	ContentIDs   db.F[[]string] `gorm:"content_id"`
 	ReactionType db.F[string]
 }
 
@@ -33,4 +34,9 @@ type UpsertReactionRequest struct {
 
 type DeleteReactionRequest struct {
 	ID int64
+}
+
+type ListReactionsRequest struct {
+	db.BaseFilter
+	ContentIDs []string
 }

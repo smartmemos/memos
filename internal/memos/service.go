@@ -31,7 +31,8 @@ type Service interface {
 
 	// UpsertReaction upserts a memo reaction.
 	UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error)
-
+	// ListReactions lists the memo reactions.
+	ListReactions(ctx context.Context, req *model.ListReactionsRequest) (int64, []*model.Reaction, error)
 	// DeleteReaction deletes a memo reaction.
 	DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) error
 

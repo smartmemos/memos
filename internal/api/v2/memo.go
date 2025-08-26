@@ -19,6 +19,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
+	"github.com/smartmemos/memos/internal/pkg/db"
 	"github.com/smartmemos/memos/internal/pkg/utils"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
@@ -110,14 +111,9 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		}
 	}
 
-	var list []*modelpb.Memo
-	for _, memo := range memos {
-		var info *modelpb.Memo
-		info, err = convertMemoToProto(memo)
-		if err != nil {
-			return
-		}
-		list = append(list, info)
+	list, err := s.convertMemosToProto(ctx, memos)
+	if err != nil {
+		return
 	}
 
 	response = connect.NewResponse(&v2pb.ListMemosResponse{
@@ -134,12 +130,42 @@ func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb
 	if err != nil {
 		return
 	}
-
-	info, err := convertMemoToProto(memo)
+	list, err := s.convertMemosToProto(ctx, []*model.Memo{memo})
 	if err != nil {
 		return
 	}
-	response = connect.NewResponse(info)
+	response = connect.NewResponse(list[0])
+	return
+}
+
+func (s *MemoService) convertMemosToProto(ctx context.Context, memos []*model.Memo) (list []*modelpb.Memo, err error) {
+	var contentIDs []string
+	for _, memo := range memos {
+		contentIDs = append(contentIDs, fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID))
+	}
+	_, reactions, err := s.memosService.ListReactions(ctx, &model.ListReactionsRequest{
+		ContentIDs: contentIDs,
+		BaseFilter: db.BaseFilter{PageSize: 10000},
+	})
+	if err != nil {
+		return
+	}
+	reactionsMap := lo.GroupBy(reactions, func(item *model.Reaction) string {
+		return item.ContentID
+	})
+	for _, memo := range memos {
+		var info *modelpb.Memo
+		info, err = convertMemoToProto(memo)
+		if err != nil {
+			return
+		}
+		if reactions := reactionsMap[info.Name]; len(reactions) > 0 {
+			info.Reactions = lo.Map(reactions, func(item *model.Reaction, _ int) *modelpb.Reaction {
+				return convertReactionToProto(item)
+			})
+		}
+		list = append(list, info)
+	}
 	return
 }
 
@@ -257,11 +283,7 @@ func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *connect.R
 		err = errors.Wrap(err, "failed to get user")
 		return
 	}
-	info, err := convertReactionToProto(reaction)
-	if err != nil {
-		return
-	}
-	response = connect.NewResponse(info)
+	response = connect.NewResponse(convertReactionToProto(reaction))
 	return
 }
 
@@ -280,7 +302,7 @@ func (s *MemoService) DeleteMemoReaction(ctx context.Context, request *connect.R
 	return
 }
 
-func convertReactionToProto(reaction *model.Reaction) (*modelpb.Reaction, error) {
+func convertReactionToProto(reaction *model.Reaction) *modelpb.Reaction {
 	reactionUID := fmt.Sprintf("%d", reaction.ID)
 	return &modelpb.Reaction{
 		Name:         fmt.Sprintf("%s%s", model.ReactionNamePrefix, reactionUID),
@@ -288,5 +310,5 @@ func convertReactionToProto(reaction *model.Reaction) (*modelpb.Reaction, error)
 		ContentId:    reaction.ContentID,
 		ReactionType: reaction.ReactionType,
 		CreateTime:   timestamppb.New(reaction.CreatedAt),
-	}, nil
+	}
 }

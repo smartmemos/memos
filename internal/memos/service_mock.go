@@ -260,6 +260,22 @@ func (mr *MockServiceMockRecorder) ListMemos(ctx, req interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMemos", reflect.TypeOf((*MockService)(nil).ListMemos), ctx, req)
 }
 
+// ListReactions mocks base method.
+func (m *MockService) ListReactions(ctx context.Context, req *model.ListReactionsRequest) (int64, []*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListReactions", ctx, req)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].([]*model.Reaction)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListReactions indicates an expected call of ListReactions.
+func (mr *MockServiceMockRecorder) ListReactions(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReactions", reflect.TypeOf((*MockService)(nil).ListReactions), ctx, req)
+}
+
 // RevokeUserSession mocks base method.
 func (m *MockService) RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) error {
 	m.ctrl.T.Helper()
