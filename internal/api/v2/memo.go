@@ -312,3 +312,50 @@ func convertReactionToProto(reaction *model.Reaction) *modelpb.Reaction {
 		CreateTime:   timestamppb.New(reaction.CreatedAt),
 	}
 }
+
+func (s *MemoService) CreateMemoComment(ctx context.Context, request *connect.Request[v2pb.CreateMemoCommentRequest]) (response *connect.Response[modelpb.Memo], err error) {
+	userInfo := utils.GetInfo(ctx)
+	if userInfo == nil {
+		err = errors.New("failed to get current user")
+		return
+	}
+	memoUID := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
+	relatedMemo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: memoUID})
+	if err != nil {
+		err = errors.Errorf("invalid memo name: %v", err)
+		return
+	}
+
+	// Create the memo comment first.
+	memoComment, err := s.memosService.CreateMemo(ctx, &model.CreateMemoRequest{
+		UserID:     userInfo.UserID,
+		Content:    request.Msg.Comment.Content,
+		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Comment.Visibility)]),
+		RowStatus:  model.Normal,
+	})
+	if err != nil {
+		err = errors.Wrap(err, "failed to create memo")
+		return
+	}
+
+	// Build the relation between the comment memo and the original memo.
+	_, err = s.memosService.UpsertMemoRelation(ctx, &model.UpsertMemoRelationRequest{
+		MemoID:        memoComment.ID,
+		RelatedMemoID: relatedMemo.ID,
+		Type:          model.RelationComment,
+	})
+	if err != nil {
+		err = errors.Wrap(err, "failed to upsert memo relation")
+		return
+	}
+	info, err := convertMemoToProto(memoComment)
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(info)
+	return
+}
+
+func (s *MemoService) ListMemoComments(ctx context.Context, request *connect.Request[v2pb.ListMemoCommentsRequest]) (response *connect.Response[v2pb.ListMemoCommentsResponse], err error) {
+	return
+}

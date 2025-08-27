@@ -65,6 +65,21 @@ func (mr *MockDAOMockRecorder) CountInboxes(ctx, filter interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountInboxes", reflect.TypeOf((*MockDAO)(nil).CountInboxes), ctx, filter)
 }
 
+// CountMemoRelations mocks base method.
+func (m *MockDAO) CountMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountMemoRelations", ctx, filter)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CountMemoRelations indicates an expected call of CountMemoRelations.
+func (mr *MockDAOMockRecorder) CountMemoRelations(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountMemoRelations", reflect.TypeOf((*MockDAO)(nil).CountMemoRelations), ctx, filter)
+}
+
 // CountMemos mocks base method.
 func (m *MockDAO) CountMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error) {
 	m.ctrl.T.Helper()
@@ -150,6 +165,20 @@ func (m_2 *MockDAO) CreateMemo(ctx context.Context, m *model.Memo) error {
 func (mr *MockDAOMockRecorder) CreateMemo(ctx, m interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, m)
+}
+
+// CreateMemoRelation mocks base method.
+func (m_2 *MockDAO) CreateMemoRelation(ctx context.Context, m *model.MemoRelation) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateMemoRelation", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMemoRelation indicates an expected call of CreateMemoRelation.
+func (mr *MockDAOMockRecorder) CreateMemoRelation(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemoRelation", reflect.TypeOf((*MockDAO)(nil).CreateMemoRelation), ctx, m)
 }
 
 // CreateReaction mocks base method.
@@ -248,6 +277,20 @@ func (m *MockDAO) DeleteInboxes(ctx context.Context, filter *model.FindInboxFilt
 func (mr *MockDAOMockRecorder) DeleteInboxes(ctx, filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteInboxes", reflect.TypeOf((*MockDAO)(nil).DeleteInboxes), ctx, filter)
+}
+
+// DeleteMemoRelations mocks base method.
+func (m *MockDAO) DeleteMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMemoRelations", ctx, filter)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMemoRelations indicates an expected call of DeleteMemoRelations.
+func (mr *MockDAOMockRecorder) DeleteMemoRelations(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemoRelations", reflect.TypeOf((*MockDAO)(nil).DeleteMemoRelations), ctx, filter)
 }
 
 // DeleteMemos mocks base method.
@@ -438,6 +481,36 @@ func (m *MockDAO) FindMemoByID(ctx context.Context, id int64) (*model.Memo, erro
 func (mr *MockDAOMockRecorder) FindMemoByID(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoByID", reflect.TypeOf((*MockDAO)(nil).FindMemoByID), ctx, id)
+}
+
+// FindMemoRelation mocks base method.
+func (m *MockDAO) FindMemoRelation(ctx context.Context, filter *model.FindMemoRelationFilter) (*model.MemoRelation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemoRelation", ctx, filter)
+	ret0, _ := ret[0].(*model.MemoRelation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoRelation indicates an expected call of FindMemoRelation.
+func (mr *MockDAOMockRecorder) FindMemoRelation(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelation", reflect.TypeOf((*MockDAO)(nil).FindMemoRelation), ctx, filter)
+}
+
+// FindMemoRelations mocks base method.
+func (m *MockDAO) FindMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) ([]*model.MemoRelation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemoRelations", ctx, filter)
+	ret0, _ := ret[0].([]*model.MemoRelation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoRelations indicates an expected call of FindMemoRelations.
+func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, filter interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelations", reflect.TypeOf((*MockDAO)(nil).FindMemoRelations), ctx, filter)
 }
 
 // FindMemos mocks base method.
@@ -648,6 +721,20 @@ func (mr *MockDAOMockRecorder) UpdateMemo(ctx, m, update interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockDAO)(nil).UpdateMemo), ctx, m, update)
 }
 
+// UpdateMemoRelation mocks base method.
+func (m_2 *MockDAO) UpdateMemoRelation(ctx context.Context, m *model.MemoRelation, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateMemoRelation", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMemoRelation indicates an expected call of UpdateMemoRelation.
+func (mr *MockDAOMockRecorder) UpdateMemoRelation(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemoRelation", reflect.TypeOf((*MockDAO)(nil).UpdateMemoRelation), ctx, m, update)
+}
+
 // UpdateReaction mocks base method.
 func (m_2 *MockDAO) UpdateReaction(ctx context.Context, m *model.Reaction, update map[string]any) error {
 	m_2.ctrl.T.Helper()
@@ -747,4 +834,18 @@ func (m *MockDAO) UpdateUsers(ctx context.Context, filter *model.FindUserFilter,
 func (mr *MockDAOMockRecorder) UpdateUsers(ctx, filter, update interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUsers", reflect.TypeOf((*MockDAO)(nil).UpdateUsers), ctx, filter, update)
+}
+
+// UpsertMemoRelation mocks base method.
+func (m_2 *MockDAO) UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpsertMemoRelation", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertMemoRelation indicates an expected call of UpsertMemoRelation.
+func (mr *MockDAOMockRecorder) UpsertMemoRelation(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMemoRelation", reflect.TypeOf((*MockDAO)(nil).UpsertMemoRelation), ctx, m)
 }

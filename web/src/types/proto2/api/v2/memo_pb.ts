@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/memo.proto.
  */
 export const file_api_v2_memo: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrInYKEVVwZGF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIjAKEURlbGV0ZU1lbW9SZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZm9yY2UYAiABKAgiTAoZVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJEiEKCHJlYWN0aW9uGAIgASgLMg8ubW9kZWwuUmVhY3Rpb24iKQoZRGVsZXRlTWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJMtUDCgtNZW1vU2VydmljZRI2CgpDcmVhdGVNZW1vEhkuYXBpLnYyLkNyZWF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkIKCUxpc3RNZW1vcxIYLmFwaS52Mi5MaXN0TWVtb3NSZXF1ZXN0GhkuYXBpLnYyLkxpc3RNZW1vc1Jlc3BvbnNlIgASMAoHR2V0TWVtbxIWLmFwaS52Mi5HZXRNZW1vUmVxdWVzdBoLLm1vZGVsLk1lbW8iABI2CgpVcGRhdGVNZW1vEhkuYXBpLnYyLlVwZGF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkEKCkRlbGV0ZU1lbW8SGS5hcGkudjIuRGVsZXRlTWVtb1JlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJKChJVcHNlcnRNZW1vUmVhY3Rpb24SIS5hcGkudjIuVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBoPLm1vZGVsLlJlYWN0aW9uIgASUQoSRGVsZXRlTWVtb1JlYWN0aW9uEiEuYXBpLnYyLkRlbGV0ZU1lbW9SZWFjdGlvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo, file_model_reaction]);
+  fileDesc("ChFhcGkvdjIvbWVtby5wcm90bxIGYXBpLnYyImoKEUNyZWF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEg8KB21lbW9faWQYAiABKAkSFQoNdmFsaWRhdGVfb25seRgDIAEoCBISCgpyZXF1ZXN0X2lkGAQgASgJIo4BChBMaXN0TWVtb3NSZXF1ZXN0EhEKCXBhZ2Vfc2l6ZRgBIAEoBRISCgpwYWdlX3Rva2VuGAIgASgJEhsKBXN0YXRlGAMgASgOMgwubW9kZWwuU3RhdGUSEAoIb3JkZXJfYnkYBCABKAkSDgoGZmlsdGVyGAUgASgJEhQKDHNob3dfZGVsZXRlZBgGIAEoCCJcChFMaXN0TWVtb3NSZXNwb25zZRIaCgVtZW1vcxgBIAMoCzILLm1vZGVsLk1lbW8SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiTQoOR2V0TWVtb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRItCglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrInYKEVVwZGF0ZU1lbW9SZXF1ZXN0EhkKBG1lbW8YASABKAsyCy5tb2RlbC5NZW1vEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIjAKEURlbGV0ZU1lbW9SZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZm9yY2UYAiABKAgiTAoZVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJEiEKCHJlYWN0aW9uGAIgASgLMg8ubW9kZWwuUmVhY3Rpb24iKQoZRGVsZXRlTWVtb1JlYWN0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJIloKGENyZWF0ZU1lbW9Db21tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJEhwKB2NvbW1lbnQYAiABKAsyCy5tb2RlbC5NZW1vEhIKCmNvbW1lbnRfaWQYAyABKAkiYAoXTGlzdE1lbW9Db21tZW50c1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIQCghvcmRlcl9ieRgEIAEoCSJjChhMaXN0TWVtb0NvbW1lbnRzUmVzcG9uc2USGgoFbWVtb3MYASADKAsyCy5tb2RlbC5NZW1vEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFMvQECgtNZW1vU2VydmljZRI2CgpDcmVhdGVNZW1vEhkuYXBpLnYyLkNyZWF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkIKCUxpc3RNZW1vcxIYLmFwaS52Mi5MaXN0TWVtb3NSZXF1ZXN0GhkuYXBpLnYyLkxpc3RNZW1vc1Jlc3BvbnNlIgASMAoHR2V0TWVtbxIWLmFwaS52Mi5HZXRNZW1vUmVxdWVzdBoLLm1vZGVsLk1lbW8iABI2CgpVcGRhdGVNZW1vEhkuYXBpLnYyLlVwZGF0ZU1lbW9SZXF1ZXN0GgsubW9kZWwuTWVtbyIAEkEKCkRlbGV0ZU1lbW8SGS5hcGkudjIuRGVsZXRlTWVtb1JlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJKChJVcHNlcnRNZW1vUmVhY3Rpb24SIS5hcGkudjIuVXBzZXJ0TWVtb1JlYWN0aW9uUmVxdWVzdBoPLm1vZGVsLlJlYWN0aW9uIgASUQoSRGVsZXRlTWVtb1JlYWN0aW9uEiEuYXBpLnYyLkRlbGV0ZU1lbW9SZWFjdGlvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJEChFDcmVhdGVNZW1vQ29tbWVudBIgLmFwaS52Mi5DcmVhdGVNZW1vQ29tbWVudFJlcXVlc3QaCy5tb2RlbC5NZW1vIgASVwoQTGlzdE1lbW9Db21tZW50cxIfLmFwaS52Mi5MaXN0TWVtb0NvbW1lbnRzUmVxdWVzdBogLmFwaS52Mi5MaXN0TWVtb0NvbW1lbnRzUmVzcG9uc2UiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_common, file_model_memo, file_model_reaction]);
 
 /**
  * @generated from message api.v2.CreateMemoRequest
@@ -296,6 +296,114 @@ export const DeleteMemoReactionRequestSchema: GenMessage<DeleteMemoReactionReque
   messageDesc(file_api_v2_memo, 7);
 
 /**
+ * @generated from message api.v2.CreateMemoCommentRequest
+ */
+export type CreateMemoCommentRequest = Message<"api.v2.CreateMemoCommentRequest"> & {
+  /**
+   * Required. The resource name of the memo.
+   * Format: memos/{memo}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * Required. The comment to create.
+   *
+   * @generated from field: model.Memo comment = 2;
+   */
+  comment?: Memo;
+
+  /**
+   * Optional. The comment ID to use.
+   *
+   * @generated from field: string comment_id = 3;
+   */
+  commentId: string;
+};
+
+/**
+ * Describes the message api.v2.CreateMemoCommentRequest.
+ * Use `create(CreateMemoCommentRequestSchema)` to create a new message.
+ */
+export const CreateMemoCommentRequestSchema: GenMessage<CreateMemoCommentRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 8);
+
+/**
+ * @generated from message api.v2.ListMemoCommentsRequest
+ */
+export type ListMemoCommentsRequest = Message<"api.v2.ListMemoCommentsRequest"> & {
+  /**
+   * Required. The resource name of the memo.
+   * Format: memos/{memo}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * Optional. The maximum number of comments to return.
+   *
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * Optional. A page token for pagination.
+   *
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * Optional. The order to sort results by.
+   *
+   * @generated from field: string order_by = 4;
+   */
+  orderBy: string;
+};
+
+/**
+ * Describes the message api.v2.ListMemoCommentsRequest.
+ * Use `create(ListMemoCommentsRequestSchema)` to create a new message.
+ */
+export const ListMemoCommentsRequestSchema: GenMessage<ListMemoCommentsRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 9);
+
+/**
+ * @generated from message api.v2.ListMemoCommentsResponse
+ */
+export type ListMemoCommentsResponse = Message<"api.v2.ListMemoCommentsResponse"> & {
+  /**
+   * The list of comment memos.
+   *
+   * @generated from field: repeated model.Memo memos = 1;
+   */
+  memos: Memo[];
+
+  /**
+   * A token for the next page of results.
+   *
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+
+  /**
+   * The total count of comments.
+   *
+   * @generated from field: int32 total_size = 3;
+   */
+  totalSize: number;
+};
+
+/**
+ * Describes the message api.v2.ListMemoCommentsResponse.
+ * Use `create(ListMemoCommentsResponseSchema)` to create a new message.
+ */
+export const ListMemoCommentsResponseSchema: GenMessage<ListMemoCommentsResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_memo, 10);
+
+/**
  * @generated from service api.v2.MemoService
  */
 export const MemoService: GenService<{
@@ -368,6 +476,26 @@ export const MemoService: GenService<{
     methodKind: "unary";
     input: typeof DeleteMemoReactionRequestSchema;
     output: typeof EmptySchema;
+  },
+  /**
+   * CreateMemoComment creates a comment for a memo.
+   *
+   * @generated from rpc api.v2.MemoService.CreateMemoComment
+   */
+  createMemoComment: {
+    methodKind: "unary";
+    input: typeof CreateMemoCommentRequestSchema;
+    output: typeof MemoSchema;
+  },
+  /**
+   * ListMemoComments lists comments for a memo.
+   *
+   * @generated from rpc api.v2.MemoService.ListMemoComments
+   */
+  listMemoComments: {
+    methodKind: "unary";
+    input: typeof ListMemoCommentsRequestSchema;
+    output: typeof ListMemoCommentsResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_memo, 0);

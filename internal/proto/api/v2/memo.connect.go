@@ -50,6 +50,12 @@ const (
 	// MemoServiceDeleteMemoReactionProcedure is the fully-qualified name of the MemoService's
 	// DeleteMemoReaction RPC.
 	MemoServiceDeleteMemoReactionProcedure = "/api.v2.MemoService/DeleteMemoReaction"
+	// MemoServiceCreateMemoCommentProcedure is the fully-qualified name of the MemoService's
+	// CreateMemoComment RPC.
+	MemoServiceCreateMemoCommentProcedure = "/api.v2.MemoService/CreateMemoComment"
+	// MemoServiceListMemoCommentsProcedure is the fully-qualified name of the MemoService's
+	// ListMemoComments RPC.
+	MemoServiceListMemoCommentsProcedure = "/api.v2.MemoService/ListMemoComments"
 )
 
 // MemoServiceClient is a client for the api.v2.MemoService service.
@@ -68,6 +74,10 @@ type MemoServiceClient interface {
 	UpsertMemoReaction(context.Context, *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error)
 	// DeleteMemoReaction deletes a reaction for a memo.
 	DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error)
+	// CreateMemoComment creates a comment for a memo.
+	CreateMemoComment(context.Context, *connect.Request[CreateMemoCommentRequest]) (*connect.Response[model.Memo], error)
+	// ListMemoComments lists comments for a memo.
+	ListMemoComments(context.Context, *connect.Request[ListMemoCommentsRequest]) (*connect.Response[ListMemoCommentsResponse], error)
 }
 
 // NewMemoServiceClient constructs a client for the api.v2.MemoService service. By default, it uses
@@ -123,6 +133,18 @@ func NewMemoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(memoServiceMethods.ByName("DeleteMemoReaction")),
 			connect.WithClientOptions(opts...),
 		),
+		createMemoComment: connect.NewClient[CreateMemoCommentRequest, model.Memo](
+			httpClient,
+			baseURL+MemoServiceCreateMemoCommentProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("CreateMemoComment")),
+			connect.WithClientOptions(opts...),
+		),
+		listMemoComments: connect.NewClient[ListMemoCommentsRequest, ListMemoCommentsResponse](
+			httpClient,
+			baseURL+MemoServiceListMemoCommentsProcedure,
+			connect.WithSchema(memoServiceMethods.ByName("ListMemoComments")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -135,6 +157,8 @@ type memoServiceClient struct {
 	deleteMemo         *connect.Client[DeleteMemoRequest, emptypb.Empty]
 	upsertMemoReaction *connect.Client[UpsertMemoReactionRequest, model.Reaction]
 	deleteMemoReaction *connect.Client[DeleteMemoReactionRequest, emptypb.Empty]
+	createMemoComment  *connect.Client[CreateMemoCommentRequest, model.Memo]
+	listMemoComments   *connect.Client[ListMemoCommentsRequest, ListMemoCommentsResponse]
 }
 
 // CreateMemo calls api.v2.MemoService.CreateMemo.
@@ -172,6 +196,16 @@ func (c *memoServiceClient) DeleteMemoReaction(ctx context.Context, req *connect
 	return c.deleteMemoReaction.CallUnary(ctx, req)
 }
 
+// CreateMemoComment calls api.v2.MemoService.CreateMemoComment.
+func (c *memoServiceClient) CreateMemoComment(ctx context.Context, req *connect.Request[CreateMemoCommentRequest]) (*connect.Response[model.Memo], error) {
+	return c.createMemoComment.CallUnary(ctx, req)
+}
+
+// ListMemoComments calls api.v2.MemoService.ListMemoComments.
+func (c *memoServiceClient) ListMemoComments(ctx context.Context, req *connect.Request[ListMemoCommentsRequest]) (*connect.Response[ListMemoCommentsResponse], error) {
+	return c.listMemoComments.CallUnary(ctx, req)
+}
+
 // MemoServiceHandler is an implementation of the api.v2.MemoService service.
 type MemoServiceHandler interface {
 	// CreateMemo creates a memo.
@@ -188,6 +222,10 @@ type MemoServiceHandler interface {
 	UpsertMemoReaction(context.Context, *connect.Request[UpsertMemoReactionRequest]) (*connect.Response[model.Reaction], error)
 	// DeleteMemoReaction deletes a reaction for a memo.
 	DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error)
+	// CreateMemoComment creates a comment for a memo.
+	CreateMemoComment(context.Context, *connect.Request[CreateMemoCommentRequest]) (*connect.Response[model.Memo], error)
+	// ListMemoComments lists comments for a memo.
+	ListMemoComments(context.Context, *connect.Request[ListMemoCommentsRequest]) (*connect.Response[ListMemoCommentsResponse], error)
 }
 
 // NewMemoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -239,6 +277,18 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(memoServiceMethods.ByName("DeleteMemoReaction")),
 		connect.WithHandlerOptions(opts...),
 	)
+	memoServiceCreateMemoCommentHandler := connect.NewUnaryHandler(
+		MemoServiceCreateMemoCommentProcedure,
+		svc.CreateMemoComment,
+		connect.WithSchema(memoServiceMethods.ByName("CreateMemoComment")),
+		connect.WithHandlerOptions(opts...),
+	)
+	memoServiceListMemoCommentsHandler := connect.NewUnaryHandler(
+		MemoServiceListMemoCommentsProcedure,
+		svc.ListMemoComments,
+		connect.WithSchema(memoServiceMethods.ByName("ListMemoComments")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.MemoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MemoServiceCreateMemoProcedure:
@@ -255,6 +305,10 @@ func NewMemoServiceHandler(svc MemoServiceHandler, opts ...connect.HandlerOption
 			memoServiceUpsertMemoReactionHandler.ServeHTTP(w, r)
 		case MemoServiceDeleteMemoReactionProcedure:
 			memoServiceDeleteMemoReactionHandler.ServeHTTP(w, r)
+		case MemoServiceCreateMemoCommentProcedure:
+			memoServiceCreateMemoCommentHandler.ServeHTTP(w, r)
+		case MemoServiceListMemoCommentsProcedure:
+			memoServiceListMemoCommentsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -290,4 +344,12 @@ func (UnimplementedMemoServiceHandler) UpsertMemoReaction(context.Context, *conn
 
 func (UnimplementedMemoServiceHandler) DeleteMemoReaction(context.Context, *connect.Request[DeleteMemoReactionRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.DeleteMemoReaction is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) CreateMemoComment(context.Context, *connect.Request[CreateMemoCommentRequest]) (*connect.Response[model.Memo], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.CreateMemoComment is not implemented"))
+}
+
+func (UnimplementedMemoServiceHandler) ListMemoComments(context.Context, *connect.Request[ListMemoCommentsRequest]) (*connect.Response[ListMemoCommentsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.MemoService.ListMemoComments is not implemented"))
 }

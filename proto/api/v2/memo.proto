@@ -32,6 +32,12 @@ service MemoService {
 
   // DeleteMemoReaction deletes a reaction for a memo.
   rpc DeleteMemoReaction(DeleteMemoReactionRequest) returns (google.protobuf.Empty) {}
+
+    // CreateMemoComment creates a comment for a memo.
+  rpc CreateMemoComment(CreateMemoCommentRequest) returns (model.Memo) {}
+
+  // ListMemoComments lists comments for a memo.
+  rpc ListMemoComments(ListMemoCommentsRequest) returns (ListMemoCommentsResponse) {}
 }
 
 message CreateMemoRequest {
@@ -135,4 +141,42 @@ message DeleteMemoReactionRequest {
   // Required. The resource name of the reaction to delete.
   // Format: reactions/{reaction}
   string name = 1;
+}
+
+message CreateMemoCommentRequest {
+  // Required. The resource name of the memo.
+  // Format: memos/{memo}
+  string name = 1;
+
+  // Required. The comment to create.
+  model.Memo comment = 2;
+
+  // Optional. The comment ID to use.
+  string comment_id = 3;
+}
+
+message ListMemoCommentsRequest {
+  // Required. The resource name of the memo.
+  // Format: memos/{memo}
+  string name = 1;
+
+  // Optional. The maximum number of comments to return.
+  int32 page_size = 2;
+
+  // Optional. A page token for pagination.
+  string page_token = 3;
+
+  // Optional. The order to sort results by.
+  string order_by = 4;
+}
+
+message ListMemoCommentsResponse {
+  // The list of comment memos.
+  repeated model.Memo memos = 1;
+
+  // A token for the next page of results.
+  string next_page_token = 2;
+
+  // The total count of comments.
+  int32 total_size = 3;
 }

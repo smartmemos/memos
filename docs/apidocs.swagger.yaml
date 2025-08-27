@@ -1143,6 +1143,22 @@ definitions:
         type: integer
         format: int32
         description: The total count of inboxes (may be approximate).
+  v2ListMemoCommentsResponse:
+    type: object
+    properties:
+      memos:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelMemo'
+        description: The list of comment memos.
+      nextPageToken:
+        type: string
+        description: A token for the next page of results.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of comments.
   v2ListMemosResponse:
     type: object
     properties:

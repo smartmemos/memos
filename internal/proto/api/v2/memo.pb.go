@@ -537,6 +537,206 @@ func (x *DeleteMemoReactionRequest) GetName() string {
 	return ""
 }
 
+type CreateMemoCommentRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The resource name of the memo.
+	// Format: memos/{memo}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Required. The comment to create.
+	Comment *model.Memo `protobuf:"bytes,2,opt,name=comment,proto3" json:"comment,omitempty"`
+	// Optional. The comment ID to use.
+	CommentId     string `protobuf:"bytes,3,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateMemoCommentRequest) Reset() {
+	*x = CreateMemoCommentRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateMemoCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateMemoCommentRequest) ProtoMessage() {}
+
+func (x *CreateMemoCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateMemoCommentRequest.ProtoReflect.Descriptor instead.
+func (*CreateMemoCommentRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CreateMemoCommentRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateMemoCommentRequest) GetComment() *model.Memo {
+	if x != nil {
+		return x.Comment
+	}
+	return nil
+}
+
+func (x *CreateMemoCommentRequest) GetCommentId() string {
+	if x != nil {
+		return x.CommentId
+	}
+	return ""
+}
+
+type ListMemoCommentsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The resource name of the memo.
+	// Format: memos/{memo}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Optional. The maximum number of comments to return.
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Optional. A page token for pagination.
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Optional. The order to sort results by.
+	OrderBy       string `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMemoCommentsRequest) Reset() {
+	*x = ListMemoCommentsRequest{}
+	mi := &file_api_v2_memo_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMemoCommentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMemoCommentsRequest) ProtoMessage() {}
+
+func (x *ListMemoCommentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMemoCommentsRequest.ProtoReflect.Descriptor instead.
+func (*ListMemoCommentsRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListMemoCommentsRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ListMemoCommentsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMemoCommentsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListMemoCommentsRequest) GetOrderBy() string {
+	if x != nil {
+		return x.OrderBy
+	}
+	return ""
+}
+
+type ListMemoCommentsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The list of comment memos.
+	Memos []*model.Memo `protobuf:"bytes,1,rep,name=memos,proto3" json:"memos,omitempty"`
+	// A token for the next page of results.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	// The total count of comments.
+	TotalSize     int32 `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMemoCommentsResponse) Reset() {
+	*x = ListMemoCommentsResponse{}
+	mi := &file_api_v2_memo_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMemoCommentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMemoCommentsResponse) ProtoMessage() {}
+
+func (x *ListMemoCommentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_memo_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMemoCommentsResponse.ProtoReflect.Descriptor instead.
+func (*ListMemoCommentsResponse) Descriptor() ([]byte, []int) {
+	return file_api_v2_memo_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListMemoCommentsResponse) GetMemos() []*model.Memo {
+	if x != nil {
+		return x.Memos
+	}
+	return nil
+}
+
+func (x *ListMemoCommentsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+func (x *ListMemoCommentsResponse) GetTotalSize() int32 {
+	if x != nil {
+		return x.TotalSize
+	}
+	return 0
+}
+
 var File_api_v2_memo_proto protoreflect.FileDescriptor
 
 const file_api_v2_memo_proto_rawDesc = "" +
@@ -576,7 +776,23 @@ const file_api_v2_memo_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12+\n" +
 	"\breaction\x18\x02 \x01(\v2\x0f.model.ReactionR\breaction\"/\n" +
 	"\x19DeleteMemoReactionRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name2\xd5\x03\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"t\n" +
+	"\x18CreateMemoCommentRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\acomment\x18\x02 \x01(\v2\v.model.MemoR\acomment\x12\x1d\n" +
+	"\n" +
+	"comment_id\x18\x03 \x01(\tR\tcommentId\"\x84\x01\n" +
+	"\x17ListMemoCommentsRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x19\n" +
+	"\border_by\x18\x04 \x01(\tR\aorderBy\"\x84\x01\n" +
+	"\x18ListMemoCommentsResponse\x12!\n" +
+	"\x05memos\x18\x01 \x03(\v2\v.model.MemoR\x05memos\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1d\n" +
+	"\n" +
+	"total_size\x18\x03 \x01(\x05R\ttotalSize2\xf4\x04\n" +
 	"\vMemoService\x126\n" +
 	"\n" +
 	"CreateMemo\x12\x19.api.v2.CreateMemoRequest\x1a\v.model.Memo\"\x00\x12B\n" +
@@ -587,7 +803,9 @@ const file_api_v2_memo_proto_rawDesc = "" +
 	"\n" +
 	"DeleteMemo\x12\x19.api.v2.DeleteMemoRequest\x1a\x16.google.protobuf.Empty\"\x00\x12J\n" +
 	"\x12UpsertMemoReaction\x12!.api.v2.UpsertMemoReactionRequest\x1a\x0f.model.Reaction\"\x00\x12Q\n" +
-	"\x12DeleteMemoReaction\x12!.api.v2.DeleteMemoReactionRequest\x1a\x16.google.protobuf.Empty\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"\x12DeleteMemoReaction\x12!.api.v2.DeleteMemoReactionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12D\n" +
+	"\x11CreateMemoComment\x12 .api.v2.CreateMemoCommentRequest\x1a\v.model.Memo\"\x00\x12W\n" +
+	"\x10ListMemoComments\x12\x1f.api.v2.ListMemoCommentsRequest\x1a .api.v2.ListMemoCommentsResponse\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_memo_proto_rawDescOnce sync.Once
@@ -601,7 +819,7 @@ func file_api_v2_memo_proto_rawDescGZIP() []byte {
 	return file_api_v2_memo_proto_rawDescData
 }
 
-var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_api_v2_memo_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_v2_memo_proto_goTypes = []any{
 	(*CreateMemoRequest)(nil),         // 0: api.v2.CreateMemoRequest
 	(*ListMemosRequest)(nil),          // 1: api.v2.ListMemosRequest
@@ -611,39 +829,48 @@ var file_api_v2_memo_proto_goTypes = []any{
 	(*DeleteMemoRequest)(nil),         // 5: api.v2.DeleteMemoRequest
 	(*UpsertMemoReactionRequest)(nil), // 6: api.v2.UpsertMemoReactionRequest
 	(*DeleteMemoReactionRequest)(nil), // 7: api.v2.DeleteMemoReactionRequest
-	(*model.Memo)(nil),                // 8: model.Memo
-	(model.State)(0),                  // 9: model.State
-	(*fieldmaskpb.FieldMask)(nil),     // 10: google.protobuf.FieldMask
-	(*model.Reaction)(nil),            // 11: model.Reaction
-	(*emptypb.Empty)(nil),             // 12: google.protobuf.Empty
+	(*CreateMemoCommentRequest)(nil),  // 8: api.v2.CreateMemoCommentRequest
+	(*ListMemoCommentsRequest)(nil),   // 9: api.v2.ListMemoCommentsRequest
+	(*ListMemoCommentsResponse)(nil),  // 10: api.v2.ListMemoCommentsResponse
+	(*model.Memo)(nil),                // 11: model.Memo
+	(model.State)(0),                  // 12: model.State
+	(*fieldmaskpb.FieldMask)(nil),     // 13: google.protobuf.FieldMask
+	(*model.Reaction)(nil),            // 14: model.Reaction
+	(*emptypb.Empty)(nil),             // 15: google.protobuf.Empty
 }
 var file_api_v2_memo_proto_depIdxs = []int32{
-	8,  // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
-	9,  // 1: api.v2.ListMemosRequest.state:type_name -> model.State
-	8,  // 2: api.v2.ListMemosResponse.memos:type_name -> model.Memo
-	10, // 3: api.v2.GetMemoRequest.read_mask:type_name -> google.protobuf.FieldMask
-	8,  // 4: api.v2.UpdateMemoRequest.memo:type_name -> model.Memo
-	10, // 5: api.v2.UpdateMemoRequest.update_mask:type_name -> google.protobuf.FieldMask
-	11, // 6: api.v2.UpsertMemoReactionRequest.reaction:type_name -> model.Reaction
-	0,  // 7: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
-	1,  // 8: api.v2.MemoService.ListMemos:input_type -> api.v2.ListMemosRequest
-	3,  // 9: api.v2.MemoService.GetMemo:input_type -> api.v2.GetMemoRequest
-	4,  // 10: api.v2.MemoService.UpdateMemo:input_type -> api.v2.UpdateMemoRequest
-	5,  // 11: api.v2.MemoService.DeleteMemo:input_type -> api.v2.DeleteMemoRequest
-	6,  // 12: api.v2.MemoService.UpsertMemoReaction:input_type -> api.v2.UpsertMemoReactionRequest
-	7,  // 13: api.v2.MemoService.DeleteMemoReaction:input_type -> api.v2.DeleteMemoReactionRequest
-	8,  // 14: api.v2.MemoService.CreateMemo:output_type -> model.Memo
-	2,  // 15: api.v2.MemoService.ListMemos:output_type -> api.v2.ListMemosResponse
-	8,  // 16: api.v2.MemoService.GetMemo:output_type -> model.Memo
-	8,  // 17: api.v2.MemoService.UpdateMemo:output_type -> model.Memo
-	12, // 18: api.v2.MemoService.DeleteMemo:output_type -> google.protobuf.Empty
-	11, // 19: api.v2.MemoService.UpsertMemoReaction:output_type -> model.Reaction
-	12, // 20: api.v2.MemoService.DeleteMemoReaction:output_type -> google.protobuf.Empty
-	14, // [14:21] is the sub-list for method output_type
-	7,  // [7:14] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	11, // 0: api.v2.CreateMemoRequest.memo:type_name -> model.Memo
+	12, // 1: api.v2.ListMemosRequest.state:type_name -> model.State
+	11, // 2: api.v2.ListMemosResponse.memos:type_name -> model.Memo
+	13, // 3: api.v2.GetMemoRequest.read_mask:type_name -> google.protobuf.FieldMask
+	11, // 4: api.v2.UpdateMemoRequest.memo:type_name -> model.Memo
+	13, // 5: api.v2.UpdateMemoRequest.update_mask:type_name -> google.protobuf.FieldMask
+	14, // 6: api.v2.UpsertMemoReactionRequest.reaction:type_name -> model.Reaction
+	11, // 7: api.v2.CreateMemoCommentRequest.comment:type_name -> model.Memo
+	11, // 8: api.v2.ListMemoCommentsResponse.memos:type_name -> model.Memo
+	0,  // 9: api.v2.MemoService.CreateMemo:input_type -> api.v2.CreateMemoRequest
+	1,  // 10: api.v2.MemoService.ListMemos:input_type -> api.v2.ListMemosRequest
+	3,  // 11: api.v2.MemoService.GetMemo:input_type -> api.v2.GetMemoRequest
+	4,  // 12: api.v2.MemoService.UpdateMemo:input_type -> api.v2.UpdateMemoRequest
+	5,  // 13: api.v2.MemoService.DeleteMemo:input_type -> api.v2.DeleteMemoRequest
+	6,  // 14: api.v2.MemoService.UpsertMemoReaction:input_type -> api.v2.UpsertMemoReactionRequest
+	7,  // 15: api.v2.MemoService.DeleteMemoReaction:input_type -> api.v2.DeleteMemoReactionRequest
+	8,  // 16: api.v2.MemoService.CreateMemoComment:input_type -> api.v2.CreateMemoCommentRequest
+	9,  // 17: api.v2.MemoService.ListMemoComments:input_type -> api.v2.ListMemoCommentsRequest
+	11, // 18: api.v2.MemoService.CreateMemo:output_type -> model.Memo
+	2,  // 19: api.v2.MemoService.ListMemos:output_type -> api.v2.ListMemosResponse
+	11, // 20: api.v2.MemoService.GetMemo:output_type -> model.Memo
+	11, // 21: api.v2.MemoService.UpdateMemo:output_type -> model.Memo
+	15, // 22: api.v2.MemoService.DeleteMemo:output_type -> google.protobuf.Empty
+	14, // 23: api.v2.MemoService.UpsertMemoReaction:output_type -> model.Reaction
+	15, // 24: api.v2.MemoService.DeleteMemoReaction:output_type -> google.protobuf.Empty
+	11, // 25: api.v2.MemoService.CreateMemoComment:output_type -> model.Memo
+	10, // 26: api.v2.MemoService.ListMemoComments:output_type -> api.v2.ListMemoCommentsResponse
+	18, // [18:27] is the sub-list for method output_type
+	9,  // [9:18] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_memo_proto_init() }
@@ -657,7 +884,7 @@ func file_api_v2_memo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_memo_proto_rawDesc), len(file_api_v2_memo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

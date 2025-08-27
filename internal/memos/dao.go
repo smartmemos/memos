@@ -40,6 +40,15 @@ type DAO interface {
 	DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error
 	UpdateMemo(ctx context.Context, m *model.Memo, update map[string]any) error
 
+	// MemoRelation
+	CreateMemoRelation(ctx context.Context, m *model.MemoRelation) error
+	CountMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) (int64, error)
+	FindMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) ([]*model.MemoRelation, error)
+	FindMemoRelation(ctx context.Context, filter *model.FindMemoRelationFilter) (*model.MemoRelation, error)
+	DeleteMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) error
+	UpdateMemoRelation(ctx context.Context, m *model.MemoRelation, update map[string]any) error
+	UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error
+
 	// Reaction
 	CreateReaction(ctx context.Context, m *model.Reaction) error
 	CountReactions(ctx context.Context, filter *model.FindReactionFilter) (int64, error)

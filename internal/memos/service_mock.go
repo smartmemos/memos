@@ -335,6 +335,21 @@ func (mr *MockServiceMockRecorder) UpdateUserSetting(ctx, req interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserSetting", reflect.TypeOf((*MockService)(nil).UpdateUserSetting), ctx, req)
 }
 
+// UpsertMemoRelation mocks base method.
+func (m *MockService) UpsertMemoRelation(ctx context.Context, req *model.UpsertMemoRelationRequest) (*model.MemoRelation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertMemoRelation", ctx, req)
+	ret0, _ := ret[0].(*model.MemoRelation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertMemoRelation indicates an expected call of UpsertMemoRelation.
+func (mr *MockServiceMockRecorder) UpsertMemoRelation(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMemoRelation", reflect.TypeOf((*MockService)(nil).UpsertMemoRelation), ctx, req)
+}
+
 // UpsertReaction mocks base method.
 func (m *MockService) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error) {
 	m.ctrl.T.Helper()

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import useLocalStorage from "react-use/lib/useLocalStorage";
 import { Button } from "@/components/ui/button";
 import { memoServiceClient } from "@/grpcweb";
+import { memoServiceClient as memoServiceClientV2 } from "@/grpc";
 import { TAB_SPACE_WIDTH } from "@/helpers/consts";
 import { isValidUrl } from "@/helpers/utils";
 import useAsyncEffect from "@/hooks/useAsyncEffect";
@@ -404,7 +405,7 @@ const MemoEditor = observer((props: Props) => {
               validateOnly: false,
               requestId: "",
             } as Partial<CreateMemoRequestV2>)
-          : memoServiceClient
+          : memoServiceClientV2
               .createMemoComment({
                 name: parentMemoName,
                 comment: {

@@ -4,6 +4,7 @@ const (
 	TableMemo          = "memo"
 	TableResource      = "resource"
 	TableReaction      = "reaction"
+	TableMemoRelation  = "memo_relation"
 	TableUser          = "user"
 	TableUserSetting   = "user_setting"
 	TableSession       = "session"
