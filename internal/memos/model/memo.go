@@ -68,6 +68,7 @@ type CreateMemoRequest struct {
 }
 
 type ListMemosRequest struct {
+	IDs             []int64
 	Status          RowStatus
 	VisibilityList  []Visibility
 	ExcludeContent  bool

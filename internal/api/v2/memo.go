@@ -240,6 +240,56 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 	return
 }
 
+func (s *MemoService) convertMemoRelationToProto(ctx context.Context, memoRelation *model.MemoRelation) (*modelpb.MemoRelation, error) {
+	_, memos, err := s.memosService.ListMemos(ctx, &model.ListMemosRequest{
+		IDs: []int64{memoRelation.MemoID, memoRelation.RelatedMemoID},
+	})
+	if err != nil {
+		return nil, err
+	}
+	memosMap := lo.KeyBy(memos, func(item *model.Memo) int64 {
+		return item.ID
+	})
+	memo, ok := memosMap[memoRelation.MemoID]
+	if !ok {
+		return nil, errors.Errorf("memo not found: %d", memoRelation.MemoID)
+	}
+	relatedMemo, ok := memosMap[memoRelation.RelatedMemoID]
+	if !ok {
+		return nil, errors.Errorf("memo not found: %d", memoRelation.MemoID)
+	}
+
+	memoSnippet, err := getMemoContentSnippet(memo.Content)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get memo content snippet")
+	}
+	relatedMemoSnippet, err := getMemoContentSnippet(relatedMemo.Content)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get related memo content snippet")
+	}
+	return &modelpb.MemoRelation{
+		Memo: &modelpb.MemoRelation_Memo{
+			Name:    fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID),
+			Snippet: memoSnippet,
+		},
+		RelatedMemo: &modelpb.MemoRelation_Memo{
+			Name:    fmt.Sprintf("%s%s", model.MemoNamePrefix, relatedMemo.UID),
+			Snippet: relatedMemoSnippet,
+		},
+		Type: modelpb.MemoRelation_Type(modelpb.MemoRelation_Type_value[string(memoRelation.Type)]),
+	}, nil
+}
+
+func getMemoContentSnippet(content string) (string, error) {
+	nodes, err := parser.Parse(tokenizer.Tokenize(content))
+	if err != nil {
+		return "", errors.Wrap(err, "failed to parse content")
+	}
+
+	plainText := renderer.NewStringRenderer().Render(nodes)
+	plainText = lo.If(len(plainText) > 64, lo.Substring(plainText, 0, 64)+"...").Else(plainText)
+	return plainText, nil
+}
 func convertMemoPropertyToProto(property *model.MemoPayloadProperty) *modelpb.Memo_Property {
 	if property == nil {
 		return nil
