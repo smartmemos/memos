@@ -1,21 +1,22 @@
 import { isEqual } from "lodash-es";
 import { CheckCircleIcon, Code2Icon, HashIcon, LinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Memo, MemoRelation_Type, Memo_Property } from "@/types/proto/api/v1/memo_service";
+import { Memo as MemoV2 } from "@/types/proto2/model/memo_pb";
+import { MemoRelation_Type } from "@/types/proto2/model/memo_relation_pb";
 import { useTranslate } from "@/utils/i18n";
+import { fromTimestamp } from "@/utils/date";
 import MemoRelationForceGraph from "../MemoRelationForceGraph";
 
 interface Props {
-  memo: Memo;
+  memo: MemoV2;
   className?: string;
   parentPage?: string;
 }
 
 const MemoDetailSidebar = ({ memo, className, parentPage }: Props) => {
   const t = useTranslate();
-  const property = Memo_Property.fromPartial(memo.property || {});
-  const hasSpecialProperty = property.hasLink || property.hasTaskList || property.hasCode || property.hasIncompleteTasks;
-  const shouldShowRelationGraph = memo.relations.filter((r) => r.type === MemoRelation_Type.REFERENCE).length > 0;
+  const hasSpecialProperty = memo.property?.hasLink || memo.property?.hasTaskList || memo.property?.hasCode || memo.property?.hasIncompleteTasks;
+  const shouldShowRelationGraph = memo.relations.filter((r) => r.type === MemoRelation_Type.REFERENCE).length > 0; 
 
   return (
     <aside
@@ -35,14 +36,14 @@ const MemoDetailSidebar = ({ memo, className, parentPage }: Props) => {
           <p className="flex flex-row justify-start items-center w-full gap-1 mb-1 text-sm leading-6 text-muted-foreground select-none">
             <span>{t("common.created-at")}</span>
           </p>
-          <p className="text-sm text-muted-foreground">{memo.createTime?.toLocaleString()}</p>
+          <p className="text-sm text-muted-foreground">{memo.createTime ? fromTimestamp(memo.createTime).toLocaleString() : ""}</p>
         </div>
         {!isEqual(memo.createTime, memo.updateTime) && (
           <div className="w-full flex flex-col">
             <p className="flex flex-row justify-start items-center w-full gap-1 mb-1 text-sm leading-6 text-muted-foreground select-none">
               <span>{t("common.last-updated-at")}</span>
             </p>
-            <p className="text-sm text-muted-foreground">{memo.updateTime?.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{memo.updateTime ? fromTimestamp(memo.updateTime).toLocaleString() : ""}</p>
           </div>
         )}
         {hasSpecialProperty && (
@@ -51,7 +52,7 @@ const MemoDetailSidebar = ({ memo, className, parentPage }: Props) => {
               <span>{t("common.properties")}</span>
             </p>
             <div className="w-full flex flex-row justify-start items-center gap-x-2 gap-y-1 flex-wrap text-muted-foreground">
-              {property.hasLink && (
+              {memo.property?.hasLink && (
                 <div className="w-auto border border-border pl-1 pr-1.5 rounded-md flex justify-between items-center">
                   <div className="w-auto flex justify-start items-center mr-1">
                     <LinkIcon className="w-4 h-auto mr-1" />
@@ -59,7 +60,7 @@ const MemoDetailSidebar = ({ memo, className, parentPage }: Props) => {
                   </div>
                 </div>
               )}
-              {property.hasTaskList && (
+              {memo.property?.hasTaskList && (
                 <div className="w-auto border border-border pl-1 pr-1.5 rounded-md flex justify-between items-center">
                   <div className="w-auto flex justify-start items-center mr-1">
                     <CheckCircleIcon className="w-4 h-auto mr-1" />
@@ -67,7 +68,7 @@ const MemoDetailSidebar = ({ memo, className, parentPage }: Props) => {
                   </div>
                 </div>
               )}
-              {property.hasCode && (
+              {memo.property?.hasCode && (
                 <div className="w-auto border border-border pl-1 pr-1.5 rounded-md flex justify-between items-center">
                   <div className="w-auto flex justify-start items-center mr-1">
                     <Code2Icon className="w-4 h-auto mr-1" />
