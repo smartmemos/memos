@@ -276,6 +276,22 @@ func (mr *MockServiceMockRecorder) ListReactions(ctx, req interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReactions", reflect.TypeOf((*MockService)(nil).ListReactions), ctx, req)
 }
 
+// ListUsers mocks base method.
+func (m *MockService) ListUsers(ctx context.Context, req *model.ListUsersRequest) (int64, []*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListUsers", ctx, req)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].([]*model.User)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListUsers indicates an expected call of ListUsers.
+func (mr *MockServiceMockRecorder) ListUsers(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUsers", reflect.TypeOf((*MockService)(nil).ListUsers), ctx, req)
+}
+
 // RevokeUserSession mocks base method.
 func (m *MockService) RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) error {
 	m.ctrl.T.Helper()
@@ -288,6 +304,22 @@ func (m *MockService) RevokeUserSession(ctx context.Context, req *model.RevokeUs
 func (mr *MockServiceMockRecorder) RevokeUserSession(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeUserSession", reflect.TypeOf((*MockService)(nil).RevokeUserSession), ctx, req)
+}
+
+// SearchUsers mocks base method.
+func (m *MockService) SearchUsers(ctx context.Context, req *model.SearchUsersRequest) (int64, []*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SearchUsers", ctx, req)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].([]*model.User)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SearchUsers indicates an expected call of SearchUsers.
+func (mr *MockServiceMockRecorder) SearchUsers(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchUsers", reflect.TypeOf((*MockService)(nil).SearchUsers), ctx, req)
 }
 
 // UpdateMemo mocks base method.

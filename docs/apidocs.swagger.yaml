@@ -1205,6 +1205,24 @@ definitions:
         format: int32
         description: The total count of settings (may be approximate).
     description: Response message for ListUserSettings method.
+  v2ListUsersResponse:
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUser'
+        description: The list of users.
+      nextPageToken:
+        type: string
+        description: |-
+          A token that can be sent as `page_token` to retrieve the next page.
+          If this field is omitted, there are no subsequent pages.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of users (may be approximate).
   v2ParseMarkdownResponse:
     type: object
     properties:

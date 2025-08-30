@@ -51,6 +51,20 @@ type UpdateUserRequest struct {
 	Status      RowStatus
 }
 
+type ListUsersRequest struct {
+	PageSize    int64
+	PageToken   string
+	Filter      string
+	OrderBy     string
+	ShowDeleted bool
+}
+
+type SearchUsersRequest struct {
+	Query     string
+	PageSize  int64
+	PageToken string
+}
+
 type GetUserSessionsRequest struct {
 	UserID int64
 }

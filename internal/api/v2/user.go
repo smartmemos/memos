@@ -104,6 +104,18 @@ func (s *UserService) SearchUsers(ctx context.Context, request *connect.Request[
 	return
 }
 
+func (s *UserService) ListUsers(ctx context.Context, request *connect.Request[v2pb.ListUsersRequest]) (response *connect.Response[v2pb.ListUsersResponse], err error) {
+	logrus.Info("req: ", request.Msg)
+	// users, err := s.memosService.ListUsers(ctx, &model.ListUsersRequest{
+	// 	PageSize:  request.Msg.PageSize,
+	// 	PageToken: request.Msg.PageToken,
+	// 	Filter:    request.Msg.Filter,
+	// 	OrderBy:   request.Msg.OrderBy,
+	// 	ShowDeleted: request.Msg.ShowDeleted,
+	// })
+	return
+}
+
 // GetUserStats returns statistics for a specific user.
 func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[v2pb.UserStats], err error) {
 	logrus.Info("req: ", request.Msg)

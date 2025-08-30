@@ -19,6 +19,8 @@ service UserService {
   rpc GetUser(GetUserRequest) returns (model.User) {}
     // SearchUsers searches for users based on query.
   rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse) {}
+    // ListUsers returns a list of users.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
 
     // GetUserStats returns statistics for a specific user.
   rpc GetUserStats(GetUserStatsRequest) returns (UserStats) {}
@@ -86,6 +88,44 @@ message SearchUsersResponse {
   // The total count of matching users.
   int32 total_size = 3;
 }
+
+message ListUsersRequest {
+  // Optional. The maximum number of users to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 users will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 1;
+
+  // Optional. A page token, received from a previous `ListUsers` call.
+  // Provide this to retrieve the subsequent page.
+  string page_token = 2;
+
+  // Optional. Filter to apply to the list results.
+  // Example: "state=ACTIVE" or "role=USER" or "email:@example.com"
+  // Supported operators: =, !=, <, <=, >, >=, :
+  // Supported fields: username, email, role, state, create_time, update_time
+  string filter = 3;
+
+  // Optional. The order to sort results by.
+  // Example: "create_time desc" or "username asc"
+  string order_by = 4;
+
+  // Optional. If true, show deleted users in the response.
+  bool show_deleted = 5;
+}
+
+message ListUsersResponse {
+  // The list of users.
+  repeated model.User users = 1;
+
+  // A token that can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+
+  // The total count of users (may be approximate).
+  int32 total_size = 3;
+}
+
 
 message GetUserStatsRequest {
   // Required. The resource name of the user.

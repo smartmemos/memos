@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIk0KDkdldFVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLQoJcmVhZF9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJKChJTZWFyY2hVc2Vyc1JlcXVlc3QSDQoFcXVlcnkYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkiXgoTU2VhcmNoVXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiIwoTR2V0VXNlclN0YXRzUmVxdWVzdBIMCgRuYW1lGAEgASgJIoYDCglVc2VyU3RhdHMSDAoEbmFtZRgBIAEoCRI7ChdtZW1vX2Rpc3BsYXlfdGltZXN0YW1wcxgCIAMoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASOAoPbWVtb190eXBlX3N0YXRzGAMgASgLMh8uYXBpLnYyLlVzZXJTdGF0cy5NZW1vVHlwZVN0YXRzEjIKCXRhZ19jb3VudBgEIAMoCzIfLmFwaS52Mi5Vc2VyU3RhdHMuVGFnQ291bnRFbnRyeRIUCgxwaW5uZWRfbWVtb3MYBSADKAkSGAoQdG90YWxfbWVtb19jb3VudBgGIAEoBRovCg1UYWdDb3VudEVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoBToCOAEaXwoNTWVtb1R5cGVTdGF0cxISCgpsaW5rX2NvdW50GAEgASgFEhIKCmNvZGVfY291bnQYAiABKAUSEgoKdG9kb19jb3VudBgDIAEoBRISCgp1bmRvX2NvdW50GAQgASgFIiUKFUdldFVzZXJTZXR0aW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJInAKGFVwZGF0ZVVzZXJTZXR0aW5nUmVxdWVzdBIjCgdzZXR0aW5nGAEgASgLMhIubW9kZWwuVXNlclNldHRpbmcSLwoLdXBkYXRlX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrIlAKF0xpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCSJtChhMaXN0VXNlclNldHRpbmdzUmVzcG9uc2USJAoIc2V0dGluZ3MYASADKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIpChdMaXN0VXNlclNlc3Npb25zUmVxdWVzdBIOCgZwYXJlbnQYASABKAkiQAoYTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlEiQKCHNlc3Npb25zGAEgAygLMhIubW9kZWwuVXNlclNlc3Npb24iKAoYUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0EgwKBG5hbWUYASABKAky0gUKC1VzZXJTZXJ2aWNlEjYKCkNyZWF0ZVVzZXISGS5hcGkudjIuQ3JlYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASNgoKVXBkYXRlVXNlchIZLmFwaS52Mi5VcGRhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABIwCgdHZXRVc2VyEhYuYXBpLnYyLkdldFVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEkgKC1NlYXJjaFVzZXJzEhouYXBpLnYyLlNlYXJjaFVzZXJzUmVxdWVzdBobLmFwaS52Mi5TZWFyY2hVc2Vyc1Jlc3BvbnNlIgASQAoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaES5hcGkudjIuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJLChFVcGRhdGVVc2VyU2V0dGluZxIgLmFwaS52Mi5VcGRhdGVVc2VyU2V0dGluZ1JlcXVlc3QaEi5tb2RlbC5Vc2VyU2V0dGluZyIAElcKEExpc3RVc2VyU2V0dGluZ3MSHy5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlIgASVwoQTGlzdFVzZXJTZXNzaW9ucxIfLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVzcG9uc2UiABJPChFSZXZva2VVc2VyU2Vzc2lvbhIgLmFwaS52Mi5SZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIk0KDkdldFVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLQoJcmVhZF9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJKChJTZWFyY2hVc2Vyc1JlcXVlc3QSDQoFcXVlcnkYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkiXgoTU2VhcmNoVXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUicQoQTGlzdFVzZXJzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSEgoKcGFnZV90b2tlbhgCIAEoCRIOCgZmaWx0ZXIYAyABKAkSEAoIb3JkZXJfYnkYBCABKAkSFAoMc2hvd19kZWxldGVkGAUgASgIIlwKEUxpc3RVc2Vyc1Jlc3BvbnNlEhoKBXVzZXJzGAEgAygLMgsubW9kZWwuVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIjChNHZXRVc2VyU3RhdHNSZXF1ZXN0EgwKBG5hbWUYASABKAkihgMKCVVzZXJTdGF0cxIMCgRuYW1lGAEgASgJEjsKF21lbW9fZGlzcGxheV90aW1lc3RhbXBzGAIgAygLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI4Cg9tZW1vX3R5cGVfc3RhdHMYAyABKAsyHy5hcGkudjIuVXNlclN0YXRzLk1lbW9UeXBlU3RhdHMSMgoJdGFnX2NvdW50GAQgAygLMh8uYXBpLnYyLlVzZXJTdGF0cy5UYWdDb3VudEVudHJ5EhQKDHBpbm5lZF9tZW1vcxgFIAMoCRIYChB0b3RhbF9tZW1vX2NvdW50GAYgASgFGi8KDVRhZ0NvdW50RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ARpfCg1NZW1vVHlwZVN0YXRzEhIKCmxpbmtfY291bnQYASABKAUSEgoKY29kZV9jb3VudBgCIAEoBRISCgp0b2RvX2NvdW50GAMgASgFEhIKCnVuZG9fY291bnQYBCABKAUiJQoVR2V0VXNlclNldHRpbmdSZXF1ZXN0EgwKBG5hbWUYASABKAkicAoYVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0EiMKB3NldHRpbmcYASABKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siUAoXTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIm0KGExpc3RVc2VyU2V0dGluZ3NSZXNwb25zZRIkCghzZXR0aW5ncxgBIAMoCzISLm1vZGVsLlVzZXJTZXR0aW5nEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFIikKF0xpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCSJAChhMaXN0VXNlclNlc3Npb25zUmVzcG9uc2USJAoIc2Vzc2lvbnMYASADKAsyEi5tb2RlbC5Vc2VyU2Vzc2lvbiIoChhSZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QSDAoEbmFtZRgBIAEoCTKWBgoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABI2CgpVcGRhdGVVc2VyEhkuYXBpLnYyLlVwZGF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjAKB0dldFVzZXISFi5hcGkudjIuR2V0VXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASSAoLU2VhcmNoVXNlcnMSGi5hcGkudjIuU2VhcmNoVXNlcnNSZXF1ZXN0GhsuYXBpLnYyLlNlYXJjaFVzZXJzUmVzcG9uc2UiABJCCglMaXN0VXNlcnMSGC5hcGkudjIuTGlzdFVzZXJzUmVxdWVzdBoZLmFwaS52Mi5MaXN0VXNlcnNSZXNwb25zZSIAEkAKDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhEuYXBpLnYyLlVzZXJTdGF0cyIAEkUKDkdldFVzZXJTZXR0aW5nEh0uYXBpLnYyLkdldFVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASSwoRVXBkYXRlVXNlclNldHRpbmcSIC5hcGkudjIuVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAElcKEExpc3RVc2VyU2Vzc2lvbnMSHy5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlIgASTwoRUmV2b2tlVXNlclNlc3Npb24SIC5hcGkudjIuUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -167,6 +167,95 @@ export const SearchUsersResponseSchema: GenMessage<SearchUsersResponse> = /*@__P
   messageDesc(file_api_v2_user, 4);
 
 /**
+ * @generated from message api.v2.ListUsersRequest
+ */
+export type ListUsersRequest = Message<"api.v2.ListUsersRequest"> & {
+  /**
+   * Optional. The maximum number of users to return.
+   * The service may return fewer than this value.
+   * If unspecified, at most 50 users will be returned.
+   * The maximum value is 1000; values above 1000 will be coerced to 1000.
+   *
+   * @generated from field: int32 page_size = 1;
+   */
+  pageSize: number;
+
+  /**
+   * Optional. A page token, received from a previous `ListUsers` call.
+   * Provide this to retrieve the subsequent page.
+   *
+   * @generated from field: string page_token = 2;
+   */
+  pageToken: string;
+
+  /**
+   * Optional. Filter to apply to the list results.
+   * Example: "state=ACTIVE" or "role=USER" or "email:@example.com"
+   * Supported operators: =, !=, <, <=, >, >=, :
+   * Supported fields: username, email, role, state, create_time, update_time
+   *
+   * @generated from field: string filter = 3;
+   */
+  filter: string;
+
+  /**
+   * Optional. The order to sort results by.
+   * Example: "create_time desc" or "username asc"
+   *
+   * @generated from field: string order_by = 4;
+   */
+  orderBy: string;
+
+  /**
+   * Optional. If true, show deleted users in the response.
+   *
+   * @generated from field: bool show_deleted = 5;
+   */
+  showDeleted: boolean;
+};
+
+/**
+ * Describes the message api.v2.ListUsersRequest.
+ * Use `create(ListUsersRequestSchema)` to create a new message.
+ */
+export const ListUsersRequestSchema: GenMessage<ListUsersRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 5);
+
+/**
+ * @generated from message api.v2.ListUsersResponse
+ */
+export type ListUsersResponse = Message<"api.v2.ListUsersResponse"> & {
+  /**
+   * The list of users.
+   *
+   * @generated from field: repeated model.User users = 1;
+   */
+  users: User[];
+
+  /**
+   * A token that can be sent as `page_token` to retrieve the next page.
+   * If this field is omitted, there are no subsequent pages.
+   *
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+
+  /**
+   * The total count of users (may be approximate).
+   *
+   * @generated from field: int32 total_size = 3;
+   */
+  totalSize: number;
+};
+
+/**
+ * Describes the message api.v2.ListUsersResponse.
+ * Use `create(ListUsersResponseSchema)` to create a new message.
+ */
+export const ListUsersResponseSchema: GenMessage<ListUsersResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 6);
+
+/**
  * @generated from message api.v2.GetUserStatsRequest
  */
 export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
@@ -184,7 +273,7 @@ export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
  * Use `create(GetUserStatsRequestSchema)` to create a new message.
  */
 export const GetUserStatsRequestSchema: GenMessage<GetUserStatsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 5);
+  messageDesc(file_api_v2_user, 7);
 
 /**
  * User statistics messages
@@ -241,7 +330,7 @@ export type UserStats = Message<"api.v2.UserStats"> & {
  * Use `create(UserStatsSchema)` to create a new message.
  */
 export const UserStatsSchema: GenMessage<UserStats> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 6);
+  messageDesc(file_api_v2_user, 8);
 
 /**
  * Memo type statistics.
@@ -275,7 +364,7 @@ export type UserStats_MemoTypeStats = Message<"api.v2.UserStats.MemoTypeStats"> 
  * Use `create(UserStats_MemoTypeStatsSchema)` to create a new message.
  */
 export const UserStats_MemoTypeStatsSchema: GenMessage<UserStats_MemoTypeStats> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 6, 0);
+  messageDesc(file_api_v2_user, 8, 0);
 
 /**
  * @generated from message api.v2.GetUserSettingRequest
@@ -295,7 +384,7 @@ export type GetUserSettingRequest = Message<"api.v2.GetUserSettingRequest"> & {
  * Use `create(GetUserSettingRequestSchema)` to create a new message.
  */
 export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 7);
+  messageDesc(file_api_v2_user, 9);
 
 /**
  * @generated from message api.v2.UpdateUserSettingRequest
@@ -321,7 +410,7 @@ export type UpdateUserSettingRequest = Message<"api.v2.UpdateUserSettingRequest"
  * Use `create(UpdateUserSettingRequestSchema)` to create a new message.
  */
 export const UpdateUserSettingRequestSchema: GenMessage<UpdateUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 8);
+  messageDesc(file_api_v2_user, 10);
 
 /**
  * Request message for ListUserSettings method.
@@ -361,7 +450,7 @@ export type ListUserSettingsRequest = Message<"api.v2.ListUserSettingsRequest"> 
  * Use `create(ListUserSettingsRequestSchema)` to create a new message.
  */
 export const ListUserSettingsRequestSchema: GenMessage<ListUserSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 9);
+  messageDesc(file_api_v2_user, 11);
 
 /**
  * Response message for ListUserSettings method.
@@ -397,7 +486,7 @@ export type ListUserSettingsResponse = Message<"api.v2.ListUserSettingsResponse"
  * Use `create(ListUserSettingsResponseSchema)` to create a new message.
  */
 export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 10);
+  messageDesc(file_api_v2_user, 12);
 
 /**
  * @generated from message api.v2.ListUserSessionsRequest
@@ -417,7 +506,7 @@ export type ListUserSessionsRequest = Message<"api.v2.ListUserSessionsRequest"> 
  * Use `create(ListUserSessionsRequestSchema)` to create a new message.
  */
 export const ListUserSessionsRequestSchema: GenMessage<ListUserSessionsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 11);
+  messageDesc(file_api_v2_user, 13);
 
 /**
  * @generated from message api.v2.ListUserSessionsResponse
@@ -436,7 +525,7 @@ export type ListUserSessionsResponse = Message<"api.v2.ListUserSessionsResponse"
  * Use `create(ListUserSessionsResponseSchema)` to create a new message.
  */
 export const ListUserSessionsResponseSchema: GenMessage<ListUserSessionsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 12);
+  messageDesc(file_api_v2_user, 14);
 
 /**
  * @generated from message api.v2.RevokeUserSessionRequest
@@ -456,7 +545,7 @@ export type RevokeUserSessionRequest = Message<"api.v2.RevokeUserSessionRequest"
  * Use `create(RevokeUserSessionRequestSchema)` to create a new message.
  */
 export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 13);
+  messageDesc(file_api_v2_user, 15);
 
 /**
  * @generated from service api.v2.UserService
@@ -501,6 +590,16 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof SearchUsersRequestSchema;
     output: typeof SearchUsersResponseSchema;
+  },
+  /**
+   * ListUsers returns a list of users.
+   *
+   * @generated from rpc api.v2.UserService.ListUsers
+   */
+  listUsers: {
+    methodKind: "unary";
+    input: typeof ListUsersRequestSchema;
+    output: typeof ListUsersResponseSchema;
   },
   /**
    * GetUserStats returns statistics for a specific user.
