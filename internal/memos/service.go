@@ -16,8 +16,6 @@ type Service interface {
 	GetUserByID(ctx context.Context, id int64) (*model.User, error)
 	// ListUsers lists the users.
 	ListUsers(ctx context.Context, req *model.ListUsersRequest) (int64, []*model.User, error)
-	// SearchUsers searches the users.
-	SearchUsers(ctx context.Context, req *model.SearchUsersRequest) (int64, []*model.User, error)
 
 	// CreateSession creates a session.
 	CreateSession(ctx context.Context, req *model.CreateSessionRequest) (*model.Session, error)

@@ -84,7 +84,7 @@ type UserWebhook struct {
 }
 
 type FindUserSettingFilter struct {
-	db.BaseFilter
+	db.Query
 
 	UserID db.F[int64]
 	Key    db.F[UserSettingKey]

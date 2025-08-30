@@ -10,7 +10,7 @@ type Session struct {
 }
 
 type FindSessionFilter struct {
-	db.BaseFilter
+	db.Query
 
 	ID     db.F[int64]
 	UserID db.F[int64]

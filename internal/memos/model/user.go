@@ -23,7 +23,7 @@ func (User) TableName() string {
 }
 
 type FindUserFilter struct {
-	db.BaseFilter
+	db.Query
 
 	ID       db.F[int64]
 	Username db.F[string]

@@ -17,7 +17,7 @@ func (Reaction) TableName() string {
 }
 
 type FindReactionFilter struct {
-	db.BaseFilter
+	db.Query
 
 	ID           db.F[int64]
 	CreatorID    db.F[int32]
@@ -37,6 +37,6 @@ type DeleteReactionRequest struct {
 }
 
 type ListReactionsRequest struct {
-	db.BaseFilter
+	db.Query
 	ContentIDs []string
 }

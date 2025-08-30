@@ -64,7 +64,7 @@ type StorageS3Config struct {
 }
 
 type FindAttachmentFilter struct {
-	db.BaseFilter
+	db.Query
 
 	ID db.F[int64]
 }

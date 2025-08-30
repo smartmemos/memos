@@ -43,7 +43,7 @@ type MemoPayloadProperty struct {
 }
 
 type FindMemoFilter struct {
-	db.BaseFilter
+	db.Query
 
 	ID              db.F[int64]
 	UID             db.F[string]

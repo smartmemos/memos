@@ -80,7 +80,7 @@ func HasRecrods(total int64, page int64, pageSize int64) bool {
 }
 
 // Updates 更新数据
-func Updates(ctx context.Context, m schema.Tabler, f Filter, v any) (int64, error) {
+func Updates(ctx context.Context, m schema.Tabler, f QueryFilter, v any) (int64, error) {
 	query, args := BuildQuery(f)
 	if query == "" {
 		return 0, errors.New("更新条件不能为空")
@@ -95,7 +95,7 @@ func Update(ctx context.Context, m schema.Tabler, v any) error {
 }
 
 // Delete 删除记录
-func Delete(ctx context.Context, m schema.Tabler, f Filter) (int64, error) {
+func Delete(ctx context.Context, m schema.Tabler, f QueryFilter) (int64, error) {
 	query, args := BuildQuery(f)
 	if query == "" {
 		return 0, errors.New("删除条件不能为空")
@@ -105,14 +105,14 @@ func Delete(ctx context.Context, m schema.Tabler, f Filter) (int64, error) {
 }
 
 // Count 计数
-func Count(ctx context.Context, v schema.Tabler, f Filter) (total int64, err error) {
+func Count(ctx context.Context, v schema.Tabler, f QueryFilter) (total int64, err error) {
 	query, args := BuildQuery(f)
 	err = GetDB(ctx).Where(query, args...).Model(v).Count(&total).Error
 	return
 }
 
 // FindOne 只查一条记录
-func FindOne(ctx context.Context, f Filter, v any) error {
+func FindOne(ctx context.Context, f QueryFilter, v any) error {
 	query, args := BuildQuery(f)
 	err := GetDB(ctx).
 		Where(query, args...).
@@ -122,7 +122,7 @@ func FindOne(ctx context.Context, f Filter, v any) error {
 }
 
 // Find 查多条记录
-func Find(ctx context.Context, f Filter, v any) error {
+func Find(ctx context.Context, f QueryFilter, v any) error {
 	query, args := BuildQuery(f)
 	err := GetDB(ctx).
 		Where(query, args...).

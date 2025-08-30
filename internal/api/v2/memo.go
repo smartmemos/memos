@@ -145,7 +145,7 @@ func (s *MemoService) convertMemosToProto(ctx context.Context, memos []*model.Me
 	}
 	_, reactions, err := s.memosService.ListReactions(ctx, &model.ListReactionsRequest{
 		ContentIDs: contentIDs,
-		BaseFilter: db.BaseFilter{PageSize: 10000},
+		Query:      db.NewQueryAll(),
 	})
 	if err != nil {
 		return

@@ -45,8 +45,8 @@ func BuildQuery(f any) (string, []any) {
 	return strings.Join(conditions, " AND "), args
 }
 
-// Filter 接口
-type Filter interface {
+// QueryFilter 接口
+type QueryFilter interface {
 	GetFields() string
 	GetPage() int64
 	GetPageSize() int64
@@ -54,8 +54,8 @@ type Filter interface {
 	HasNextPage(total int64) bool
 }
 
-// BaseFilter 实现Filter接口的结构体
-type BaseFilter struct {
+// Query 实现Filter接口的结构体
+type Query struct {
 	Fields   string
 	OrderBy  string
 	Page     int64
@@ -63,32 +63,32 @@ type BaseFilter struct {
 }
 
 // GetFields 查询字段
-func (f BaseFilter) GetFields() string {
+func (q Query) GetFields() string {
 	return ""
 }
 
 // GetPage 页码
-func (f BaseFilter) GetPage() int64 {
-	return max(f.Page, 1)
+func (q Query) GetPage() int64 {
+	return max(q.Page, 1)
 }
 
 // GetPageSize 每页大小
-func (f BaseFilter) GetPageSize() int64 {
-	if f.PageSize == 0 {
-		f.PageSize = 15
+func (q Query) GetPageSize() int64 {
+	if q.PageSize == 0 {
+		q.PageSize = 15
 	}
-	return min(f.PageSize, 10000)
+	return min(q.PageSize, 10000)
 }
 
 // HasNextPage 是否有下一页
-func (f BaseFilter) HasNextPage(total int64) bool {
-	return total > (f.GetPage()-1)*f.GetPageSize()
+func (q Query) HasNextPage(total int64) bool {
+	return total > (q.GetPage()-1)*q.GetPageSize()
 }
 
 // GetOrder 排序
-func (f BaseFilter) GetOrder() string {
+func (q Query) GetOrder() string {
 	var orders []string
-	for v := range strings.SplitSeq(f.OrderBy, ",") {
+	for v := range strings.SplitSeq(q.OrderBy, ",") {
 		if v = strings.TrimSpace(v); v != "" {
 			order := "ASC"
 			switch v[0] {
@@ -104,12 +104,50 @@ func (f BaseFilter) GetOrder() string {
 	return strings.Join(orders, ",")
 }
 
-// NewBaseFilter
-func NewBaseFilter(page, size int, orderBy string) BaseFilter {
-	return BaseFilter{
-		Page:     int64(page),
-		PageSize: int64(size),
-		OrderBy:  orderBy,
+const (
+	// DefaultPage 默认页码
+	DefaultPage = 1
+
+	// DefaultPageSize 默认每页大小
+	DefaultPageSize = 15
+)
+
+// NewQuery
+func NewQuery(opts ...QueryOption) Query {
+	q := Query{Page: 1, PageSize: 15}
+	for _, opt := range opts {
+		opt(&q)
+	}
+	return q
+}
+
+func NewQueryAll() Query {
+	return NewQuery(WithPageSize(10000))
+}
+
+type QueryOption func(q *Query)
+
+func WithFields(fields string) QueryOption {
+	return func(q *Query) {
+		q.Fields = fields
+	}
+}
+
+func WithPage(page int) QueryOption {
+	return func(q *Query) {
+		q.Page = int64(page)
+	}
+}
+
+func WithPageSize(size int) QueryOption {
+	return func(q *Query) {
+		q.PageSize = int64(size)
+	}
+}
+
+func WithOrderBy(orderBy string) QueryOption {
+	return func(q *Query) {
+		q.OrderBy = orderBy
 	}
 }
 

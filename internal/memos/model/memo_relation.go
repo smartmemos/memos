@@ -14,7 +14,7 @@ func (MemoRelation) TableName() string {
 }
 
 type FindMemoRelationFilter struct {
-	db.BaseFilter
+	db.Query
 
 	MemoID        db.F[int64]
 	RelatedMemoID db.F[int64]
