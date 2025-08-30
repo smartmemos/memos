@@ -38,6 +38,10 @@ const (
 	UserServiceCreateUserProcedure = "/api.v2.UserService/CreateUser"
 	// UserServiceUpdateUserProcedure is the fully-qualified name of the UserService's UpdateUser RPC.
 	UserServiceUpdateUserProcedure = "/api.v2.UserService/UpdateUser"
+	// UserServiceGetUserProcedure is the fully-qualified name of the UserService's GetUser RPC.
+	UserServiceGetUserProcedure = "/api.v2.UserService/GetUser"
+	// UserServiceSearchUsersProcedure is the fully-qualified name of the UserService's SearchUsers RPC.
+	UserServiceSearchUsersProcedure = "/api.v2.UserService/SearchUsers"
 	// UserServiceGetUserStatsProcedure is the fully-qualified name of the UserService's GetUserStats
 	// RPC.
 	UserServiceGetUserStatsProcedure = "/api.v2.UserService/GetUserStats"
@@ -64,6 +68,10 @@ type UserServiceClient interface {
 	CreateUser(context.Context, *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error)
 	// UpdateUser updates a user.
 	UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error)
+	// GetUser gets a user by name.
+	GetUser(context.Context, *connect.Request[GetUserRequest]) (*connect.Response[model.User], error)
+	// SearchUsers searches for users based on query.
+	SearchUsers(context.Context, *connect.Request[SearchUsersRequest]) (*connect.Response[SearchUsersResponse], error)
 	// GetUserStats returns statistics for a specific user.
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
@@ -99,6 +107,18 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			httpClient,
 			baseURL+UserServiceUpdateUserProcedure,
 			connect.WithSchema(userServiceMethods.ByName("UpdateUser")),
+			connect.WithClientOptions(opts...),
+		),
+		getUser: connect.NewClient[GetUserRequest, model.User](
+			httpClient,
+			baseURL+UserServiceGetUserProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetUser")),
+			connect.WithClientOptions(opts...),
+		),
+		searchUsers: connect.NewClient[SearchUsersRequest, SearchUsersResponse](
+			httpClient,
+			baseURL+UserServiceSearchUsersProcedure,
+			connect.WithSchema(userServiceMethods.ByName("SearchUsers")),
 			connect.WithClientOptions(opts...),
 		),
 		getUserStats: connect.NewClient[GetUserStatsRequest, UserStats](
@@ -144,6 +164,8 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 type userServiceClient struct {
 	createUser        *connect.Client[CreateUserRequest, model.User]
 	updateUser        *connect.Client[UpdateUserRequest, model.User]
+	getUser           *connect.Client[GetUserRequest, model.User]
+	searchUsers       *connect.Client[SearchUsersRequest, SearchUsersResponse]
 	getUserStats      *connect.Client[GetUserStatsRequest, UserStats]
 	getUserSetting    *connect.Client[GetUserSettingRequest, model.UserSetting]
 	updateUserSetting *connect.Client[UpdateUserSettingRequest, model.UserSetting]
@@ -160,6 +182,16 @@ func (c *userServiceClient) CreateUser(ctx context.Context, req *connect.Request
 // UpdateUser calls api.v2.UserService.UpdateUser.
 func (c *userServiceClient) UpdateUser(ctx context.Context, req *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error) {
 	return c.updateUser.CallUnary(ctx, req)
+}
+
+// GetUser calls api.v2.UserService.GetUser.
+func (c *userServiceClient) GetUser(ctx context.Context, req *connect.Request[GetUserRequest]) (*connect.Response[model.User], error) {
+	return c.getUser.CallUnary(ctx, req)
+}
+
+// SearchUsers calls api.v2.UserService.SearchUsers.
+func (c *userServiceClient) SearchUsers(ctx context.Context, req *connect.Request[SearchUsersRequest]) (*connect.Response[SearchUsersResponse], error) {
+	return c.searchUsers.CallUnary(ctx, req)
 }
 
 // GetUserStats calls api.v2.UserService.GetUserStats.
@@ -198,6 +230,10 @@ type UserServiceHandler interface {
 	CreateUser(context.Context, *connect.Request[CreateUserRequest]) (*connect.Response[model.User], error)
 	// UpdateUser updates a user.
 	UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error)
+	// GetUser gets a user by name.
+	GetUser(context.Context, *connect.Request[GetUserRequest]) (*connect.Response[model.User], error)
+	// SearchUsers searches for users based on query.
+	SearchUsers(context.Context, *connect.Request[SearchUsersRequest]) (*connect.Response[SearchUsersResponse], error)
 	// GetUserStats returns statistics for a specific user.
 	GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error)
 	// GetUserSetting returns the user setting.
@@ -229,6 +265,18 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		UserServiceUpdateUserProcedure,
 		svc.UpdateUser,
 		connect.WithSchema(userServiceMethods.ByName("UpdateUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceGetUserHandler := connect.NewUnaryHandler(
+		UserServiceGetUserProcedure,
+		svc.GetUser,
+		connect.WithSchema(userServiceMethods.ByName("GetUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceSearchUsersHandler := connect.NewUnaryHandler(
+		UserServiceSearchUsersProcedure,
+		svc.SearchUsers,
+		connect.WithSchema(userServiceMethods.ByName("SearchUsers")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceGetUserStatsHandler := connect.NewUnaryHandler(
@@ -273,6 +321,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceCreateUserHandler.ServeHTTP(w, r)
 		case UserServiceUpdateUserProcedure:
 			userServiceUpdateUserHandler.ServeHTTP(w, r)
+		case UserServiceGetUserProcedure:
+			userServiceGetUserHandler.ServeHTTP(w, r)
+		case UserServiceSearchUsersProcedure:
+			userServiceSearchUsersHandler.ServeHTTP(w, r)
 		case UserServiceGetUserStatsProcedure:
 			userServiceGetUserStatsHandler.ServeHTTP(w, r)
 		case UserServiceGetUserSettingProcedure:
@@ -300,6 +352,14 @@ func (UnimplementedUserServiceHandler) CreateUser(context.Context, *connect.Requ
 
 func (UnimplementedUserServiceHandler) UpdateUser(context.Context, *connect.Request[UpdateUserRequest]) (*connect.Response[model.User], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.UpdateUser is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetUser(context.Context, *connect.Request[GetUserRequest]) (*connect.Response[model.User], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.GetUser is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) SearchUsers(context.Context, *connect.Request[SearchUsersRequest]) (*connect.Response[SearchUsersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.SearchUsers is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) GetUserStats(context.Context, *connect.Request[GetUserStatsRequest]) (*connect.Response[UserStats], error) {

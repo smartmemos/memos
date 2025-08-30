@@ -80,6 +80,30 @@ func (s *UserService) UpdateUser(ctx context.Context, request *connect.Request[v
 	return
 }
 
+func (s *UserService) GetUser(ctx context.Context, request *connect.Request[v2pb.GetUserRequest]) (response *connect.Response[modelpb.User], err error) {
+	logrus.Info("req: ", request.Msg)
+	userID, err := strconv.ParseInt(strings.TrimPrefix(request.Msg.Name, model.UserNamePrefix), 10, 64)
+	if err != nil {
+		return
+	}
+	user, err := s.memosService.GetUserByID(ctx, userID)
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(convertUserToProto(user))
+	return
+}
+
+func (s *UserService) SearchUsers(ctx context.Context, request *connect.Request[v2pb.SearchUsersRequest]) (response *connect.Response[v2pb.SearchUsersResponse], err error) {
+	// logrus.Info("req: ", request.Msg)
+	// users, err := s.memosService.SearchUsers(ctx, &model.SearchUsersRequest{
+	// 	Query:     request.Msg.Query,
+	// 	PageSize:  request.Msg.PageSize,
+	// 	PageToken: request.Msg.PageToken,
+	// })
+	return
+}
+
 // GetUserStats returns statistics for a specific user.
 func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[v2pb.UserStats], err error) {
 	logrus.Info("req: ", request.Msg)

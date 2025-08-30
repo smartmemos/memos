@@ -16,11 +16,11 @@ import {
   UserSetting_WebhooksSetting,
   UserStats,
 } from "@/types/proto/api/v1/user_service";
-import { 
+import {
   User as UserV2,
 } from "@/types/proto2/model/user_pb";
 
-import { 
+import {
   UserSetting as UserSettingV2,
   UserSetting_GeneralSetting as UserSetting_GeneralSettingV2,
   UserSetting_SessionsSetting as UserSetting_SessionsSettingV2,
@@ -41,7 +41,7 @@ class LocalState {
   userWebhooksSetting?: UserSetting_WebhooksSetting;
   shortcuts: Shortcut[] = [];
   inboxes: Inbox[] = [];
-  userMapByName: Record<string, User> = {};
+  userMapByName: Record<string, UserV2> = {};
   userStatsByName: Record<string, UserStats> = {};
 
   // The state id of user stats map.
@@ -79,9 +79,9 @@ const userStore = (() => {
   const getOrFetchUserByName = async (name: string) => {
     const userMap = state.userMapByName;
     if (userMap[name]) {
-      return userMap[name] as User;
+      return userMap[name] as UserV2;
     }
-    const user = await userServiceClient.getUser({
+    const user = await userServiceClientV2.getUser({
       name: name,
     });
     state.setPartial({
@@ -101,7 +101,7 @@ const userStore = (() => {
       }
     }
     // Use search instead of the deprecated getUserByUsername
-    const { users } = await userServiceClient.searchUsers({
+    const { users } = await userServiceClientV2.searchUsers({
       query: username,
       pageSize: 10,
     });

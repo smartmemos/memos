@@ -1214,6 +1214,22 @@ definitions:
           type: object
           $ref: '#/definitions/modelNode'
         description: The parsed markdown nodes.
+  v2SearchUsersResponse:
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUser'
+        description: The list of users matching the search query.
+      nextPageToken:
+        type: string
+        description: A token for the next page of results.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of matching users.
   v2UserStats:
     type: object
     properties:
