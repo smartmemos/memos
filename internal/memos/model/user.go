@@ -52,16 +52,16 @@ type UpdateUserRequest struct {
 }
 
 type ListUsersRequest struct {
-	PageSize    int64
+	db.Query
+
 	PageToken   string
 	Filter      string
-	OrderBy     string
 	ShowDeleted bool
 }
 
 type SearchUsersRequest struct {
-	Query     string
-	PageSize  int64
+	db.Query
+
 	PageToken string
 }
 

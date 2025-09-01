@@ -38,5 +38,6 @@ type DeleteReactionRequest struct {
 
 type ListReactionsRequest struct {
 	db.Query
+
 	ContentIDs []string
 }

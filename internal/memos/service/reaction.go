@@ -8,7 +8,9 @@ import (
 )
 
 func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionsRequest) (total int64, list []*model.Reaction, err error) {
-	filter := &model.FindReactionFilter{}
+	filter := &model.FindReactionFilter{
+		Query: req.Query,
+	}
 	if len(req.ContentIDs) > 0 {
 		filter.ContentIDs = db.In(req.ContentIDs)
 	}

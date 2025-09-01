@@ -27,4 +27,5 @@ type FindInboxFilter struct {
 }
 
 type ListInboxesRequest struct {
+	db.Query
 }

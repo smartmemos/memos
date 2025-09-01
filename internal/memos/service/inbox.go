@@ -7,7 +7,9 @@ import (
 )
 
 func (s *Service) ListInboxes(ctx context.Context, req *model.ListInboxesRequest) (total int64, list []*model.Inbox, err error) {
-	filter := &model.FindInboxFilter{}
+	filter := &model.FindInboxFilter{
+		Query: req.Query,
+	}
 
 	total, err = s.dao.CountInboxes(ctx, filter)
 	if err != nil {

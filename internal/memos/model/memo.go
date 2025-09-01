@@ -68,6 +68,8 @@ type CreateMemoRequest struct {
 }
 
 type ListMemosRequest struct {
+	db.Query
+
 	IDs             []int64
 	Status          RowStatus
 	VisibilityList  []Visibility

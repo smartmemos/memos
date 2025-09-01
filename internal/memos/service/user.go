@@ -8,7 +8,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/smartmemos/memos/internal/memos/model"
-	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
 func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) (user *model.User, err error) {
@@ -81,7 +80,7 @@ func (s *Service) GetUserByID(ctx context.Context, id int64) (user *model.User, 
 
 func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) (total int64, users []*model.User, err error) {
 	filter := &model.FindUserFilter{
-		Query: db.NewQuery(),
+		Query: req.Query,
 	}
 
 	total, err = s.dao.CountUsers(ctx, filter)
@@ -94,7 +93,7 @@ func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) (t
 
 func (s *Service) SearchUsers(ctx context.Context, req *model.SearchUsersRequest) (total int64, users []*model.User, err error) {
 	filter := &model.FindUserFilter{
-		Query: db.NewQuery(),
+		Query: req.Query,
 	}
 	total, err = s.dao.CountUsers(ctx, filter)
 	if err != nil {

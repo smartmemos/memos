@@ -21,6 +21,8 @@ func (Session) TableName() string {
 }
 
 type CreateSessionRequest struct {
+	db.Query
+
 	Username string
 	Password string
 }

@@ -136,7 +136,9 @@ func (s *Service) TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (total int64, list []*model.Memo, err error) {
-	filter := &model.FindMemoFilter{}
+	filter := &model.FindMemoFilter{
+		Query: req.Query,
+	}
 
 	total, err = s.dao.CountMemos(ctx, filter)
 	if err != nil {
