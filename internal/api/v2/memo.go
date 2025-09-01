@@ -107,7 +107,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		return
 	}
 	var nextPageToken string
-	if db.HasNextPage(total, req.Query.GetPage(), req.Query.GetPageSize()) {
+	if req.Query.HasNextPage(total) {
 		nextPageToken, err = utils.GetPageToken(req.Query.GetPage()+1, req.Query.GetPageSize())
 		if err != nil {
 			return
