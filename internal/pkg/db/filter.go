@@ -69,15 +69,20 @@ func (q Query) GetFields() string {
 
 // GetPage 页码
 func (q Query) GetPage() int64 {
-	return max(q.Page, 1)
+	if q.Page < 1 {
+		q.Page = DefaultPage
+	}
+	return q.Page
 }
 
 // GetPageSize 每页大小
 func (q Query) GetPageSize() int64 {
-	if q.PageSize == 0 {
-		q.PageSize = 15
+	if q.PageSize < 1 {
+		q.PageSize = MaxPageSize
+	} else if q.PageSize > MaxPageSize {
+		q.PageSize = MaxPageSize
 	}
-	return min(q.PageSize, 10000)
+	return q.PageSize
 }
 
 // HasNextPage 是否有下一页
@@ -110,11 +115,14 @@ const (
 
 	// DefaultPageSize 默认每页大小
 	DefaultPageSize = 15
+
+	// MaxPageSize 单次查询最大数量
+	MaxPageSize = 10000
 )
 
 // NewQuery
 func NewQuery(opts ...QueryOption) Query {
-	q := Query{Page: 1, PageSize: 15}
+	q := Query{Page: DefaultPage, PageSize: DefaultPageSize}
 	for _, opt := range opts {
 		opt(&q)
 	}
@@ -122,7 +130,7 @@ func NewQuery(opts ...QueryOption) Query {
 }
 
 func NewQueryAll() Query {
-	return NewQuery(WithPageSize(10000))
+	return NewQuery(WithPageSize(MaxPageSize))
 }
 
 type QueryOption func(q *Query)
