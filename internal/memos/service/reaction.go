@@ -17,7 +17,7 @@ func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionsReq
 	if err != nil {
 		return
 	}
-	if !db.HasNextPage(total, req.Page, req.PageSize) {
+	if !filter.HasNextPage(total) {
 		return
 	}
 	list, err = s.dao.FindReactions(ctx, filter)

@@ -56,10 +56,10 @@ type QueryFilter interface {
 
 // Query 实现Filter接口的结构体
 type Query struct {
-	Fields   string
-	OrderBy  string
-	Page     int64
-	PageSize int64
+	fields   string
+	orderBy  string
+	page     int64
+	pageSize int64
 }
 
 // GetFields 查询字段
@@ -69,20 +69,20 @@ func (q Query) GetFields() string {
 
 // GetPage 页码
 func (q Query) GetPage() int64 {
-	if q.Page < 1 {
-		q.Page = DefaultPage
+	if q.page < 1 {
+		q.page = DefaultPage
 	}
-	return q.Page
+	return q.page
 }
 
 // GetPageSize 每页大小
 func (q Query) GetPageSize() int64 {
-	if q.PageSize < 1 {
-		q.PageSize = MaxPageSize
-	} else if q.PageSize > MaxPageSize {
-		q.PageSize = MaxPageSize
+	if q.pageSize < 1 {
+		q.pageSize = MaxPageSize
+	} else if q.pageSize > MaxPageSize {
+		q.pageSize = MaxPageSize
 	}
-	return q.PageSize
+	return q.pageSize
 }
 
 // HasNextPage 是否有下一页
@@ -93,7 +93,7 @@ func (q Query) HasNextPage(total int64) bool {
 // GetOrder 排序
 func (q Query) GetOrder() string {
 	var orders []string
-	for v := range strings.SplitSeq(q.OrderBy, ",") {
+	for v := range strings.SplitSeq(q.orderBy, ",") {
 		if v = strings.TrimSpace(v); v != "" {
 			order := "ASC"
 			switch v[0] {
@@ -122,7 +122,7 @@ const (
 
 // NewQuery
 func NewQuery(opts ...QueryOption) Query {
-	q := Query{Page: DefaultPage, PageSize: DefaultPageSize}
+	q := Query{page: DefaultPage, pageSize: DefaultPageSize}
 	for _, opt := range opts {
 		opt(&q)
 	}
@@ -137,25 +137,25 @@ type QueryOption func(q *Query)
 
 func WithFields(fields string) QueryOption {
 	return func(q *Query) {
-		q.Fields = fields
+		q.fields = fields
 	}
 }
 
 func WithPage(page int) QueryOption {
 	return func(q *Query) {
-		q.Page = int64(page)
+		q.page = int64(page)
 	}
 }
 
 func WithPageSize(size int) QueryOption {
 	return func(q *Query) {
-		q.PageSize = int64(size)
+		q.pageSize = int64(size)
 	}
 }
 
 func WithOrderBy(orderBy string) QueryOption {
 	return func(q *Query) {
-		q.OrderBy = orderBy
+		q.orderBy = orderBy
 	}
 }
 
