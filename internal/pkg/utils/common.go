@@ -9,10 +9,10 @@ import (
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
 
-func GetPageToken(limit int, offset int) (string, error) {
+func GetPageToken(page, pageSize int64) (string, error) {
 	return MarshalPageToken(&modelpb.PageToken{
-		Limit:  int32(limit),
-		Offset: int32(offset),
+		Limit:  int32(pageSize),
+		Offset: int32(page-1) * int32(pageSize),
 	})
 }
 
