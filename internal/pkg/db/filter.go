@@ -120,7 +120,7 @@ const (
 	MaxPageSize = 10000
 )
 
-// NewQuery
+// NewQuery 创建一个查询Query
 func NewQuery(opts ...QueryOption) Query {
 	q := Query{page: DefaultPage, pageSize: DefaultPageSize}
 	for _, opt := range opts {
@@ -129,30 +129,36 @@ func NewQuery(opts ...QueryOption) Query {
 	return q
 }
 
-func NewQueryAll() Query {
-	return NewQuery(WithPageSize(MaxPageSize))
+// NewQueryAll 创建一个查询所有数据的Query
+func NewQueryAll(opts ...QueryOption) Query {
+	return NewQuery(append(opts, WithPageSize(MaxPageSize))...)
 }
 
+// QueryOption 查询选项
 type QueryOption func(q *Query)
 
+// WithFields 设置查询字段
 func WithFields(fields string) QueryOption {
 	return func(q *Query) {
 		q.fields = fields
 	}
 }
 
+// WithPage 设置页码
 func WithPage(page int) QueryOption {
 	return func(q *Query) {
 		q.page = int64(page)
 	}
 }
 
+// WithPageSize 设置每页大小
 func WithPageSize(size int) QueryOption {
 	return func(q *Query) {
 		q.pageSize = int64(size)
 	}
 }
 
+// WithOrderBy 设置排序
 func WithOrderBy(orderBy string) QueryOption {
 	return func(q *Query) {
 		q.orderBy = orderBy

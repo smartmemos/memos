@@ -78,7 +78,8 @@ type ListMemosRequest struct {
 }
 
 type UpdateMemoRequest struct {
-	UpdateMask   []string
+	UpdateMask []string
+
 	ID           int64
 	UID          string
 	Pinned       bool
