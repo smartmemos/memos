@@ -20,28 +20,28 @@ func registerHandlers(container do.Injector) http.Handler {
 	// options = append(options, connect.WithCompressMinBytes(1024))
 
 	{
-		path, authHandler := v2pb.NewAuthServiceHandler(do.MustInvoke[*v2api.AuthService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewAuthServiceHandler(do.MustInvoke[*v2api.AuthService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 	{
-		path, authHandler := v2pb.NewUserServiceHandler(do.MustInvoke[*v2api.UserService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewUserServiceHandler(do.MustInvoke[*v2api.UserService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 	{
-		path, authHandler := v2pb.NewMemoServiceHandler(do.MustInvoke[*v2api.MemoService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewMemoServiceHandler(do.MustInvoke[*v2api.MemoService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 	{
-		path, authHandler := v2pb.NewWorkspaceServiceHandler(do.MustInvoke[*v2api.WorkspaceService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewWorkspaceServiceHandler(do.MustInvoke[*v2api.WorkspaceService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 	{
-		path, authHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*v2api.MarkdownService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*v2api.MarkdownService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 	{
-		path, authHandler := v2pb.NewInboxServiceHandler(do.MustInvoke[*v2api.InboxService](container), options...)
-		mux.Handle(path, authHandler)
+		path, serviceHandler := v2pb.NewInboxServiceHandler(do.MustInvoke[*v2api.InboxService](container), options...)
+		mux.Handle(path, serviceHandler)
 	}
 
 	handler := wrapHandler(mux, middleware.CORS, middleware.NewAuth(container).Auth)

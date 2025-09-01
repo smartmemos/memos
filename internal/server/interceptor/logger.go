@@ -41,12 +41,13 @@ func Logger() connect.UnaryInterceptorFunc {
 			}
 			logger := log.WithContext(ctx).
 				WithField("method", req.Spec().Procedure).
+				WithField("request", req.Any()).
 				WithField("elapsed_time", fmt.Sprintf("%.3fms", float64(time.Since(startTime).Microseconds())/1000))
 			if err != nil {
 				logger = logger.WithField("err", err.Error())
 			}
-			logger.Log(logLevel, logMsg)
 
+			logger.Log(logLevel, logMsg)
 			return resp, err
 		})
 	}
