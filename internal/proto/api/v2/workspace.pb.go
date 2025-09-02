@@ -11,6 +11,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -108,17 +109,77 @@ func (x *GetWorkspaceSettingRequest) GetName() string {
 	return ""
 }
 
+// Request message for UpdateWorkspaceSetting method.
+type UpdateWorkspaceSettingRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The workspace setting resource which replaces the resource on the server.
+	Setting *model.WorkspaceSetting `protobuf:"bytes,1,opt,name=setting,proto3" json:"setting,omitempty"`
+	// The list of fields to update.
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateWorkspaceSettingRequest) Reset() {
+	*x = UpdateWorkspaceSettingRequest{}
+	mi := &file_api_v2_workspace_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateWorkspaceSettingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateWorkspaceSettingRequest) ProtoMessage() {}
+
+func (x *UpdateWorkspaceSettingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_workspace_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateWorkspaceSettingRequest.ProtoReflect.Descriptor instead.
+func (*UpdateWorkspaceSettingRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_workspace_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *UpdateWorkspaceSettingRequest) GetSetting() *model.WorkspaceSetting {
+	if x != nil {
+		return x.Setting
+	}
+	return nil
+}
+
+func (x *UpdateWorkspaceSettingRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
 var File_api_v2_workspace_proto protoreflect.FileDescriptor
 
 const file_api_v2_workspace_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/v2/workspace.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x10model/user.proto\x1a\x15model/workspace.proto\"\x1c\n" +
+	"\x16api/v2/workspace.proto\x12\x06api.v2\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x10model/user.proto\x1a\x15model/workspace.proto\"\x1c\n" +
 	"\x1aGetWorkspaceProfileRequest\"0\n" +
 	"\x1aGetWorkspaceSettingRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name2\xbe\x01\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\x8f\x01\n" +
+	"\x1dUpdateWorkspaceSettingRequest\x121\n" +
+	"\asetting\x18\x01 \x01(\v2\x17.model.WorkspaceSettingR\asetting\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask2\x9a\x02\n" +
 	"\x10WorkspaceService\x12T\n" +
 	"\x13GetWorkspaceProfile\x12\".api.v2.GetWorkspaceProfileRequest\x1a\x17.model.WorkspaceProfile\"\x00\x12T\n" +
-	"\x13GetWorkspaceSetting\x12\".api.v2.GetWorkspaceSettingRequest\x1a\x17.model.WorkspaceSetting\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"\x13GetWorkspaceSetting\x12\".api.v2.GetWorkspaceSettingRequest\x1a\x17.model.WorkspaceSetting\"\x00\x12Z\n" +
+	"\x16UpdateWorkspaceSetting\x12%.api.v2.UpdateWorkspaceSettingRequest\x1a\x17.model.WorkspaceSetting\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_workspace_proto_rawDescOnce sync.Once
@@ -132,23 +193,29 @@ func file_api_v2_workspace_proto_rawDescGZIP() []byte {
 	return file_api_v2_workspace_proto_rawDescData
 }
 
-var file_api_v2_workspace_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_v2_workspace_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_api_v2_workspace_proto_goTypes = []any{
-	(*GetWorkspaceProfileRequest)(nil), // 0: api.v2.GetWorkspaceProfileRequest
-	(*GetWorkspaceSettingRequest)(nil), // 1: api.v2.GetWorkspaceSettingRequest
-	(*model.WorkspaceProfile)(nil),     // 2: model.WorkspaceProfile
-	(*model.WorkspaceSetting)(nil),     // 3: model.WorkspaceSetting
+	(*GetWorkspaceProfileRequest)(nil),    // 0: api.v2.GetWorkspaceProfileRequest
+	(*GetWorkspaceSettingRequest)(nil),    // 1: api.v2.GetWorkspaceSettingRequest
+	(*UpdateWorkspaceSettingRequest)(nil), // 2: api.v2.UpdateWorkspaceSettingRequest
+	(*model.WorkspaceSetting)(nil),        // 3: model.WorkspaceSetting
+	(*fieldmaskpb.FieldMask)(nil),         // 4: google.protobuf.FieldMask
+	(*model.WorkspaceProfile)(nil),        // 5: model.WorkspaceProfile
 }
 var file_api_v2_workspace_proto_depIdxs = []int32{
-	0, // 0: api.v2.WorkspaceService.GetWorkspaceProfile:input_type -> api.v2.GetWorkspaceProfileRequest
-	1, // 1: api.v2.WorkspaceService.GetWorkspaceSetting:input_type -> api.v2.GetWorkspaceSettingRequest
-	2, // 2: api.v2.WorkspaceService.GetWorkspaceProfile:output_type -> model.WorkspaceProfile
-	3, // 3: api.v2.WorkspaceService.GetWorkspaceSetting:output_type -> model.WorkspaceSetting
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: api.v2.UpdateWorkspaceSettingRequest.setting:type_name -> model.WorkspaceSetting
+	4, // 1: api.v2.UpdateWorkspaceSettingRequest.update_mask:type_name -> google.protobuf.FieldMask
+	0, // 2: api.v2.WorkspaceService.GetWorkspaceProfile:input_type -> api.v2.GetWorkspaceProfileRequest
+	1, // 3: api.v2.WorkspaceService.GetWorkspaceSetting:input_type -> api.v2.GetWorkspaceSettingRequest
+	2, // 4: api.v2.WorkspaceService.UpdateWorkspaceSetting:input_type -> api.v2.UpdateWorkspaceSettingRequest
+	5, // 5: api.v2.WorkspaceService.GetWorkspaceProfile:output_type -> model.WorkspaceProfile
+	3, // 6: api.v2.WorkspaceService.GetWorkspaceSetting:output_type -> model.WorkspaceSetting
+	3, // 7: api.v2.WorkspaceService.UpdateWorkspaceSetting:output_type -> model.WorkspaceSetting
+	5, // [5:8] is the sub-list for method output_type
+	2, // [2:5] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_workspace_proto_init() }
@@ -162,7 +229,7 @@ func file_api_v2_workspace_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_workspace_proto_rawDesc), len(file_api_v2_workspace_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

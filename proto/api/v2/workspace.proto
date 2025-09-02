@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 import "model/user.proto";
 import "model/workspace.proto";
 
@@ -15,6 +16,8 @@ service WorkspaceService {
   // Gets a workspace setting.
   rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (model.WorkspaceSetting) {}
 
+  // Updates a workspace setting.
+  rpc UpdateWorkspaceSetting(UpdateWorkspaceSettingRequest) returns (model.WorkspaceSetting) {}
 }
 
 // Request for workspace profile.
@@ -25,4 +28,13 @@ message GetWorkspaceSettingRequest {
   // The resource name of the workspace setting.
   // Format: workspace/settings/{setting}
   string name = 1;
+}
+
+// Request message for UpdateWorkspaceSetting method.
+message UpdateWorkspaceSettingRequest {
+  // The workspace setting resource which replaces the resource on the server.
+  model.WorkspaceSetting setting = 1;
+
+  // The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2;
 }

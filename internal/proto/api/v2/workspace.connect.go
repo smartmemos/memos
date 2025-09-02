@@ -39,6 +39,9 @@ const (
 	// WorkspaceServiceGetWorkspaceSettingProcedure is the fully-qualified name of the
 	// WorkspaceService's GetWorkspaceSetting RPC.
 	WorkspaceServiceGetWorkspaceSettingProcedure = "/api.v2.WorkspaceService/GetWorkspaceSetting"
+	// WorkspaceServiceUpdateWorkspaceSettingProcedure is the fully-qualified name of the
+	// WorkspaceService's UpdateWorkspaceSetting RPC.
+	WorkspaceServiceUpdateWorkspaceSettingProcedure = "/api.v2.WorkspaceService/UpdateWorkspaceSetting"
 )
 
 // WorkspaceServiceClient is a client for the api.v2.WorkspaceService service.
@@ -47,6 +50,8 @@ type WorkspaceServiceClient interface {
 	GetWorkspaceProfile(context.Context, *connect.Request[GetWorkspaceProfileRequest]) (*connect.Response[model.WorkspaceProfile], error)
 	// Gets a workspace setting.
 	GetWorkspaceSetting(context.Context, *connect.Request[GetWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error)
+	// Updates a workspace setting.
+	UpdateWorkspaceSetting(context.Context, *connect.Request[UpdateWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error)
 }
 
 // NewWorkspaceServiceClient constructs a client for the api.v2.WorkspaceService service. By
@@ -72,13 +77,20 @@ func NewWorkspaceServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(workspaceServiceMethods.ByName("GetWorkspaceSetting")),
 			connect.WithClientOptions(opts...),
 		),
+		updateWorkspaceSetting: connect.NewClient[UpdateWorkspaceSettingRequest, model.WorkspaceSetting](
+			httpClient,
+			baseURL+WorkspaceServiceUpdateWorkspaceSettingProcedure,
+			connect.WithSchema(workspaceServiceMethods.ByName("UpdateWorkspaceSetting")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // workspaceServiceClient implements WorkspaceServiceClient.
 type workspaceServiceClient struct {
-	getWorkspaceProfile *connect.Client[GetWorkspaceProfileRequest, model.WorkspaceProfile]
-	getWorkspaceSetting *connect.Client[GetWorkspaceSettingRequest, model.WorkspaceSetting]
+	getWorkspaceProfile    *connect.Client[GetWorkspaceProfileRequest, model.WorkspaceProfile]
+	getWorkspaceSetting    *connect.Client[GetWorkspaceSettingRequest, model.WorkspaceSetting]
+	updateWorkspaceSetting *connect.Client[UpdateWorkspaceSettingRequest, model.WorkspaceSetting]
 }
 
 // GetWorkspaceProfile calls api.v2.WorkspaceService.GetWorkspaceProfile.
@@ -91,12 +103,19 @@ func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, req *c
 	return c.getWorkspaceSetting.CallUnary(ctx, req)
 }
 
+// UpdateWorkspaceSetting calls api.v2.WorkspaceService.UpdateWorkspaceSetting.
+func (c *workspaceServiceClient) UpdateWorkspaceSetting(ctx context.Context, req *connect.Request[UpdateWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error) {
+	return c.updateWorkspaceSetting.CallUnary(ctx, req)
+}
+
 // WorkspaceServiceHandler is an implementation of the api.v2.WorkspaceService service.
 type WorkspaceServiceHandler interface {
 	// Gets the workspace profile.
 	GetWorkspaceProfile(context.Context, *connect.Request[GetWorkspaceProfileRequest]) (*connect.Response[model.WorkspaceProfile], error)
 	// Gets a workspace setting.
 	GetWorkspaceSetting(context.Context, *connect.Request[GetWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error)
+	// Updates a workspace setting.
+	UpdateWorkspaceSetting(context.Context, *connect.Request[UpdateWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error)
 }
 
 // NewWorkspaceServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -118,12 +137,20 @@ func NewWorkspaceServiceHandler(svc WorkspaceServiceHandler, opts ...connect.Han
 		connect.WithSchema(workspaceServiceMethods.ByName("GetWorkspaceSetting")),
 		connect.WithHandlerOptions(opts...),
 	)
+	workspaceServiceUpdateWorkspaceSettingHandler := connect.NewUnaryHandler(
+		WorkspaceServiceUpdateWorkspaceSettingProcedure,
+		svc.UpdateWorkspaceSetting,
+		connect.WithSchema(workspaceServiceMethods.ByName("UpdateWorkspaceSetting")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.WorkspaceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case WorkspaceServiceGetWorkspaceProfileProcedure:
 			workspaceServiceGetWorkspaceProfileHandler.ServeHTTP(w, r)
 		case WorkspaceServiceGetWorkspaceSettingProcedure:
 			workspaceServiceGetWorkspaceSettingHandler.ServeHTTP(w, r)
+		case WorkspaceServiceUpdateWorkspaceSettingProcedure:
+			workspaceServiceUpdateWorkspaceSettingHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -139,4 +166,8 @@ func (UnimplementedWorkspaceServiceHandler) GetWorkspaceProfile(context.Context,
 
 func (UnimplementedWorkspaceServiceHandler) GetWorkspaceSetting(context.Context, *connect.Request[GetWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.WorkspaceService.GetWorkspaceSetting is not implemented"))
+}
+
+func (UnimplementedWorkspaceServiceHandler) UpdateWorkspaceSetting(context.Context, *connect.Request[UpdateWorkspaceSettingRequest]) (*connect.Response[model.WorkspaceSetting], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.WorkspaceService.UpdateWorkspaceSetting is not implemented"))
 }

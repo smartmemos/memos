@@ -11,6 +11,7 @@ import (
 
 	"github.com/smartmemos/memos/internal/memos"
 	"github.com/smartmemos/memos/internal/memos/model"
+	"github.com/smartmemos/memos/internal/pkg/utils"
 	v2pb "github.com/smartmemos/memos/internal/proto/api/v2"
 	modelpb "github.com/smartmemos/memos/internal/proto/model"
 )
@@ -74,6 +75,34 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, request *con
 		}
 	}
 	return connect.NewResponse(info), nil
+}
+
+func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *connect.Request[v2pb.UpdateWorkspaceSettingRequest]) (response *connect.Response[modelpb.WorkspaceSetting], err error) {
+	info := utils.GetInfo(ctx)
+	if info == nil {
+		err = errors.New("unauthenticated")
+		return
+	}
+	user, err := s.memosService.GetUserByID(ctx, info.UserID)
+	if err != nil {
+		return
+	} else if user.Role != model.RoleAdmin {
+		err = errors.New("permission denied")
+		return
+	}
+
+	switch request.Msg.Setting.Name {
+	// case ""
+
+	}
+
+	// var req *model.UpdateWorkspaceSettingRequest
+
+	// x := request.Msg.Setting.GetGeneralSetting()
+
+	// info := convertWorkspaceSettingToProto(request.Msg.Setting)
+
+	return connect.NewResponse(&modelpb.WorkspaceSetting{}), nil
 }
 
 func convertGeneralSettingToProto(setting *model.GeneralSetting) *modelpb.WorkspaceSetting_GeneralSetting {

@@ -4,9 +4,10 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { FieldMask } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_model_user } from "../../model/user_pb";
-import type { WorkspaceProfileSchema, WorkspaceSettingSchema } from "../../model/workspace_pb";
+import type { WorkspaceProfileSchema, WorkspaceSetting, WorkspaceSettingSchema } from "../../model/workspace_pb";
 import { file_model_workspace } from "../../model/workspace_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -14,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/workspace.proto.
  */
 export const file_api_v2_workspace: GenFile = /*@__PURE__*/
-  fileDesc("ChZhcGkvdjIvd29ya3NwYWNlLnByb3RvEgZhcGkudjIiHAoaR2V0V29ya3NwYWNlUHJvZmlsZVJlcXVlc3QiKgoaR2V0V29ya3NwYWNlU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCTK+AQoQV29ya3NwYWNlU2VydmljZRJUChNHZXRXb3Jrc3BhY2VQcm9maWxlEiIuYXBpLnYyLkdldFdvcmtzcGFjZVByb2ZpbGVSZXF1ZXN0GhcubW9kZWwuV29ya3NwYWNlUHJvZmlsZSIAElQKE0dldFdvcmtzcGFjZVNldHRpbmcSIi5hcGkudjIuR2V0V29ya3NwYWNlU2V0dGluZ1JlcXVlc3QaFy5tb2RlbC5Xb3Jrc3BhY2VTZXR0aW5nIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_model_user, file_model_workspace]);
+  fileDesc("ChZhcGkvdjIvd29ya3NwYWNlLnByb3RvEgZhcGkudjIiHAoaR2V0V29ya3NwYWNlUHJvZmlsZVJlcXVlc3QiKgoaR2V0V29ya3NwYWNlU2V0dGluZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCSJ6Ch1VcGRhdGVXb3Jrc3BhY2VTZXR0aW5nUmVxdWVzdBIoCgdzZXR0aW5nGAEgASgLMhcubW9kZWwuV29ya3NwYWNlU2V0dGluZxIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2symgIKEFdvcmtzcGFjZVNlcnZpY2USVAoTR2V0V29ya3NwYWNlUHJvZmlsZRIiLmFwaS52Mi5HZXRXb3Jrc3BhY2VQcm9maWxlUmVxdWVzdBoXLm1vZGVsLldvcmtzcGFjZVByb2ZpbGUiABJUChNHZXRXb3Jrc3BhY2VTZXR0aW5nEiIuYXBpLnYyLkdldFdvcmtzcGFjZVNldHRpbmdSZXF1ZXN0GhcubW9kZWwuV29ya3NwYWNlU2V0dGluZyIAEloKFlVwZGF0ZVdvcmtzcGFjZVNldHRpbmcSJS5hcGkudjIuVXBkYXRlV29ya3NwYWNlU2V0dGluZ1JlcXVlc3QaFy5tb2RlbC5Xb3Jrc3BhY2VTZXR0aW5nIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user, file_model_workspace]);
 
 /**
  * Request for workspace profile.
@@ -54,6 +55,34 @@ export const GetWorkspaceSettingRequestSchema: GenMessage<GetWorkspaceSettingReq
   messageDesc(file_api_v2_workspace, 1);
 
 /**
+ * Request message for UpdateWorkspaceSetting method.
+ *
+ * @generated from message api.v2.UpdateWorkspaceSettingRequest
+ */
+export type UpdateWorkspaceSettingRequest = Message<"api.v2.UpdateWorkspaceSettingRequest"> & {
+  /**
+   * The workspace setting resource which replaces the resource on the server.
+   *
+   * @generated from field: model.WorkspaceSetting setting = 1;
+   */
+  setting?: WorkspaceSetting;
+
+  /**
+   * The list of fields to update.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message api.v2.UpdateWorkspaceSettingRequest.
+ * Use `create(UpdateWorkspaceSettingRequestSchema)` to create a new message.
+ */
+export const UpdateWorkspaceSettingRequestSchema: GenMessage<UpdateWorkspaceSettingRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_workspace, 2);
+
+/**
  * @generated from service api.v2.WorkspaceService
  */
 export const WorkspaceService: GenService<{
@@ -75,6 +104,16 @@ export const WorkspaceService: GenService<{
   getWorkspaceSetting: {
     methodKind: "unary";
     input: typeof GetWorkspaceSettingRequestSchema;
+    output: typeof WorkspaceSettingSchema;
+  },
+  /**
+   * Updates a workspace setting.
+   *
+   * @generated from rpc api.v2.WorkspaceService.UpdateWorkspaceSetting
+   */
+  updateWorkspaceSetting: {
+    methodKind: "unary";
+    input: typeof UpdateWorkspaceSettingRequestSchema;
     output: typeof WorkspaceSettingSchema;
   },
 }> = /*@__PURE__*/

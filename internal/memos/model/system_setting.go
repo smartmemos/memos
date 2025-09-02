@@ -79,3 +79,7 @@ type MemoRelatedSetting struct {
 	// nsfw_tags is the list of tags that mark content as NSFW for blurring.
 	NsfwTags []string
 }
+
+type UpdateWorkspaceSettingRequest struct {
+	Setting *SystemSettingValue
+}
