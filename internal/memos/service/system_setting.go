@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Service) GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error) {
-	filter := &model.FindSystemSettingFilter{
+	filter := &model.SystemSettingFilter{
 		Name: db.Eq("general"),
 	}
 	setting, err := s.dao.FindSystemSetting(ctx, filter)
@@ -19,7 +19,7 @@ func (s *Service) GetGeneralSetting(ctx context.Context) (*model.GeneralSetting,
 }
 
 func (s *Service) GetStorageSetting(ctx context.Context) (*model.StorageSetting, error) {
-	filter := &model.FindSystemSettingFilter{
+	filter := &model.SystemSettingFilter{
 		Name: db.Eq("storage"),
 	}
 	setting, err := s.dao.FindSystemSetting(ctx, filter)
@@ -30,7 +30,7 @@ func (s *Service) GetStorageSetting(ctx context.Context) (*model.StorageSetting,
 }
 
 func (s *Service) GetMemoRelatedSetting(ctx context.Context) (*model.MemoRelatedSetting, error) {
-	filter := &model.FindSystemSettingFilter{
+	filter := &model.SystemSettingFilter{
 		Name: db.Eq("memo_related"),
 	}
 	setting, err := s.dao.FindSystemSetting(ctx, filter)

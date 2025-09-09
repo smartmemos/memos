@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionsRequest) (total int64, list []*model.Reaction, err error) {
-	filter := &model.FindReactionFilter{
+	filter := &model.ReactionFilter{
 		Query: req.Query,
 	}
 	if len(req.ContentIDs) > 0 {
@@ -27,7 +27,7 @@ func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionsReq
 }
 
 func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (reaction *model.Reaction, err error) {
-	reaction, err = s.dao.FindReaction(ctx, &model.FindReactionFilter{
+	reaction, err = s.dao.FindReaction(ctx, &model.ReactionFilter{
 		CreatorID:    db.Eq(req.CreatorID),
 		ContentID:    db.Eq(req.ContentID),
 		ReactionType: db.Eq(req.ReactionType),
@@ -48,7 +48,7 @@ func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionR
 }
 
 func (s *Service) DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) (err error) {
-	err = s.dao.DeleteReactions(ctx, &model.FindReactionFilter{
+	err = s.dao.DeleteReactions(ctx, &model.ReactionFilter{
 		ID: db.Eq(req.ID),
 	})
 	return

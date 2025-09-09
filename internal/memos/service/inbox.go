@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Service) ListInboxes(ctx context.Context, req *model.ListInboxesRequest) (total int64, list []*model.Inbox, err error) {
-	filter := &model.FindInboxFilter{
+	filter := &model.InboxFilter{
 		Query: req.Query,
 	}
 

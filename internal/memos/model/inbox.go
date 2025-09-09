@@ -17,7 +17,7 @@ func (Inbox) TableName() string {
 	return TableInbox
 }
 
-type FindInboxFilter struct {
+type InboxFilter struct {
 	db.Query
 
 	ID         db.F[int64]

@@ -36,7 +36,7 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 }
 
 // CountAttachments mocks base method.
-func (m *MockDAO) CountAttachments(ctx context.Context, filter *model.FindAttachmentFilter) (int64, error) {
+func (m *MockDAO) CountAttachments(ctx context.Context, filter *model.AttachmentFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountAttachments", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -51,7 +51,7 @@ func (mr *MockDAOMockRecorder) CountAttachments(ctx, filter interface{}) *gomock
 }
 
 // CountInboxes mocks base method.
-func (m *MockDAO) CountInboxes(ctx context.Context, filter *model.FindInboxFilter) (int64, error) {
+func (m *MockDAO) CountInboxes(ctx context.Context, filter *model.InboxFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountInboxes", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -66,7 +66,7 @@ func (mr *MockDAOMockRecorder) CountInboxes(ctx, filter interface{}) *gomock.Cal
 }
 
 // CountMemoRelations mocks base method.
-func (m *MockDAO) CountMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) (int64, error) {
+func (m *MockDAO) CountMemoRelations(ctx context.Context, filter *model.MemoRelationFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountMemoRelations", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -96,7 +96,7 @@ func (mr *MockDAOMockRecorder) CountMemos(ctx, filter interface{}) *gomock.Call 
 }
 
 // CountReactions mocks base method.
-func (m *MockDAO) CountReactions(ctx context.Context, filter *model.FindReactionFilter) (int64, error) {
+func (m *MockDAO) CountReactions(ctx context.Context, filter *model.ReactionFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountReactions", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -111,7 +111,7 @@ func (mr *MockDAOMockRecorder) CountReactions(ctx, filter interface{}) *gomock.C
 }
 
 // CountUsers mocks base method.
-func (m *MockDAO) CountUsers(ctx context.Context, filter *model.FindUserFilter) (int64, error) {
+func (m *MockDAO) CountUsers(ctx context.Context, filter *model.UserFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountUsers", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -252,7 +252,7 @@ func (mr *MockDAOMockRecorder) CreateUserSetting(ctx, m interface{}) *gomock.Cal
 }
 
 // DeleteAttachments mocks base method.
-func (m *MockDAO) DeleteAttachments(ctx context.Context, filter *model.FindAttachmentFilter) error {
+func (m *MockDAO) DeleteAttachments(ctx context.Context, filter *model.AttachmentFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteAttachments", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -266,7 +266,7 @@ func (mr *MockDAOMockRecorder) DeleteAttachments(ctx, filter interface{}) *gomoc
 }
 
 // DeleteInboxes mocks base method.
-func (m *MockDAO) DeleteInboxes(ctx context.Context, filter *model.FindInboxFilter) error {
+func (m *MockDAO) DeleteInboxes(ctx context.Context, filter *model.InboxFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteInboxes", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -280,7 +280,7 @@ func (mr *MockDAOMockRecorder) DeleteInboxes(ctx, filter interface{}) *gomock.Ca
 }
 
 // DeleteMemoRelations mocks base method.
-func (m *MockDAO) DeleteMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) error {
+func (m *MockDAO) DeleteMemoRelations(ctx context.Context, filter *model.MemoRelationFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteMemoRelations", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -308,7 +308,7 @@ func (mr *MockDAOMockRecorder) DeleteMemos(ctx, filter interface{}) *gomock.Call
 }
 
 // DeleteReactions mocks base method.
-func (m *MockDAO) DeleteReactions(ctx context.Context, filter *model.FindReactionFilter) error {
+func (m *MockDAO) DeleteReactions(ctx context.Context, filter *model.ReactionFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteReactions", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -322,7 +322,7 @@ func (mr *MockDAOMockRecorder) DeleteReactions(ctx, filter interface{}) *gomock.
 }
 
 // DeleteSystemSettings mocks base method.
-func (m *MockDAO) DeleteSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) error {
+func (m *MockDAO) DeleteSystemSettings(ctx context.Context, filter *model.SystemSettingFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteSystemSettings", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -336,7 +336,7 @@ func (mr *MockDAOMockRecorder) DeleteSystemSettings(ctx, filter interface{}) *go
 }
 
 // DeleteUserSettings mocks base method.
-func (m *MockDAO) DeleteUserSettings(ctx context.Context, filter *model.FindUserSettingFilter) error {
+func (m *MockDAO) DeleteUserSettings(ctx context.Context, filter *model.UserSettingFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteUserSettings", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -350,7 +350,7 @@ func (mr *MockDAOMockRecorder) DeleteUserSettings(ctx, filter interface{}) *gomo
 }
 
 // DeleteUsers mocks base method.
-func (m *MockDAO) DeleteUsers(ctx context.Context, filter *model.FindUserFilter) error {
+func (m *MockDAO) DeleteUsers(ctx context.Context, filter *model.UserFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteUsers", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -364,7 +364,7 @@ func (mr *MockDAOMockRecorder) DeleteUsers(ctx, filter interface{}) *gomock.Call
 }
 
 // FindAttachment mocks base method.
-func (m *MockDAO) FindAttachment(ctx context.Context, filter *model.FindAttachmentFilter) (*model.Attachment, error) {
+func (m *MockDAO) FindAttachment(ctx context.Context, filter *model.AttachmentFilter) (*model.Attachment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindAttachment", ctx, filter)
 	ret0, _ := ret[0].(*model.Attachment)
@@ -394,7 +394,7 @@ func (mr *MockDAOMockRecorder) FindAttachmentByID(ctx, id interface{}) *gomock.C
 }
 
 // FindAttachments mocks base method.
-func (m *MockDAO) FindAttachments(ctx context.Context, filter *model.FindAttachmentFilter) ([]*model.Attachment, error) {
+func (m *MockDAO) FindAttachments(ctx context.Context, filter *model.AttachmentFilter) ([]*model.Attachment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindAttachments", ctx, filter)
 	ret0, _ := ret[0].([]*model.Attachment)
@@ -409,7 +409,7 @@ func (mr *MockDAOMockRecorder) FindAttachments(ctx, filter interface{}) *gomock.
 }
 
 // FindInbox mocks base method.
-func (m *MockDAO) FindInbox(ctx context.Context, filter *model.FindInboxFilter) (*model.Inbox, error) {
+func (m *MockDAO) FindInbox(ctx context.Context, filter *model.InboxFilter) (*model.Inbox, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindInbox", ctx, filter)
 	ret0, _ := ret[0].(*model.Inbox)
@@ -439,7 +439,7 @@ func (mr *MockDAOMockRecorder) FindInboxByID(ctx, id interface{}) *gomock.Call {
 }
 
 // FindInboxes mocks base method.
-func (m *MockDAO) FindInboxes(ctx context.Context, filter *model.FindInboxFilter) ([]*model.Inbox, error) {
+func (m *MockDAO) FindInboxes(ctx context.Context, filter *model.InboxFilter) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindInboxes", ctx, filter)
 	ret0, _ := ret[0].([]*model.Inbox)
@@ -484,7 +484,7 @@ func (mr *MockDAOMockRecorder) FindMemoByID(ctx, id interface{}) *gomock.Call {
 }
 
 // FindMemoRelation mocks base method.
-func (m *MockDAO) FindMemoRelation(ctx context.Context, filter *model.FindMemoRelationFilter) (*model.MemoRelation, error) {
+func (m *MockDAO) FindMemoRelation(ctx context.Context, filter *model.MemoRelationFilter) (*model.MemoRelation, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemoRelation", ctx, filter)
 	ret0, _ := ret[0].(*model.MemoRelation)
@@ -499,7 +499,7 @@ func (mr *MockDAOMockRecorder) FindMemoRelation(ctx, filter interface{}) *gomock
 }
 
 // FindMemoRelations mocks base method.
-func (m *MockDAO) FindMemoRelations(ctx context.Context, filter *model.FindMemoRelationFilter) ([]*model.MemoRelation, error) {
+func (m *MockDAO) FindMemoRelations(ctx context.Context, filter *model.MemoRelationFilter) ([]*model.MemoRelation, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemoRelations", ctx, filter)
 	ret0, _ := ret[0].([]*model.MemoRelation)
@@ -529,7 +529,7 @@ func (mr *MockDAOMockRecorder) FindMemos(ctx, filter interface{}) *gomock.Call {
 }
 
 // FindReaction mocks base method.
-func (m *MockDAO) FindReaction(ctx context.Context, filter *model.FindReactionFilter) (*model.Reaction, error) {
+func (m *MockDAO) FindReaction(ctx context.Context, filter *model.ReactionFilter) (*model.Reaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindReaction", ctx, filter)
 	ret0, _ := ret[0].(*model.Reaction)
@@ -559,7 +559,7 @@ func (mr *MockDAOMockRecorder) FindReactionByID(ctx, id interface{}) *gomock.Cal
 }
 
 // FindReactions mocks base method.
-func (m *MockDAO) FindReactions(ctx context.Context, filter *model.FindReactionFilter) ([]*model.Reaction, error) {
+func (m *MockDAO) FindReactions(ctx context.Context, filter *model.ReactionFilter) ([]*model.Reaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindReactions", ctx, filter)
 	ret0, _ := ret[0].([]*model.Reaction)
@@ -574,7 +574,7 @@ func (mr *MockDAOMockRecorder) FindReactions(ctx, filter interface{}) *gomock.Ca
 }
 
 // FindSystemSetting mocks base method.
-func (m *MockDAO) FindSystemSetting(ctx context.Context, filter *model.FindSystemSettingFilter) (*model.SystemSetting, error) {
+func (m *MockDAO) FindSystemSetting(ctx context.Context, filter *model.SystemSettingFilter) (*model.SystemSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindSystemSetting", ctx, filter)
 	ret0, _ := ret[0].(*model.SystemSetting)
@@ -589,7 +589,7 @@ func (mr *MockDAOMockRecorder) FindSystemSetting(ctx, filter interface{}) *gomoc
 }
 
 // FindSystemSettings mocks base method.
-func (m *MockDAO) FindSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter) ([]*model.SystemSetting, error) {
+func (m *MockDAO) FindSystemSettings(ctx context.Context, filter *model.SystemSettingFilter) ([]*model.SystemSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindSystemSettings", ctx, filter)
 	ret0, _ := ret[0].([]*model.SystemSetting)
@@ -604,7 +604,7 @@ func (mr *MockDAOMockRecorder) FindSystemSettings(ctx, filter interface{}) *gomo
 }
 
 // FindUser mocks base method.
-func (m *MockDAO) FindUser(ctx context.Context, filter *model.FindUserFilter) (*model.User, error) {
+func (m *MockDAO) FindUser(ctx context.Context, filter *model.UserFilter) (*model.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUser", ctx, filter)
 	ret0, _ := ret[0].(*model.User)
@@ -634,7 +634,7 @@ func (mr *MockDAOMockRecorder) FindUserByID(ctx, id interface{}) *gomock.Call {
 }
 
 // FindUserSetting mocks base method.
-func (m *MockDAO) FindUserSetting(ctx context.Context, filter *model.FindUserSettingFilter) (*model.UserSetting, error) {
+func (m *MockDAO) FindUserSetting(ctx context.Context, filter *model.UserSettingFilter) (*model.UserSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserSetting", ctx, filter)
 	ret0, _ := ret[0].(*model.UserSetting)
@@ -649,7 +649,7 @@ func (mr *MockDAOMockRecorder) FindUserSetting(ctx, filter interface{}) *gomock.
 }
 
 // FindUserSettings mocks base method.
-func (m *MockDAO) FindUserSettings(ctx context.Context, filter *model.FindUserSettingFilter) ([]*model.UserSetting, error) {
+func (m *MockDAO) FindUserSettings(ctx context.Context, filter *model.UserSettingFilter) ([]*model.UserSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserSettings", ctx, filter)
 	ret0, _ := ret[0].([]*model.UserSetting)
@@ -664,7 +664,7 @@ func (mr *MockDAOMockRecorder) FindUserSettings(ctx, filter interface{}) *gomock
 }
 
 // FindUsers mocks base method.
-func (m *MockDAO) FindUsers(ctx context.Context, filter *model.FindUserFilter) ([]*model.User, error) {
+func (m *MockDAO) FindUsers(ctx context.Context, filter *model.UserFilter) ([]*model.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUsers", ctx, filter)
 	ret0, _ := ret[0].([]*model.User)
@@ -693,7 +693,7 @@ func (mr *MockDAOMockRecorder) UpdateInbox(ctx, m, update interface{}) *gomock.C
 }
 
 // UpdateInboxes mocks base method.
-func (m *MockDAO) UpdateInboxes(ctx context.Context, filter *model.FindInboxFilter, update map[string]any) (int64, error) {
+func (m *MockDAO) UpdateInboxes(ctx context.Context, filter *model.InboxFilter, update map[string]any) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateInboxes", ctx, filter, update)
 	ret0, _ := ret[0].(int64)
@@ -764,7 +764,7 @@ func (mr *MockDAOMockRecorder) UpdateSystemSetting(ctx, m, update interface{}) *
 }
 
 // UpdateSystemSettings mocks base method.
-func (m *MockDAO) UpdateSystemSettings(ctx context.Context, filter *model.FindSystemSettingFilter, update map[string]any) (int64, error) {
+func (m *MockDAO) UpdateSystemSettings(ctx context.Context, filter *model.SystemSettingFilter, update map[string]any) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateSystemSettings", ctx, filter, update)
 	ret0, _ := ret[0].(int64)
@@ -807,7 +807,7 @@ func (mr *MockDAOMockRecorder) UpdateUserSetting(ctx, m, update interface{}) *go
 }
 
 // UpdateUserSettings mocks base method.
-func (m *MockDAO) UpdateUserSettings(ctx context.Context, filter *model.FindUserSettingFilter, update map[string]any) (int64, error) {
+func (m *MockDAO) UpdateUserSettings(ctx context.Context, filter *model.UserSettingFilter, update map[string]any) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUserSettings", ctx, filter, update)
 	ret0, _ := ret[0].(int64)
@@ -822,7 +822,7 @@ func (mr *MockDAOMockRecorder) UpdateUserSettings(ctx, filter, update interface{
 }
 
 // UpdateUsers mocks base method.
-func (m *MockDAO) UpdateUsers(ctx context.Context, filter *model.FindUserFilter, update map[string]any) (int64, error) {
+func (m *MockDAO) UpdateUsers(ctx context.Context, filter *model.UserFilter, update map[string]any) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUsers", ctx, filter, update)
 	ret0, _ := ret[0].(int64)

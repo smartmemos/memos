@@ -11,7 +11,7 @@ import (
 )
 
 func (s *Service) CreateSession(ctx context.Context, req *model.CreateSessionRequest) (session *model.Session, err error) {
-	user, err := s.dao.FindUser(ctx, &model.FindUserFilter{
+	user, err := s.dao.FindUser(ctx, &model.UserFilter{
 		Username: db.Eq(req.Username),
 	})
 	if err != nil {

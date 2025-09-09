@@ -79,7 +79,7 @@ func (s *Service) GetUserByID(ctx context.Context, id int64) (user *model.User, 
 }
 
 func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) (total int64, users []*model.User, err error) {
-	filter := &model.FindUserFilter{
+	filter := &model.UserFilter{
 		Query: req.Query,
 	}
 
@@ -92,7 +92,7 @@ func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) (t
 }
 
 func (s *Service) SearchUsers(ctx context.Context, req *model.SearchUsersRequest) (total int64, users []*model.User, err error) {
-	filter := &model.FindUserFilter{
+	filter := &model.UserFilter{
 		Query: req.Query,
 	}
 	total, err = s.dao.CountUsers(ctx, filter)

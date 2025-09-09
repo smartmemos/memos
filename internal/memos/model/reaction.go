@@ -16,7 +16,7 @@ func (Reaction) TableName() string {
 	return TableReaction
 }
 
-type FindReactionFilter struct {
+type ReactionFilter struct {
 	db.Query
 
 	ID           db.F[int64]

@@ -63,7 +63,7 @@ type StorageS3Config struct {
 	UsePathStyle    bool
 }
 
-type FindAttachmentFilter struct {
+type AttachmentFilter struct {
 	db.Query
 
 	ID db.F[int64]

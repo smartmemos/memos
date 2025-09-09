@@ -12,7 +12,7 @@ func (SystemSetting) TableName() string {
 	return TableSystemSetting
 }
 
-type FindSystemSettingFilter struct {
+type SystemSettingFilter struct {
 	db.Query
 
 	Name db.F[string]

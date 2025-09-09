@@ -19,7 +19,7 @@ func (s *Service) UpsertMemoRelation(ctx context.Context, req *model.UpsertMemoR
 }
 
 func (s *Service) ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) (total int64, relations []*model.MemoRelation, err error) {
-	filter := &model.FindMemoRelationFilter{
+	filter := &model.MemoRelationFilter{
 		MemoIDs: db.In(req.MemoIDs),
 		Query:   req.Query,
 	}

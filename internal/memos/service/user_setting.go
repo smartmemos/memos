@@ -11,7 +11,7 @@ import (
 )
 
 func (s *Service) GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (*model.UserSetting, error) {
-	filter := &model.FindUserSettingFilter{}
+	filter := &model.UserSettingFilter{}
 	setting, err := s.dao.FindUserSetting(ctx, filter)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func (s *Service) GetUserSetting(ctx context.Context, req *model.GetUserSettingR
 }
 
 func (s *Service) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error) {
-	filter := &model.FindUserSettingFilter{}
+	filter := &model.UserSettingFilter{}
 	settings, err := s.dao.FindUserSettings(ctx, filter)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (s *Service) GetUserSettings(ctx context.Context, req *model.GetUserSetting
 }
 
 func (s *Service) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) (setting *model.UserSetting, err error) {
-	filter := &model.FindUserSettingFilter{
+	filter := &model.UserSettingFilter{
 		UserID: db.Eq(req.UserID),
 		Key:    db.Eq(req.Key),
 	}
@@ -68,7 +68,7 @@ func (s *Service) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSe
 }
 
 func (s *Service) GetUserSessions(ctx context.Context, req *model.GetUserSessionsRequest) ([]*model.UserSession, error) {
-	filter := &model.FindUserSettingFilter{
+	filter := &model.UserSettingFilter{
 		UserID: db.Eq(req.UserID),
 		Key:    db.Eq(model.UserSettingKeySessions),
 	}
@@ -83,7 +83,7 @@ func (s *Service) GetUserSessions(ctx context.Context, req *model.GetUserSession
 }
 
 func (s *Service) RevokeUserSession(ctx context.Context, req *model.RevokeUserSessionRequest) (err error) {
-	filter := &model.FindUserSettingFilter{
+	filter := &model.UserSettingFilter{
 		UserID: db.Eq(req.UserID),
 		Key:    db.Eq(model.UserSettingKeySessions),
 	}

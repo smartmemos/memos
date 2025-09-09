@@ -13,7 +13,7 @@ func (MemoRelation) TableName() string {
 	return TableMemoRelation
 }
 
-type FindMemoRelationFilter struct {
+type MemoRelationFilter struct {
 	db.Query
 
 	MemoID        db.F[int64]

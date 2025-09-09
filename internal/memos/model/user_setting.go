@@ -83,7 +83,7 @@ type UserWebhook struct {
 	UpdateTime  time.Time
 }
 
-type FindUserSettingFilter struct {
+type UserSettingFilter struct {
 	db.Query
 
 	UserID db.F[int64]
