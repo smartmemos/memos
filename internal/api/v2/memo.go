@@ -46,11 +46,13 @@ func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v
 	}
 
 	req := &model.CreateMemoRequest{
-		UserID:     userInfo.UserID,
-		Content:    request.Msg.Memo.Content,
-		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
-		RowStatus:  model.Normal,
-		// RelationType: model.RelationType(request.Msg.Memo.RelationType),
+		Memo: &model.Memo{
+			CreatorID:  userInfo.UserID,
+			Content:    request.Msg.Memo.Content,
+			Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
+			RowStatus:  model.Normal,
+			// RelationType: model.RelationType(request.Msg.Memo.RelationType),
+		},
 	}
 	memo, err := s.memosService.CreateMemo(ctx, req)
 	if err != nil {
@@ -77,7 +79,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		pageSize = int(request.Msg.PageSize)
 		page = 1
 	}
-	var req = &model.ListMemosRequest{
+	var req = &model.MemoRequest{
 		Query: db.NewQuery(db.WithPage(page), db.WithPageSize(pageSize)),
 	}
 
@@ -125,7 +127,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 
 func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb.GetMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
 	uid := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
-	memo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: uid})
+	memo, err := s.memosService.GetMemo(ctx, &model.MemoRequest{UID: uid})
 	if err != nil {
 		return
 	}
@@ -223,18 +225,13 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *connect.Request[v
 
 	memo, err := s.memosService.UpdateMemo(ctx, &model.UpdateMemoRequest{
 		UpdateMask: request.Msg.UpdateMask.Paths,
-		UID:        uid,
-		Content:    request.Msg.Memo.Content,
-		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
-		RowStatus:  model.RowStatus(modelpb.State_name[int32(request.Msg.Memo.State)]),
-		Pinned:     request.Msg.Memo.Pinned,
-		// MemoPayload: &model.MemoPayload{
-		// 	Location: &model.MemoPayloadLocation{
-		// 		Placeholder: request.Msg.Memo.Location.Placeholder,
-		// 		Latitude:    request.Msg.Memo.Location.Latitude,
-		// 		Longitude:   request.Msg.Memo.Location.Longitude,
-		// 	},
-		// },
+		Memo: &model.Memo{
+			UID:        uid,
+			Content:    request.Msg.Memo.Content,
+			Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Memo.Visibility)]),
+			RowStatus:  model.RowStatus(modelpb.State_name[int32(request.Msg.Memo.State)]),
+			Pinned:     request.Msg.Memo.Pinned,
+		},
 	})
 	if err != nil {
 		return
@@ -248,7 +245,7 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *connect.Request[v
 }
 
 func (s *MemoService) DeleteMemo(ctx context.Context, request *connect.Request[v2pb.DeleteMemoRequest]) (response *connect.Response[emptypb.Empty], err error) {
-	err = s.memosService.DeleteMemo(ctx, &model.DeleteMemoRequest{
+	err = s.memosService.DeleteMemo(ctx, &model.MemoRequest{
 		UID: strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix),
 	})
 	if err != nil {
@@ -290,7 +287,7 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 }
 
 func (s *MemoService) convertMemoRelationToProto(ctx context.Context, memoRelation *model.MemoRelation) (*modelpb.MemoRelation, error) {
-	_, memos, err := s.memosService.ListMemos(ctx, &model.ListMemosRequest{
+	_, memos, err := s.memosService.ListMemos(ctx, &model.MemoRequest{
 		IDs: []int64{memoRelation.MemoID, memoRelation.RelatedMemoID},
 	})
 	if err != nil {
@@ -420,7 +417,7 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *connect.Re
 		return
 	}
 	memoUID := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
-	relatedMemo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: memoUID})
+	relatedMemo, err := s.memosService.GetMemo(ctx, &model.MemoRequest{UID: memoUID})
 	if err != nil {
 		err = errors.Errorf("invalid memo name: %v", err)
 		return
@@ -428,10 +425,12 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *connect.Re
 
 	// Create the memo comment first.
 	memoComment, err := s.memosService.CreateMemo(ctx, &model.CreateMemoRequest{
-		UserID:     userInfo.UserID,
-		Content:    request.Msg.Comment.Content,
-		Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Comment.Visibility)]),
-		RowStatus:  model.Normal,
+		Memo: &model.Memo{
+			CreatorID:  userInfo.UserID,
+			Content:    request.Msg.Comment.Content,
+			Visibility: model.Visibility(modelpb.Visibility_name[int32(request.Msg.Comment.Visibility)]),
+			RowStatus:  model.Normal,
+		},
 	})
 	if err != nil {
 		err = errors.Wrap(err, "failed to create memo")

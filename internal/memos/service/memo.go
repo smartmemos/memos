@@ -19,13 +19,8 @@ import (
 )
 
 func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (memo *model.Memo, err error) {
-	memo = &model.Memo{
-		UID:        shortuuid.New(),
-		CreatorID:  req.UserID,
-		Content:    req.Content,
-		Visibility: req.Visibility,
-		RowStatus:  req.RowStatus,
-	}
+	memo = req.Memo
+	memo.UID = shortuuid.New()
 	memoRelatedSetting, err := s.GetMemoRelatedSetting(ctx)
 	if err != nil {
 		err = errors.New("failed to get workspace memo related setting")
@@ -135,28 +130,12 @@ func (s *Service) TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 	}
 }
 
-func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (total int64, list []*model.Memo, err error) {
-	filter := &model.FindMemoFilter{
-		Query: req.Query,
-	}
-	if len(req.IDs) > 0 {
-		filter.IDs = db.In(req.IDs)
-	}
-	if req.Status != "" {
-		filter.RowStatus = db.Eq(req.Status)
-	}
-	if len(req.VisibilityList) > 0 {
-		filter.VisibilityList = db.In(req.VisibilityList)
-	}
-	if req.ExcludeContent {
-		filter.ExcludeContent = db.Eq(true)
-	}
-
+func (s *Service) ListMemos(ctx context.Context, req *model.MemoRequest) (total int64, list []*model.Memo, err error) {
+	filter := req.ToFilter()
 	total, err = s.dao.CountMemos(ctx, filter)
 	if err != nil {
 		return
 	}
-
 	memos, err := s.dao.FindMemos(ctx, filter)
 	if err != nil {
 		return
@@ -167,7 +146,7 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (t
 	var memosMap map[int64]*model.Memo
 	if len(pids) > 0 {
 		var parentList []*model.Memo
-		parentList, err = s.dao.FindMemos(ctx, &model.FindMemoFilter{ParentIDs: db.In(pids)})
+		parentList, err = s.dao.FindMemos(ctx, &model.MemoFilter{ParentIDs: db.In(pids)})
 		if err != nil {
 			return
 		}
@@ -185,22 +164,22 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (t
 	return
 }
 
-func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (memo *model.Memo, err error) {
-	memo, err = s.dao.FindMemo(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+func (s *Service) GetMemo(ctx context.Context, req *model.MemoRequest) (memo *model.Memo, err error) {
+	memo, err = s.dao.FindMemo(ctx, req.ToFilter())
 	return
 }
 
 func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
-	memo, err = s.dao.FindMemo(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+	memo, err = s.dao.FindMemo(ctx, &model.MemoFilter{UID: db.Eq(req.Memo.UID)})
 	if err != nil {
 		return
 	}
 	update := make(map[string]any)
 	if lo.Contains(req.UpdateMask, "pinned") {
-		update["pinned"] = req.Pinned
+		update["pinned"] = req.Memo.Pinned
 	}
 	if lo.Contains(req.UpdateMask, "visibility") {
-		update["visibility"] = req.Visibility
+		update["visibility"] = req.Memo.Visibility
 	}
 	var payload *model.MemoPayload
 	if lo.Contains(req.UpdateMask, "content") {
@@ -214,21 +193,21 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 			err = errors.Errorf("content too long (max %d characters)", contentLimit)
 			return
 		}
-		memo.Content = req.Content
+		memo.Content = req.Memo.Content
 		if err := s.RebuildMemoPayload(memo); err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to rebuild memo payload: %v", err)
 		}
-		update["content"] = req.Content
+		update["content"] = req.Memo.Content
 		payload = memo.Payload
 	}
 	if lo.Contains(req.UpdateMask, "state") {
-		update["row_status"] = req.RowStatus
+		update["row_status"] = req.Memo.RowStatus
 	}
 	if lo.Contains(req.UpdateMask, "location") {
 		if payload == nil {
 			payload = memo.Payload
 		}
-		payload.Location = req.MemoPayload.Location
+		payload.Location = req.Location
 	}
 	if payload != nil {
 		var payloadBytes []byte
@@ -242,7 +221,7 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 	return
 }
 
-func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
-	err = s.dao.DeleteMemos(ctx, &model.FindMemoFilter{UID: db.Eq(req.UID)})
+func (s *Service) DeleteMemo(ctx context.Context, req *model.MemoRequest) (err error) {
+	err = s.dao.DeleteMemos(ctx, req.ToFilter())
 	return
 }

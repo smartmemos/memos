@@ -81,7 +81,7 @@ func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call
 }
 
 // DeleteMemo mocks base method.
-func (m *MockService) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error {
+func (m *MockService) DeleteMemo(ctx context.Context, req *model.MemoRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteMemo", ctx, req)
 	ret0, _ := ret[0].(error)
@@ -124,7 +124,7 @@ func (mr *MockServiceMockRecorder) GetGeneralSetting(ctx interface{}) *gomock.Ca
 }
 
 // GetMemo mocks base method.
-func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+func (m *MockService) GetMemo(ctx context.Context, req *model.MemoRequest) (*model.Memo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMemo", ctx, req)
 	ret0, _ := ret[0].(*model.Memo)
@@ -261,7 +261,7 @@ func (mr *MockServiceMockRecorder) ListMemoRelations(ctx, req interface{}) *gomo
 }
 
 // ListMemos mocks base method.
-func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) (int64, []*model.Memo, error) {
+func (m *MockService) ListMemos(ctx context.Context, req *model.MemoRequest) (int64, []*model.Memo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListMemos", ctx, req)
 	ret0, _ := ret[0].(int64)

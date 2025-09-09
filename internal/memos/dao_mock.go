@@ -81,7 +81,7 @@ func (mr *MockDAOMockRecorder) CountMemoRelations(ctx, filter interface{}) *gomo
 }
 
 // CountMemos mocks base method.
-func (m *MockDAO) CountMemos(ctx context.Context, filter *model.FindMemoFilter) (int64, error) {
+func (m *MockDAO) CountMemos(ctx context.Context, filter *model.MemoFilter) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CountMemos", ctx, filter)
 	ret0, _ := ret[0].(int64)
@@ -294,7 +294,7 @@ func (mr *MockDAOMockRecorder) DeleteMemoRelations(ctx, filter interface{}) *gom
 }
 
 // DeleteMemos mocks base method.
-func (m *MockDAO) DeleteMemos(ctx context.Context, filter *model.FindMemoFilter) error {
+func (m *MockDAO) DeleteMemos(ctx context.Context, filter *model.MemoFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteMemos", ctx, filter)
 	ret0, _ := ret[0].(error)
@@ -454,7 +454,7 @@ func (mr *MockDAOMockRecorder) FindInboxes(ctx, filter interface{}) *gomock.Call
 }
 
 // FindMemo mocks base method.
-func (m *MockDAO) FindMemo(ctx context.Context, filter *model.FindMemoFilter) (*model.Memo, error) {
+func (m *MockDAO) FindMemo(ctx context.Context, filter *model.MemoFilter) (*model.Memo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemo", ctx, filter)
 	ret0, _ := ret[0].(*model.Memo)
@@ -514,7 +514,7 @@ func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, filter interface{}) *gomoc
 }
 
 // FindMemos mocks base method.
-func (m *MockDAO) FindMemos(ctx context.Context, filter *model.FindMemoFilter) ([]*model.Memo, error) {
+func (m *MockDAO) FindMemos(ctx context.Context, filter *model.MemoFilter) ([]*model.Memo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemos", ctx, filter)
 	ret0, _ := ret[0].([]*model.Memo)
