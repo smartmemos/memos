@@ -56,11 +56,11 @@ func (s *MemoService) CreateMemo(ctx context.Context, request *connect.Request[v
 	if err != nil {
 		return
 	}
-	info, err := convertMemoToProto(memo)
+	infos, err := s.convertMemosToProto(ctx, []*model.Memo{memo})
 	if err != nil {
 		return
 	}
-	response = connect.NewResponse(info)
+	response = connect.NewResponse(infos[0])
 	return
 }
 
@@ -141,9 +141,39 @@ func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb
 	return
 }
 
+func (s *MemoService) convertMemoToProto(ctx context.Context, memo *model.Memo) (info *modelpb.Memo, err error) {
+	info, err = convertMemoToProto(memo)
+	if err != nil {
+		return
+	}
+	contentID := fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID)
+	_, reactions, err := s.memosService.ListReactions(ctx, &model.ListReactionsRequest{
+		ContentID: contentID,
+		Query:     db.NewQueryAll(),
+	})
+	info.Reactions = lo.Map(reactions, func(item *model.Reaction, _ int) *modelpb.Reaction {
+		return convertReactionToProto(item)
+	})
+
+	_, relations, err := s.memosService.ListMemoRelations(ctx, &model.ListMemoRelationsRequest{
+		MemoID: memo.ID,
+		Query:  db.NewQueryAll(),
+	})
+	info.Relations = lo.FlatMap(relations, func(item *model.MemoRelation, _ int) []*modelpb.MemoRelation {
+		relation, err := s.convertMemoRelationToProto(ctx, item)
+		if err != nil {
+			return nil
+		}
+		return []*modelpb.MemoRelation{relation}
+	})
+	return
+}
+
 func (s *MemoService) convertMemosToProto(ctx context.Context, memos []*model.Memo) (list []*modelpb.Memo, err error) {
+	var memoIDs []int64
 	var contentIDs []string
 	for _, memo := range memos {
+		memoIDs = append(memoIDs, memo.ID)
 		contentIDs = append(contentIDs, fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID))
 	}
 	_, reactions, err := s.memosService.ListReactions(ctx, &model.ListReactionsRequest{
@@ -156,8 +186,19 @@ func (s *MemoService) convertMemosToProto(ctx context.Context, memos []*model.Me
 	reactionsMap := lo.GroupBy(reactions, func(item *model.Reaction) string {
 		return item.ContentID
 	})
+	_, relations, err := s.memosService.ListMemoRelations(ctx, &model.ListMemoRelationsRequest{
+		MemoIDs: memoIDs,
+		Query:   db.NewQueryAll(),
+	})
+	if err != nil {
+		return
+	}
+	relationsMap := lo.GroupBy(relations, func(item *model.MemoRelation) int64 {
+		return item.MemoID
+	})
+
+	var info *modelpb.Memo
 	for _, memo := range memos {
-		var info *modelpb.Memo
 		info, err = convertMemoToProto(memo)
 		if err != nil {
 			return
@@ -165,6 +206,15 @@ func (s *MemoService) convertMemosToProto(ctx context.Context, memos []*model.Me
 		if reactions := reactionsMap[info.Name]; len(reactions) > 0 {
 			info.Reactions = lo.Map(reactions, func(item *model.Reaction, _ int) *modelpb.Reaction {
 				return convertReactionToProto(item)
+			})
+		}
+		if relations := relationsMap[memo.ID]; len(relations) > 0 {
+			info.Relations = lo.FlatMap(relations, func(item *model.MemoRelation, _ int) []*modelpb.MemoRelation {
+				relation, err := s.convertMemoRelationToProto(ctx, item)
+				if err != nil {
+					return nil
+				}
+				return []*modelpb.MemoRelation{relation}
 			})
 		}
 		list = append(list, info)
@@ -271,6 +321,7 @@ func (s *MemoService) convertMemoRelationToProto(ctx context.Context, memoRelati
 		return nil, errors.Wrap(err, "failed to get related memo content snippet")
 	}
 	return &modelpb.MemoRelation{
+		Type: modelpb.MemoRelation_Type(modelpb.MemoRelation_Type_value[string(memoRelation.Type)]),
 		Memo: &modelpb.MemoRelation_Memo{
 			Name:    fmt.Sprintf("%s%s", model.MemoNamePrefix, memo.UID),
 			Snippet: memoSnippet,
@@ -279,7 +330,6 @@ func (s *MemoService) convertMemoRelationToProto(ctx context.Context, memoRelati
 			Name:    fmt.Sprintf("%s%s", model.MemoNamePrefix, relatedMemo.UID),
 			Snippet: relatedMemoSnippet,
 		},
-		Type: modelpb.MemoRelation_Type(modelpb.MemoRelation_Type_value[string(memoRelation.Type)]),
 	}, nil
 }
 
@@ -293,6 +343,7 @@ func getMemoContentSnippet(content string) (string, error) {
 	plainText = lo.If(len(plainText) > 64, lo.Substring(plainText, 0, 64)+"...").Else(plainText)
 	return plainText, nil
 }
+
 func convertMemoPropertyToProto(property *model.MemoPayloadProperty) *modelpb.Memo_Property {
 	if property == nil {
 		return nil

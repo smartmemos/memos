@@ -165,6 +165,8 @@ func WithOrderBy(orderBy string) QueryOption {
 	}
 }
 
+type FilterOption func(f *Query)
+
 type F[T any] struct {
 	Op    string
 	Value T

@@ -37,9 +37,11 @@ type Service interface {
 	ListReactions(ctx context.Context, req *model.ListReactionsRequest) (int64, []*model.Reaction, error)
 	// DeleteReaction deletes a memo reaction.
 	DeleteReaction(ctx context.Context, req *model.DeleteReactionRequest) error
-
 	// UpsertMemoRelation upserts a memo relation.
 	UpsertMemoRelation(ctx context.Context, req *model.UpsertMemoRelationRequest) (*model.MemoRelation, error)
+
+	// ListMemoRelations lists the memo relations.
+	ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) (int64, []*model.MemoRelation, error)
 
 	// GetGeneralSetting gets the general setting.
 	GetGeneralSetting(ctx context.Context) (*model.GeneralSetting, error)

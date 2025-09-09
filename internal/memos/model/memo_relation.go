@@ -17,8 +17,16 @@ type FindMemoRelationFilter struct {
 	db.Query
 
 	MemoID        db.F[int64]
+	MemoIDs       db.F[[]int64] `gorm:"memo_id"`
 	RelatedMemoID db.F[int64]
 	Type          db.F[RelationType]
+}
+
+type ListMemoRelationsRequest struct {
+	db.Query
+
+	MemoID  int64
+	MemoIDs []int64
 }
 
 type UpsertMemoRelationRequest struct {
