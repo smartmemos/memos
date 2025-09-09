@@ -139,6 +139,18 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (t
 	filter := &model.FindMemoFilter{
 		Query: req.Query,
 	}
+	if len(req.IDs) > 0 {
+		filter.IDs = db.In(req.IDs)
+	}
+	if req.Status != "" {
+		filter.RowStatus = db.Eq(req.Status)
+	}
+	if len(req.VisibilityList) > 0 {
+		filter.VisibilityList = db.In(req.VisibilityList)
+	}
+	if req.ExcludeContent {
+		filter.ExcludeContent = db.Eq(true)
+	}
 
 	total, err = s.dao.CountMemos(ctx, filter)
 	if err != nil {

@@ -46,13 +46,14 @@ type FindMemoFilter struct {
 	db.Query
 
 	ID              db.F[int64]
+	IDs             db.F[[]int64] `gorm:"id"`
 	UID             db.F[string]
 	Pid             db.F[int64]
 	ParentIDs       db.F[[]int64]
 	CreatorID       db.F[int64]
 	ExcludeComments db.F[bool]
 	ExcludeContent  db.F[bool]
-	Status          db.F[string]
+	RowStatus       db.F[RowStatus]
 
 	VisibilityList db.F[[]Visibility]
 }

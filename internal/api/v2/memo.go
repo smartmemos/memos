@@ -78,11 +78,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		page = 1
 	}
 	var req = &model.ListMemosRequest{
-		Query: db.NewQuery(
-			db.WithPage(page),
-			db.WithPageSize(pageSize),
-			// db.WithOrderBy(request.Msg.OrderBy),
-		),
+		Query: db.NewQuery(db.WithPage(page), db.WithPageSize(pageSize)),
 	}
 
 	userInfo := utils.GetInfo(ctx)
