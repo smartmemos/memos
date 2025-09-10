@@ -25,19 +25,21 @@ func BuildQuery(f any) (string, []any) {
 		fieldVal := v.Field(i)
 
 		if strings.HasSuffix(field.Type.PkgPath(), "/db") && strings.HasPrefix(field.Type.Name(), "F[") {
-			op := fieldVal.FieldByName("Op").String()
-			val := fieldVal.FieldByName("Value").Interface()
-			if op != "" {
+			if op := fieldVal.FieldByName("Op").String(); op != "" {
 				var columnName string
 				if tag := field.Tag.Get("gorm"); tag != "" {
 					for part := range strings.SplitSeq(tag, ";") {
-						columnName, _ = strings.CutPrefix(part, "column:")
+						if strings.HasPrefix(part, "column:") {
+							columnName, _ = strings.CutPrefix(part, "column:")
+							break
+						}
 					}
 				}
 				if columnName == "" {
 					columnName = ns.ColumnName("", field.Name)
 				}
 				conditions = append(conditions, fmt.Sprintf("`%s` %s", columnName, op))
+				val := fieldVal.FieldByName("Value").Interface()
 				args = append(args, val)
 			}
 		}
