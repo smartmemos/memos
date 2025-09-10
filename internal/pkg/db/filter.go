@@ -8,10 +8,11 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// BuildQuery 构建查询条件
 func BuildQuery(f any) (string, []any) {
 	t := reflect.TypeOf(f)
 	v := reflect.ValueOf(f)
-	if v.Kind() == reflect.Ptr {
+	if v.Kind() == reflect.Pointer {
 		v = v.Elem()
 		t = t.Elem()
 	}
@@ -167,61 +168,76 @@ func WithOrderBy(orderBy string) QueryOption {
 	}
 }
 
+// FilterOption 过滤选项
 type FilterOption func(f *Query)
 
+// F 过滤条件
 type F[T any] struct {
 	Op    string
 	Value T
 }
 
+// NewF 创建一个过滤条件
 func NewF[T any](op string, value T) F[T] {
 	return F[T]{Op: op, Value: value}
 }
 
+// NewEmptyF 创建一个空过滤条件
 func NewEmptyF[T any](v T) F[T] {
 	return F[T]{Op: "", Value: v}
 }
 
+// Eq 等于
 func Eq[T any](v T) F[T] {
 	return NewF("= ?", v)
 }
 
+// NotEq 不等于
 func NotEq[T any](v T) F[T] {
 	return NewF("!= ?", v)
 }
 
+// Gt 大于
 func Gt[T any](v T) F[T] {
 	return NewF("> ?", v)
 }
 
+// Gte 大于等于
 func Gte[T any](v T) F[T] {
 	return NewF(">= ?", v)
 }
 
+// Lt 小于
 func Lt[T any](v T) F[T] {
 	return NewF("< ?", v)
 }
 
+// Lte 小于等于
 func Lte[T any](v T) F[T] {
 	return NewF("<= ?", v)
 }
 
+// Like 模糊匹配
 func Like[T any](v T) F[T] {
 	return NewF("LIKE ?", v)
 }
 
+// NotLike 不模糊匹配
 func NotLike[T any](v T) F[T] {
 	return NewF("NOT LIKE ?", v)
 }
 
+// In 包含
 func In[T any](v []T) F[[]T] {
 	return NewF("IN (?)", v)
 }
 
+// NotIn 不包含
 func NotIn[T any](v []T) F[[]T] {
 	return NewF("NOT IN (?)", v)
 }
 
+// OmitEq 如果不为零值，则等于
 func OmitEq[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -229,6 +245,7 @@ func OmitEq[T any](v T) F[T] {
 	return Eq(v)
 }
 
+// OmitNotEq 如果不为零值，则不等于
 func OmitNotEq[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -236,6 +253,7 @@ func OmitNotEq[T any](v T) F[T] {
 	return NotEq(v)
 }
 
+// OmitGt 如果不为零值，则大于
 func OmitGt[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -243,6 +261,7 @@ func OmitGt[T any](v T) F[T] {
 	return Gt(v)
 }
 
+// OmitGte 如果不为零值，则大于等于
 func OmitGte[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -250,6 +269,7 @@ func OmitGte[T any](v T) F[T] {
 	return Gte(v)
 }
 
+// OmitLt 如果不为零值，则小于
 func OmitLt[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -257,6 +277,7 @@ func OmitLt[T any](v T) F[T] {
 	return Lt(v)
 }
 
+// OmitLte 如果不为零值，则小于等于
 func OmitLte[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -264,6 +285,7 @@ func OmitLte[T any](v T) F[T] {
 	return Lte(v)
 }
 
+// OmitLike 如果不为零值，则模糊匹配
 func OmitLike[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -271,6 +293,7 @@ func OmitLike[T any](v T) F[T] {
 	return Like(v)
 }
 
+// OmitNotLike 如果不为零值，则不模糊匹配
 func OmitNotLike[T any](v T) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -278,6 +301,7 @@ func OmitNotLike[T any](v T) F[T] {
 	return NotLike(v)
 }
 
+// OmitIn 如果不为零值，则包含
 func OmitIn[T any](v []T) F[[]T] {
 	if len(v) == 0 {
 		return NewEmptyF(v)
@@ -285,6 +309,7 @@ func OmitIn[T any](v []T) F[[]T] {
 	return In(v)
 }
 
+// OmitNotIn 如果不为零值，则不包含
 func OmitNotIn[T any](v []T) F[[]T] {
 	if len(v) == 0 {
 		return NewEmptyF(v)
@@ -292,7 +317,7 @@ func OmitNotIn[T any](v []T) F[[]T] {
 	return NotIn(v)
 }
 
-// Omit 如果值为零值，则不添加条件
+// Omit 如果不为零值，则添加条件
 func Omit[T any](v T, fn func(T) F[T]) F[T] {
 	if reflect.ValueOf(v).IsZero() {
 		return NewEmptyF(v)
@@ -300,7 +325,7 @@ func Omit[T any](v T, fn func(T) F[T]) F[T] {
 	return fn(v)
 }
 
-// Omits 如果值为空，则不添加条件
+// Omits 如果不为空，则添加条件
 func Omits[T any](v []T, fn func([]T) F[[]T]) F[[]T] {
 	if len(v) == 0 {
 		return NewEmptyF(v)
