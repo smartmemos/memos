@@ -36,6 +36,10 @@ func registerHandlers(container do.Injector) http.Handler {
 		mux.Handle(path, serviceHandler)
 	}
 	{
+		path, serviceHandler := v2pb.NewWebhookServiceHandler(do.MustInvoke[*v2api.WebhookService](container), options...)
+		mux.Handle(path, serviceHandler)
+	}
+	{
 		path, serviceHandler := v2pb.NewMarkdownServiceHandler(do.MustInvoke[*v2api.MarkdownService](container), options...)
 		mux.Handle(path, serviceHandler)
 	}
