@@ -263,8 +263,65 @@ func convertUserSessionToProto(session *model.UserSession) *modelpb.UserSession 
 	}
 }
 
-func convertUserSettingToProto(setting *model.UserSetting) *modelpb.UserSetting {
-	return &modelpb.UserSetting{
-		Name: setting.Key,
+func convertUserAccessToken(token *model.UserAccessToken) *modelpb.UserAccessToken {
+	return &modelpb.UserAccessToken{
+		Name:        token.Name,
+		AccessToken: token.AccessToken,
+		Description: token.Description,
+		IssuedAt:    timestamppb.New(token.IssuedAt),
+		ExpiresAt:   timestamppb.New(token.ExpiresAt),
 	}
+}
+
+func convertUserWebhook(webhook *model.UserWebhook) *modelpb.UserWebhook {
+	return &modelpb.UserWebhook{
+		Name:        webhook.Name,
+		Url:         webhook.URL,
+		DisplayName: webhook.DisplayName,
+		CreateTime:  timestamppb.New(webhook.CreateTime),
+		UpdateTime:  timestamppb.New(webhook.UpdateTime),
+	}
+}
+
+func convertUserSettingGeneralSetting(setting *model.GeneralUserSetting) *modelpb.UserSetting_GeneralSetting {
+	return &modelpb.UserSetting_GeneralSetting{
+		Locale:         setting.Locale,
+		Appearance:     setting.Appearance,
+		MemoVisibility: setting.MemoVisibility,
+		Theme:          setting.Theme,
+	}
+}
+
+func convertUserSettingToProto(setting *model.UserSetting) *modelpb.UserSetting {
+	info := &modelpb.UserSetting{Name: setting.Key}
+	if setting.Value.GeneralUserSetting != nil {
+		info.Value = &modelpb.UserSetting_GeneralSetting_{
+			GeneralSetting: convertUserSettingGeneralSetting(setting.Value.GeneralUserSetting),
+		}
+	} else if setting.Value.SessionsUserSetting != nil {
+		info.Value = &modelpb.UserSetting_SessionsSetting_{
+			SessionsSetting: &modelpb.UserSetting_SessionsSetting{
+				Sessions: lo.Map(setting.Value.SessionsUserSetting.Sessions, func(session *model.UserSession, _ int) *modelpb.UserSession {
+					return convertUserSessionToProto(session)
+				}),
+			},
+		}
+	} else if setting.Value.AccessTokensUserSetting != nil {
+		info.Value = &modelpb.UserSetting_AccessTokensSetting_{
+			AccessTokensSetting: &modelpb.UserSetting_AccessTokensSetting{
+				AccessTokens: lo.Map(setting.Value.AccessTokensUserSetting.AccessTokens, func(token *model.UserAccessToken, _ int) *modelpb.UserAccessToken {
+					return convertUserAccessToken(token)
+				}),
+			},
+		}
+	} else if setting.Value.WebhooksUserSetting != nil {
+		info.Value = &modelpb.UserSetting_WebhooksSetting_{
+			WebhooksSetting: &modelpb.UserSetting_WebhooksSetting{
+				Webhooks: lo.Map(setting.Value.WebhooksUserSetting.Webhooks, func(webhook *model.UserWebhook, _ int) *modelpb.UserWebhook {
+					return convertUserWebhook(webhook)
+				}),
+			},
+		}
+	}
+	return info
 }
