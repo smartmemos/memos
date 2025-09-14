@@ -58,8 +58,7 @@ type MemoFilter struct {
 	VisibilityList  db.F[[]Visibility]
 }
 
-// MemoRequest is the request for the memo.
-type MemoRequest struct {
+type ListMemosRequest struct {
 	db.Query
 
 	ID              int64
@@ -71,30 +70,13 @@ type MemoRequest struct {
 	ExcludeComments bool
 }
 
-func (req *MemoRequest) ToFilter() *MemoFilter {
-	filter := &MemoFilter{Query: req.Query}
-	if req.ID != 0 {
-		filter.ID = db.Eq(req.ID)
-	}
-	if len(req.IDs) > 0 {
-		filter.IDs = db.In(req.IDs)
-	}
-	if req.Status != "" {
-		filter.RowStatus = db.Eq(req.Status)
-	}
-	if req.UID != "" {
-		filter.UID = db.Eq(req.UID)
-	}
-	if len(req.VisibilityList) > 0 {
-		filter.VisibilityList = db.In(req.VisibilityList)
-	}
-	if req.ExcludeContent {
-		filter.ExcludeContent = db.Eq(true)
-	}
-	if req.ExcludeComments {
-		filter.ExcludeComments = db.Eq(true)
-	}
-	return filter
+// GetMemoRequest is the request for the memo.
+type GetMemoRequest struct {
+	ID             int64
+	IDs            []int64
+	UID            string
+	Status         RowStatus
+	VisibilityList []Visibility
 }
 
 type CreateMemoRequest struct {
@@ -106,4 +88,8 @@ type UpdateMemoRequest struct {
 	UpdateMask []string
 	Memo       *Memo
 	Location   *MemoPayloadLocation
+}
+
+type DeleteMemoRequest struct {
+	UID string
 }

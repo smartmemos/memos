@@ -130,8 +130,29 @@ func (s *Service) TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 	}
 }
 
-func (s *Service) ListMemos(ctx context.Context, req *model.MemoRequest) (total int64, list []*model.Memo, err error) {
-	filter := req.ToFilter()
+func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (total int64, list []*model.Memo, err error) {
+	filter := &model.MemoFilter{Query: req.Query}
+	if req.ID != 0 {
+		filter.ID = db.Eq(req.ID)
+	}
+	if len(req.IDs) > 0 {
+		filter.IDs = db.In(req.IDs)
+	}
+	if req.Status != "" {
+		filter.RowStatus = db.Eq(req.Status)
+	}
+	if req.UID != "" {
+		filter.UID = db.Eq(req.UID)
+	}
+	if len(req.VisibilityList) > 0 {
+		filter.VisibilityList = db.In(req.VisibilityList)
+	}
+	if req.ExcludeContent {
+		filter.ExcludeContent = db.Eq(true)
+	}
+	if req.ExcludeComments {
+		filter.ExcludeComments = db.Eq(true)
+	}
 	total, err = s.dao.CountMemos(ctx, filter)
 	if err != nil {
 		return
@@ -164,8 +185,9 @@ func (s *Service) ListMemos(ctx context.Context, req *model.MemoRequest) (total 
 	return
 }
 
-func (s *Service) GetMemo(ctx context.Context, req *model.MemoRequest) (memo *model.Memo, err error) {
-	memo, err = s.dao.FindMemo(ctx, req.ToFilter())
+func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (memo *model.Memo, err error) {
+	filter := &model.MemoFilter{UID: db.Eq(req.UID)}
+	memo, err = s.dao.FindMemo(ctx, filter)
 	return
 }
 
@@ -221,7 +243,8 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 	return
 }
 
-func (s *Service) DeleteMemo(ctx context.Context, req *model.MemoRequest) (err error) {
-	err = s.dao.DeleteMemos(ctx, req.ToFilter())
+// DeleteMemo 删除 memo
+func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
+	err = s.dao.DeleteMemos(ctx, &model.MemoFilter{UID: db.Eq(req.UID)})
 	return
 }

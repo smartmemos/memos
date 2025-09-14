@@ -23,13 +23,13 @@ type Service interface {
 	// CreateMemo creates a memo.
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
 	// ListMemos lists the memos.
-	ListMemos(ctx context.Context, req *model.MemoRequest) (int64, []*model.Memo, error)
+	ListMemos(ctx context.Context, req *model.ListMemosRequest) (int64, []*model.Memo, error)
 	// GetMemo gets a memo by ID.
-	GetMemo(ctx context.Context, req *model.MemoRequest) (*model.Memo, error)
+	GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error)
 	// UpdateMemo updates a memo.
 	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error)
 	// DeleteMemo deletes a memo.
-	DeleteMemo(ctx context.Context, req *model.MemoRequest) error
+	DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error
 
 	// UpsertReaction upserts a memo reaction.
 	UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error)

@@ -79,7 +79,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 		pageSize = int(request.Msg.PageSize)
 		page = 1
 	}
-	var req = &model.MemoRequest{
+	var req = &model.ListMemosRequest{
 		Query: db.NewQuery(db.WithPage(page), db.WithPageSize(pageSize)),
 	}
 
@@ -127,7 +127,7 @@ func (s *MemoService) ListMemos(ctx context.Context, request *connect.Request[v2
 
 func (s *MemoService) GetMemo(ctx context.Context, request *connect.Request[v2pb.GetMemoRequest]) (response *connect.Response[modelpb.Memo], err error) {
 	uid := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
-	memo, err := s.memosService.GetMemo(ctx, &model.MemoRequest{UID: uid})
+	memo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: uid})
 	if err != nil {
 		return
 	}
@@ -245,7 +245,7 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *connect.Request[v
 }
 
 func (s *MemoService) DeleteMemo(ctx context.Context, request *connect.Request[v2pb.DeleteMemoRequest]) (response *connect.Response[emptypb.Empty], err error) {
-	err = s.memosService.DeleteMemo(ctx, &model.MemoRequest{
+	err = s.memosService.DeleteMemo(ctx, &model.DeleteMemoRequest{
 		UID: strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix),
 	})
 	if err != nil {
@@ -287,7 +287,7 @@ func convertMemoToProto(memo *model.Memo) (info *modelpb.Memo, err error) {
 }
 
 func (s *MemoService) convertMemoRelationToProto(ctx context.Context, memoRelation *model.MemoRelation) (*modelpb.MemoRelation, error) {
-	_, memos, err := s.memosService.ListMemos(ctx, &model.MemoRequest{
+	_, memos, err := s.memosService.ListMemos(ctx, &model.ListMemosRequest{
 		IDs: []int64{memoRelation.MemoID, memoRelation.RelatedMemoID},
 	})
 	if err != nil {
@@ -417,7 +417,7 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *connect.Re
 		return
 	}
 	memoUID := strings.TrimPrefix(request.Msg.Name, model.MemoNamePrefix)
-	relatedMemo, err := s.memosService.GetMemo(ctx, &model.MemoRequest{UID: memoUID})
+	relatedMemo, err := s.memosService.GetMemo(ctx, &model.GetMemoRequest{UID: memoUID})
 	if err != nil {
 		err = errors.Errorf("invalid memo name: %v", err)
 		return
