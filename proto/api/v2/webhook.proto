@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "model/webhook.proto";
+
+package api.v2;
+option go_package = "github.com/smartmemos/memos/internal/proto/api/v2";
+
+service WebhookService {
+  // ListWebhooks returns a list of webhooks for a user.
+  rpc ListWebhooks(ListWebhooksRequest) returns (ListWebhooksResponse) {}
+
+  // GetWebhook gets a webhook by name.
+  rpc GetWebhook(GetWebhookRequest) returns (model.Webhook) {}
+
+  // CreateWebhook creates a new webhook for a user.
+  rpc CreateWebhook(CreateWebhookRequest) returns (model.Webhook) {}
+
+  // UpdateWebhook updates a webhook for a user.
+  rpc UpdateWebhook(UpdateWebhookRequest) returns (model.Webhook) {}
+
+  // DeleteWebhook deletes a webhook for a user.
+  rpc DeleteWebhook(DeleteWebhookRequest) returns (google.protobuf.Empty) {}
+}
+
+message ListWebhooksRequest {
+  // Required. The parent resource where webhooks are listed.
+  // Format: users/{user}
+  string parent = 1;
+}
+
+message ListWebhooksResponse {
+  // The list of webhooks.
+  repeated model.Webhook webhooks = 1;
+}
+
+message GetWebhookRequest {
+  // Required. The resource name of the webhook to retrieve.
+  // Format: users/{user}/webhooks/{webhook}
+  string name = 1;
+}
+
+message CreateWebhookRequest {
+  // Required. The parent resource where this webhook will be created.
+  // Format: users/{user}
+  string parent = 1;
+
+  // Required. The webhook to create.
+  model.Webhook webhook = 2;
+
+  // Optional. If set, validate the request, but do not actually create the webhook.
+  bool validate_only = 3;
+}
+
+message UpdateWebhookRequest {
+  // Required. The webhook resource which replaces the resource on the server.
+  model.Webhook webhook = 1;
+
+  // Optional. The list of fields to update.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteWebhookRequest {
+  // Required. The resource name of the webhook to delete.
+  // Format: users/{user}/webhooks/{webhook}
+  string name = 1;
+}

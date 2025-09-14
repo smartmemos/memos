@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/field_behavior.proto";
+import "model/common.proto";
+
+package model;
+option go_package = "github.com/smartmemos/memos/internal/proto/model";
+
+message Webhook {
+  // The resource name of the webhook.
+  // Format: users/{user}/webhooks/{webhook}
+  string name = 1;
+
+  // The display name of the webhook.
+  string display_name = 2;
+
+  // The target URL for the webhook.
+  string url = 3;
+}

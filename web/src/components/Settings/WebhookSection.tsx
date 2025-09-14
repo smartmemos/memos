@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { userServiceClient } from "@/grpcweb";
+import { userServiceClient as userServiceClientV2 } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { UserWebhook } from "@/types/proto/api/v1/user_service";
 import { useTranslate } from "@/utils/i18n";
@@ -16,7 +17,7 @@ const WebhookSection = () => {
 
   const listWebhooks = async () => {
     if (!currentUser) return [];
-    const { webhooks } = await userServiceClient.listUserWebhooks({
+    const { webhooks } = await userServiceClientV2.listUserWebhooks({
       parent: currentUser.name,
     });
     return webhooks;
@@ -37,7 +38,7 @@ const WebhookSection = () => {
   const handleDeleteWebhook = async (webhook: UserWebhook) => {
     const confirmed = window.confirm(`Are you sure to delete webhook \`${webhook.displayName}\`? You cannot undo this action.`);
     if (confirmed) {
-      await userServiceClient.deleteUserWebhook({ name: webhook.name });
+      await userServiceClientV2.deleteUserWebhook({ name: webhook.name });
       setWebhooks(webhooks.filter((item) => item.name !== webhook.name));
     }
   };

@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { userServiceClient } from "@/grpcweb";
+import { userServiceClient as userServiceClientV2 } from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useLoading from "@/hooks/useLoading";
 import { useTranslate } from "@/utils/i18n";
@@ -35,7 +36,7 @@ function CreateWebhookDialog({ open, onOpenChange, webhookName, onSuccess }: Pro
     if (webhookName && currentUser) {
       // For editing, we need to get the webhook data
       // Since we're using user webhooks now, we need to list all webhooks and find the one we want
-      userServiceClient
+      userServiceClientV2
         .listUserWebhooks({
           parent: currentUser.name,
         })

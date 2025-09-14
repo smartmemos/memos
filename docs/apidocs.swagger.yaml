@@ -8,6 +8,7 @@ tags:
   - name: MarkdownService
   - name: MemoService
   - name: UserService
+  - name: WebhookService
   - name: WorkspaceService
 consumes:
   - application/json
@@ -1026,6 +1027,20 @@ definitions:
       - PROTECTED
       - PUBLIC
     default: VISIBILITY_UNSPECIFIED
+  modelWebhook:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the webhook.
+          Format: users/{user}/webhooks/{webhook}
+      displayName:
+        type: string
+        description: The display name of the webhook.
+      url:
+        type: string
+        description: The target URL for the webhook.
   modelWorkspaceProfile:
     type: object
     properties:
@@ -1223,6 +1238,15 @@ definitions:
         type: integer
         format: int32
         description: The total count of users (may be approximate).
+  v2ListWebhooksResponse:
+    type: object
+    properties:
+      webhooks:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelWebhook'
+        description: The list of webhooks.
   v2ParseMarkdownResponse:
     type: object
     properties:
