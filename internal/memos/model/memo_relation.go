@@ -17,7 +17,7 @@ type MemoRelationFilter struct {
 	db.Query
 
 	MemoID        db.F[int64]
-	MemoIDs       db.F[[]int64] `gorm:"memo_id"`
+	MemoIDs       db.F[[]int64] `gorm:"column:memo_id"`
 	RelatedMemoID db.F[int64]
 	Type          db.F[RelationType]
 }

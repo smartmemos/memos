@@ -4,6 +4,7 @@ import (
 	"github.com/smartmemos/memos/internal/pkg/db"
 )
 
+// Reaction 表情
 type Reaction struct {
 	db.Model
 
@@ -22,7 +23,7 @@ type ReactionFilter struct {
 	ID           db.F[int64]
 	CreatorID    db.F[int32]
 	ContentID    db.F[string]
-	ContentIDs   db.F[[]string] `gorm:"content_id"`
+	ContentIDs   db.F[[]string] `gorm:"column:content_id"`
 	ReactionType db.F[string]
 }
 

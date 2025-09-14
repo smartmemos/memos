@@ -47,7 +47,7 @@ type MemoFilter struct {
 	db.Query
 
 	ID              db.F[int64]
-	IDs             db.F[[]int64] `gorm:"id"`
+	IDs             db.F[[]int64] `gorm:"column:id"`
 	UID             db.F[string]
 	Pid             db.F[int64]
 	ParentIDs       db.F[[]int64]
