@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { userServiceClient } from "@/grpcweb";
+import { userServiceClient as userServiceClientV2} from "@/grpc";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useDialog } from "@/hooks/useDialog";
 import { UserAccessToken } from "@/types/proto/api/v1/user_service";
@@ -12,7 +13,7 @@ import CreateAccessTokenDialog from "../CreateAccessTokenDialog";
 import LearnMore from "../LearnMore";
 
 const listAccessTokens = async (parent: string) => {
-  const { accessTokens } = await userServiceClient.listUserAccessTokens({ parent });
+  const { accessTokens } = await userServiceClientV2.listUserAccessTokens({ parent });
   return accessTokens.sort((a, b) => (b.issuedAt?.getTime() ?? 0) - (a.issuedAt?.getTime() ?? 0));
 };
 

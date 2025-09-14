@@ -39,6 +39,9 @@ service UserService {
   
   // RevokeUserSession revokes a specific session for a user.
   rpc RevokeUserSession(RevokeUserSessionRequest) returns (google.protobuf.Empty) {}
+
+    // ListUserAccessTokens returns a list of access tokens for a user.
+  rpc ListUserAccessTokens(ListUserAccessTokensRequest) returns (ListUserAccessTokensResponse) {}
 }
 
 message CreateUserRequest {
@@ -222,4 +225,27 @@ message RevokeUserSessionRequest {
   // Required. The resource name of the session to revoke.
   // Format: users/{user}/sessions/{session}
   string name = 1;
+}
+
+message ListUserAccessTokensRequest {
+  // Required. The parent resource whose access tokens will be listed.
+  // Format: users/{user}
+  string parent = 1;
+
+  // Optional. The maximum number of access tokens to return.
+  int32 page_size = 2;
+
+  // Optional. A page token for pagination.
+  string page_token = 3;
+}
+
+message ListUserAccessTokensResponse {
+  // The list of access tokens.
+  repeated model.UserAccessToken access_tokens = 1;
+
+  // A token for the next page of results.
+  string next_page_token = 2;
+
+  // The total count of access tokens.
+  int32 total_size = 3;
 }

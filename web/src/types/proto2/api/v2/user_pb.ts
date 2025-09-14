@@ -8,7 +8,7 @@ import type { EmptySchema, FieldMask, Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { UserSession } from "../../model/user_session_pb";
 import { file_model_user_session } from "../../model/user_session_pb";
-import type { UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
+import type { UserAccessToken, UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
 import { file_model_user_setting } from "../../model/user_setting_pb";
 import type { User, UserSchema } from "../../model/user_pb";
 import { file_model_user } from "../../model/user_pb";
@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIk0KDkdldFVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLQoJcmVhZF9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJKChJTZWFyY2hVc2Vyc1JlcXVlc3QSDQoFcXVlcnkYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkiXgoTU2VhcmNoVXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUicQoQTGlzdFVzZXJzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSEgoKcGFnZV90b2tlbhgCIAEoCRIOCgZmaWx0ZXIYAyABKAkSEAoIb3JkZXJfYnkYBCABKAkSFAoMc2hvd19kZWxldGVkGAUgASgIIlwKEUxpc3RVc2Vyc1Jlc3BvbnNlEhoKBXVzZXJzGAEgAygLMgsubW9kZWwuVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIjChNHZXRVc2VyU3RhdHNSZXF1ZXN0EgwKBG5hbWUYASABKAkihgMKCVVzZXJTdGF0cxIMCgRuYW1lGAEgASgJEjsKF21lbW9fZGlzcGxheV90aW1lc3RhbXBzGAIgAygLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI4Cg9tZW1vX3R5cGVfc3RhdHMYAyABKAsyHy5hcGkudjIuVXNlclN0YXRzLk1lbW9UeXBlU3RhdHMSMgoJdGFnX2NvdW50GAQgAygLMh8uYXBpLnYyLlVzZXJTdGF0cy5UYWdDb3VudEVudHJ5EhQKDHBpbm5lZF9tZW1vcxgFIAMoCRIYChB0b3RhbF9tZW1vX2NvdW50GAYgASgFGi8KDVRhZ0NvdW50RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ARpfCg1NZW1vVHlwZVN0YXRzEhIKCmxpbmtfY291bnQYASABKAUSEgoKY29kZV9jb3VudBgCIAEoBRISCgp0b2RvX2NvdW50GAMgASgFEhIKCnVuZG9fY291bnQYBCABKAUiJQoVR2V0VXNlclNldHRpbmdSZXF1ZXN0EgwKBG5hbWUYASABKAkicAoYVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0EiMKB3NldHRpbmcYASABKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siUAoXTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIm0KGExpc3RVc2VyU2V0dGluZ3NSZXNwb25zZRIkCghzZXR0aW5ncxgBIAMoCzISLm1vZGVsLlVzZXJTZXR0aW5nEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFIikKF0xpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCSJAChhMaXN0VXNlclNlc3Npb25zUmVzcG9uc2USJAoIc2Vzc2lvbnMYASADKAsyEi5tb2RlbC5Vc2VyU2Vzc2lvbiIoChhSZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QSDAoEbmFtZRgBIAEoCTKWBgoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABI2CgpVcGRhdGVVc2VyEhkuYXBpLnYyLlVwZGF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjAKB0dldFVzZXISFi5hcGkudjIuR2V0VXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASSAoLU2VhcmNoVXNlcnMSGi5hcGkudjIuU2VhcmNoVXNlcnNSZXF1ZXN0GhsuYXBpLnYyLlNlYXJjaFVzZXJzUmVzcG9uc2UiABJCCglMaXN0VXNlcnMSGC5hcGkudjIuTGlzdFVzZXJzUmVxdWVzdBoZLmFwaS52Mi5MaXN0VXNlcnNSZXNwb25zZSIAEkAKDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhEuYXBpLnYyLlVzZXJTdGF0cyIAEkUKDkdldFVzZXJTZXR0aW5nEh0uYXBpLnYyLkdldFVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASSwoRVXBkYXRlVXNlclNldHRpbmcSIC5hcGkudjIuVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAElcKEExpc3RVc2VyU2Vzc2lvbnMSHy5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlIgASTwoRUmV2b2tlVXNlclNlc3Npb24SIC5hcGkudjIuUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIk0KDkdldFVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLQoJcmVhZF9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJKChJTZWFyY2hVc2Vyc1JlcXVlc3QSDQoFcXVlcnkYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkiXgoTU2VhcmNoVXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUicQoQTGlzdFVzZXJzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSEgoKcGFnZV90b2tlbhgCIAEoCRIOCgZmaWx0ZXIYAyABKAkSEAoIb3JkZXJfYnkYBCABKAkSFAoMc2hvd19kZWxldGVkGAUgASgIIlwKEUxpc3RVc2Vyc1Jlc3BvbnNlEhoKBXVzZXJzGAEgAygLMgsubW9kZWwuVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIjChNHZXRVc2VyU3RhdHNSZXF1ZXN0EgwKBG5hbWUYASABKAkihgMKCVVzZXJTdGF0cxIMCgRuYW1lGAEgASgJEjsKF21lbW9fZGlzcGxheV90aW1lc3RhbXBzGAIgAygLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI4Cg9tZW1vX3R5cGVfc3RhdHMYAyABKAsyHy5hcGkudjIuVXNlclN0YXRzLk1lbW9UeXBlU3RhdHMSMgoJdGFnX2NvdW50GAQgAygLMh8uYXBpLnYyLlVzZXJTdGF0cy5UYWdDb3VudEVudHJ5EhQKDHBpbm5lZF9tZW1vcxgFIAMoCRIYChB0b3RhbF9tZW1vX2NvdW50GAYgASgFGi8KDVRhZ0NvdW50RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ARpfCg1NZW1vVHlwZVN0YXRzEhIKCmxpbmtfY291bnQYASABKAUSEgoKY29kZV9jb3VudBgCIAEoBRISCgp0b2RvX2NvdW50GAMgASgFEhIKCnVuZG9fY291bnQYBCABKAUiJQoVR2V0VXNlclNldHRpbmdSZXF1ZXN0EgwKBG5hbWUYASABKAkicAoYVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0EiMKB3NldHRpbmcYASABKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siUAoXTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIm0KGExpc3RVc2VyU2V0dGluZ3NSZXNwb25zZRIkCghzZXR0aW5ncxgBIAMoCzISLm1vZGVsLlVzZXJTZXR0aW5nEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFIikKF0xpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCSJAChhMaXN0VXNlclNlc3Npb25zUmVzcG9uc2USJAoIc2Vzc2lvbnMYASADKAsyEi5tb2RlbC5Vc2VyU2Vzc2lvbiIoChhSZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QSDAoEbmFtZRgBIAEoCSJUChtMaXN0VXNlckFjY2Vzc1Rva2Vuc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJInoKHExpc3RVc2VyQWNjZXNzVG9rZW5zUmVzcG9uc2USLQoNYWNjZXNzX3Rva2VucxgBIAMoCzIWLm1vZGVsLlVzZXJBY2Nlc3NUb2tlbhIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBTL7BgoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABI2CgpVcGRhdGVVc2VyEhkuYXBpLnYyLlVwZGF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjAKB0dldFVzZXISFi5hcGkudjIuR2V0VXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASSAoLU2VhcmNoVXNlcnMSGi5hcGkudjIuU2VhcmNoVXNlcnNSZXF1ZXN0GhsuYXBpLnYyLlNlYXJjaFVzZXJzUmVzcG9uc2UiABJCCglMaXN0VXNlcnMSGC5hcGkudjIuTGlzdFVzZXJzUmVxdWVzdBoZLmFwaS52Mi5MaXN0VXNlcnNSZXNwb25zZSIAEkAKDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhEuYXBpLnYyLlVzZXJTdGF0cyIAEkUKDkdldFVzZXJTZXR0aW5nEh0uYXBpLnYyLkdldFVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASSwoRVXBkYXRlVXNlclNldHRpbmcSIC5hcGkudjIuVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJXChBMaXN0VXNlclNldHRpbmdzEh8uYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2V0dGluZ3NSZXNwb25zZSIAElcKEExpc3RVc2VyU2Vzc2lvbnMSHy5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlIgASTwoRUmV2b2tlVXNlclNlc3Npb24SIC5hcGkudjIuUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASYwoUTGlzdFVzZXJBY2Nlc3NUb2tlbnMSIy5hcGkudjIuTGlzdFVzZXJBY2Nlc3NUb2tlbnNSZXF1ZXN0GiQuYXBpLnYyLkxpc3RVc2VyQWNjZXNzVG9rZW5zUmVzcG9uc2UiAEIzWjFnaXRodWIuY29tL3NtYXJ0bWVtb3MvbWVtb3MvaW50ZXJuYWwvcHJvdG8vYXBpL3YyYgZwcm90bzM", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -548,6 +548,73 @@ export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest
   messageDesc(file_api_v2_user, 15);
 
 /**
+ * @generated from message api.v2.ListUserAccessTokensRequest
+ */
+export type ListUserAccessTokensRequest = Message<"api.v2.ListUserAccessTokensRequest"> & {
+  /**
+   * Required. The parent resource whose access tokens will be listed.
+   * Format: users/{user}
+   *
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * Optional. The maximum number of access tokens to return.
+   *
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * Optional. A page token for pagination.
+   *
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+};
+
+/**
+ * Describes the message api.v2.ListUserAccessTokensRequest.
+ * Use `create(ListUserAccessTokensRequestSchema)` to create a new message.
+ */
+export const ListUserAccessTokensRequestSchema: GenMessage<ListUserAccessTokensRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 16);
+
+/**
+ * @generated from message api.v2.ListUserAccessTokensResponse
+ */
+export type ListUserAccessTokensResponse = Message<"api.v2.ListUserAccessTokensResponse"> & {
+  /**
+   * The list of access tokens.
+   *
+   * @generated from field: repeated model.UserAccessToken access_tokens = 1;
+   */
+  accessTokens: UserAccessToken[];
+
+  /**
+   * A token for the next page of results.
+   *
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+
+  /**
+   * The total count of access tokens.
+   *
+   * @generated from field: int32 total_size = 3;
+   */
+  totalSize: number;
+};
+
+/**
+ * Describes the message api.v2.ListUserAccessTokensResponse.
+ * Use `create(ListUserAccessTokensResponseSchema)` to create a new message.
+ */
+export const ListUserAccessTokensResponseSchema: GenMessage<ListUserAccessTokensResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 17);
+
+/**
  * @generated from service api.v2.UserService
  */
 export const UserService: GenService<{
@@ -660,6 +727,16 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof RevokeUserSessionRequestSchema;
     output: typeof EmptySchema;
+  },
+  /**
+   * ListUserAccessTokens returns a list of access tokens for a user.
+   *
+   * @generated from rpc api.v2.UserService.ListUserAccessTokens
+   */
+  listUserAccessTokens: {
+    methodKind: "unary";
+    input: typeof ListUserAccessTokensRequestSchema;
+    output: typeof ListUserAccessTokensResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_user, 0);

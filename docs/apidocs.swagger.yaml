@@ -1192,6 +1192,22 @@ definitions:
         type: integer
         format: int32
         description: The total count of memos (may be approximate).
+  v2ListUserAccessTokensResponse:
+    type: object
+    properties:
+      accessTokens:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserAccessToken'
+        description: The list of access tokens.
+      nextPageToken:
+        type: string
+        description: A token for the next page of results.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of access tokens.
   v2ListUserSessionsResponse:
     type: object
     properties:

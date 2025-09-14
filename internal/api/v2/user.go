@@ -225,6 +225,10 @@ func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Req
 	return
 }
 
+func (s *UserService) ListUserAccessTokens(ctx context.Context, request *connect.Request[v2pb.ListUserAccessTokensRequest]) (response *connect.Response[v2pb.ListUserAccessTokensResponse], err error) {
+	return
+}
+
 func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
 	parts := strings.Split(request.Msg.Name, "/")
 	if len(parts) != 4 || parts[0] != "users" || parts[2] != "sessions" {

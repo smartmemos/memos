@@ -977,6 +977,133 @@ func (x *RevokeUserSessionRequest) GetName() string {
 	return ""
 }
 
+type ListUserAccessTokensRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Required. The parent resource whose access tokens will be listed.
+	// Format: users/{user}
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	// Optional. The maximum number of access tokens to return.
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Optional. A page token for pagination.
+	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserAccessTokensRequest) Reset() {
+	*x = ListUserAccessTokensRequest{}
+	mi := &file_api_v2_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserAccessTokensRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserAccessTokensRequest) ProtoMessage() {}
+
+func (x *ListUserAccessTokensRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserAccessTokensRequest.ProtoReflect.Descriptor instead.
+func (*ListUserAccessTokensRequest) Descriptor() ([]byte, []int) {
+	return file_api_v2_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ListUserAccessTokensRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListUserAccessTokensRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListUserAccessTokensRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListUserAccessTokensResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The list of access tokens.
+	AccessTokens []*model.UserAccessToken `protobuf:"bytes,1,rep,name=access_tokens,json=accessTokens,proto3" json:"access_tokens,omitempty"`
+	// A token for the next page of results.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	// The total count of access tokens.
+	TotalSize     int32 `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserAccessTokensResponse) Reset() {
+	*x = ListUserAccessTokensResponse{}
+	mi := &file_api_v2_user_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserAccessTokensResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserAccessTokensResponse) ProtoMessage() {}
+
+func (x *ListUserAccessTokensResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v2_user_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserAccessTokensResponse.ProtoReflect.Descriptor instead.
+func (*ListUserAccessTokensResponse) Descriptor() ([]byte, []int) {
+	return file_api_v2_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ListUserAccessTokensResponse) GetAccessTokens() []*model.UserAccessToken {
+	if x != nil {
+		return x.AccessTokens
+	}
+	return nil
+}
+
+func (x *ListUserAccessTokensResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+func (x *ListUserAccessTokensResponse) GetTotalSize() int32 {
+	if x != nil {
+		return x.TotalSize
+	}
+	return 0
+}
+
 // Memo type statistics.
 type UserStats_MemoTypeStats struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -990,7 +1117,7 @@ type UserStats_MemoTypeStats struct {
 
 func (x *UserStats_MemoTypeStats) Reset() {
 	*x = UserStats_MemoTypeStats{}
-	mi := &file_api_v2_user_proto_msgTypes[17]
+	mi := &file_api_v2_user_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1002,7 +1129,7 @@ func (x *UserStats_MemoTypeStats) String() string {
 func (*UserStats_MemoTypeStats) ProtoMessage() {}
 
 func (x *UserStats_MemoTypeStats) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v2_user_proto_msgTypes[17]
+	mi := &file_api_v2_user_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1125,7 +1252,17 @@ const file_api_v2_user_proto_rawDesc = "" +
 	"\x18ListUserSessionsResponse\x12.\n" +
 	"\bsessions\x18\x01 \x03(\v2\x12.model.UserSessionR\bsessions\".\n" +
 	"\x18RevokeUserSessionRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name2\x96\x06\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"q\n" +
+	"\x1bListUserAccessTokensRequest\x12\x16\n" +
+	"\x06parent\x18\x01 \x01(\tR\x06parent\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa2\x01\n" +
+	"\x1cListUserAccessTokensResponse\x12;\n" +
+	"\raccess_tokens\x18\x01 \x03(\v2\x16.model.UserAccessTokenR\faccessTokens\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1d\n" +
+	"\n" +
+	"total_size\x18\x03 \x01(\x05R\ttotalSize2\xfb\x06\n" +
 	"\vUserService\x126\n" +
 	"\n" +
 	"CreateUser\x12\x19.api.v2.CreateUserRequest\x1a\v.model.User\"\x00\x126\n" +
@@ -1139,7 +1276,8 @@ const file_api_v2_user_proto_rawDesc = "" +
 	"\x11UpdateUserSetting\x12 .api.v2.UpdateUserSettingRequest\x1a\x12.model.UserSetting\"\x00\x12W\n" +
 	"\x10ListUserSettings\x12\x1f.api.v2.ListUserSettingsRequest\x1a .api.v2.ListUserSettingsResponse\"\x00\x12W\n" +
 	"\x10ListUserSessions\x12\x1f.api.v2.ListUserSessionsRequest\x1a .api.v2.ListUserSessionsResponse\"\x00\x12O\n" +
-	"\x11RevokeUserSession\x12 .api.v2.RevokeUserSessionRequest\x1a\x16.google.protobuf.Empty\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
+	"\x11RevokeUserSession\x12 .api.v2.RevokeUserSessionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12c\n" +
+	"\x14ListUserAccessTokens\x12#.api.v2.ListUserAccessTokensRequest\x1a$.api.v2.ListUserAccessTokensResponse\"\x00B3Z1github.com/smartmemos/memos/internal/proto/api/v2b\x06proto3"
 
 var (
 	file_api_v2_user_proto_rawDescOnce sync.Once
@@ -1153,74 +1291,80 @@ func file_api_v2_user_proto_rawDescGZIP() []byte {
 	return file_api_v2_user_proto_rawDescData
 }
 
-var file_api_v2_user_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_api_v2_user_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_api_v2_user_proto_goTypes = []any{
-	(*CreateUserRequest)(nil),        // 0: api.v2.CreateUserRequest
-	(*UpdateUserRequest)(nil),        // 1: api.v2.UpdateUserRequest
-	(*GetUserRequest)(nil),           // 2: api.v2.GetUserRequest
-	(*SearchUsersRequest)(nil),       // 3: api.v2.SearchUsersRequest
-	(*SearchUsersResponse)(nil),      // 4: api.v2.SearchUsersResponse
-	(*ListUsersRequest)(nil),         // 5: api.v2.ListUsersRequest
-	(*ListUsersResponse)(nil),        // 6: api.v2.ListUsersResponse
-	(*GetUserStatsRequest)(nil),      // 7: api.v2.GetUserStatsRequest
-	(*UserStats)(nil),                // 8: api.v2.UserStats
-	(*GetUserSettingRequest)(nil),    // 9: api.v2.GetUserSettingRequest
-	(*UpdateUserSettingRequest)(nil), // 10: api.v2.UpdateUserSettingRequest
-	(*ListUserSettingsRequest)(nil),  // 11: api.v2.ListUserSettingsRequest
-	(*ListUserSettingsResponse)(nil), // 12: api.v2.ListUserSettingsResponse
-	(*ListUserSessionsRequest)(nil),  // 13: api.v2.ListUserSessionsRequest
-	(*ListUserSessionsResponse)(nil), // 14: api.v2.ListUserSessionsResponse
-	(*RevokeUserSessionRequest)(nil), // 15: api.v2.RevokeUserSessionRequest
-	nil,                              // 16: api.v2.UserStats.TagCountEntry
-	(*UserStats_MemoTypeStats)(nil),  // 17: api.v2.UserStats.MemoTypeStats
-	(*model.User)(nil),               // 18: model.User
-	(*fieldmaskpb.FieldMask)(nil),    // 19: google.protobuf.FieldMask
-	(*timestamppb.Timestamp)(nil),    // 20: google.protobuf.Timestamp
-	(*model.UserSetting)(nil),        // 21: model.UserSetting
-	(*model.UserSession)(nil),        // 22: model.UserSession
-	(*emptypb.Empty)(nil),            // 23: google.protobuf.Empty
+	(*CreateUserRequest)(nil),            // 0: api.v2.CreateUserRequest
+	(*UpdateUserRequest)(nil),            // 1: api.v2.UpdateUserRequest
+	(*GetUserRequest)(nil),               // 2: api.v2.GetUserRequest
+	(*SearchUsersRequest)(nil),           // 3: api.v2.SearchUsersRequest
+	(*SearchUsersResponse)(nil),          // 4: api.v2.SearchUsersResponse
+	(*ListUsersRequest)(nil),             // 5: api.v2.ListUsersRequest
+	(*ListUsersResponse)(nil),            // 6: api.v2.ListUsersResponse
+	(*GetUserStatsRequest)(nil),          // 7: api.v2.GetUserStatsRequest
+	(*UserStats)(nil),                    // 8: api.v2.UserStats
+	(*GetUserSettingRequest)(nil),        // 9: api.v2.GetUserSettingRequest
+	(*UpdateUserSettingRequest)(nil),     // 10: api.v2.UpdateUserSettingRequest
+	(*ListUserSettingsRequest)(nil),      // 11: api.v2.ListUserSettingsRequest
+	(*ListUserSettingsResponse)(nil),     // 12: api.v2.ListUserSettingsResponse
+	(*ListUserSessionsRequest)(nil),      // 13: api.v2.ListUserSessionsRequest
+	(*ListUserSessionsResponse)(nil),     // 14: api.v2.ListUserSessionsResponse
+	(*RevokeUserSessionRequest)(nil),     // 15: api.v2.RevokeUserSessionRequest
+	(*ListUserAccessTokensRequest)(nil),  // 16: api.v2.ListUserAccessTokensRequest
+	(*ListUserAccessTokensResponse)(nil), // 17: api.v2.ListUserAccessTokensResponse
+	nil,                                  // 18: api.v2.UserStats.TagCountEntry
+	(*UserStats_MemoTypeStats)(nil),      // 19: api.v2.UserStats.MemoTypeStats
+	(*model.User)(nil),                   // 20: model.User
+	(*fieldmaskpb.FieldMask)(nil),        // 21: google.protobuf.FieldMask
+	(*timestamppb.Timestamp)(nil),        // 22: google.protobuf.Timestamp
+	(*model.UserSetting)(nil),            // 23: model.UserSetting
+	(*model.UserSession)(nil),            // 24: model.UserSession
+	(*model.UserAccessToken)(nil),        // 25: model.UserAccessToken
+	(*emptypb.Empty)(nil),                // 26: google.protobuf.Empty
 }
 var file_api_v2_user_proto_depIdxs = []int32{
-	18, // 0: api.v2.CreateUserRequest.user:type_name -> model.User
-	18, // 1: api.v2.UpdateUserRequest.user:type_name -> model.User
-	19, // 2: api.v2.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
-	19, // 3: api.v2.GetUserRequest.read_mask:type_name -> google.protobuf.FieldMask
-	18, // 4: api.v2.SearchUsersResponse.users:type_name -> model.User
-	18, // 5: api.v2.ListUsersResponse.users:type_name -> model.User
-	20, // 6: api.v2.UserStats.memo_display_timestamps:type_name -> google.protobuf.Timestamp
-	17, // 7: api.v2.UserStats.memo_type_stats:type_name -> api.v2.UserStats.MemoTypeStats
-	16, // 8: api.v2.UserStats.tag_count:type_name -> api.v2.UserStats.TagCountEntry
-	21, // 9: api.v2.UpdateUserSettingRequest.setting:type_name -> model.UserSetting
-	19, // 10: api.v2.UpdateUserSettingRequest.update_mask:type_name -> google.protobuf.FieldMask
-	21, // 11: api.v2.ListUserSettingsResponse.settings:type_name -> model.UserSetting
-	22, // 12: api.v2.ListUserSessionsResponse.sessions:type_name -> model.UserSession
-	0,  // 13: api.v2.UserService.CreateUser:input_type -> api.v2.CreateUserRequest
-	1,  // 14: api.v2.UserService.UpdateUser:input_type -> api.v2.UpdateUserRequest
-	2,  // 15: api.v2.UserService.GetUser:input_type -> api.v2.GetUserRequest
-	3,  // 16: api.v2.UserService.SearchUsers:input_type -> api.v2.SearchUsersRequest
-	5,  // 17: api.v2.UserService.ListUsers:input_type -> api.v2.ListUsersRequest
-	7,  // 18: api.v2.UserService.GetUserStats:input_type -> api.v2.GetUserStatsRequest
-	9,  // 19: api.v2.UserService.GetUserSetting:input_type -> api.v2.GetUserSettingRequest
-	10, // 20: api.v2.UserService.UpdateUserSetting:input_type -> api.v2.UpdateUserSettingRequest
-	11, // 21: api.v2.UserService.ListUserSettings:input_type -> api.v2.ListUserSettingsRequest
-	13, // 22: api.v2.UserService.ListUserSessions:input_type -> api.v2.ListUserSessionsRequest
-	15, // 23: api.v2.UserService.RevokeUserSession:input_type -> api.v2.RevokeUserSessionRequest
-	18, // 24: api.v2.UserService.CreateUser:output_type -> model.User
-	18, // 25: api.v2.UserService.UpdateUser:output_type -> model.User
-	18, // 26: api.v2.UserService.GetUser:output_type -> model.User
-	4,  // 27: api.v2.UserService.SearchUsers:output_type -> api.v2.SearchUsersResponse
-	6,  // 28: api.v2.UserService.ListUsers:output_type -> api.v2.ListUsersResponse
-	8,  // 29: api.v2.UserService.GetUserStats:output_type -> api.v2.UserStats
-	21, // 30: api.v2.UserService.GetUserSetting:output_type -> model.UserSetting
-	21, // 31: api.v2.UserService.UpdateUserSetting:output_type -> model.UserSetting
-	12, // 32: api.v2.UserService.ListUserSettings:output_type -> api.v2.ListUserSettingsResponse
-	14, // 33: api.v2.UserService.ListUserSessions:output_type -> api.v2.ListUserSessionsResponse
-	23, // 34: api.v2.UserService.RevokeUserSession:output_type -> google.protobuf.Empty
-	24, // [24:35] is the sub-list for method output_type
-	13, // [13:24] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	20, // 0: api.v2.CreateUserRequest.user:type_name -> model.User
+	20, // 1: api.v2.UpdateUserRequest.user:type_name -> model.User
+	21, // 2: api.v2.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
+	21, // 3: api.v2.GetUserRequest.read_mask:type_name -> google.protobuf.FieldMask
+	20, // 4: api.v2.SearchUsersResponse.users:type_name -> model.User
+	20, // 5: api.v2.ListUsersResponse.users:type_name -> model.User
+	22, // 6: api.v2.UserStats.memo_display_timestamps:type_name -> google.protobuf.Timestamp
+	19, // 7: api.v2.UserStats.memo_type_stats:type_name -> api.v2.UserStats.MemoTypeStats
+	18, // 8: api.v2.UserStats.tag_count:type_name -> api.v2.UserStats.TagCountEntry
+	23, // 9: api.v2.UpdateUserSettingRequest.setting:type_name -> model.UserSetting
+	21, // 10: api.v2.UpdateUserSettingRequest.update_mask:type_name -> google.protobuf.FieldMask
+	23, // 11: api.v2.ListUserSettingsResponse.settings:type_name -> model.UserSetting
+	24, // 12: api.v2.ListUserSessionsResponse.sessions:type_name -> model.UserSession
+	25, // 13: api.v2.ListUserAccessTokensResponse.access_tokens:type_name -> model.UserAccessToken
+	0,  // 14: api.v2.UserService.CreateUser:input_type -> api.v2.CreateUserRequest
+	1,  // 15: api.v2.UserService.UpdateUser:input_type -> api.v2.UpdateUserRequest
+	2,  // 16: api.v2.UserService.GetUser:input_type -> api.v2.GetUserRequest
+	3,  // 17: api.v2.UserService.SearchUsers:input_type -> api.v2.SearchUsersRequest
+	5,  // 18: api.v2.UserService.ListUsers:input_type -> api.v2.ListUsersRequest
+	7,  // 19: api.v2.UserService.GetUserStats:input_type -> api.v2.GetUserStatsRequest
+	9,  // 20: api.v2.UserService.GetUserSetting:input_type -> api.v2.GetUserSettingRequest
+	10, // 21: api.v2.UserService.UpdateUserSetting:input_type -> api.v2.UpdateUserSettingRequest
+	11, // 22: api.v2.UserService.ListUserSettings:input_type -> api.v2.ListUserSettingsRequest
+	13, // 23: api.v2.UserService.ListUserSessions:input_type -> api.v2.ListUserSessionsRequest
+	15, // 24: api.v2.UserService.RevokeUserSession:input_type -> api.v2.RevokeUserSessionRequest
+	16, // 25: api.v2.UserService.ListUserAccessTokens:input_type -> api.v2.ListUserAccessTokensRequest
+	20, // 26: api.v2.UserService.CreateUser:output_type -> model.User
+	20, // 27: api.v2.UserService.UpdateUser:output_type -> model.User
+	20, // 28: api.v2.UserService.GetUser:output_type -> model.User
+	4,  // 29: api.v2.UserService.SearchUsers:output_type -> api.v2.SearchUsersResponse
+	6,  // 30: api.v2.UserService.ListUsers:output_type -> api.v2.ListUsersResponse
+	8,  // 31: api.v2.UserService.GetUserStats:output_type -> api.v2.UserStats
+	23, // 32: api.v2.UserService.GetUserSetting:output_type -> model.UserSetting
+	23, // 33: api.v2.UserService.UpdateUserSetting:output_type -> model.UserSetting
+	12, // 34: api.v2.UserService.ListUserSettings:output_type -> api.v2.ListUserSettingsResponse
+	14, // 35: api.v2.UserService.ListUserSessions:output_type -> api.v2.ListUserSessionsResponse
+	26, // 36: api.v2.UserService.RevokeUserSession:output_type -> google.protobuf.Empty
+	17, // 37: api.v2.UserService.ListUserAccessTokens:output_type -> api.v2.ListUserAccessTokensResponse
+	26, // [26:38] is the sub-list for method output_type
+	14, // [14:26] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_user_proto_init() }
@@ -1234,7 +1378,7 @@ func file_api_v2_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v2_user_proto_rawDesc), len(file_api_v2_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

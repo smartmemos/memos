@@ -62,6 +62,9 @@ const (
 	// UserServiceRevokeUserSessionProcedure is the fully-qualified name of the UserService's
 	// RevokeUserSession RPC.
 	UserServiceRevokeUserSessionProcedure = "/api.v2.UserService/RevokeUserSession"
+	// UserServiceListUserAccessTokensProcedure is the fully-qualified name of the UserService's
+	// ListUserAccessTokens RPC.
+	UserServiceListUserAccessTokensProcedure = "/api.v2.UserService/ListUserAccessTokens"
 )
 
 // UserServiceClient is a client for the api.v2.UserService service.
@@ -88,6 +91,8 @@ type UserServiceClient interface {
 	ListUserSessions(context.Context, *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error)
 	// RevokeUserSession revokes a specific session for a user.
 	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
+	// ListUserAccessTokens returns a list of access tokens for a user.
+	ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the api.v2.UserService service. By default, it uses
@@ -167,22 +172,29 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("RevokeUserSession")),
 			connect.WithClientOptions(opts...),
 		),
+		listUserAccessTokens: connect.NewClient[ListUserAccessTokensRequest, ListUserAccessTokensResponse](
+			httpClient,
+			baseURL+UserServiceListUserAccessTokensProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ListUserAccessTokens")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	createUser        *connect.Client[CreateUserRequest, model.User]
-	updateUser        *connect.Client[UpdateUserRequest, model.User]
-	getUser           *connect.Client[GetUserRequest, model.User]
-	searchUsers       *connect.Client[SearchUsersRequest, SearchUsersResponse]
-	listUsers         *connect.Client[ListUsersRequest, ListUsersResponse]
-	getUserStats      *connect.Client[GetUserStatsRequest, UserStats]
-	getUserSetting    *connect.Client[GetUserSettingRequest, model.UserSetting]
-	updateUserSetting *connect.Client[UpdateUserSettingRequest, model.UserSetting]
-	listUserSettings  *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
-	listUserSessions  *connect.Client[ListUserSessionsRequest, ListUserSessionsResponse]
-	revokeUserSession *connect.Client[RevokeUserSessionRequest, emptypb.Empty]
+	createUser           *connect.Client[CreateUserRequest, model.User]
+	updateUser           *connect.Client[UpdateUserRequest, model.User]
+	getUser              *connect.Client[GetUserRequest, model.User]
+	searchUsers          *connect.Client[SearchUsersRequest, SearchUsersResponse]
+	listUsers            *connect.Client[ListUsersRequest, ListUsersResponse]
+	getUserStats         *connect.Client[GetUserStatsRequest, UserStats]
+	getUserSetting       *connect.Client[GetUserSettingRequest, model.UserSetting]
+	updateUserSetting    *connect.Client[UpdateUserSettingRequest, model.UserSetting]
+	listUserSettings     *connect.Client[ListUserSettingsRequest, ListUserSettingsResponse]
+	listUserSessions     *connect.Client[ListUserSessionsRequest, ListUserSessionsResponse]
+	revokeUserSession    *connect.Client[RevokeUserSessionRequest, emptypb.Empty]
+	listUserAccessTokens *connect.Client[ListUserAccessTokensRequest, ListUserAccessTokensResponse]
 }
 
 // CreateUser calls api.v2.UserService.CreateUser.
@@ -240,6 +252,11 @@ func (c *userServiceClient) RevokeUserSession(ctx context.Context, req *connect.
 	return c.revokeUserSession.CallUnary(ctx, req)
 }
 
+// ListUserAccessTokens calls api.v2.UserService.ListUserAccessTokens.
+func (c *userServiceClient) ListUserAccessTokens(ctx context.Context, req *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error) {
+	return c.listUserAccessTokens.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the api.v2.UserService service.
 type UserServiceHandler interface {
 	// CreateUser creates a new user.
@@ -264,6 +281,8 @@ type UserServiceHandler interface {
 	ListUserSessions(context.Context, *connect.Request[ListUserSessionsRequest]) (*connect.Response[ListUserSessionsResponse], error)
 	// RevokeUserSession revokes a specific session for a user.
 	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
+	// ListUserAccessTokens returns a list of access tokens for a user.
+	ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -339,6 +358,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("RevokeUserSession")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceListUserAccessTokensHandler := connect.NewUnaryHandler(
+		UserServiceListUserAccessTokensProcedure,
+		svc.ListUserAccessTokens,
+		connect.WithSchema(userServiceMethods.ByName("ListUserAccessTokens")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceCreateUserProcedure:
@@ -363,6 +388,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceListUserSessionsHandler.ServeHTTP(w, r)
 		case UserServiceRevokeUserSessionProcedure:
 			userServiceRevokeUserSessionHandler.ServeHTTP(w, r)
+		case UserServiceListUserAccessTokensProcedure:
+			userServiceListUserAccessTokensHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -414,4 +441,8 @@ func (UnimplementedUserServiceHandler) ListUserSessions(context.Context, *connec
 
 func (UnimplementedUserServiceHandler) RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.RevokeUserSession is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.ListUserAccessTokens is not implemented"))
 }
