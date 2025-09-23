@@ -50,7 +50,7 @@ type MemoFilter struct {
 	IDs             db.F[[]int64] `gorm:"column:id"`
 	UID             db.F[string]
 	Pid             db.F[int64]
-	ParentIDs       db.F[[]int64]
+	ParentIDs       db.F[[]int64] `gorm:"column:parent_id"`
 	CreatorID       db.F[int64]
 	ExcludeComments db.F[bool]
 	ExcludeContent  db.F[bool]
