@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { userStore } from "@/store";
-import { Visibility } from "@/types/proto/api/v1/memo_service";
+import { Visibility as Visibility2 } from "@/types/proto2/model/common_pb"
 import { UserSetting_GeneralSetting } from "@/types/proto/api/v1/user_service";
 import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityFromString, convertVisibilityToString } from "@/utils/memo";
@@ -71,7 +71,7 @@ const PreferencesSection = observer(() => {
             </div>
           </SelectTrigger>
           <SelectContent>
-            {[Visibility.PRIVATE, Visibility.PROTECTED, Visibility.PUBLIC]
+            {[Visibility2.PRIVATE, Visibility2.PROTECTED, Visibility2.PUBLIC]
               .map((v) => convertVisibilityToString(v))
               .map((item) => (
                 <SelectItem key={item} value={item} className="whitespace-nowrap">
