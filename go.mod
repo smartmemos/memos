@@ -1,8 +1,6 @@
 module github.com/smartmemos/memos
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.4
 
 require (
 	connectrpc.com/authn v0.2.0
