@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { userStore } from "@/store";
 import { Visibility as Visibility2 } from "@/types/proto2/model/common_pb"
-import { UserSetting_GeneralSetting } from "@/types/proto/api/v1/user_service";
+import { UserSetting_GeneralSetting as UserSetting_GeneralSetting2 } from "@/types/proto2/model/user_setting_pb";
 import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityFromString, convertVisibilityToString } from "@/utils/memo";
 import AppearanceSelect from "../AppearanceSelect";
@@ -33,10 +33,10 @@ const PreferencesSection = observer(() => {
   };
 
   // Provide default values if setting is not loaded yet
-  const setting: UserSetting_GeneralSetting = generalSetting || {
+  const setting: UserSetting_GeneralSetting2 = generalSetting || {
     locale: "en",
     appearance: "system",
-    memoVisibility: "PRIVATE",
+    memoVisibility: Visibility2.PRIVATE,
     theme: "",
   };
 

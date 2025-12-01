@@ -996,6 +996,39 @@ definitions:
           This references a CSS file in the web/public/themes/ directory.
           If not set, the default theme will be used.
     description: General user settings configuration.
+  modelUserStats:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The resource name of the user whose stats these are.
+          Format: users/{user}
+      memoDisplayTimestamps:
+        type: array
+        items:
+          type: string
+          format: date-time
+        description: The timestamps when the memos were displayed.
+      memoTypeStats:
+        $ref: '#/definitions/UserStatsMemoTypeStats'
+        description: The stats of memo types.
+      tagCount:
+        type: object
+        additionalProperties:
+          type: integer
+          format: int32
+        description: The count of tags.
+      pinnedMemos:
+        type: array
+        items:
+          type: string
+        description: The pinned memos of the user.
+      totalMemoCount:
+        type: integer
+        format: int32
+        description: Total memo count.
+    title: User statistics messages
   modelUserWebhook:
     type: object
     properties:
@@ -1140,6 +1173,22 @@ definitions:
         description: |-
           Last time the session was accessed.
           Used for sliding expiration calculation (last_accessed_time + 2 weeks).
+  v2ListAllUserStatsResponse:
+    type: object
+    properties:
+      userStats:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserStats'
+        description: The list of user statistics.
+      nextPageToken:
+        type: string
+        description: A token for the next page of results.
+      totalSize:
+        type: integer
+        format: int32
+        description: The total count of user statistics.
   v2ListInboxesResponse:
     type: object
     properties:
@@ -1288,36 +1337,3 @@ definitions:
         type: integer
         format: int32
         description: The total count of matching users.
-  v2UserStats:
-    type: object
-    properties:
-      name:
-        type: string
-        title: |-
-          The resource name of the user whose stats these are.
-          Format: users/{user}
-      memoDisplayTimestamps:
-        type: array
-        items:
-          type: string
-          format: date-time
-        description: The timestamps when the memos were displayed.
-      memoTypeStats:
-        $ref: '#/definitions/UserStatsMemoTypeStats'
-        description: The stats of memo types.
-      tagCount:
-        type: object
-        additionalProperties:
-          type: integer
-          format: int32
-        description: The count of tags.
-      pinnedMemos:
-        type: array
-        items:
-          type: string
-        description: The pinned memos of the user.
-      totalMemoCount:
-        type: integer
-        format: int32
-        description: Total memo count.
-    title: User statistics messages

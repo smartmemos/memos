@@ -117,7 +117,7 @@ func (s *UserService) ListUsers(ctx context.Context, request *connect.Request[v2
 }
 
 // GetUserStats returns statistics for a specific user.
-func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[v2pb.UserStats], err error) {
+func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request[v2pb.GetUserStatsRequest]) (response *connect.Response[modelpb.UserStats], err error) {
 	logrus.Info("req: ", request.Msg)
 	// userID, err := strconv.ParseInt(req.Msg.Name, 10, 64)
 	// if err != nil {
@@ -127,7 +127,7 @@ func (s *UserService) GetUserStats(ctx context.Context, request *connect.Request
 	// if err != nil {
 	// 	return
 	// }
-	response = connect.NewResponse(&v2pb.UserStats{
+	response = connect.NewResponse(&modelpb.UserStats{
 		Name: request.Msg.Name,
 	})
 	return

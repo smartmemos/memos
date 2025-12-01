@@ -207,6 +207,167 @@ func (x *User) GetUpdateAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// User statistics messages
+type UserStats struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The resource name of the user whose stats these are.
+	// Format: users/{user}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The timestamps when the memos were displayed.
+	MemoDisplayTimestamps []*timestamppb.Timestamp `protobuf:"bytes,2,rep,name=memo_display_timestamps,json=memoDisplayTimestamps,proto3" json:"memo_display_timestamps,omitempty"`
+	// The stats of memo types.
+	MemoTypeStats *UserStats_MemoTypeStats `protobuf:"bytes,3,opt,name=memo_type_stats,json=memoTypeStats,proto3" json:"memo_type_stats,omitempty"`
+	// The count of tags.
+	TagCount map[string]int32 `protobuf:"bytes,4,rep,name=tag_count,json=tagCount,proto3" json:"tag_count,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	// The pinned memos of the user.
+	PinnedMemos []string `protobuf:"bytes,5,rep,name=pinned_memos,json=pinnedMemos,proto3" json:"pinned_memos,omitempty"`
+	// Total memo count.
+	TotalMemoCount int32 `protobuf:"varint,6,opt,name=total_memo_count,json=totalMemoCount,proto3" json:"total_memo_count,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserStats) Reset() {
+	*x = UserStats{}
+	mi := &file_model_user_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserStats) ProtoMessage() {}
+
+func (x *UserStats) ProtoReflect() protoreflect.Message {
+	mi := &file_model_user_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserStats.ProtoReflect.Descriptor instead.
+func (*UserStats) Descriptor() ([]byte, []int) {
+	return file_model_user_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UserStats) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UserStats) GetMemoDisplayTimestamps() []*timestamppb.Timestamp {
+	if x != nil {
+		return x.MemoDisplayTimestamps
+	}
+	return nil
+}
+
+func (x *UserStats) GetMemoTypeStats() *UserStats_MemoTypeStats {
+	if x != nil {
+		return x.MemoTypeStats
+	}
+	return nil
+}
+
+func (x *UserStats) GetTagCount() map[string]int32 {
+	if x != nil {
+		return x.TagCount
+	}
+	return nil
+}
+
+func (x *UserStats) GetPinnedMemos() []string {
+	if x != nil {
+		return x.PinnedMemos
+	}
+	return nil
+}
+
+func (x *UserStats) GetTotalMemoCount() int32 {
+	if x != nil {
+		return x.TotalMemoCount
+	}
+	return 0
+}
+
+// Memo type statistics.
+type UserStats_MemoTypeStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LinkCount     int32                  `protobuf:"varint,1,opt,name=link_count,json=linkCount,proto3" json:"link_count,omitempty"`
+	CodeCount     int32                  `protobuf:"varint,2,opt,name=code_count,json=codeCount,proto3" json:"code_count,omitempty"`
+	TodoCount     int32                  `protobuf:"varint,3,opt,name=todo_count,json=todoCount,proto3" json:"todo_count,omitempty"`
+	UndoCount     int32                  `protobuf:"varint,4,opt,name=undo_count,json=undoCount,proto3" json:"undo_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserStats_MemoTypeStats) Reset() {
+	*x = UserStats_MemoTypeStats{}
+	mi := &file_model_user_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserStats_MemoTypeStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserStats_MemoTypeStats) ProtoMessage() {}
+
+func (x *UserStats_MemoTypeStats) ProtoReflect() protoreflect.Message {
+	mi := &file_model_user_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserStats_MemoTypeStats.ProtoReflect.Descriptor instead.
+func (*UserStats_MemoTypeStats) Descriptor() ([]byte, []int) {
+	return file_model_user_proto_rawDescGZIP(), []int{1, 1}
+}
+
+func (x *UserStats_MemoTypeStats) GetLinkCount() int32 {
+	if x != nil {
+		return x.LinkCount
+	}
+	return 0
+}
+
+func (x *UserStats_MemoTypeStats) GetCodeCount() int32 {
+	if x != nil {
+		return x.CodeCount
+	}
+	return 0
+}
+
+func (x *UserStats_MemoTypeStats) GetTodoCount() int32 {
+	if x != nil {
+		return x.TodoCount
+	}
+	return 0
+}
+
+func (x *UserStats_MemoTypeStats) GetUndoCount() int32 {
+	if x != nil {
+		return x.UndoCount
+	}
+	return 0
+}
+
 var File_model_user_proto protoreflect.FileDescriptor
 
 const file_model_user_proto_rawDesc = "" +
@@ -231,7 +392,26 @@ const file_model_user_proto_rawDesc = "" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HOST\x10\x01\x12\t\n" +
 	"\x05ADMIN\x10\x02\x12\b\n" +
-	"\x04USER\x10\x03B2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
+	"\x04USER\x10\x03\"\x90\x04\n" +
+	"\tUserStats\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12R\n" +
+	"\x17memo_display_timestamps\x18\x02 \x03(\v2\x1a.google.protobuf.TimestampR\x15memoDisplayTimestamps\x12F\n" +
+	"\x0fmemo_type_stats\x18\x03 \x01(\v2\x1e.model.UserStats.MemoTypeStatsR\rmemoTypeStats\x12;\n" +
+	"\ttag_count\x18\x04 \x03(\v2\x1e.model.UserStats.TagCountEntryR\btagCount\x12!\n" +
+	"\fpinned_memos\x18\x05 \x03(\tR\vpinnedMemos\x12(\n" +
+	"\x10total_memo_count\x18\x06 \x01(\x05R\x0etotalMemoCount\x1a;\n" +
+	"\rTagCountEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\x1a\x8b\x01\n" +
+	"\rMemoTypeStats\x12\x1d\n" +
+	"\n" +
+	"link_count\x18\x01 \x01(\x05R\tlinkCount\x12\x1d\n" +
+	"\n" +
+	"code_count\x18\x02 \x01(\x05R\tcodeCount\x12\x1d\n" +
+	"\n" +
+	"todo_count\x18\x03 \x01(\x05R\ttodoCount\x12\x1d\n" +
+	"\n" +
+	"undo_count\x18\x04 \x01(\x05R\tundoCountB2Z0github.com/smartmemos/memos/internal/proto/modelb\x06proto3"
 
 var (
 	file_model_user_proto_rawDescOnce sync.Once
@@ -246,23 +426,29 @@ func file_model_user_proto_rawDescGZIP() []byte {
 }
 
 var file_model_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_model_user_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_model_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_model_user_proto_goTypes = []any{
-	(User_Role)(0),                // 0: model.User.Role
-	(*User)(nil),                  // 1: model.User
-	(State)(0),                    // 2: model.State
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(User_Role)(0),                  // 0: model.User.Role
+	(*User)(nil),                    // 1: model.User
+	(*UserStats)(nil),               // 2: model.UserStats
+	nil,                             // 3: model.UserStats.TagCountEntry
+	(*UserStats_MemoTypeStats)(nil), // 4: model.UserStats.MemoTypeStats
+	(State)(0),                      // 5: model.State
+	(*timestamppb.Timestamp)(nil),   // 6: google.protobuf.Timestamp
 }
 var file_model_user_proto_depIdxs = []int32{
 	0, // 0: model.User.role:type_name -> model.User.Role
-	2, // 1: model.User.state:type_name -> model.State
-	3, // 2: model.User.create_at:type_name -> google.protobuf.Timestamp
-	3, // 3: model.User.update_at:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 1: model.User.state:type_name -> model.State
+	6, // 2: model.User.create_at:type_name -> google.protobuf.Timestamp
+	6, // 3: model.User.update_at:type_name -> google.protobuf.Timestamp
+	6, // 4: model.UserStats.memo_display_timestamps:type_name -> google.protobuf.Timestamp
+	4, // 5: model.UserStats.memo_type_stats:type_name -> model.UserStats.MemoTypeStats
+	3, // 6: model.UserStats.tag_count:type_name -> model.UserStats.TagCountEntry
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_model_user_proto_init() }
@@ -277,7 +463,7 @@ func file_model_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_user_proto_rawDesc), len(file_model_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

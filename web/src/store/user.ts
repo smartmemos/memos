@@ -7,42 +7,37 @@ import { inboxServiceClient, userServiceClient } from "@/grpcweb";
 import { Inbox } from "@/types/proto/api/v1/inbox_service";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import {
-  User,
-  UserSetting,
   UserSetting_Key,
-  UserSetting_GeneralSetting,
-  UserSetting_SessionsSetting,
-  UserSetting_AccessTokensSetting,
-  UserSetting_WebhooksSetting,
-  UserStats,
 } from "@/types/proto/api/v1/user_service";
 import {
   User as UserV2,
+  UserStats as UserStatsV2,
 } from "@/types/proto2/model/user_pb";
 
 import {
   UserSetting as UserSettingV2,
+  UserSettingSchema,
   UserSetting_GeneralSetting as UserSetting_GeneralSettingV2,
   UserSetting_SessionsSetting as UserSetting_SessionsSettingV2,
   UserSetting_AccessTokensSetting as UserSetting_AccessTokensSettingV2,
   UserSetting_WebhooksSetting as UserSetting_WebhooksSettingV2,
 } from "@/types/proto2/model/user_setting_pb";
 
-
+import { create } from "@bufbuild/protobuf";
 import { FieldMask } from "@/types/proto/google/protobuf/field_mask";
 import { findNearestMatchedLanguage } from "@/utils/i18n";
 import workspaceStore from "./workspace";
 
 class LocalState {
   currentUser?: string;
-  userGeneralSetting?: UserSetting_GeneralSetting;
-  userSessionsSetting?: UserSetting_SessionsSetting;
-  userAccessTokensSetting?: UserSetting_AccessTokensSetting;
-  userWebhooksSetting?: UserSetting_WebhooksSetting;
+  userGeneralSetting?: UserSetting_GeneralSettingV2;
+  userSessionsSetting?: UserSetting_SessionsSettingV2;
+  userAccessTokensSetting?: UserSetting_AccessTokensSettingV2;
+  userWebhooksSetting?: UserSetting_WebhooksSettingV2;
   shortcuts: Shortcut[] = [];
   inboxes: Inbox[] = [];
   userMapByName: Record<string, UserV2> = {};
-  userStatsByName: Record<string, UserStats> = {};
+  userStatsByName: Record<string, UserStatsV2> = {};
 
   // The state id of user stats map.
   statsStateId = uniqueId();
@@ -123,7 +118,7 @@ const userStore = (() => {
   };
 
   const fetchUsers = async () => {
-    const { users } = await userServiceClient.listUsers({});
+    const { users } = await userServiceClientV2.listUsers({});
     const userMap = state.userMapByName;
     for (const user of users) {
       userMap[user.name] = user;
@@ -163,13 +158,13 @@ const userStore = (() => {
     }
 
     const settingName = `${state.currentUser}/settings/${UserSetting_Key.GENERAL}`;
-    const userSetting: UserSettingV2 = {
+    const userSetting = create(UserSettingSchema, {
       name: settingName,
       value: {
         case: "generalSetting",
         value: generalSetting as UserSetting_GeneralSettingV2,
       },
-    };
+    });
 
     const updatedUserSetting = await userServiceClientV2.updateUserSetting({
       setting: userSetting,
@@ -177,7 +172,7 @@ const userStore = (() => {
     });
 
     state.setPartial({
-      userGeneralSetting: updatedUserSetting.generalSetting,
+      userGeneralSetting: updatedUserSetting.value.value as UserSetting_GeneralSettingV2,
     });
   };
 
@@ -191,10 +186,10 @@ const userStore = (() => {
     console.log("get user setting", userSetting);
 
     state.setPartial({
-      userGeneralSetting: userSetting.generalSetting,
+      userGeneralSetting: userSetting.value.value as UserSetting_GeneralSettingV2,
     });
 
-    return userSetting.generalSetting;
+    return userSetting.value.value as UserSetting_GeneralSettingV2;
   };
 
   const fetchUserSettings = async () => {
@@ -206,10 +201,10 @@ const userStore = (() => {
     console.log("list user settings", settings);
 
     // Extract and store each setting type
-    const generalSetting = settings.find((s) => s.generalSetting)?.generalSetting;
-    const sessionsSetting = settings.find((s) => s.sessionsSetting)?.sessionsSetting;
-    const accessTokensSetting = settings.find((s) => s.accessTokensSetting)?.accessTokensSetting;
-    const webhooksSetting = settings.find((s) => s.webhooksSetting)?.webhooksSetting;
+    const generalSetting = settings.find((s) => s.value?.case === "generalSetting")?.value.value as UserSetting_GeneralSettingV2;
+    const sessionsSetting = settings.find((s) => s.value?.case === "sessionsSetting")?.value.value as UserSetting_SessionsSettingV2;
+    const accessTokensSetting = settings.find((s) => s.value?.case === "accessTokensSetting")?.value.value as UserSetting_AccessTokensSettingV2;
+    const webhooksSetting = settings.find((s) => s.value?.case === "webhooksSetting")?.value.value as UserSetting_WebhooksSettingV2;
 
     state.setPartial({
       userGeneralSetting: generalSetting,
@@ -260,11 +255,11 @@ const userStore = (() => {
   };
 
   const fetchUserStats = async (user?: string) => {
-    const userStatsByName: Record<string, UserStats> = {};
+    const userStatsByName: Record<string, UserStatsV2> = {};
     if (!user) {
-      const { stats } = await userServiceClient.listAllUserStats({});
-      for (const userStats of stats) {
-        userStatsByName[userStats.name] = userStats;
+      const { userStats } = await userServiceClientV2.listAllUserStats({});
+      for (const us of userStats) {
+        userStatsByName[us.name] = us;
       }
     } else {
       const userStats = await userServiceClientV2.getUserStats({ name: user });

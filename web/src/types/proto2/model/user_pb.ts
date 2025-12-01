@@ -15,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file model/user.proto.
  */
 export const file_model_user: GenFile = /*@__PURE__*/
-  fileDesc("ChBtb2RlbC91c2VyLnByb3RvEgVtb2RlbCLmAgoEVXNlchIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhAKCHVzZXJuYW1lGAMgASgJEh4KBHJvbGUYBCABKA4yEC5tb2RlbC5Vc2VyLlJvbGUSEAoIbmlja25hbWUYBSABKAkSDQoFZW1haWwYBiABKAkSEgoKYXZhdGFyX3VybBgHIAEoCRITCgtkZXNjcmlwdGlvbhgIIAEoCRIQCghwYXNzd29yZBgJIAEoCRIbCgVzdGF0ZRgKIAEoDjIMLm1vZGVsLlN0YXRlEi0KCWNyZWF0ZV9hdBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLQoJdXBkYXRlX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCI7CgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIICgRIT1NUEAESCQoFQURNSU4QAhIICgRVU0VSEANCMlowZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL21vZGVsYgZwcm90bzM", [file_google_protobuf_timestamp, file_google_api_field_behavior, file_model_common]);
+  fileDesc("ChBtb2RlbC91c2VyLnByb3RvEgVtb2RlbCLmAgoEVXNlchIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhAKCHVzZXJuYW1lGAMgASgJEh4KBHJvbGUYBCABKA4yEC5tb2RlbC5Vc2VyLlJvbGUSEAoIbmlja25hbWUYBSABKAkSDQoFZW1haWwYBiABKAkSEgoKYXZhdGFyX3VybBgHIAEoCRITCgtkZXNjcmlwdGlvbhgIIAEoCRIQCghwYXNzd29yZBgJIAEoCRIbCgVzdGF0ZRgKIAEoDjIMLm1vZGVsLlN0YXRlEi0KCWNyZWF0ZV9hdBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLQoJdXBkYXRlX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCI7CgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIICgRIT1NUEAESCQoFQURNSU4QAhIICgRVU0VSEAMihAMKCVVzZXJTdGF0cxIMCgRuYW1lGAEgASgJEjsKF21lbW9fZGlzcGxheV90aW1lc3RhbXBzGAIgAygLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI3Cg9tZW1vX3R5cGVfc3RhdHMYAyABKAsyHi5tb2RlbC5Vc2VyU3RhdHMuTWVtb1R5cGVTdGF0cxIxCgl0YWdfY291bnQYBCADKAsyHi5tb2RlbC5Vc2VyU3RhdHMuVGFnQ291bnRFbnRyeRIUCgxwaW5uZWRfbWVtb3MYBSADKAkSGAoQdG90YWxfbWVtb19jb3VudBgGIAEoBRovCg1UYWdDb3VudEVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoBToCOAEaXwoNTWVtb1R5cGVTdGF0cxISCgpsaW5rX2NvdW50GAEgASgFEhIKCmNvZGVfY291bnQYAiABKAUSEgoKdG9kb19jb3VudBgDIAEoBRISCgp1bmRvX2NvdW50GAQgASgFQjJaMGdpdGh1Yi5jb20vc21hcnRtZW1vcy9tZW1vcy9pbnRlcm5hbC9wcm90by9tb2RlbGIGcHJvdG8z", [file_google_protobuf_timestamp, file_google_api_field_behavior, file_model_common]);
 
 /**
  * @generated from message model.User
@@ -119,4 +119,95 @@ export enum User_Role {
  */
 export const User_RoleSchema: GenEnum<User_Role> = /*@__PURE__*/
   enumDesc(file_model_user, 0, 0);
+
+/**
+ * User statistics messages
+ *
+ * @generated from message model.UserStats
+ */
+export type UserStats = Message<"model.UserStats"> & {
+  /**
+   * The resource name of the user whose stats these are.
+   * Format: users/{user}
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * The timestamps when the memos were displayed.
+   *
+   * @generated from field: repeated google.protobuf.Timestamp memo_display_timestamps = 2;
+   */
+  memoDisplayTimestamps: Timestamp[];
+
+  /**
+   * The stats of memo types.
+   *
+   * @generated from field: model.UserStats.MemoTypeStats memo_type_stats = 3;
+   */
+  memoTypeStats?: UserStats_MemoTypeStats;
+
+  /**
+   * The count of tags.
+   *
+   * @generated from field: map<string, int32> tag_count = 4;
+   */
+  tagCount: { [key: string]: number };
+
+  /**
+   * The pinned memos of the user.
+   *
+   * @generated from field: repeated string pinned_memos = 5;
+   */
+  pinnedMemos: string[];
+
+  /**
+   * Total memo count.
+   *
+   * @generated from field: int32 total_memo_count = 6;
+   */
+  totalMemoCount: number;
+};
+
+/**
+ * Describes the message model.UserStats.
+ * Use `create(UserStatsSchema)` to create a new message.
+ */
+export const UserStatsSchema: GenMessage<UserStats> = /*@__PURE__*/
+  messageDesc(file_model_user, 1);
+
+/**
+ * Memo type statistics.
+ *
+ * @generated from message model.UserStats.MemoTypeStats
+ */
+export type UserStats_MemoTypeStats = Message<"model.UserStats.MemoTypeStats"> & {
+  /**
+   * @generated from field: int32 link_count = 1;
+   */
+  linkCount: number;
+
+  /**
+   * @generated from field: int32 code_count = 2;
+   */
+  codeCount: number;
+
+  /**
+   * @generated from field: int32 todo_count = 3;
+   */
+  todoCount: number;
+
+  /**
+   * @generated from field: int32 undo_count = 4;
+   */
+  undoCount: number;
+};
+
+/**
+ * Describes the message model.UserStats.MemoTypeStats.
+ * Use `create(UserStats_MemoTypeStatsSchema)` to create a new message.
+ */
+export const UserStats_MemoTypeStatsSchema: GenMessage<UserStats_MemoTypeStats> = /*@__PURE__*/
+  messageDesc(file_model_user, 1, 0);
 

@@ -27,3 +27,33 @@ message User {
   google.protobuf.Timestamp create_at = 11;
   google.protobuf.Timestamp update_at = 12;
 }
+
+// User statistics messages
+message UserStats {
+  // The resource name of the user whose stats these are.
+  // Format: users/{user}
+  string name = 1;
+
+  // The timestamps when the memos were displayed.
+  repeated google.protobuf.Timestamp memo_display_timestamps = 2;
+
+  // The stats of memo types.
+  MemoTypeStats memo_type_stats = 3;
+
+  // The count of tags.
+  map<string, int32> tag_count = 4;
+
+  // The pinned memos of the user.
+  repeated string pinned_memos = 5;
+
+  // Total memo count.
+  int32 total_memo_count = 6;
+
+  // Memo type statistics.
+  message MemoTypeStats {
+    int32 link_count = 1;
+    int32 code_count = 2;
+    int32 todo_count = 3;
+    int32 undo_count = 4;
+  }
+}
