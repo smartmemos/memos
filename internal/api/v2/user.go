@@ -226,7 +226,9 @@ func (s *UserService) ListUserSessions(ctx context.Context, request *connect.Req
 }
 
 func (s *UserService) ListUserAccessTokens(ctx context.Context, request *connect.Request[v2pb.ListUserAccessTokensRequest]) (response *connect.Response[v2pb.ListUserAccessTokensResponse], err error) {
-	return
+	return connect.NewResponse(&v2pb.ListUserAccessTokensResponse{
+		AccessTokens: []*modelpb.UserAccessToken{},
+	}), nil
 }
 
 func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Request[v2pb.RevokeUserSessionRequest]) (response *connect.Response[emptypb.Empty], err error) {
