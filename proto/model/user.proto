@@ -57,3 +57,4 @@ message UserStats {
     int32 undo_count = 4;
   }
 }
+

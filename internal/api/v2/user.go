@@ -253,6 +253,12 @@ func (s *UserService) RevokeUserSession(ctx context.Context, request *connect.Re
 	return
 }
 
+func (s *UserService) ListUserWebhooks(ctx context.Context, request *connect.Request[v2pb.ListUserWebhooksRequest]) (response *connect.Response[v2pb.ListUserWebhooksResponse], err error) {
+	return connect.NewResponse(&v2pb.ListUserWebhooksResponse{
+		Webhooks: []*modelpb.UserWebhook{},
+	}), nil
+}
+
 func convertUserSessionToProto(session *model.UserSession) *modelpb.UserSession {
 	return &modelpb.UserSession{
 		Name:             session.Name,

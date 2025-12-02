@@ -68,6 +68,9 @@ const (
 	// UserServiceListUserAccessTokensProcedure is the fully-qualified name of the UserService's
 	// ListUserAccessTokens RPC.
 	UserServiceListUserAccessTokensProcedure = "/api.v2.UserService/ListUserAccessTokens"
+	// UserServiceListUserWebhooksProcedure is the fully-qualified name of the UserService's
+	// ListUserWebhooks RPC.
+	UserServiceListUserWebhooksProcedure = "/api.v2.UserService/ListUserWebhooks"
 )
 
 // UserServiceClient is a client for the api.v2.UserService service.
@@ -98,6 +101,8 @@ type UserServiceClient interface {
 	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
 	// ListUserAccessTokens returns a list of access tokens for a user.
 	ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error)
+	// ListUserWebhooks returns a list of webhooks for a user.
+	ListUserWebhooks(context.Context, *connect.Request[ListUserWebhooksRequest]) (*connect.Response[ListUserWebhooksResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the api.v2.UserService service. By default, it uses
@@ -189,6 +194,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("ListUserAccessTokens")),
 			connect.WithClientOptions(opts...),
 		),
+		listUserWebhooks: connect.NewClient[ListUserWebhooksRequest, ListUserWebhooksResponse](
+			httpClient,
+			baseURL+UserServiceListUserWebhooksProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ListUserWebhooks")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -207,6 +218,7 @@ type userServiceClient struct {
 	listUserSessions     *connect.Client[ListUserSessionsRequest, ListUserSessionsResponse]
 	revokeUserSession    *connect.Client[RevokeUserSessionRequest, emptypb.Empty]
 	listUserAccessTokens *connect.Client[ListUserAccessTokensRequest, ListUserAccessTokensResponse]
+	listUserWebhooks     *connect.Client[ListUserWebhooksRequest, ListUserWebhooksResponse]
 }
 
 // CreateUser calls api.v2.UserService.CreateUser.
@@ -274,6 +286,11 @@ func (c *userServiceClient) ListUserAccessTokens(ctx context.Context, req *conne
 	return c.listUserAccessTokens.CallUnary(ctx, req)
 }
 
+// ListUserWebhooks calls api.v2.UserService.ListUserWebhooks.
+func (c *userServiceClient) ListUserWebhooks(ctx context.Context, req *connect.Request[ListUserWebhooksRequest]) (*connect.Response[ListUserWebhooksResponse], error) {
+	return c.listUserWebhooks.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the api.v2.UserService service.
 type UserServiceHandler interface {
 	// CreateUser creates a new user.
@@ -302,6 +319,8 @@ type UserServiceHandler interface {
 	RevokeUserSession(context.Context, *connect.Request[RevokeUserSessionRequest]) (*connect.Response[emptypb.Empty], error)
 	// ListUserAccessTokens returns a list of access tokens for a user.
 	ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error)
+	// ListUserWebhooks returns a list of webhooks for a user.
+	ListUserWebhooks(context.Context, *connect.Request[ListUserWebhooksRequest]) (*connect.Response[ListUserWebhooksResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -389,6 +408,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("ListUserAccessTokens")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceListUserWebhooksHandler := connect.NewUnaryHandler(
+		UserServiceListUserWebhooksProcedure,
+		svc.ListUserWebhooks,
+		connect.WithSchema(userServiceMethods.ByName("ListUserWebhooks")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v2.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceCreateUserProcedure:
@@ -417,6 +442,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceRevokeUserSessionHandler.ServeHTTP(w, r)
 		case UserServiceListUserAccessTokensProcedure:
 			userServiceListUserAccessTokensHandler.ServeHTTP(w, r)
+		case UserServiceListUserWebhooksProcedure:
+			userServiceListUserWebhooksHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -476,4 +503,8 @@ func (UnimplementedUserServiceHandler) RevokeUserSession(context.Context, *conne
 
 func (UnimplementedUserServiceHandler) ListUserAccessTokens(context.Context, *connect.Request[ListUserAccessTokensRequest]) (*connect.Response[ListUserAccessTokensResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.ListUserAccessTokens is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ListUserWebhooks(context.Context, *connect.Request[ListUserWebhooksRequest]) (*connect.Response[ListUserWebhooksResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v2.UserService.ListUserWebhooks is not implemented"))
 }

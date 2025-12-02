@@ -1285,6 +1285,15 @@ definitions:
         format: int32
         description: The total count of settings (may be approximate).
     description: Response message for ListUserSettings method.
+  v2ListUserWebhooksResponse:
+    type: object
+    properties:
+      webhooks:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/modelUserWebhook'
+        description: The list of webhooks.
   v2ListUsersResponse:
     type: object
     properties:

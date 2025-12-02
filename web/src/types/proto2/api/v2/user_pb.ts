@@ -8,7 +8,7 @@ import type { EmptySchema, FieldMask } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_field_mask, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { UserSession } from "../../model/user_session_pb";
 import { file_model_user_session } from "../../model/user_session_pb";
-import type { UserAccessToken, UserSetting, UserSettingSchema } from "../../model/user_setting_pb";
+import type { UserAccessToken, UserSetting, UserSettingSchema, UserWebhook } from "../../model/user_setting_pb";
 import { file_model_user_setting } from "../../model/user_setting_pb";
 import type { User, UserSchema, UserStats, UserStatsSchema } from "../../model/user_pb";
 import { file_model_user } from "../../model/user_pb";
@@ -18,7 +18,46 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v2/user.proto.
  */
 export const file_api_v2_user: GenFile = /*@__PURE__*/
-  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIi4KEUNyZWF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyInYKEVVwZGF0ZVVzZXJSZXF1ZXN0EhkKBHVzZXIYASABKAsyCy5tb2RlbC5Vc2VyEi8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzaxIVCg1hbGxvd19taXNzaW5nGAMgASgIIk0KDkdldFVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLQoJcmVhZF9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJKChJTZWFyY2hVc2Vyc1JlcXVlc3QSDQoFcXVlcnkYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkiXgoTU2VhcmNoVXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUicQoQTGlzdFVzZXJzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSEgoKcGFnZV90b2tlbhgCIAEoCRIOCgZmaWx0ZXIYAyABKAkSEAoIb3JkZXJfYnkYBCABKAkSFAoMc2hvd19kZWxldGVkGAUgASgIIlwKEUxpc3RVc2Vyc1Jlc3BvbnNlEhoKBXVzZXJzGAEgAygLMgsubW9kZWwuVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSJAChdMaXN0QWxsVXNlclN0YXRzUmVxdWVzdBIRCglwYWdlX3NpemUYASABKAUSEgoKcGFnZV90b2tlbhgCIAEoCSJtChhMaXN0QWxsVXNlclN0YXRzUmVzcG9uc2USJAoKdXNlcl9zdGF0cxgBIAMoCzIQLm1vZGVsLlVzZXJTdGF0cxIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIjChNHZXRVc2VyU3RhdHNSZXF1ZXN0EgwKBG5hbWUYASABKAkiJQoVR2V0VXNlclNldHRpbmdSZXF1ZXN0EgwKBG5hbWUYASABKAkicAoYVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0EiMKB3NldHRpbmcYASABKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siUAoXTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIm0KGExpc3RVc2VyU2V0dGluZ3NSZXNwb25zZRIkCghzZXR0aW5ncxgBIAMoCzISLm1vZGVsLlVzZXJTZXR0aW5nEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFIikKF0xpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCSJAChhMaXN0VXNlclNlc3Npb25zUmVzcG9uc2USJAoIc2Vzc2lvbnMYASADKAsyEi5tb2RlbC5Vc2VyU2Vzc2lvbiIoChhSZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QSDAoEbmFtZRgBIAEoCSJUChtMaXN0VXNlckFjY2Vzc1Rva2Vuc1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJInoKHExpc3RVc2VyQWNjZXNzVG9rZW5zUmVzcG9uc2USLQoNYWNjZXNzX3Rva2VucxgBIAMoCzIWLm1vZGVsLlVzZXJBY2Nlc3NUb2tlbhIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBTLTBwoLVXNlclNlcnZpY2USNgoKQ3JlYXRlVXNlchIZLmFwaS52Mi5DcmVhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABI2CgpVcGRhdGVVc2VyEhkuYXBpLnYyLlVwZGF0ZVVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEjAKB0dldFVzZXISFi5hcGkudjIuR2V0VXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASSAoLU2VhcmNoVXNlcnMSGi5hcGkudjIuU2VhcmNoVXNlcnNSZXF1ZXN0GhsuYXBpLnYyLlNlYXJjaFVzZXJzUmVzcG9uc2UiABJCCglMaXN0VXNlcnMSGC5hcGkudjIuTGlzdFVzZXJzUmVxdWVzdBoZLmFwaS52Mi5MaXN0VXNlcnNSZXNwb25zZSIAElcKEExpc3RBbGxVc2VyU3RhdHMSHy5hcGkudjIuTGlzdEFsbFVzZXJTdGF0c1JlcXVlc3QaIC5hcGkudjIuTGlzdEFsbFVzZXJTdGF0c1Jlc3BvbnNlIgASPwoMR2V0VXNlclN0YXRzEhsuYXBpLnYyLkdldFVzZXJTdGF0c1JlcXVlc3QaEC5tb2RlbC5Vc2VyU3RhdHMiABJFCg5HZXRVc2VyU2V0dGluZxIdLmFwaS52Mi5HZXRVc2VyU2V0dGluZ1JlcXVlc3QaEi5tb2RlbC5Vc2VyU2V0dGluZyIAEksKEVVwZGF0ZVVzZXJTZXR0aW5nEiAuYXBpLnYyLlVwZGF0ZVVzZXJTZXR0aW5nUmVxdWVzdBoSLm1vZGVsLlVzZXJTZXR0aW5nIgASVwoQTGlzdFVzZXJTZXR0aW5ncxIfLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNldHRpbmdzUmVzcG9uc2UiABJXChBMaXN0VXNlclNlc3Npb25zEh8uYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXF1ZXN0GiAuYXBpLnYyLkxpc3RVc2VyU2Vzc2lvbnNSZXNwb25zZSIAEk8KEVJldm9rZVVzZXJTZXNzaW9uEiAuYXBpLnYyLlJldm9rZVVzZXJTZXNzaW9uUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEmMKFExpc3RVc2VyQWNjZXNzVG9rZW5zEiMuYXBpLnYyLkxpc3RVc2VyQWNjZXNzVG9rZW5zUmVxdWVzdBokLmFwaS52Mi5MaXN0VXNlckFjY2Vzc1Rva2Vuc1Jlc3BvbnNlIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
+  fileDesc("ChFhcGkvdjIvdXNlci5wcm90bxIGYXBpLnYyIikKF0xpc3RVc2VyV2ViaG9va3NSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCSJAChhMaXN0VXNlcldlYmhvb2tzUmVzcG9uc2USJAoId2ViaG9va3MYASADKAsyEi5tb2RlbC5Vc2VyV2ViaG9vayIuChFDcmVhdGVVc2VyUmVxdWVzdBIZCgR1c2VyGAEgASgLMgsubW9kZWwuVXNlciJ2ChFVcGRhdGVVc2VyUmVxdWVzdBIZCgR1c2VyGAEgASgLMgsubW9kZWwuVXNlchIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2sSFQoNYWxsb3dfbWlzc2luZxgDIAEoCCJNCg5HZXRVc2VyUmVxdWVzdBIMCgRuYW1lGAEgASgJEi0KCXJlYWRfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siSgoSU2VhcmNoVXNlcnNSZXF1ZXN0Eg0KBXF1ZXJ5GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIl4KE1NlYXJjaFVzZXJzUmVzcG9uc2USGgoFdXNlcnMYASADKAsyCy5tb2RlbC5Vc2VyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFInEKEExpc3RVc2Vyc1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCnBhZ2VfdG9rZW4YAiABKAkSDgoGZmlsdGVyGAMgASgJEhAKCG9yZGVyX2J5GAQgASgJEhQKDHNob3dfZGVsZXRlZBgFIAEoCCJcChFMaXN0VXNlcnNSZXNwb25zZRIaCgV1c2VycxgBIAMoCzILLm1vZGVsLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiQAoXTGlzdEFsbFVzZXJTdGF0c1JlcXVlc3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCnBhZ2VfdG9rZW4YAiABKAkibQoYTGlzdEFsbFVzZXJTdGF0c1Jlc3BvbnNlEiQKCnVzZXJfc3RhdHMYASADKAsyEC5tb2RlbC5Vc2VyU3RhdHMSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUiIwoTR2V0VXNlclN0YXRzUmVxdWVzdBIMCgRuYW1lGAEgASgJIiUKFUdldFVzZXJTZXR0aW5nUmVxdWVzdBIMCgRuYW1lGAEgASgJInAKGFVwZGF0ZVVzZXJTZXR0aW5nUmVxdWVzdBIjCgdzZXR0aW5nGAEgASgLMhIubW9kZWwuVXNlclNldHRpbmcSLwoLdXBkYXRlX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrIlAKF0xpc3RVc2VyU2V0dGluZ3NSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCSJtChhMaXN0VXNlclNldHRpbmdzUmVzcG9uc2USJAoIc2V0dGluZ3MYASADKAsyEi5tb2RlbC5Vc2VyU2V0dGluZxIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkSEgoKdG90YWxfc2l6ZRgDIAEoBSIpChdMaXN0VXNlclNlc3Npb25zUmVxdWVzdBIOCgZwYXJlbnQYASABKAkiQAoYTGlzdFVzZXJTZXNzaW9uc1Jlc3BvbnNlEiQKCHNlc3Npb25zGAEgAygLMhIubW9kZWwuVXNlclNlc3Npb24iKAoYUmV2b2tlVXNlclNlc3Npb25SZXF1ZXN0EgwKBG5hbWUYASABKAkiVAobTGlzdFVzZXJBY2Nlc3NUb2tlbnNSZXF1ZXN0Eg4KBnBhcmVudBgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCSJ6ChxMaXN0VXNlckFjY2Vzc1Rva2Vuc1Jlc3BvbnNlEi0KDWFjY2Vzc190b2tlbnMYASADKAsyFi5tb2RlbC5Vc2VyQWNjZXNzVG9rZW4SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJEhIKCnRvdGFsX3NpemUYAyABKAUyrAgKC1VzZXJTZXJ2aWNlEjYKCkNyZWF0ZVVzZXISGS5hcGkudjIuQ3JlYXRlVXNlclJlcXVlc3QaCy5tb2RlbC5Vc2VyIgASNgoKVXBkYXRlVXNlchIZLmFwaS52Mi5VcGRhdGVVc2VyUmVxdWVzdBoLLm1vZGVsLlVzZXIiABIwCgdHZXRVc2VyEhYuYXBpLnYyLkdldFVzZXJSZXF1ZXN0GgsubW9kZWwuVXNlciIAEkgKC1NlYXJjaFVzZXJzEhouYXBpLnYyLlNlYXJjaFVzZXJzUmVxdWVzdBobLmFwaS52Mi5TZWFyY2hVc2Vyc1Jlc3BvbnNlIgASQgoJTGlzdFVzZXJzEhguYXBpLnYyLkxpc3RVc2Vyc1JlcXVlc3QaGS5hcGkudjIuTGlzdFVzZXJzUmVzcG9uc2UiABJXChBMaXN0QWxsVXNlclN0YXRzEh8uYXBpLnYyLkxpc3RBbGxVc2VyU3RhdHNSZXF1ZXN0GiAuYXBpLnYyLkxpc3RBbGxVc2VyU3RhdHNSZXNwb25zZSIAEj8KDEdldFVzZXJTdGF0cxIbLmFwaS52Mi5HZXRVc2VyU3RhdHNSZXF1ZXN0GhAubW9kZWwuVXNlclN0YXRzIgASRQoOR2V0VXNlclNldHRpbmcSHS5hcGkudjIuR2V0VXNlclNldHRpbmdSZXF1ZXN0GhIubW9kZWwuVXNlclNldHRpbmciABJLChFVcGRhdGVVc2VyU2V0dGluZxIgLmFwaS52Mi5VcGRhdGVVc2VyU2V0dGluZ1JlcXVlc3QaEi5tb2RlbC5Vc2VyU2V0dGluZyIAElcKEExpc3RVc2VyU2V0dGluZ3MSHy5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJTZXR0aW5nc1Jlc3BvbnNlIgASVwoQTGlzdFVzZXJTZXNzaW9ucxIfLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVxdWVzdBogLmFwaS52Mi5MaXN0VXNlclNlc3Npb25zUmVzcG9uc2UiABJPChFSZXZva2VVc2VyU2Vzc2lvbhIgLmFwaS52Mi5SZXZva2VVc2VyU2Vzc2lvblJlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJjChRMaXN0VXNlckFjY2Vzc1Rva2VucxIjLmFwaS52Mi5MaXN0VXNlckFjY2Vzc1Rva2Vuc1JlcXVlc3QaJC5hcGkudjIuTGlzdFVzZXJBY2Nlc3NUb2tlbnNSZXNwb25zZSIAElcKEExpc3RVc2VyV2ViaG9va3MSHy5hcGkudjIuTGlzdFVzZXJXZWJob29rc1JlcXVlc3QaIC5hcGkudjIuTGlzdFVzZXJXZWJob29rc1Jlc3BvbnNlIgBCM1oxZ2l0aHViLmNvbS9zbWFydG1lbW9zL21lbW9zL2ludGVybmFsL3Byb3RvL2FwaS92MmIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp, file_google_protobuf_field_mask, file_model_user_session, file_model_user_setting, file_model_user]);
+
+/**
+ * @generated from message api.v2.ListUserWebhooksRequest
+ */
+export type ListUserWebhooksRequest = Message<"api.v2.ListUserWebhooksRequest"> & {
+  /**
+   * The parent user resource.
+   * Format: users/{user}
+   *
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+};
+
+/**
+ * Describes the message api.v2.ListUserWebhooksRequest.
+ * Use `create(ListUserWebhooksRequestSchema)` to create a new message.
+ */
+export const ListUserWebhooksRequestSchema: GenMessage<ListUserWebhooksRequest> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 0);
+
+/**
+ * @generated from message api.v2.ListUserWebhooksResponse
+ */
+export type ListUserWebhooksResponse = Message<"api.v2.ListUserWebhooksResponse"> & {
+  /**
+   * The list of webhooks.
+   *
+   * @generated from field: repeated model.UserWebhook webhooks = 1;
+   */
+  webhooks: UserWebhook[];
+};
+
+/**
+ * Describes the message api.v2.ListUserWebhooksResponse.
+ * Use `create(ListUserWebhooksResponseSchema)` to create a new message.
+ */
+export const ListUserWebhooksResponseSchema: GenMessage<ListUserWebhooksResponse> = /*@__PURE__*/
+  messageDesc(file_api_v2_user, 1);
 
 /**
  * @generated from message api.v2.CreateUserRequest
@@ -37,7 +76,7 @@ export type CreateUserRequest = Message<"api.v2.CreateUserRequest"> & {
  * Use `create(CreateUserRequestSchema)` to create a new message.
  */
 export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 0);
+  messageDesc(file_api_v2_user, 2);
 
 /**
  * @generated from message api.v2.UpdateUserRequest
@@ -70,7 +109,7 @@ export type UpdateUserRequest = Message<"api.v2.UpdateUserRequest"> & {
  * Use `create(UpdateUserRequestSchema)` to create a new message.
  */
 export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 1);
+  messageDesc(file_api_v2_user, 3);
 
 /**
  * @generated from message api.v2.GetUserRequest
@@ -98,7 +137,7 @@ export type GetUserRequest = Message<"api.v2.GetUserRequest"> & {
  * Use `create(GetUserRequestSchema)` to create a new message.
  */
 export const GetUserRequestSchema: GenMessage<GetUserRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 2);
+  messageDesc(file_api_v2_user, 4);
 
 /**
  * @generated from message api.v2.SearchUsersRequest
@@ -131,7 +170,7 @@ export type SearchUsersRequest = Message<"api.v2.SearchUsersRequest"> & {
  * Use `create(SearchUsersRequestSchema)` to create a new message.
  */
 export const SearchUsersRequestSchema: GenMessage<SearchUsersRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 3);
+  messageDesc(file_api_v2_user, 5);
 
 /**
  * @generated from message api.v2.SearchUsersResponse
@@ -164,7 +203,7 @@ export type SearchUsersResponse = Message<"api.v2.SearchUsersResponse"> & {
  * Use `create(SearchUsersResponseSchema)` to create a new message.
  */
 export const SearchUsersResponseSchema: GenMessage<SearchUsersResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 4);
+  messageDesc(file_api_v2_user, 6);
 
 /**
  * @generated from message api.v2.ListUsersRequest
@@ -219,7 +258,7 @@ export type ListUsersRequest = Message<"api.v2.ListUsersRequest"> & {
  * Use `create(ListUsersRequestSchema)` to create a new message.
  */
 export const ListUsersRequestSchema: GenMessage<ListUsersRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 5);
+  messageDesc(file_api_v2_user, 7);
 
 /**
  * @generated from message api.v2.ListUsersResponse
@@ -253,7 +292,7 @@ export type ListUsersResponse = Message<"api.v2.ListUsersResponse"> & {
  * Use `create(ListUsersResponseSchema)` to create a new message.
  */
 export const ListUsersResponseSchema: GenMessage<ListUsersResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 6);
+  messageDesc(file_api_v2_user, 8);
 
 /**
  * @generated from message api.v2.ListAllUserStatsRequest
@@ -279,7 +318,7 @@ export type ListAllUserStatsRequest = Message<"api.v2.ListAllUserStatsRequest"> 
  * Use `create(ListAllUserStatsRequestSchema)` to create a new message.
  */
 export const ListAllUserStatsRequestSchema: GenMessage<ListAllUserStatsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 7);
+  messageDesc(file_api_v2_user, 9);
 
 /**
  * @generated from message api.v2.ListAllUserStatsResponse
@@ -312,7 +351,7 @@ export type ListAllUserStatsResponse = Message<"api.v2.ListAllUserStatsResponse"
  * Use `create(ListAllUserStatsResponseSchema)` to create a new message.
  */
 export const ListAllUserStatsResponseSchema: GenMessage<ListAllUserStatsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 8);
+  messageDesc(file_api_v2_user, 10);
 
 /**
  * @generated from message api.v2.GetUserStatsRequest
@@ -332,7 +371,7 @@ export type GetUserStatsRequest = Message<"api.v2.GetUserStatsRequest"> & {
  * Use `create(GetUserStatsRequestSchema)` to create a new message.
  */
 export const GetUserStatsRequestSchema: GenMessage<GetUserStatsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 9);
+  messageDesc(file_api_v2_user, 11);
 
 /**
  * @generated from message api.v2.GetUserSettingRequest
@@ -352,7 +391,7 @@ export type GetUserSettingRequest = Message<"api.v2.GetUserSettingRequest"> & {
  * Use `create(GetUserSettingRequestSchema)` to create a new message.
  */
 export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 10);
+  messageDesc(file_api_v2_user, 12);
 
 /**
  * @generated from message api.v2.UpdateUserSettingRequest
@@ -378,7 +417,7 @@ export type UpdateUserSettingRequest = Message<"api.v2.UpdateUserSettingRequest"
  * Use `create(UpdateUserSettingRequestSchema)` to create a new message.
  */
 export const UpdateUserSettingRequestSchema: GenMessage<UpdateUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 11);
+  messageDesc(file_api_v2_user, 13);
 
 /**
  * Request message for ListUserSettings method.
@@ -418,7 +457,7 @@ export type ListUserSettingsRequest = Message<"api.v2.ListUserSettingsRequest"> 
  * Use `create(ListUserSettingsRequestSchema)` to create a new message.
  */
 export const ListUserSettingsRequestSchema: GenMessage<ListUserSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 12);
+  messageDesc(file_api_v2_user, 14);
 
 /**
  * Response message for ListUserSettings method.
@@ -454,7 +493,7 @@ export type ListUserSettingsResponse = Message<"api.v2.ListUserSettingsResponse"
  * Use `create(ListUserSettingsResponseSchema)` to create a new message.
  */
 export const ListUserSettingsResponseSchema: GenMessage<ListUserSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 13);
+  messageDesc(file_api_v2_user, 15);
 
 /**
  * @generated from message api.v2.ListUserSessionsRequest
@@ -474,7 +513,7 @@ export type ListUserSessionsRequest = Message<"api.v2.ListUserSessionsRequest"> 
  * Use `create(ListUserSessionsRequestSchema)` to create a new message.
  */
 export const ListUserSessionsRequestSchema: GenMessage<ListUserSessionsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 14);
+  messageDesc(file_api_v2_user, 16);
 
 /**
  * @generated from message api.v2.ListUserSessionsResponse
@@ -493,7 +532,7 @@ export type ListUserSessionsResponse = Message<"api.v2.ListUserSessionsResponse"
  * Use `create(ListUserSessionsResponseSchema)` to create a new message.
  */
 export const ListUserSessionsResponseSchema: GenMessage<ListUserSessionsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 15);
+  messageDesc(file_api_v2_user, 17);
 
 /**
  * @generated from message api.v2.RevokeUserSessionRequest
@@ -513,7 +552,7 @@ export type RevokeUserSessionRequest = Message<"api.v2.RevokeUserSessionRequest"
  * Use `create(RevokeUserSessionRequestSchema)` to create a new message.
  */
 export const RevokeUserSessionRequestSchema: GenMessage<RevokeUserSessionRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 16);
+  messageDesc(file_api_v2_user, 18);
 
 /**
  * @generated from message api.v2.ListUserAccessTokensRequest
@@ -547,7 +586,7 @@ export type ListUserAccessTokensRequest = Message<"api.v2.ListUserAccessTokensRe
  * Use `create(ListUserAccessTokensRequestSchema)` to create a new message.
  */
 export const ListUserAccessTokensRequestSchema: GenMessage<ListUserAccessTokensRequest> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 17);
+  messageDesc(file_api_v2_user, 19);
 
 /**
  * @generated from message api.v2.ListUserAccessTokensResponse
@@ -580,7 +619,7 @@ export type ListUserAccessTokensResponse = Message<"api.v2.ListUserAccessTokensR
  * Use `create(ListUserAccessTokensResponseSchema)` to create a new message.
  */
 export const ListUserAccessTokensResponseSchema: GenMessage<ListUserAccessTokensResponse> = /*@__PURE__*/
-  messageDesc(file_api_v2_user, 18);
+  messageDesc(file_api_v2_user, 20);
 
 /**
  * @generated from service api.v2.UserService
@@ -715,6 +754,16 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof ListUserAccessTokensRequestSchema;
     output: typeof ListUserAccessTokensResponseSchema;
+  },
+  /**
+   * ListUserWebhooks returns a list of webhooks for a user.
+   *
+   * @generated from rpc api.v2.UserService.ListUserWebhooks
+   */
+  listUserWebhooks: {
+    methodKind: "unary";
+    input: typeof ListUserWebhooksRequestSchema;
+    output: typeof ListUserWebhooksResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v2_user, 0);
