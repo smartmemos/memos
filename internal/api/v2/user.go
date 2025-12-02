@@ -106,13 +106,21 @@ func (s *UserService) SearchUsers(ctx context.Context, request *connect.Request[
 
 func (s *UserService) ListUsers(ctx context.Context, request *connect.Request[v2pb.ListUsersRequest]) (response *connect.Response[v2pb.ListUsersResponse], err error) {
 	logrus.Info("req: ", request.Msg)
-	// users, err := s.memosService.ListUsers(ctx, &model.ListUsersRequest{
-	// 	PageSize:  request.Msg.PageSize,
-	// 	PageToken: request.Msg.PageToken,
-	// 	Filter:    request.Msg.Filter,
-	// 	OrderBy:   request.Msg.OrderBy,
-	// 	ShowDeleted: request.Msg.ShowDeleted,
-	// })
+	_, users, err := s.memosService.ListUsers(ctx, &model.ListUsersRequest{
+		PageSize:    int64(request.Msg.PageSize),
+		PageToken:   request.Msg.PageToken,
+		Filter:      request.Msg.Filter,
+		OrderBy:     request.Msg.OrderBy,
+		ShowDeleted: request.Msg.ShowDeleted,
+	})
+	if err != nil {
+		return
+	}
+	response = connect.NewResponse(&v2pb.ListUsersResponse{
+		Users: lo.Map(users, func(user *model.User, _ int) *modelpb.User {
+			return convertUserToProto(user)
+		}),
+	})
 	return
 }
 

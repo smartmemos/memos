@@ -54,8 +54,10 @@ type UpdateUserRequest struct {
 type ListUsersRequest struct {
 	db.Query
 
+	PageSize    int64
 	PageToken   string
 	Filter      string
+	OrderBy     string
 	ShowDeleted bool
 }
 
