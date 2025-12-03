@@ -2,10 +2,17 @@ import { observer } from "mobx-react-lite";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { userStore } from "@/store";
-import { Visibility as Visibility2 } from "@/types/proto2/model/common_pb"
-import { UserSetting_GeneralSetting as UserSetting_GeneralSetting2 } from "@/types/proto2/model/user_setting_pb";
+import { Visibility as Visibility2 } from "@/types/proto2/model/common_pb";
+import {
+  UserSetting_GeneralSetting as UserSetting_GeneralSetting2,
+  UserSetting_GeneralSettingSchema
+} from "@/types/proto2/model/user_setting_pb";
 import { useTranslate } from "@/utils/i18n";
-import { convertVisibilityFromString, convertVisibilityToString } from "@/utils/memo";
+import {
+  convertVisibilityFromString,
+  convertVisibilityToString
+} from "@/utils/memo";
+import { create } from "@bufbuild/protobuf";
 import AppearanceSelect from "../AppearanceSelect";
 import LocaleSelect from "../LocaleSelect";
 import ThemeSelector from "../ThemeSelector";
@@ -33,12 +40,13 @@ const PreferencesSection = observer(() => {
   };
 
   // Provide default values if setting is not loaded yet
-  const setting: UserSetting_GeneralSetting2 = generalSetting || {
+  const setting: UserSetting_GeneralSetting2 = generalSetting || create(UserSetting_GeneralSettingSchema, {
     locale: "en",
     appearance: "system",
-    memoVisibility: Visibility2.PRIVATE,
+    memoVisibility: "PRIVATE",
     theme: "",
-  };
+  });
+
 
   return (
     <div className="w-full flex flex-col gap-2 pt-2 pb-4">
